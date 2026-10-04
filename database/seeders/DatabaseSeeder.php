@@ -46,6 +46,10 @@ class DatabaseSeeder extends Seeder
         $sections = glob(__DIR__.'/Sections/*Seeder.php') ?: [];
         sort($sections);
 
+        // The Sprints catalogue owns the flagship sprint slugs (linked from Home and the nav).
+        // The sprint-type seeders give way to slugs that already exist, so it must run first.
+        usort($sections, fn ($a, $b) => (basename($b) === 'SprintsCatalogueSeeder.php') <=> (basename($a) === 'SprintsCatalogueSeeder.php'));
+
         foreach ($sections as $file) {
             $this->call('Database\\Seeders\\Sections\\'.basename($file, '.php'));
         }
