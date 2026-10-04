@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
-import { Bell, ChevronDown, Menu, MessageCircle, Search, User, X } from 'lucide-react';
+import { Bell, ChevronDown, Menu, MessageCircle, Search, ShoppingBag, User, X } from 'lucide-react';
 import Logo from './Logo';
 import { cn } from '@/lib/cn';
 import type { NavChild, NavTab, SharedProps } from '@/types';
@@ -8,7 +8,7 @@ import type { NavChild, NavTab, SharedProps } from '@/types';
 export type HeaderVariant = 'dark' | 'split';
 
 export default function Header({ variant = 'split' }: { variant?: HeaderVariant }) {
-    const { nav, context, url } = usePage<SharedProps>().props;
+    const { nav, context, url, auth, basketCount } = usePage<SharedProps>().props;
     const [openMenu, setOpenMenu] = useState<string | null>(null);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -62,7 +62,9 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
             {/* ---------------- Utility bar ---------------- */}
             <div className="border-b border-ink-800 bg-ink-950">
                 <div className="container-tbca flex h-[68px] items-center gap-4">
-                    <Logo />
+                    {/* Header-specific lockup (mark, wordmark, rule, tagline) sized to the bar; the mark alone on phones. */}
+                    <Logo variant="header" className="hidden sm:inline-flex" />
+                    <Logo variant="mark" className="sm:hidden" />
 
                     <div className="ml-auto flex items-center gap-2 xl:gap-3">
                         <div className="hidden items-center gap-1 2xl:flex">
@@ -83,25 +85,22 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                             />
                         </div>
 
-                        <label className="relative hidden lg:block">
-                            <span className="sr-only">Search TBCA</span>
-                            <Search
-                                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-400"
-                                aria-hidden="true"
-                            />
-                            <input
-                                type="search"
-                                placeholder="Search everything..."
-                                className="h-9 w-48 rounded-[4px] border border-ink-700 bg-ink-900 pr-3 pl-9 text-[0.8125rem] text-parchment-100 placeholder:text-ink-400 focus:border-gold-500 focus:outline-none xl:w-60"
-                            />
-                        </label>
+                        <form action="/search" method="get" role="search" className="relative hidden lg:block">
+                            <label>
+                                <span className="sr-only">Search TBCA</span>
+                                <Search
+                                    className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-400"
+                                    aria-hidden="true"
+                                />
+                                <input
+                                    type="search"
+                                    name="q"
+                                    placeholder="Search everything..."
+                                    className="h-9 w-48 rounded-[4px] border border-ink-700 bg-ink-900 pr-3 pl-9 text-[0.8125rem] text-parchment-100 placeholder:text-ink-400 focus:border-gold-500 focus:outline-none xl:w-60"
+                                />
+                            </label>
+                        </form>
 
-                        <Link
-                            href="/contact"
-                            className="hidden h-9 items-center gap-1.5 rounded-[4px] border border-gold-600/70 px-3 text-[0.8125rem] font-medium text-gold-300 transition-colors hover:border-gold-500 hover:text-gold-200 xl:inline-flex"
-                        >
-                            Ask a Question
-                        </Link>
 
                         <Link
                             href="/shop"
@@ -130,11 +129,24 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                         </button>
 
                         <Link
-                            href="/portal"
+                            href="/basket"
+                            className="relative hidden size-9 items-center justify-center rounded-[4px] border border-ink-700 text-parchment-200 transition-colors hover:border-gold-600 hover:text-gold-300 lg:inline-flex"
+                            aria-label={`Basket, ${basketCount} item${basketCount === 1 ? '' : 's'}`}
+                        >
+                            <ShoppingBag className="size-4" aria-hidden="true" />
+                            {basketCount > 0 && (
+                                <span className="absolute -top-1.5 -right-1.5 inline-flex size-4 items-center justify-center rounded-full bg-gold-500 text-[0.625rem] font-semibold text-ink-900">
+                                    {basketCount}
+                                </span>
+                            )}
+                        </Link>
+
+                        <Link
+                            href={auth.user ? (auth.user.role === 'admin' ? '/admin' : '/portal/dashboard') : '/login'}
                             className="hidden h-9 items-center gap-1.5 rounded-[4px] border border-ink-700 px-3 text-[0.8125rem] font-medium text-parchment-100 transition-colors hover:border-gold-600 hover:text-gold-300 md:inline-flex"
                         >
                             <User className="size-4" aria-hidden="true" />
-                            Client Login
+                            {auth.user ? auth.user.name.split(' ')[0] : 'Client Login'}
                         </Link>
 
                         <button
@@ -154,11 +166,12 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
             <div className="hidden bg-ink-900 lg:block">
                 <div className="container-tbca">
                     <ul className="flex items-stretch justify-between">
-                        {nav.primary.map((tab) => (
+                        {nav.primary.map((tab, i) => (
                             <NavItem
                                 key={tab.href}
                                 tab={tab}
                                 tone="dark"
+                                align={i >= nav.primary.length / 2 ? 'right' : 'left'}
                                 active={isActive(tab.href)}
                                 items={nav.children[tab.href]}
                                 open={openMenu === tab.href}
@@ -184,11 +197,12 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
             >
                 <div className="container-tbca">
                     <ul className="flex items-stretch justify-between">
-                        {nav.secondary.map((tab) => (
+                        {nav.secondary.map((tab, i) => (
                             <NavItem
                                 key={tab.href}
                                 tab={tab}
                                 tone={secondaryOnDark ? 'dark' : 'light'}
+                                align={i >= nav.secondary.length / 2 ? 'right' : 'left'}
                                 active={isActive(tab.href)}
                                 items={nav.children[tab.href]}
                                 open={openMenu === tab.href}
@@ -218,7 +232,9 @@ function NavItem({
     open,
     onOpen,
     onClose,
+    align = 'left',
 }: {
+    align?: 'left' | 'right';
     tab: NavTab;
     tone: 'dark' | 'light';
     active: boolean;
@@ -262,7 +278,13 @@ function NavItem({
             </Link>
 
             {items && open && (
-                <div className="absolute top-full left-0 z-50 w-[22rem] overflow-hidden rounded-b-[6px] border border-t-0 border-parchment-400 bg-white shadow-raised">
+                <div
+                    className={cn(
+                        'absolute top-full z-50 overflow-hidden rounded-b-[6px] border border-t-0 border-parchment-400 bg-white shadow-raised',
+                        items.length > 7 ? 'w-[40rem]' : 'w-[22rem]',
+                        align === 'right' ? 'right-0' : 'left-0',
+                    )}
+                >
                     <div className="border-b border-parchment-300 bg-parchment-100 px-4 py-2.5">
                         <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-gold-700">
                             {tab.label}
@@ -270,7 +292,7 @@ function NavItem({
                         <p className="mt-0.5 text-[0.75rem] leading-snug text-ink-500">{tab.purpose}</p>
                     </div>
 
-                    <ul className="p-1.5">
+                    <ul className={cn('p-1.5', items.length > 7 && 'grid grid-cols-2 gap-x-1')}>
                         {items.map((child) => (
                             <li key={child.href}>
                                 <Link
@@ -416,10 +438,16 @@ function MobileDrawer({
                         Start a Sprint
                     </Link>
                     <Link
-                        href="/portal"
+                        href="/login"
                         className="flex h-11 items-center justify-center rounded-[4px] border border-ink-700 text-sm font-medium text-parchment-100"
                     >
                         Client Login
+                    </Link>
+                    <Link
+                        href="/basket"
+                        className="flex h-11 items-center justify-center rounded-[4px] border border-ink-700 text-sm font-medium text-parchment-100"
+                    >
+                        Basket
                     </Link>
                 </div>
             </div>

@@ -45,6 +45,16 @@ return [
     'default_country' => 'ZA',
 
     /*
+    | Checkout pricing rules (Money). Amounts are whole ZAR.
+    */
+    'commerce' => [
+        'vat_rate' => 0.15,
+        'zar_per_usd' => 18.0,
+        'platform_fee_zar' => 250,
+        'bank_charge_rates' => ['card' => 0.01, 'eft' => 0, 'wallet' => 0],
+    ],
+
+    /*
     | Evidence classes. Every public trust claim carries one.
     */
     'ledger_classes' => [

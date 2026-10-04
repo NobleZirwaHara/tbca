@@ -1,247 +1,144 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
-import PageHeader from '@/Components/PageHeader';
-import CtaBand from '@/Components/CtaBand';
-import { BoundaryNote, DataTable } from '@/Components/Blocks';
-import Card from '@/Components/ui/Card';
-import Icon from '@/Components/ui/Icon';
-import { ButtonLink } from '@/Components/ui/Button';
-import { Section, SectionHeading } from '@/Components/ui/Section';
-import { cn } from '@/lib/cn';
-import type { SharedProps } from '@/types';
-
-interface Sku {
-    sku: string;
-    name: string;
-    family: string;
-    checks: string;
-    automation: string;
-    review_rule: string;
-    zar: number | null;
-    usd: number | null;
-    turnaround: string;
-}
+import { Head, Link } from '@inertiajs/react';
+import { ArrowRight, ChevronRight, FolderLock, Globe2, Languages, Coins, ShieldCheck, UserCheck } from 'lucide-react';
+import { ButtonLink, Button } from '@/Components/ui/Button';
+import { openAskQuestion } from '@/Components/AskQuestion';
+import DdIcon from '@/Components/DueDiligence/DdIcon';
+import type { DdFamilyCard, DdIconItem, DdJourneyStep } from '@/types/due-diligence';
 
 interface Props {
-    positioning: { trust_line: string; boundary: string; intro: string };
-    routes: { page: string; slug: string; route: string; purpose: string; icon: string }[];
-    skus: Sku[];
-    workflow: { step: number; event: string; action: string }[];
-    caseStatuses: { status: string; meaning: string; control: string }[];
-    reviewTriggers: { trigger: string; treatment: string }[];
-    controls: { control: string; requirement: string }[];
+    families: DdFamilyCard[];
+    journey: DdJourneyStep[];
+    trust: DdIconItem[];
 }
 
-export default function DueDiligenceIndex({
-    positioning,
-    routes,
-    skus,
-    workflow,
-    caseStatuses,
-    reviewTriggers,
-    controls,
-}: Props) {
-    const { context } = usePage<SharedProps>().props;
+const badges = [
+    { title: 'South Africa', body: 'Active Market', icon: Globe2 },
+    { title: 'English & Afrikaans', body: 'Languages', icon: Languages },
+    { title: 'ZAR (Source)', body: '& USD Currencies', icon: Coins },
+    { title: 'Human-Reviewed', body: 'Every Case', icon: UserCheck },
+    { title: 'Secure & Compliant', body: 'POPIA Ready', icon: ShieldCheck },
+];
+
+/** DD-001 Due Diligence landing page. */
+export default function DueDiligenceIndex({ families, journey, trust }: Props) {
+    const cards = [
+        ...families.filter((f) => f.slug !== 'portal-api'),
+        { slug: '__consent', name: 'Consent & Evidence', short: 'Manage consent, upload evidence and track permissions.', selector: '', icon: 'FolderOpen' },
+    ];
 
     return (
         <>
             <Head title="Due Diligence" />
 
-            <PageHeader
-                eyebrow="Consent-driven checks, monitoring and enterprise screening"
-                title="Due Diligence"
-                lead={positioning.trust_line}
-                intro={positioning.intro}
-                crumbs={[{ label: 'Home', href: '/' }, { label: 'Due Diligence' }]}
-                aside={{
-                    title: 'Professional Boundary',
-                    body: positioning.boundary,
-                    items: [
-                        'Consent recorded before any verification',
-                        'Only required fields are collected',
-                        'Human review where risk requires it',
-                        'Approved final report delivered in the portal',
-                    ],
-                    icon: 'shield-check',
-                }}
-            >
-                <div className="mt-7 flex flex-wrap gap-3">
-                    <ButtonLink href="/due-diligence/start" variant="gold" size="lg" trailingIcon="arrow-right">
-                        Start a Due Diligence Case
-                    </ButtonLink>
-                    <ButtonLink href="/due-diligence/enterprise" variant="outline" size="lg">
-                        Request Enterprise Screening
-                    </ButtonLink>
-                </div>
-            </PageHeader>
-
-            {/* ------------------------------------------ Families */}
-            <Section tone="parchment">
-                <SectionHeading title="Check Families" lead="Choose the subject you need verified." />
-
-                <ul className="mt-8 grid gap-px overflow-hidden rounded-[6px] border border-parchment-400 bg-parchment-400 sm:grid-cols-2 lg:grid-cols-3">
-                    {routes.filter((route) => route.slug !== '').map((route) => (
-                        <li key={route.route}>
-                            <Link
-                                href={route.route}
-                                className="flex h-full flex-col bg-white p-5 transition-colors hover:bg-parchment-100"
-                            >
-                                <Icon name={route.icon} className="size-5 text-gold-600" />
-                                <h3 className="mt-3 text-[0.875rem] font-semibold tracking-[-0.01em] text-ink-900">
-                                    {route.page}
-                                </h3>
-                                <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-600">{route.purpose}</p>
-                                <span className="mt-3 inline-flex items-center gap-1.5 text-[0.75rem] font-semibold text-gold-700">
-                                    Open
-                                    <ArrowRight className="size-3" aria-hidden="true" />
-                                </span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </Section>
-
-            {/* ---------------------------------------------- SKUs */}
-            <Section tone="white">
-                <SectionHeading
-                    title="Product Register"
-                    lead="Every check is a governed SKU."
-                    body="Each SKU maps to one product code, one delivery template, one finance item and one human review rule."
-                />
-
-                <div className="mt-8 overflow-hidden rounded-[6px] border border-parchment-400 bg-white">
-                    <div className="overflow-x-auto rail-scroll">
-                        <table className="w-full min-w-[54rem] border-collapse text-left">
-                            <caption className="sr-only">Due Diligence product SKU register</caption>
-                            <thead>
-                                <tr className="border-b border-parchment-400 bg-parchment-100">
-                                    {['SKU', 'Product', 'Core Checks', 'From', 'Turnaround', 'Human Review Rule'].map((column) => (
-                                        <th
-                                            key={column}
-                                            scope="col"
-                                            className="px-4 py-3 text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-ink-500"
-                                        >
-                                            {column}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {skus.map((sku) => (
-                                    <tr key={sku.sku} className="border-b border-parchment-300 last:border-0">
-                                        <td className="px-4 py-3.5 align-top">
-                                            <span className="rounded-[3px] border border-parchment-400 bg-parchment-100 px-1.5 py-0.5 font-mono text-[0.6875rem] font-semibold text-ink-700">
-                                                {sku.sku}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-3.5 align-top text-[0.8125rem] font-semibold text-ink-900">
-                                            {sku.name}
-                                        </td>
-                                        <td className="px-4 py-3.5 align-top text-[0.8125rem] leading-relaxed text-ink-600">
-                                            {sku.checks}
-                                        </td>
-                                        <td className="px-4 py-3.5 align-top text-[0.8125rem] font-semibold whitespace-nowrap text-gold-700">
-                                            {sku.zar === null
-                                                ? 'On application'
-                                                : context.currency === 'USD'
-                                                  ? `USD ${sku.usd?.toLocaleString()}`
-                                                  : `ZAR ${sku.zar.toLocaleString()}`}
-                                        </td>
-                                        <td className="px-4 py-3.5 align-top text-[0.8125rem] text-ink-600">
-                                            {sku.turnaround}
-                                        </td>
-                                        <td className="px-4 py-3.5 align-top text-[0.8125rem] leading-relaxed text-ink-600">
-                                            {sku.review_rule}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </Section>
-
-            {/* ------------------------------------------ Workflow */}
-            <Section tone="parchment">
-                <SectionHeading
-                    title="How a Case Runs"
-                    lead="Eleven controlled steps from order to delivery."
-                />
-
-                <ol className="mt-8 grid gap-px overflow-hidden rounded-[6px] border border-parchment-400 bg-parchment-400 sm:grid-cols-2 lg:grid-cols-3">
-                    {workflow.map((step) => (
-                        <li key={step.step} className="flex gap-3.5 bg-white p-5">
-                            <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-gold-400 font-serif text-[0.8125rem] font-semibold text-gold-700">
-                                {step.step}
-                            </span>
-                            <div className="min-w-0">
-                                <p className="text-[0.8125rem] font-semibold leading-snug text-ink-900">{step.event}</p>
-                                <p className="mt-1.5 text-[0.75rem] leading-relaxed text-ink-600">{step.action}</p>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
-            </Section>
-
-            {/* ------------------------------------- Case statuses */}
-            <Section tone="white">
-                <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
-                    <div className="lg:col-span-7">
-                        <SectionHeading title="Case Status Machine" lead="What each status blocks or allows." />
-                        <div className="mt-7">
-                            <DataTable
-                                columns={['Status', 'Meaning', 'System Control']}
-                                rows={caseStatuses.map((s) => [s.status, s.meaning, s.control])}
-                                caption="Due Diligence case statuses"
-                            />
+            <section className="relative overflow-hidden bg-ink-950">
+                <div className="pointer-events-none absolute inset-0 motif-glow" aria-hidden="true" />
+                <div className="pointer-events-none absolute inset-0 motif-grid opacity-30" aria-hidden="true" />
+                <div className="container-tbca relative grid gap-8 py-10 lg:grid-cols-12 lg:py-14">
+                    <div className="lg:col-span-6">
+                        <h1 className="font-serif text-[2.25rem] leading-tight font-semibold text-parchment-100 sm:text-[2.9rem]">
+                            Due Diligence. Verified. Actionable.
+                            <span className="block text-gold-400">Confidence in Every Decision.</span>
+                        </h1>
+                        <p className="mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-parchment-200">
+                            Comprehensive, consent-led due diligence and screening services for individuals, companies, projects, investors and institutions. Human-reviewed. POPIA-ready. Audit-trail enabled.
+                        </p>
+                        <div className="mt-6 flex flex-wrap gap-3">
+                            <ButtonLink href="/due-diligence/services" size="lg" trailingIcon="arrow-right">
+                                Start Due Diligence Case
+                            </ButtonLink>
+                            <ButtonLink href="/due-diligence/enterprise/request" size="lg" variant="outline-light" icon="landmark">
+                                Request Enterprise Screening
+                            </ButtonLink>
                         </div>
                     </div>
-
-                    <div className="lg:col-span-5">
-                        <SectionHeading title="When a Human Must Review" lead="Release locks, every time." />
-                        <ul className="mt-7 space-y-2">
-                            {reviewTriggers.map((trigger) => (
-                                <Card as="li" key={trigger.trigger} className="flex gap-3 p-3.5">
-                                    <ShieldCheck className="mt-0.5 size-4 shrink-0 text-risk-500" aria-hidden="true" />
-                                    <div className="min-w-0">
-                                        <p className="text-[0.8125rem] font-semibold text-ink-900">{trigger.trigger}</p>
-                                        <p className="mt-0.5 text-[0.75rem] leading-relaxed text-ink-600">
-                                            {trigger.treatment}
-                                        </p>
-                                    </div>
-                                </Card>
+                    <div className="flex items-center lg:col-span-6">
+                        <ul className="grid w-full grid-cols-2 gap-2 rounded-[12px] border border-gold-500/30 bg-ink-900/70 p-3 sm:grid-cols-5">
+                            {badges.map(({ title, body, icon: I }) => (
+                                <li key={title} className="flex flex-col items-center gap-1 rounded-[8px] p-2 text-center">
+                                    <I className="size-6 text-gold-400" aria-hidden="true" />
+                                    <span className="text-xs font-semibold text-parchment-100">{title}</span>
+                                    <span className="text-[0.6875rem] text-ink-300">{body}</span>
+                                </li>
                             ))}
                         </ul>
                     </div>
                 </div>
-            </Section>
+            </section>
 
-            {/* ------------------------------------------ Controls */}
-            <Section tone="parchment">
-                <SectionHeading title="Security and Privacy Controls" lead="Applied to every case." />
+            <section className="bg-parchment-100 py-8">
+                <div className="container-tbca">
+                    <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
+                        <h2 className="text-xl font-bold text-ink-900">Choose Your Due Diligence Service</h2>
+                        <Link href="/due-diligence/services" className="inline-flex items-center gap-1 text-sm font-semibold text-gold-700 hover:text-gold-800">
+                            View All Services <ArrowRight className="size-4" aria-hidden="true" />
+                        </Link>
+                    </div>
+                    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+                        {cards.map((f) => (
+                            <li key={f.slug}>
+                                <Link
+                                    href={f.slug === '__consent' ? '/due-diligence/cases' : `/due-diligence/${f.slug}`}
+                                    className="group flex h-full items-start gap-3 rounded-[10px] border border-parchment-400 bg-white p-3 transition hover:border-gold-500 hover:shadow-sm focus-visible:border-gold-500"
+                                >
+                                    <span className="flex size-11 shrink-0 items-center justify-center rounded-[8px] bg-ink-950 text-gold-400">
+                                        <DdIcon name={f.icon} className="size-6" />
+                                    </span>
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block text-[0.8125rem] font-bold text-ink-900">{f.name}</span>
+                                        <span className="mt-0.5 block text-[0.6875rem] leading-snug text-ink-500">{f.short}</span>
+                                    </span>
+                                    <ChevronRight className="mt-1 size-4 shrink-0 text-ink-400 group-hover:text-gold-600" aria-hidden="true" />
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
 
-                <ul className="mt-8 grid gap-px overflow-hidden rounded-[6px] border border-parchment-400 bg-parchment-400 sm:grid-cols-2">
-                    {controls.map((control) => (
-                        <li key={control.control} className={cn('bg-white p-5')}>
-                            <h3 className="text-[0.875rem] font-semibold tracking-[-0.01em] text-ink-900">
-                                {control.control}
-                            </h3>
-                            <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-600">{control.requirement}</p>
-                        </li>
-                    ))}
-                </ul>
+                    <div className="mt-6 rounded-[12px] bg-ink-950 p-5 text-parchment-100">
+                        <h2 className="mb-4 text-base font-bold">Our Due Diligence Process</h2>
+                        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-7">
+                            {journey.map((s) => (
+                                <li key={s.n} className="flex items-start gap-2">
+                                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gold-500 text-xs font-bold text-ink-950">{s.n}</span>
+                                    <div>
+                                        <p className="flex items-center gap-1.5 text-[0.8125rem] font-semibold">
+                                            <DdIcon name={s.icon} className="size-4 text-gold-400" /> {s.short}
+                                        </p>
+                                        <p className="mt-0.5 text-[0.6875rem] text-ink-300">{s.body}</p>
+                                    </div>
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
 
-                <div className="mt-10">
-                    <BoundaryNote body={positioning.boundary} />
+                    <ul className="mt-5 grid gap-4 rounded-[12px] border border-parchment-400 bg-white p-4 sm:grid-cols-2 lg:grid-cols-7">
+                        {trust.map((t) => (
+                            <li key={t.title} className="flex items-start gap-2">
+                                <DdIcon name={t.icon} className="mt-0.5 size-5 shrink-0 text-gold-600" />
+                                <div>
+                                    <p className="text-[0.8125rem] font-semibold text-ink-900">{t.title}</p>
+                                    <p className="text-[0.6875rem] text-ink-500">{t.body}</p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="mt-6 flex flex-col gap-4 rounded-[12px] border border-gold-500/40 bg-ink-950 p-5 text-parchment-100 md:flex-row md:items-center">
+                        <ShieldCheck className="size-10 shrink-0 text-gold-400" aria-hidden="true" />
+                        <div className="flex-1">
+                            <p className="text-lg font-semibold">Need Enterprise Screening or a Complex Review?</p>
+                            <p className="text-sm text-ink-300">Speak to our specialists for tailored due diligence and screening solutions.</p>
+                        </div>
+                        <div className="flex flex-wrap gap-3">
+                            <Button type="button" onClick={() => openAskQuestion({ subject: 'Enterprise screening or complex review', section: 'due-diligence' })} trailingIcon="arrow-right">
+                                Talk to a Specialist
+                            </Button>
+                            <ButtonLink href="/virtual-deal-room" variant="outline-light">
+                                <FolderLock className="size-4" aria-hidden="true" /> Open a Data Room
+                            </ButtonLink>
+                        </div>
+                    </div>
                 </div>
-            </Section>
-
-            <CtaBand
-                title="Start a Due Diligence case"
-                body="Choose the product, record consent, complete intake and track the case to portal delivery."
-                primary={{ label: 'Start a Case', href: '/due-diligence/start' }}
-                secondary={{ label: 'Request Enterprise Screening', href: '/due-diligence/enterprise' }}
-            />
+            </section>
         </>
     );
 }

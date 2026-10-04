@@ -1,82 +1,116 @@
-import { Head, Link } from '@inertiajs/react';
-import PageHeader from '@/Components/PageHeader';
-import CtaBand from '@/Components/CtaBand';
-import Card from '@/Components/ui/Card';
-import { ConfidenceChip } from '@/Components/ui/LedgerChip';
-import { Section, SectionHeading } from '@/Components/ui/Section';
+import { Link } from '@inertiajs/react';
+import { CalendarDays, FileText, Lock, ShieldCheck, UserCheck } from 'lucide-react';
+import { CompareButton, ListToggle } from '@/Components/Aiim/Actions';
+import { BarList, Gauge } from '@/Components/Aiim/Charts';
+import { Chip, levelTone, LockedTag, riskTone, SyntheticNotice } from '@/Components/Aiim/Chips';
+import { AdvisoryBox } from '@/Components/Aiim/RailBoxes';
+import AiimPage, { RailBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
+import { ButtonLink } from '@/Components/ui/Button';
+import type { AiimPageProps, ProjectItem } from '@/types/aiim';
 
-interface Props {
-    sector: { slug: string; name: string; icon: string };
-    countries: { slug: string; name: string; region: string; status: string; grade: string }[];
-    metadata: string[];
+interface Profile {
+    tagline: string; intro: string;
+    overview: { label: string; text: string }[];
+    performance: [string, number][];
+    kpis: Record<string, number>;
+    subsectors: [string, string][];
+    topOpportunities: [string, string, string][];
+    risks: [string, string][];
+    riskLevel: string;
+    evidence: { coverage: string; confidence: number; verification: string; refreshed: string; humanReview: string; nextReview: string; updated: string };
 }
 
-export default function AiimSector({ sector, countries, metadata }: Props) {
+interface Props extends AiimPageProps {
+    sector: { slug: string; name: string; icon: string; summary: string; profile: Profile; score: number; label: string };
+    province: { slug: string; name: string } | null;
+    grade: { grade: string; label: string };
+    opportunities: ProjectItem[];
+    saved: string[];
+}
+
+export default function Sector({ sector, province, grade, opportunities, saved }: Props) {
+    const p = sector.profile;
+    const where = province ? ` in ${province.name}` : '';
+    const top = p.topOpportunities.length ? p.topOpportunities : opportunities.map((o) => [o.name, o.type, o.level] as [string, string, string]);
+
     return (
-        <>
-            <Head title={`${sector.name} — AIIM Sector Profile`} />
+        <AiimPage
+            title={`${sector.name} Sector Profile`}
+            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, ...(province ? [{ label: province.name, href: `/aiim/province/${province.slug}` }] : []), { label: 'Sector Selector', href: `/aiim/sectors${province ? `?province=${province.slug}` : ''}` }, { label: sector.name }]}
+            subtitle={p.tagline}
+            description={p.intro}
+            notice={false}
+            actions={<ButtonLink href={`/aiim/sectors${province ? `?province=${province.slug}` : ''}`} size="sm" variant="outline">Back to Sector Selector</ButtonLink>}
+            rail={
+                <>
+                    <SelectionBox />
+                    <RailBox title="Next Steps">
+                        <p className="mb-3 text-xs text-ink-300">Take action to explore opportunities, compare sectors, and connect with our expert advisors.</p>
+                        <div className="space-y-2">
+                            <ButtonLink href={`/aiim/opportunities?sector=${sector.slug}${province ? `&province=${province.slug}` : ''}`} size="sm" className="w-full" trailingIcon="arrow-right">View Opportunities</ButtonLink>
+                            <ButtonLink href={`/aiim/sectors${province ? `?province=${province.slug}` : ''}`} size="sm" variant="outline-light" className="w-full">Compare Sector</ButtonLink>
+                            <ListToggle list="saved" type="sector" itemKey={sector.slug} saved={saved} dark />
+                        </div>
+                    </RailBox>
+                    <AdvisoryBox />
+                </>
+            }
+        >
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                <SyntheticNotice />
+                <div className="rounded-[8px] border border-parchment-400 bg-white p-3 text-xs"><p className="flex items-center gap-1.5 text-ink-500"><CalendarDays className="size-3.5" />Last Updated</p><p className="mt-1 font-semibold">{p.evidence.updated}</p></div>
+                <div className="rounded-[8px] border border-parchment-400 bg-white p-3 text-xs"><p className="flex items-center gap-1.5 text-ink-500"><ShieldCheck className="size-3.5" />Confidence Rating</p><p className="mt-1 text-lg font-bold">{p.evidence.confidence}%</p><p className="text-verified-700">{grade.label} Confidence · Grade {grade.grade}</p></div>
+                <div className="rounded-[8px] border border-parchment-400 bg-white p-3 text-xs"><p className="flex items-center gap-1.5 text-ink-500"><UserCheck className="size-3.5" />Verification Status</p><p className="mt-1 font-semibold">{p.evidence.verification}</p><p className="text-ink-500">AI + Human Validation</p></div>
+                <div className="rounded-[8px] border border-parchment-400 bg-white p-3 text-xs"><p className="flex items-center gap-1.5 text-ink-500"><FileText className="size-3.5" />Report Access</p><p className="mt-1 font-semibold">Free Discovery</p><p className="text-ink-500">Standard Access</p></div>
+            </div>
 
-            <PageHeader
-                eyebrow="Cross-country sector comparison"
-                title={sector.name}
-                lead="Sector Intelligence Profile."
-                intro="Demand, constraints, players and structured opportunities compared across markets using consistent metrics. Every field carries source, date and confidence."
-                crumbs={[
-                    { label: 'Home', href: '/' },
-                    { label: 'AIIM', href: '/aiim' },
-                    { label: sector.name },
-                ]}
-                aside={{
-                    title: 'Sector Data Standard',
-                    body: 'At least 30 sectors per country and at least 80 fields per sector, each carrying provenance.',
-                    items: ['Demand and market structure', 'Constraints and bottlenecks', 'Players and relationships', 'Opportunity pipeline and next action'],
-                    icon: sector.icon,
-                    link: { label: 'How we source and verify', href: '/aiim/methodology' },
-                }}
-            />
-
-            <Section tone="parchment">
-                <SectionHeading title="Country Coverage" lead={`${sector.name} across activated and scheduled markets.`} />
-
-                <ul className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {countries.map((country) => (
-                        <Card as="li" key={country.slug} hover className="p-5">
-                            <Link href={`/aiim/country/${country.slug}`} className="block">
-                                <div className="flex items-start justify-between gap-3">
-                                    <div className="min-w-0">
-                                        <h3 className="text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink-900">
-                                            {country.name}
-                                        </h3>
-                                        <p className="mt-0.5 text-[0.75rem] text-ink-500">{country.region}</p>
-                                    </div>
-                                    <ConfidenceChip grade={country.grade} />
-                                </div>
-                                <p className="mt-3 border-t border-parchment-300 pt-3 text-[0.8125rem] text-ink-600">
-                                    {country.status}
-                                </p>
-                            </Link>
-                        </Card>
+            <div className="mt-5 grid gap-5 lg:grid-cols-12">
+                <SectionCard number={1} title="Sector Overview" className="lg:col-span-4">
+                    <ul className="space-y-2 text-xs text-ink-600">{p.overview.map((o) => <li key={o.label}><strong className="text-ink-900">{o.label}:</strong> {o.text}</li>)}</ul>
+                </SectionCard>
+                <SectionCard dark number={2} title="Sector Performance Overview" className="lg:col-span-4">
+                    <BarList dark data={p.performance.map(([label, value]) => ({ label, value }))} />
+                </SectionCard>
+                <div className="grid grid-cols-2 gap-3 lg:col-span-4">
+                    {[['Active Projects', p.kpis.projects, 'High Activity'], ['Verified Investors', p.kpis.investors, 'Active Mandates'], ['Funding Institutions', p.kpis.funders, 'Active Lenders'], ['Priority Use Cases', p.kpis.useCases, 'High Demand']].map(([l, v, c]) => (
+                        <div key={l as string} className="rounded-[8px] border border-parchment-400 bg-white p-3 text-xs"><p className="text-ink-500">{l}</p><p className="text-xl font-bold">{v}</p><p className="text-verified-700">{c}</p></div>
                     ))}
-                </ul>
-            </Section>
+                    <div className="col-span-2 rounded-[8px] border border-gold-400 bg-gold-50 p-3 text-xs"><p className="text-ink-600">Sector Opportunity Score</p><p className="text-2xl font-bold">{sector.score}<span className="text-xs"> /100</span></p><p className="font-semibold text-verified-700">{sector.label}</p></div>
+                </div>
+            </div>
 
-            <Section tone="white">
-                <SectionHeading title="Required Record Metadata" lead="Present on every published sector record." />
-                <ul className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-                    {metadata.map((field) => (
-                        <Card as="li" key={field} className="px-3.5 py-2.5 text-[0.8125rem] text-ink-700">
-                            {field}
-                        </Card>
+            <div className="mt-5 grid gap-5 lg:grid-cols-4">
+                <SectionCard number={3} title="Priority Subsectors">
+                    <ul className="space-y-1.5 text-xs">{p.subsectors.map(([s, l]) => <li key={s} className="flex justify-between"><span>{s}</span><Chip tone={levelTone(l)}>{l}</Chip></li>)}</ul>
+                </SectionCard>
+                <SectionCard number={4} title="Top Opportunities (Preview)">
+                    <ul className="space-y-1.5 text-xs">
+                        {top.slice(0, 6).map(([n, t, l]) => <li key={n} className="flex items-center justify-between gap-2"><span className="flex-1">{n}</span><Chip tone="dark">{t}</Chip><Chip tone={levelTone(l)}>{l.replace(' Opportunity', '')}</Chip></li>)}
+                    </ul>
+                    {opportunities[0] && <div className="mt-2 flex gap-2"><CompareButton type="opportunity" itemKey={opportunities[0].slug} label="Compare top item" /></div>}
+                </SectionCard>
+                <SectionCard number={5} title="Key Risks & Constraints">
+                    <ul className="space-y-1.5 text-xs">{p.risks.map(([r, l]) => <li key={r} className="flex justify-between gap-2"><span>{r}</span><Chip tone={riskTone(l)}>{l}</Chip></li>)}</ul>
+                    <div className="mt-2 flex items-center justify-between"><span className="text-xs">Risk Level <strong>{p.riskLevel}</strong></span><Gauge dark={false} value={p.riskLevel === 'High' ? 75 : 50} invert /></div>
+                </SectionCard>
+                <SectionCard number={6} title="Evidence Snapshot">
+                    <dl className="space-y-1 text-xs">
+                        {[['Source Coverage', p.evidence.coverage], ['Confidence', `${p.evidence.confidence}%`], ['Verification', p.evidence.verification], ['Last Refreshed', p.evidence.refreshed], ['Human Review', p.evidence.humanReview], ['Next Review', p.evidence.nextReview]].map(([k, v]) => <div key={k} className="flex justify-between"><dt className="text-ink-500">{k}</dt><dd className="font-semibold">{v}</dd></div>)}
+                    </dl>
+                    <ButtonLink href="/aiim/methodology" size="sm" variant="outline" className="mt-3 w-full">View Sources & Methodology</ButtonLink>
+                </SectionCard>
+            </div>
+
+            <section className="mt-5 rounded-[10px] border border-gold-700/40 bg-ink-900 p-4 text-parchment-100">
+                <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-gold-400"><Lock className="size-4" />Premium Intelligence (Preview)</h2>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                    {[['Detailed Sector Report', 'Comprehensive market sizing, forecasts, deep-dive analysis, and competitive landscape.'], ['Investor & Partner List', 'Curated list of active investors, strategic partners, and ecosystem enablers.'], ['Risk & Opportunity Report', 'Detailed risk assessment, mitigation strategies, and opportunity mapping.']].map(([t, d]) => (
+                        <div key={t} className="rounded-[8px] border border-ink-700 p-3 text-xs"><p className="font-semibold">{t}</p><p className="mt-1 text-ink-300">{d}</p><div className="mt-2"><LockedTag /></div></div>
                     ))}
-                </ul>
-            </Section>
-
-            <CtaBand
-                title={`Request a ${sector.name} opportunity assessment`}
-                body="One sector compared across up to five countries with demand, constraints, players and a ranked opportunity set."
-                primary={{ label: 'View Reports Store', href: '/aiim/store' }}
-                secondary={{ label: 'Talk to an Advisor', href: '/contact' }}
-            />
-        </>
+                    <div className="rounded-[8px] border border-ink-700 p-3 text-xs"><p className="font-semibold">Custom Intelligence</p><p className="mt-1 text-ink-300">Tailored research, data extracts, and bespoke advisory support.</p><Link href="/aiim/custom-intelligence" className="mt-2 inline-block text-gold-400 underline">Request Custom Intelligence</Link></div>
+                    <div className="rounded-[8px] border border-gold-500 bg-gold-500/10 p-3 text-xs"><p className="font-semibold text-gold-300">Unlock Premium Intelligence</p><p className="mt-1 text-ink-300">Upgrade your access to view full reports, datasets, and expert insights{where}.</p><ButtonLink href="/aiim/store?category=Sectors" size="sm" className="mt-2 w-full">Upgrade to Premium</ButtonLink></div>
+                </div>
+            </section>
+        </AiimPage>
     );
 }

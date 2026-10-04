@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import Header, { type HeaderVariant } from '@/Components/Header';
 import Footer from '@/Components/Footer';
+import AskQuestion from '@/Components/AskQuestion';
+import Flash from '@/Components/Flash';
 
 export default function PublicLayout({
     children,
@@ -25,6 +27,8 @@ export default function PublicLayout({
             </main>
 
             <Footer />
+            <AskQuestion />
+            <Flash />
         </div>
     );
 }

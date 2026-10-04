@@ -10,7 +10,7 @@ import PublicLayout from '@/Layouts/PublicLayout';
 const appName = 'The Business Clinic.Africa';
 
 type PageComponent = ComponentType<Record<string, unknown>> & {
-    layout?: (page: ReactElement) => ReactNode;
+    layout?: ((page: ReactElement) => ReactNode) | null;
 };
 
 type PageModule = { default: PageComponent };
@@ -23,8 +23,11 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.tsx'),
         )) as PageModule;
 
-        page.default.layout =
-            page.default.layout ?? ((child: ReactElement) => <PublicLayout>{child}</PublicLayout>);
+        // Pages render inside PublicLayout unless they declare their own layout.
+        // `Page.layout = null` opts out entirely (auth screens, consoles that wrap themselves).
+        if (page.default.layout === undefined) {
+            page.default.layout = (child: ReactElement) => <PublicLayout>{child}</PublicLayout>;
+        }
 
         return page;
     }) as never,

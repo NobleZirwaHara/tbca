@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Support\Content\Navigation;
+use App\Support\Platform\Basket;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -44,8 +45,17 @@ class HandleInertiaRequests extends Middleware
 
             'trustBadges' => config('tbca.trust_badges'),
 
+            'auth' => fn () => [
+                'user' => $request->user()?->only(['id', 'name', 'email', 'client_id', 'role', 'company', 'phone', 'country', 'client_type']),
+            ],
+
+            'basketCount' => fn () => app(Basket::class)->count(),
+
             'flash' => fn () => [
                 'message' => $request->session()->get('message'),
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+                'reference' => $request->session()->get('reference'),
             ],
 
             'url' => [

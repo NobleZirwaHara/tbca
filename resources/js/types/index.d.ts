@@ -62,6 +62,112 @@ export interface TrustBadge {
     icon: string;
 }
 
+export interface AuthUser {
+    id: number;
+    name: string;
+    email: string;
+    client_id: string | null;
+    role: 'client' | 'admin' | 'partner';
+    company: string | null;
+    phone: string | null;
+    country: string;
+    client_type: string | null;
+}
+
+/* --- Shared commerce records (see app/Support/Platform) ------------------ */
+
+export interface OrderItem {
+    id: number;
+    item_type: string;
+    item_code: string;
+    name: string;
+    variant: string | null;
+    quantity: number;
+    unit_zar: number;
+    line_zar: number;
+    meta: Record<string, unknown> | null;
+}
+
+export interface Payment {
+    id: number;
+    reference: string;
+    method: 'card' | 'eft' | 'wallet';
+    status: 'pending' | 'succeeded' | 'failed';
+    amount_zar: number;
+    failure_reason: string | null;
+    meta: Record<string, unknown> | null;
+    created_at: string;
+}
+
+export interface Order {
+    id: number;
+    reference: string;
+    section: string;
+    status: 'awaiting_payment' | 'paid' | 'failed' | 'cancelled' | 'refunded';
+    subtotal_zar: number;
+    vat_zar: number;
+    fees_zar: number;
+    total_zar: number;
+    billing: Record<string, string | null> | null;
+    meta: Record<string, unknown> | null;
+    paid_at: string | null;
+    created_at: string;
+    items?: OrderItem[];
+    payments?: Payment[];
+}
+
+export interface Totals {
+    subtotal: number;
+    vat: number;
+    platform: number;
+    bank: number;
+    fees: number;
+    total: number;
+}
+
+export interface BasketItem {
+    id: number;
+    item_type: string;
+    item_code: string;
+    name: string;
+    variant: string | null;
+    quantity: number;
+    unit_zar: number;
+    commercial_act: string;
+    meta: Record<string, unknown> | null;
+}
+
+export interface SprintPackage {
+    key: string;
+    name: string;
+    zar: number;
+    features?: string[];
+    popular?: boolean;
+    delivery?: string;
+}
+
+export interface SprintRecord {
+    id: number;
+    code: string;
+    slug: string;
+    title: string;
+    type: string;
+    category: string | null;
+    subcategory: string | null;
+    audience: string | null;
+    summary: string | null;
+    description: string | null;
+    price_zar: number | null;
+    delivery: string | null;
+    commercial_act: 'purchase' | 'quote' | 'subscription' | 'retainer' | 'free';
+    packages: SprintPackage[] | null;
+    attributes: Record<string, unknown> | null;
+    featured: boolean;
+    popular: boolean;
+    is_new: boolean;
+    rating: number | null;
+}
+
 export interface SharedProps {
     brand: Brand;
     contact: Contact;
@@ -73,7 +179,9 @@ export interface SharedProps {
     };
     context: PlatformContext;
     trustBadges: TrustBadge[];
-    flash: { message: string | null };
+    auth: { user: AuthUser | null };
+    basketCount: number;
+    flash: { message: string | null; success: string | null; error: string | null; reference: string | null };
     url: { path: string };
     [key: string]: unknown;
 }
