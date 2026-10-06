@@ -68,13 +68,14 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                     {/* Language and currency sit immediately after the logo. */}
                     <ContextSwitchers className="hidden md:flex" />
 
-                    <div className="ms-auto flex items-center gap-2 xl:gap-3">
+                    <div className="flex min-w-0 flex-1 items-center justify-end gap-2 xl:gap-3">
 
+                        {/* The search box grows to fill the space between the selectors and the actions. */}
                         <form
                             action="/search"
                             method="get"
                             role="search"
-                            className="relative hidden lg:block"
+                            className="relative hidden max-w-[40rem] min-w-[10rem] flex-1 lg:block"
                             onSubmit={(e) => {
                                 // Navigate within the app instead of reloading the whole page.
                                 e.preventDefault();
@@ -92,7 +93,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                                     type="search"
                                     name="q"
                                     placeholder="Search everything..."
-                                    className="h-9 w-36 rounded-[4px] border border-ink-700 bg-ink-900 pe-3 ps-9 text-[0.8125rem] text-parchment-100 placeholder:text-ink-400 focus:border-gold-500 focus:outline-none xl:w-40 2xl:w-60"
+                                    className="h-9 w-full rounded-[4px] border border-ink-700 bg-ink-900 pe-3 ps-9 text-[0.8125rem] text-parchment-100 placeholder:text-ink-400 focus:border-gold-500 focus:outline-none xl:h-10"
                                 />
                             </label>
                         </form>
