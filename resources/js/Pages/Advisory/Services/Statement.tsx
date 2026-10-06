@@ -67,7 +67,7 @@ export default function Statement({ vehicles, totals, orders }: Props) {
                     </div>
                     <div className="rounded-[8px] bg-controlled-50 p-4 text-sm">
                         <p className="font-semibold">Need help understanding your statement?</p>
-                        <a href="https://wa.me/27120010567" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-controlled-700"><MessageCircle className="size-3.5" />WhatsApp / Talk to us</a>
+                        <a href="https://wa.me/27608011365" className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-controlled-700"><MessageCircle className="size-3.5" />WhatsApp / Talk to us</a>
                     </div>
                 </aside>
             </div>

@@ -54,7 +54,7 @@ class Seed
 
     public static function countries(): void
     {
-        foreach (CountryRegister::COUNTRIES as [$iso2, $iso3, $name, $region, $currency, $income, $rcs]) {
+        foreach (CountryRegister::countries() as [$iso2, $iso3, $name, $region, $currency, $income, $rcs]) {
             $za = $iso2 === 'ZA';
             $h = crc32($iso2);
             $m = self::METRICS[$iso2] ?? [];
@@ -349,7 +349,7 @@ class Seed
             ['ET', 'DJ', 'Horn of Africa', 'Regional', 'Delivery', 44, 80, 'Low', 70, 66, 360],
             ['EG', 'SD', 'Nile Corridor', 'Regional', 'Process', 58, 104, 'High', 65, 70, 300],
         ];
-        $names = collect(CountryRegister::COUNTRIES)->mapWithKeys(fn ($c) => [$c[0] => $c[2]]);
+        $names = collect(CountryRegister::countries())->mapWithKeys(fn ($c) => [$c[0] => $c[2]]);
         foreach ($african as [$from, $to, $group, $pathType, $type, $inv, $rev, $risk, $rcs, $friction, $potential]) {
             Corridor::updateOrCreate(['code' => "COR-{$from}-{$to}-001"], [
                 'from_iso' => $from, 'from_name' => $names[$from], 'to_iso' => $to, 'to_name' => $names[$to], 'to_endpoint_state' => null,

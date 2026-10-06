@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { BadgeCheck, CheckCircle2, Clock, FileText, Heart, Repeat, ShieldCheck, ShoppingBag, Store, Users, Zap } from 'lucide-react';
+import CoverArt from '@/Components/Art/CoverArt';
 import ShopIcon from '@/Components/Shop/ShopIcon';
 import { ActTag } from '@/Components/Shop/Bits';
 import { cn } from '@/lib/cn';
@@ -79,8 +80,11 @@ export function attributes(p: ProductDetail): { icon: ReactNode; label: string; 
 export function ProductHead({ product, saved, tag, title, tagline, children, tone = 'gold' }: { product: ProductDetail; saved: boolean; tag?: string; title?: string; tagline?: string; children?: ReactNode; tone?: 'gold' | 'green' | 'red' }) {
     return (
         <div className="grid gap-6 md:grid-cols-[auto_1fr]">
-            <div className="flex flex-col items-center gap-3">
-                <ShopIcon name={tone === 'red' ? 'shopping-bag' : product.icon} size="xl" tone={tone} />
+            <div className="flex flex-col items-center gap-3 md:w-56">
+                <div className="relative w-full overflow-hidden rounded-[8px] border border-parchment-400">
+                    <CoverArt seed={product.slug} category={product.aisle} label={product.name} className="aspect-[4/3]" />
+                    <span className="absolute bottom-2 left-2"><ShopIcon name={tone === 'red' ? 'shopping-bag' : product.icon} size="sm" tone={tone} /></span>
+                </div>
                 <SaveToggle product={product} saved={saved} className="w-full" />
             </div>
             <div className="min-w-0">

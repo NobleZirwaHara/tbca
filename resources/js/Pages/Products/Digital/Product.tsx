@@ -7,6 +7,7 @@ import {
     Calendar,
     CheckSquare,
     Clock,
+    Coins,
     FileText,
     Globe,
     Headphones,
@@ -62,7 +63,9 @@ export default function Product({
     const facts: [typeof KeyRound, string, string][] = [
         [KeyRound, 'Licence Class', Object.entries(p.prices).filter(([, v]) => v).map(([k]) => k).join(', ')],
         [FileText, 'Format', p.formats.join(', ')],
-        [Languages, 'Language', p.languages.join(', ')],
+        [Languages, 'Language', p.languageOptions.filter((l) => l.state === 'approved').map((l) => l.label).join(', ')],
+        [Globe, 'Jurisdiction', p.jurisdictions.join(', ')],
+        [Coins, 'Currencies', p.currencies.join(', ')],
         [RefreshCw, 'Version', v?.display ?? '—'],
         [Calendar, 'Verified as at', p.verifiedAt ?? '—'],
         [Wrench, 'Maintenance Included', p.maintenance],

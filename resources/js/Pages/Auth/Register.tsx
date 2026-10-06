@@ -311,7 +311,7 @@ function StepDocuments({ data, options }: StepProps) {
     const existing = (Array.isArray(data.documents) ? data.documents : []) as Doc[];
     const { form, send, err } = useStepForm(4, {
         documents: [] as File[], document_types: [] as string[], keep_documents: existing.map((x) => x.path),
-        contact_channels: a(data.contact_channels).length ? a(data.contact_channels) : ['Email'], comm_language: s(data.comm_language, 'English and Afrikaans'),
+        contact_channels: a(data.contact_channels).length ? a(data.contact_channels) : ['Email'], comm_language: s(data.comm_language, 'English'),
         comm_purposes: a(data.comm_purposes).length ? a(data.comm_purposes) : ['Registration & service updates', 'Document requests', 'Appointment reminders'],
     });
     const d = form.data;
@@ -357,7 +357,7 @@ function StepDocuments({ data, options }: StepProps) {
             <Section title="Communication Preferences">
                 <div className="grid gap-4 md:grid-cols-3">
                     <div><p className="mb-2 text-[0.8125rem] font-semibold">Preferred Contact Channels <span className="text-risk-500">*</span></p><ChipGroup label="Preferred contact channels" options={['Email', 'Telephone', 'WhatsApp', 'Client Portal Notification']} value={d.contact_channels} onChange={(v) => form.setData('contact_channels', v)} />{err.contact_channels && <p className="mt-1 text-xs text-risk-500">{err.contact_channels}</p>}</div>
-                    <Field label="Preferred Language" required>{(id) => <Select id={id} options={['English', 'Afrikaans', 'English and Afrikaans']} value={d.comm_language} onChange={(e) => form.setData('comm_language', e.target.value)} />}</Field>
+                    <Field label="Preferred Language" required>{(id) => <Select id={id} options={['English', 'Afrikaans', 'Portuguese', 'Chinese (Mandarin)', 'French', 'Swahili', 'Arabic']} value={d.comm_language} onChange={(e) => form.setData('comm_language', e.target.value)} />}</Field>
                     <div><p className="mb-2 text-[0.8125rem] font-semibold">Communication Purpose <span className="font-normal text-ink-500">(operational communications are required)</span></p><ChipGroup label="Communication purpose" options={['Registration & service updates', 'Project or advisory updates', 'Document requests', 'New products & insights', 'Appointment reminders', 'Due Diligence case updates']} value={d.comm_purposes} onChange={(v) => form.setData('comm_purposes', v)} /></div>
                 </div>
             </Section>

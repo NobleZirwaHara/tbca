@@ -34,8 +34,8 @@ export default function CorridorSearch({ filters, results, options, saved }: Pro
     return (
         <AiimPage
             title="Trade Corridor Search"
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, { label: 'Trade Corridor Search' }]}
-            subtitle="Explore and compare trade corridors linking South Africa to key regional and global markets."
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: 'Trade Corridor Search' }]}
+            subtitle="Explore and compare trade corridors connecting African markets to key regional and global markets."
             description="Filter, compare and explore corridor performance, infrastructure, agreements and opportunities."
             actions={<ButtonLink href="/aiim/sectors" size="sm" variant="outline">Back to Sector</ButtonLink>}
             rail={<SearchRail compareLabel="Compare Corridors" />}

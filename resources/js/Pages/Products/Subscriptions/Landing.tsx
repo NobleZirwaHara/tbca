@@ -26,10 +26,11 @@ import {
 } from 'lucide-react';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { ProductsHero } from '@/Components/Products/Shared';
-import { ClassChip, rand } from '@/Components/Products/Subscriptions/ui';
+import { ClassChip } from '@/Components/Products/Subscriptions/ui';
 import type { SubPlan } from '@/Components/Products/Subscriptions/types';
 import { cn } from '@/lib/cn';
 
+import { usePrice } from '@/lib/money';
 const included = [
     { icon: LayoutDashboard, title: 'Access to Dashboards', body: 'Real-time insights and KPIs' },
     { icon: UserCheck, title: 'Human Review', body: 'Expert-validated outputs' },
@@ -42,9 +43,9 @@ const included = [
 ];
 
 const heroFacts = [
-    { icon: Globe2, title: 'South Africa Active Market', body: 'Phase 1 Focus' },
-    { icon: ScrollText, title: 'English & Afrikaans', body: 'Supported Languages' },
-    { icon: Landmark, title: 'ZAR (Source) & USD', body: 'Supported Currencies' },
+    { icon: Globe2, title: 'Africa (Active)', body: 'Pan-African Market' },
+    { icon: ScrollText, title: '7 Languages', body: 'Supported Languages' },
+    { icon: Landmark, title: '5 Currencies', body: 'ZAR, USD, XOF, EUR and RMB' },
     { icon: UserCheck, title: 'Human-Reviewed Outputs', body: 'Every Subscription' },
     { icon: ShieldCheck, title: 'Secure + POPIA Ready', body: 'Bank-Grade Protection' },
 ];
@@ -282,6 +283,7 @@ export default function Landing({ plans }: { plans: SubPlan[] }) {
 }
 
 function PlanCard({ plan, interval }: { plan: SubPlan; interval: 'monthly' | 'annual' }) {
+    const rand = usePrice();
     const custom = plan.monthly_zar === null;
     const price = interval === 'annual' && plan.annual_zar ? plan.annual_zar : plan.monthly_zar;
     const usd = plan.usd_monthly ? (interval === 'annual' ? Math.round((plan.usd_monthly * 12 * (100 - plan.annual_discount_pct)) / 100) : plan.usd_monthly) : null;

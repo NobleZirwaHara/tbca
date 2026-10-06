@@ -47,7 +47,7 @@ export default function BriefCheckout({ brief, lines, order, billing }: Props) {
                         <div className="space-y-5 lg:col-span-8">
                             <div className="grid gap-5 md:grid-cols-2">
                                 <Card title="A. Accepted Methodology Brief" action={<StatusPill status="Accepted Scope" tone="good" />}>
-                                    <InfoRows dense rows={[['Brief Title', brief.title], ['Outcome', s.objective], ['Deliverables', (s.deliverables ?? []).join(', ')], ['Exclusions', (s.exclusions ?? []).slice(0, 2).join('. ')], ['Delivery / QA Class', `${s.delivery_class} · ${s.qa_class}`], ['Price Version', s.price_version]]} />
+                                    <InfoRows dense rows={[['Brief Title', brief.title], ...(s.package ? [['Selected Package', `${s.package.service_title} – ${s.package.name} (${zarCode(s.package.price_zar)}${s.package.delivery ? ` · ${s.package.delivery}` : ''})`] as [string, string]] : []), ['Outcome', s.objective], ['Deliverables', (s.deliverables ?? []).join(', ')], ['Exclusions', (s.exclusions ?? []).slice(0, 2).join('. ')], ['Delivery / QA Class', `${s.delivery_class} · ${s.qa_class}`], ['Price Version', s.price_version]]} />
                                 </Card>
                                 <Card title="B. Authority & Disclosure Status">
                                     <ul className="space-y-2 text-sm">

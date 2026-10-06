@@ -67,7 +67,7 @@ export default function Enterprise() {
                     </div>
                 </aside>
             </div>
-            <TrustBand items={[['We recommend by fit, not margin', 'Your outcomes come first.'], ['Human review available', 'Real experts, real judgement.'], ['Professional boundaries', 'We act with independence and integrity.'], ['Secure & private', 'Your data is protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.'], ['REL-01', 'Relationship mode across all vehicles']]} />
+            <TrustBand items={[['We recommend by fit, not margin', 'Your outcomes come first.'], ['Human review available', 'Real experts, real judgement.'], ['Professional boundaries', 'We act with independence and integrity.'], ['Secure & private', 'Your data is protected.'], ['Africa (Active)', 'ZAR source pricing.'], ['REL-01', 'Relationship mode across all vehicles']]} />
             <Modal open={open} onClose={() => setOpen(false)} title="Book an Enterprise intro call" footer={<Button type="submit" form="ent-book" disabled={form.processing}>Confirm booking</Button>}>
                 <form id="ent-book" onSubmit={submit} className="grid gap-3 sm:grid-cols-2">
                     <Field label="Date" required error={form.errors.date}>{(id) => <Input id={id} type="date" value={form.data.date} onChange={(e) => form.setData('date', e.target.value)} />}</Field>

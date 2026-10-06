@@ -1,3 +1,4 @@
+import CoverArt from '@/Components/Art/CoverArt';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, Bookmark, Check, ChevronRight, CircleCheck, Home, MessageSquare, X } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
@@ -323,10 +324,11 @@ export function RelatedSprints({
                         key={r.id}
                         href={sprintHref(r)}
                         className={cn(
-                            'group flex flex-col rounded-[8px] border p-4 transition-colors',
+                            'group flex flex-col overflow-hidden rounded-[8px] border p-4 transition-colors',
                             tone === 'dark' ? 'border-ink-700 bg-ink-900 hover:border-gold-500' : 'border-parchment-400 bg-white hover:border-gold-400',
                         )}
                     >
+                        <CoverArt seed={r.slug} category={r.category} label={r.title} className="-mx-4 -mt-4 mb-3 aspect-[16/7] w-[calc(100%+2rem)] max-w-none" />
                         <span className="text-[0.6875rem] font-semibold tracking-wide text-gold-600 uppercase">{r.type.replace(/-/g, ' ')}</span>
                         <span className={cn('mt-1 text-sm leading-snug font-semibold', tone === 'dark' ? 'text-parchment-100' : 'text-ink-900')}>{r.title}</span>
                         {r.summary && <span className={cn('mt-1 line-clamp-2 text-xs', tone === 'dark' ? 'text-ink-300' : 'text-ink-500')}>{r.summary}</span>}

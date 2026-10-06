@@ -3,7 +3,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Repeat, Search, SlidersHorizontal, Star } from 'lucide-react';
 import { Input, Select } from '@/Components/ui/Form';
 import { Button } from '@/Components/ui/Button';
-import { MkHeader } from '@/Components/Marketplace/ui';
+import { MkHeader, artCategory } from '@/Components/Marketplace/ui';
+import CoverArt from '@/Components/Art/CoverArt';
 import { usePrice } from '@/lib/money';
 import { cn } from '@/lib/cn';
 import type { MkListing } from '@/types/marketplace';
@@ -86,8 +87,8 @@ export default function Catalogue({ listings, filters, categories }: Props) {
                                 {listings.map((l) => (
                                     <li key={l.slug}>
                                         <Link href={`/marketplace/services/${l.slug}`} className="flex h-full flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white transition-colors hover:border-gold-400">
-                                            <div className="relative h-28 bg-gradient-to-br from-ink-800 via-ink-900 to-ink-950">
-                                                <div className="absolute inset-0 motif-grid opacity-30" aria-hidden="true" />
+                                            <div className="relative aspect-[16/9] bg-ink-950">
+                                                <CoverArt seed={l.slug} category={artCategory(l.category)} label={l.title} src={l.details.image ?? null} className="absolute inset-0 h-full w-full" />
                                                 {l.badge && <span className="absolute top-3 left-3 rounded-[3px] bg-gold-500 px-2 py-0.5 text-[0.625rem] font-bold tracking-wide text-ink-900 uppercase">{l.badge}</span>}
                                                 {l.kind === 'recurring' && <Repeat className="absolute right-3 bottom-3 size-5 text-gold-400" aria-label="Recurring service" />}
                                             </div>
@@ -97,7 +98,7 @@ export default function Catalogue({ listings, filters, categories }: Props) {
                                                 <span className="mt-1 line-clamp-3 flex-1 text-xs text-ink-500">{l.summary}</span>
                                                 <span className="mt-2 text-xs text-ink-500">{l.provider?.name}</span>
                                                 <span className="mt-3 flex items-center justify-between">
-                                                    <span className="font-bold text-ink-900">{price(l.priceZar ?? 0)}<span className="text-xs font-normal text-ink-500">{l.period ? ' / month' : ''}</span></span>
+                                                    <span className="font-bold text-ink-900"><span className="text-xs font-normal text-ink-500">From </span>{price(l.packages[0]?.priceZar ?? l.priceZar ?? 0)}<span className="text-xs font-normal text-ink-500">{l.period ? ' / month' : ''}</span></span>
                                                     <span className="flex items-center gap-1 text-xs text-ink-600"><Star className="size-3.5 fill-gold-500 text-gold-500" aria-hidden="true" /> {l.rating ?? '—'} ({l.reviewsCount})</span>
                                                 </span>
                                             </div>

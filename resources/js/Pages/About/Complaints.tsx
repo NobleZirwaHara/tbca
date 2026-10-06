@@ -103,7 +103,7 @@ export default function Complaints({ options }: { options: { categories: string[
                         <div className="rounded-[8px] border border-controlled-500/25 bg-controlled-50/50 p-4">
                             <h2 className="flex items-center gap-2 font-semibold text-ink-900"><Headphones className="size-5" aria-hidden="true" /> Prefer to Talk?</h2>
                             <p className="mt-1 text-xs text-ink-600">You can contact our Client Care team directly.</p>
-                            <p className="mt-2 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4" aria-hidden="true" /> +27 12 001 0557</p>
+                            <p className="mt-2 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4" aria-hidden="true" /> +27 60 801 1365</p>
                             <p className="mt-1 flex items-center gap-2 text-[0.8125rem]"><Mail className="size-4" aria-hidden="true" /> care@thebusinessclinic.africa</p>
                             <p className="mt-1 flex items-center gap-2 text-[0.8125rem]"><Clock className="size-4" aria-hidden="true" /> Mon – Fri: 08:00 – 17:00 (SAST)</p>
                             <ButtonLink href="/about/contact" variant="outline" size="sm" className="mt-3 w-full" trailingIcon="arrow-right">Contact Client Care</ButtonLink>

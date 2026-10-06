@@ -3,6 +3,7 @@ import {
     ClipboardList, Compass, Cpu, Factory, FileText, Flag, Gauge, Globe, GraduationCap, Handshake, HeartPulse, Landmark, Layers, LifeBuoy, Lightbulb,
     ListChecks, Lock, Map, Megaphone, Monitor, Move, Network, Package, Palmtree, PenTool, Phone, Plug, Plus, Receipt, RefreshCw, Rocket, Scale, Search,
     Settings, Shield, ShieldCheck, ShoppingBag, Store, Target, TrainFront, TrendingUp, Truck, User, UserCheck, Users, UsersRound, Wallet, Wheat, Workflow, Zap,
+    ShoppingCart, Pickaxe, Luggage, HandHeart, Stethoscope, Clapperboard, Banknote,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -16,6 +17,7 @@ const registry: Record<string, LucideIcon> = {
     scale: Scale, search: Search, settings: Settings, shield: Shield, 'shield-check': ShieldCheck, 'shopping-bag': ShoppingBag, store: Store, target: Target,
     'train-front': TrainFront, 'trending-up': TrendingUp, truck: Truck, user: User, 'user-check': UserCheck, users: Users, 'users-round': UsersRound,
     wallet: Wallet, wheat: Wheat, workflow: Workflow, zap: Zap,
+    'shopping-cart': ShoppingCart, pickaxe: Pickaxe, luggage: Luggage, 'hand-heart': HandHeart, stethoscope: Stethoscope, clapperboard: Clapperboard, banknote: Banknote,
 };
 
 export default function AdvIcon({ name, className }: { name?: string | null; className?: string }) {

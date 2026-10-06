@@ -2,9 +2,10 @@ import { Head, Link } from '@inertiajs/react';
 import { ArrowRight, Bot, MapPin, Rocket, ShieldCheck } from 'lucide-react';
 import { ButtonLink } from '@/Components/ui/Button';
 import AdvIcon from '@/Components/Advisory/AdvIcon';
+import CoverArt from '@/Components/Art/CoverArt';
 import { DarkHero, TrustBand } from '@/Components/Advisory/ui';
 
-interface Tower { code: string; slug: string; name: string; icon: string; blurb: string }
+interface Tower { code: string; slug: string; name: string; icon: string; blurb: string; services: number }
 
 const STEPS: [string, string][] = [
     ['Discover', 'Explore our solution towers and understand your goals, challenges and technology landscape.'],
@@ -23,9 +24,9 @@ export default function TechIndex({ towers }: { towers: Tower[] }) {
             <DarkHero
                 title="Technology Solutions."
                 tagline="Automate. Integrate. Scale."
-                intro="Enterprise-ready technology solutions, automations and integrations designed to streamline operations, improve intelligence and accelerate growth."
-                chips={[{ label: 'AI & Automation', sub: 'Expertise' }, { label: 'Zoho One', sub: 'Specialists' }, { label: 'RPA & Workflow', sub: 'Automation' }, { label: 'Secure & Compliant', sub: 'by Design' }, { label: 'Local Support', sub: 'South Africa' }]}
-                box={{ title: 'Phase 1 Boundary', items: ['South Africa Only', 'English & Afrikaans', 'ZAR (Source) & USD by Product', 'Human-Reviewed with Approval Gates', 'Secure & POPIA Compliant'] }}
+                intro="Enterprise-ready technology solutions, automations and integrations for organisations across Africa — delivered in 54 countries, 7 languages and 5 currencies."
+                chips={[{ label: 'AI & Automation', sub: 'Expertise' }, { label: 'Zoho One', sub: 'Specialists' }, { label: 'RPA & Workflow', sub: 'Automation' }, { label: 'Secure & Compliant', sub: 'by Design' }, { label: 'Africa-wide Support', sub: '54 Countries' }]}
+                box={{ title: 'Platform Boundary', items: ['Africa (Active) — 54 Countries, 5 Regions', '7 Languages: English, Afrikaans, Portuguese, Mandarin, French, Swahili, Arabic', '5 Currencies: ZAR (source), USD, XOF, EUR, CNY', 'Human-Reviewed with Approval Gates', 'Secure & POPIA Compliant'] }}
             >
                 <ButtonLink href="/technology-solutions/context" trailingIcon="arrow-right">Request Setup</ButtonLink>
                 <ButtonLink href="/contact" variant="outline-light" icon="calendar-days">Book Discovery Call</ButtonLink>
@@ -34,13 +35,16 @@ export default function TechIndex({ towers }: { towers: Tower[] }) {
                 <h2 className="font-serif text-2xl font-semibold text-ink-900">Our Technology Solution Towers</h2>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
                     {towers.map((t) => (
-                        <article key={t.code} className="flex flex-col rounded-[8px] border border-parchment-400 bg-white p-4 hover:border-gold-400">
-                            <span className="inline-flex size-11 items-center justify-center rounded bg-ink-900 text-gold-400"><AdvIcon name={t.icon} /></span>
-                            <p className="mt-2 text-xs font-bold text-gold-700">{t.code}</p>
-                            <h3 className="text-sm font-semibold text-ink-900">{t.name}</h3>
-                            <p className="mt-1 flex-1 text-xs text-ink-600">{t.blurb}</p>
-                            <Link href={`/technology-solutions/towers/${t.slug}`} className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-gold-700">Explore Solutions <ArrowRight className="size-3" /></Link>
-                        </article>
+                        <Link key={t.code} href={`/technology-solutions/towers/${t.slug}`} className="group flex flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white hover:border-gold-400">
+                            <CoverArt seed={t.slug} category="technology" label={t.name} className="aspect-[4/3]" />
+                            <span className="flex flex-1 flex-col p-4">
+                                <span className="-mt-9 inline-flex size-11 items-center justify-center rounded bg-ink-900 text-gold-400 ring-2 ring-white"><AdvIcon name={t.icon} /></span>
+                                <span className="mt-2 text-xs font-bold text-gold-700">{t.code}</span>
+                                <span className="text-sm font-semibold text-ink-900">{t.name}</span>
+                                <span className="mt-1 flex-1 text-xs text-ink-600">{t.blurb}</span>
+                                <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-gold-700">{t.services} services <ArrowRight className="size-3" /></span>
+                            </span>
+                        </Link>
                     ))}
                 </div>
             </section>
@@ -66,7 +70,7 @@ export default function TechIndex({ towers }: { towers: Tower[] }) {
             <section className="container-tbca pb-10">
                 <div className="grid gap-4 rounded-[10px] border border-gold-500/50 bg-ink-950 p-6 text-parchment-100 lg:grid-cols-12">
                     <ul className="grid grid-cols-2 gap-4 lg:col-span-8 lg:grid-cols-4">
-                        {[[Rocket, 'Proven Expertise', 'Human-reviewed implementations'], [Bot, 'Human + AI Collaboration', 'Expertise with intelligent automation'], [ShieldCheck, 'Security First', 'Bank-grade security & POPIA compliance'], [MapPin, 'Local Support', 'Based in South Africa']].map(([I, t, b]) => {
+                        {[[Rocket, 'Proven Expertise', 'Human-reviewed implementations'], [Bot, 'Human + AI Collaboration', 'Expertise with intelligent automation'], [ShieldCheck, 'Security First', 'Bank-grade security & POPIA compliance'], [MapPin, 'Africa-wide Support', 'Delivered across 54 African countries']].map(([I, t, b]) => {
                             const Icon = I as typeof Rocket;
                             return <li key={t as string} className="flex gap-2"><Icon className="size-6 shrink-0 text-gold-400" /><span><b className="block text-sm">{t as string}</b><span className="text-xs text-ink-300">{b as string}</span></span></li>;
                         })}

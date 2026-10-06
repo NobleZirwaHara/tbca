@@ -3,6 +3,8 @@ import { ArrowRight, CalendarDays, ChevronLeft, ChevronRight, CircleCheck, Clock
 import { useState, type ReactElement } from 'react';
 import PublicLayout from '@/Layouts/PublicLayout';
 import AfricaMark from '@/Components/AfricaMark';
+import HeroArt from '@/Components/Art/HeroArt';
+import Wordmark, { wordmarkTile } from '@/Components/Art/Wordmark';
 import CtaBand from '@/Components/CtaBand';
 import { ButtonLink } from '@/Components/ui/Button';
 import Icon from '@/Components/ui/Icon';
@@ -27,7 +29,7 @@ interface HomeProps {
 
 const heroChips = [
     { label: 'Pan-African Architecture', icon: 'globe' },
-    { label: 'South Africa Market', icon: 'map-pin' },
+    { label: 'Africa (Active)', icon: 'map-pin' },
     { label: 'Data-Driven', icon: 'bar-chart-3' },
     { label: 'Bankable Deliverables', icon: 'badge-check' },
     { label: 'AI & Automation Ready', icon: 'bot' },
@@ -37,7 +39,7 @@ const heroChips = [
 const entryPoints = [
     { title: 'Client Portal', body: 'Track orders, Sprints, projects, documents, invoices, Due Diligence cases and support.', icon: 'layout-dashboard', href: '/portal' },
     { title: 'Sprint Marketplace', body: 'Explore governed consulting Sprints, digital products, subscriptions and retainers.', icon: 'shopping-bag', href: '/shop' },
-    { title: 'AIIM', body: 'Access verified South African investment, sector data, opportunity and risk intelligence.', icon: 'bar-chart-3', href: '/aiim' },
+    { title: 'AIIM', body: 'Access verified African investment, sector data, opportunity and risk intelligence.', icon: 'bar-chart-3', href: '/aiim' },
     { title: 'AI Agents & Automation', body: 'Automate controlled workflows while preserving human review and reliable controls.', icon: 'bot', href: '/technology-solutions' },
 ];
 
@@ -58,7 +60,16 @@ const partners = [
     { name: 'Funding & DFI Network', full: 'Development finance and funding partners', note: 'Relationship varies by mandate' },
 ];
 
-const ecosystemNames = ['Standard Bank', 'absa', 'FNB', 'Nedbank', 'MTN', 'Sage', 'aws'];
+/** Ecosystem institutions as clean typographic wordmarks (shared registry: Components/Art/Wordmark). */
+const ecosystemNames: { id: string; name: string }[] = [
+    { id: 'standard-bank', name: 'Standard Bank' },
+    { id: 'absa', name: 'Absa' },
+    { id: 'fnb', name: 'FNB' },
+    { id: 'nedbank', name: 'Nedbank' },
+    { id: 'mtn', name: 'MTN' },
+    { id: 'sage', name: 'Sage' },
+    { id: 'aws', name: 'AWS' },
+];
 
 export default function Home({ stats, sprints, howItWorks, differentiators }: HomeProps) {
     const price = usePrice();
@@ -74,7 +85,7 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                 <div className="pointer-events-none absolute inset-0 motif-glow" aria-hidden="true" />
                 <div className="pointer-events-none absolute inset-0 motif-grid opacity-[0.35]" aria-hidden="true" />
 
-                <div className="container-tbca relative grid gap-10 py-12 lg:grid-cols-12 lg:gap-12 lg:py-16">
+                <div className="container-tbca relative grid gap-10 pt-6 pb-10 lg:grid-cols-12 lg:gap-12 lg:pt-8 lg:pb-14">
                     <div className="lg:col-span-6">
                         <h1 className="text-[2.375rem] leading-[1.04] font-bold tracking-[-0.03em] text-parchment-100 sm:text-[3.25rem] xl:text-[3.6rem]">
                             Africa&rsquo;s AI-Powered
@@ -175,7 +186,7 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                                                 From <strong className="text-[0.875rem] text-ink-900">{price(s.zar)}</strong>
                                             </span>
                                             <span className="inline-flex items-center gap-1 text-verified-500">
-                                                <CircleCheck className="size-3.5" aria-hidden="true" /> USD Available
+                                                <CircleCheck className="size-3.5" aria-hidden="true" /> 5 Currencies
                                             </span>
                                         </span>
                                         <span className="mt-2 flex items-center justify-between gap-2 border-t border-parchment-300 pt-2 text-[0.6875rem] text-ink-500">
@@ -212,7 +223,9 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
             {/* --------------------------------- How / Why / Evidence */}
             <section className="bg-parchment-200 pb-12">
                 <div className="container-tbca grid gap-5 xl:grid-cols-12">
-                    <div className="rounded-[8px] border border-parchment-400 bg-white p-5 xl:col-span-4">
+                    <div className="relative overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-5 xl:col-span-4">
+                        <HeroArt tone="light" focus="right" fade="left" seed={5} className="opacity-70" />
+                        <div className="relative">
                         <h2 className="text-[0.9375rem] font-bold text-ink-900">How TBCA Works</h2>
                         <ol className="mt-5 grid grid-cols-5 gap-2">
                             {howItWorks.map((s, i) => (
@@ -227,6 +240,7 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                         <Link href="/about/methodology" className="mt-5 inline-flex items-center gap-1 text-[0.75rem] font-semibold text-gold-700 hover:text-gold-800">
                             Learn More <ArrowRight className="size-3.5" aria-hidden="true" />
                         </Link>
+                        </div>
                     </div>
 
                     <div className="rounded-[8px] border border-parchment-400 bg-white p-5 xl:col-span-3">
@@ -289,10 +303,15 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                                 </div>
                             </div>
                         </div>
-                        <ul className="mt-5 flex flex-wrap items-center justify-between gap-x-5 gap-y-2 border-t border-parchment-300 pt-4" aria-label="Ecosystem institutions">
+                        <ul className="mt-5 grid grid-cols-2 gap-2 border-t border-parchment-300 pt-4 sm:grid-cols-4" aria-label="Ecosystem institutions">
                             {ecosystemNames.map((n) => (
-                                <li key={n} className="text-[0.8125rem] font-bold tracking-tight text-ink-400">
-                                    {n}
+                                <li
+                                    key={n.name}
+                                    title={n.name}
+                                    className={`${wordmarkTile} ${n.id === 'standard-bank' ? 'col-span-2' : ''}`}
+                                >
+                                    <span className="sr-only">{n.name}</span>
+                                    <Wordmark id={n.id} label={n.name} />
                                 </li>
                             ))}
                         </ul>
@@ -364,7 +383,7 @@ function HeroVideo() {
                         </button>
                     ))}
                     <span className="hidden items-center gap-1 sm:inline-flex">
-                        <CalendarDays className="size-3.5" aria-hidden="true" /> Wave 1
+                        <CalendarDays className="size-3.5" aria-hidden="true" /> Africa (Active)
                     </span>
                 </div>
             </div>

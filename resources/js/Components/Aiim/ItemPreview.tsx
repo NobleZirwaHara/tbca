@@ -43,7 +43,7 @@ export default function ItemPreview({ item, as, entitled, unlockFrom, saved }: I
     return (
         <AiimPage
             title={isProject ? 'Project Overview' : 'Opportunity Preview'}
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, { label: item.provinceName, href: `/aiim/province/${item.province}` }, { label: item.sectorName, href: `/aiim/sector/${item.sector}` }, { label: isProject ? 'Projects' : 'Opportunity Search', href: isProject ? '/aiim/projects' : '/aiim/opportunities' }, { label: item.name }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: 'South Africa', href: '/aiim/country/south-africa' }, { label: item.provinceName, href: `/aiim/province/${item.province}` }, { label: item.sectorName, href: `/aiim/sector/${item.sector}` }, { label: isProject ? 'Projects' : 'Opportunity Search', href: isProject ? '/aiim/projects' : '/aiim/opportunities' }, { label: item.name }]}
             subtitle="Comprehensive intelligence on a high-potential investment opportunity."
             description={isProject ? 'Review key project details, investment rationale, financials, risk profile, and next steps.' : undefined}
             actions={<ButtonLink href={isProject ? '/aiim/projects' : '/aiim/opportunities'} size="sm" variant="outline" icon="arrow-right">Back to Results</ButtonLink>}
@@ -128,7 +128,7 @@ export default function ItemPreview({ item, as, entitled, unlockFrom, saved }: I
                             <ul className="mt-2 space-y-1.5 text-xs">
                                 <li className="flex items-center gap-1.5"><Building2 className="size-3.5 text-gold-600" />{isProject ? 'TBCA Project Advisory Desk' : 'AIIM Advisory Team'}</li>
                                 <li className="flex items-center gap-1.5"><Mail className="size-3.5 text-gold-600" />{isProject ? 'projects@thebusinessclinic.africa' : 'investment@thebusinessclinic.africa'}</li>
-                                <li className="flex items-center gap-1.5"><Phone className="size-3.5 text-gold-600" />+27 12 001 0567</li>
+                                <li className="flex items-center gap-1.5"><Phone className="size-3.5 text-gold-600" />+27 60 801 1365</li>
                                 <li className="text-ink-400">Response within 24 hours</li>
                             </ul>
                             <ButtonLink href="/aiim/workspace/advisor-request" size="sm" className="mt-3 w-full">{isProject ? 'Request Advisor Call' : 'Speak to an Advisor'}</ButtonLink>

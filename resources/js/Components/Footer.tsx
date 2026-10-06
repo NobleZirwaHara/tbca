@@ -1,14 +1,17 @@
 import { Link, usePage } from '@inertiajs/react';
 import { Mail, Phone } from 'lucide-react';
 import Logo from './Logo';
+import SocialIcon from './SocialIcons';
 import Icon from './ui/Icon';
 import type { SharedProps } from '@/types';
 
+// Profile URLs are placeholders until TBCA confirms its official handles.
 const socials = [
-    { label: 'LinkedIn', href: '#' },
-    { label: 'Facebook', href: '#' },
-    { label: 'YouTube', href: '#' },
-    { label: 'Instagram', href: '#' },
+    { network: 'linkedin', label: 'LinkedIn', href: '#' },
+    { network: 'facebook', label: 'Facebook', href: '#' },
+    { network: 'x', label: 'X (Twitter)', href: '#' },
+    { network: 'youtube', label: 'YouTube', href: '#' },
+    { network: 'instagram', label: 'Instagram', href: '#' },
 ];
 
 export default function Footer() {
@@ -19,7 +22,7 @@ export default function Footer() {
             <div className="container-tbca py-12 md:py-14">
                 <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
                     <div className="lg:col-span-4">
-                        <Logo variant="full" className="w-full max-w-[22rem]" />
+                        <Logo variant="header" />
 
                         <address className="mt-6 space-y-0.5 text-[0.8125rem] leading-relaxed text-ink-300 not-italic">
                             {contact.address_lines.map((line) => (
@@ -34,6 +37,15 @@ export default function Footer() {
                             >
                                 <Phone className="size-3.5 text-gold-600" aria-hidden="true" />
                                 {contact.phone}
+                            </a>
+                            <a
+                                href={contact.whatsapp_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 text-ink-300 transition-colors hover:text-gold-300"
+                            >
+                                <SocialIcon network="whatsapp" className="size-3.5 text-[#25D366]" />
+                                WhatsApp {contact.whatsapp}
                             </a>
                             <a
                                 href={`mailto:${contact.email}`}
@@ -84,15 +96,21 @@ export default function Footer() {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2">
-                        {socials.map(({ label, href }) => (
-                            <a
-                                key={label}
-                                href={href}
-                                className="inline-flex h-9 items-center rounded-[4px] border border-ink-700 px-3 text-[0.75rem] font-medium text-parchment-200 transition-colors hover:border-gold-600 hover:text-gold-300"
-                            >
-                                {label}
-                            </a>
-                        ))}
+                        {[...socials, { network: 'whatsapp', label: 'WhatsApp', href: contact.whatsapp_url }].map(
+                            ({ network, label, href }) => (
+                                <a
+                                    key={network}
+                                    href={href}
+                                    target={href.startsWith('http') ? '_blank' : undefined}
+                                    rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                    aria-label={`TBCA on ${label}`}
+                                    title={label}
+                                    className="inline-flex size-9 items-center justify-center rounded-full border border-ink-700 text-parchment-200 transition-colors hover:border-gold-600 hover:text-gold-300"
+                                >
+                                    <SocialIcon network={network} className="size-4" />
+                                </a>
+                            ),
+                        )}
                     </div>
                 </div>
             </div>

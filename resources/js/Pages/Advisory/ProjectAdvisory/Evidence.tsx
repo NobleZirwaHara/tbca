@@ -88,7 +88,7 @@ export default function Evidence({ items, more, limit, filters, options, quality
                     </div>
                 </aside>
             </div>
-            <div className="mt-6"><TrustBand items={[['Phase 1 Active Market', 'South Africa'], ['54 African Countries', 'Coming Soon'], ['AI & Human Reviewed', 'Intelligence'], ['Source Verified', 'Confidence Rated'], ['ZAR Pricing', 'Source currency'], ['POPIA Compliant', 'Bank-Grade Security']]} /></div>
+            <div className="mt-6"><TrustBand items={[['Africa (Active)', 'Pan-African Market'], ['54 African Countries', 'Expansion-ready'], ['AI & Human Reviewed', 'Intelligence'], ['Source Verified', 'Confidence Rated'], ['ZAR Pricing', 'Source currency'], ['POPIA Compliant', 'Bank-Grade Security']]} /></div>
         </div>
     );
 }

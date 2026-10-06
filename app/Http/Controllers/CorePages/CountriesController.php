@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CorePages;
 use App\Http\Controllers\Controller;
 use App\Models\Submission;
 use App\Support\CorePages\CountryRegister;
+use App\Support\Platform\EmbeddedServices;
 use App\Support\Platform\Reference;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,10 +32,10 @@ class CountriesController extends Controller
 
         $all = collect(CountryRegister::countries());
         $filtered = $all
-            ->when(! empty($f['q']), fn ($c) => $c->filter(fn ($x) => str_contains(strtolower($x['name']), strtolower($f['q']))))
+            ->when(! empty($f['q']), fn ($c) => $c->filter(fn ($x) => str_contains(strtolower($x['name']), strtolower($f['q'])) || strtolower($x['iso']) === strtolower($f['q'])))
             ->when(! empty($f['region']), fn ($c) => $c->where('region', $f['region']))
             ->when(! empty($f['state']), fn ($c) => $c->where('state', $f['state']))
-            // Only activated countries carry commercial services; a service filter therefore narrows to them.
+            // Every activated country carries the standard catalogue, so the service filter narrows to activated ones.
             ->when(! empty($f['service']), fn ($c) => $c->where('state', 'Activated'))
             ->values();
 
@@ -43,7 +44,8 @@ class CountriesController extends Controller
 
         return Inertia::render('CorePages/Countries/Explorer', [
             'countries' => $filtered->forPage($page, $per)->values(),
-            'mapCountries' => $all->map(fn ($c) => ['iso' => $c['iso'], 'state' => $c['state']]),
+            'mapCountries' => $all->map(fn ($c) => ['iso' => $c['iso'], 'name' => $c['name'], 'region' => $c['region'], 'state' => $c['state']]),
+            'regionCounts' => collect(CountryRegister::regions())->mapWithKeys(fn ($r) => [$r => $all->where('region', $r)->count()]),
             'total' => $filtered->count(),
             'page' => $page,
             'per' => $per,
@@ -59,7 +61,8 @@ class CountriesController extends Controller
 
         return Inertia::render('CorePages/Countries/Profile', [
             'profile' => CountryRegister::profile($iso),
-            'services' => strtoupper($iso) === 'ZA' ? array_values(array_map(fn ($s) => collect($s)->only(['code', 'name', 'category', 'status', 'summary'])->all(), CountryRegister::services())) : [],
+            'services' => array_values(array_map(fn ($s) => collect($s)->only(['code', 'name', 'category', 'status', 'summary', 'price_zar'])->all(), CountryRegister::services($iso))),
+            'embedded' => EmbeddedServices::forModule('countries'),
         ]);
     }
 
@@ -71,7 +74,7 @@ class CountriesController extends Controller
         }
 
         $f = $request->only(['domain', 'class', 'freshness', 'confidence']);
-        $items = collect(CountryRegister::evidenceItems())
+        $items = collect(CountryRegister::evidenceItems($iso))
             ->when(! empty($f['domain']), fn ($c) => $c->where('domain', $f['domain']))
             ->when(! empty($f['class']), fn ($c) => $c->where('class', $f['class']))
             ->when(! empty($f['freshness']), fn ($c) => $c->where('freshness', $f['freshness']))
@@ -80,11 +83,11 @@ class CountriesController extends Controller
 
         return Inertia::render('CorePages/Countries/Evidence', [
             'country' => $country,
-            'domains' => CountryRegister::evidenceDomains(),
+            'domains' => $country['confirmed'] ? CountryRegister::evidenceDomains() : array_map(fn ($d) => [...$d, 'sources' => 1, 'current' => 1], CountryRegister::evidenceDomains()),
             'items' => $items,
-            'totalItems' => 109,
+            'totalItems' => $country['confirmed'] ? 109 : count(CountryRegister::evidenceItems($iso)),
             'manifest' => CountryRegister::sourceManifest(),
-            'classes' => collect(CountryRegister::evidenceItems())->pluck('class')->unique()->values(),
+            'classes' => collect(CountryRegister::evidenceItems($iso))->pluck('class')->unique()->values(),
             'filters' => ['domain' => $f['domain'] ?? '', 'class' => $f['class'] ?? '', 'freshness' => $f['freshness'] ?? '', 'confidence' => $f['confidence'] ?? ''],
         ]);
     }
@@ -95,7 +98,7 @@ class CountriesController extends Controller
         abort_unless($country && $country['state'] === 'Activated', 404);
 
         $rows = [['ID', 'Evidence Title', 'Domain', 'Source', 'Evidence Class', 'As Of', 'Freshness', 'Confidence', 'Contradictions', 'Status']];
-        foreach (CountryRegister::evidenceItems() as $e) {
+        foreach (CountryRegister::evidenceItems($iso) as $e) {
             $rows[] = array_values($e);
         }
         $csv = collect($rows)->map(fn ($r) => collect($r)->map(fn ($c) => '"'.str_replace('"', '""', (string) $c).'"')->implode(','))->implode("\r\n");
@@ -112,41 +115,41 @@ class CountriesController extends Controller
 
         return Inertia::render('CorePages/Countries/Legal', [
             'country' => $country,
-            'legal' => CountryRegister::legal(),
+            'legal' => CountryRegister::legal($iso),
         ]);
     }
 
     public function service(string $iso, string $code): Response
     {
         $country = CountryRegister::find($iso);
-        $service = CountryRegister::services()[strtoupper($code)] ?? null;
+        $service = CountryRegister::services($iso)[strtoupper($code)] ?? null;
         abort_unless($country && $service && $country['state'] === 'Activated', 404);
 
         return Inertia::render('CorePages/Countries/ServiceDetail', [
             'country' => $country,
             'service' => $service,
-            // No ResolvedPricePermit has been issued, so prices stay suppressed.
-            'priceResolved' => CountryRegister::priceResolved($country, false),
+            // Africa (Active): standard catalogue prices are shown for every activated country.
+            'priceResolved' => CountryRegister::priceResolved($country),
         ]);
     }
 
     public function eligibility(Request $request, string $iso, string $code): RedirectResponse
     {
         $country = CountryRegister::find($iso);
-        $service = CountryRegister::services()[strtoupper($code)] ?? null;
+        $service = CountryRegister::services($iso)[strtoupper($code)] ?? null;
         abort_unless($country && $service, 404);
 
         $missing = collect($service['dependencies'])->filter(fn ($ok) => ! $ok)->keys();
-        if ($country['state'] !== 'Activated' || $country['rcs'] < 100 || $missing->isNotEmpty()) {
-            return back()->with('error', 'Not eligible: resolver dependencies incomplete ('.$missing->implode(', ').'). No Resolution, No Price.');
+        if ($country['state'] !== 'Activated' || $missing->isNotEmpty()) {
+            return back()->with('error', 'Not yet eligible: dependencies incomplete ('.$missing->implode(', ').'). A TBCA advisor will contact you.');
         }
 
-        return back()->with('success', "Eligible: all resolver dependencies are complete for {$service['name']} in {$country['name']}. Request service access to obtain a ResolvedPricePermit and your quotation.");
+        return back()->with('success', "Eligible: {$service['name']} is available in {$country['name']} at the standard catalogue price. Request service access to confirm statutory and partner fees and receive your quotation.");
     }
 
     public function requestAccess(Request $request, string $iso, string $code): RedirectResponse
     {
-        $service = CountryRegister::services()[strtoupper($code)] ?? abort(404);
+        $service = CountryRegister::services($iso)[strtoupper($code)] ?? abort(404);
         $data = $request->validate([
             'name' => ['required', 'string', 'max:120'],
             'email' => ['required', 'email', 'max:190'],

@@ -95,7 +95,7 @@ export default function PublicForm(p: Props) {
                     </div>
                     <div className="rounded-[10px] border border-parchment-400 bg-white p-5 text-sm">
                         <p className="font-semibold text-ink-900">Questions?</p>
-                        <p className="mt-1 text-ink-600">support@thebusinessclinic.africa · +27 12 001 0567</p>
+                        <p className="mt-1 text-ink-600">support@thebusinessclinic.africa · +27 60 801 1365</p>
                     </div>
                 </aside>
             </div>

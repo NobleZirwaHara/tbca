@@ -26,10 +26,11 @@ import {
 } from 'lucide-react';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { CheckList, IconCard, Notice, PageTitle, TrustRow } from '@/Components/Products/Shared';
-import { ClassChip, PUBLIC_TRUST, fmtDate, zar } from '@/Components/Products/Subscriptions/ui';
+import { ClassChip, PUBLIC_TRUST, fmtDate } from '@/Components/Products/Subscriptions/ui';
 import type { SubPlan } from '@/Components/Products/Subscriptions/types';
 import type { SharedProps } from '@/types';
 
+import { usePrice } from '@/lib/money';
 function Rows({ rows }: { rows: { icon: LucideIcon; label: string; value: React.ReactNode }[] }) {
     return (
         <dl className="divide-y divide-parchment-300 text-[0.8125rem]">
@@ -45,6 +46,7 @@ function Rows({ rows }: { rows: { icon: LucideIcon; label: string; value: React.
 }
 
 export default function Product({ plan, variant, nextCharge, related }: { plan: SubPlan; variant: 'product' | 'maintained'; nextCharge: string; related: SubPlan[] }) {
+    const zar = usePrice();
     const { auth } = usePage<SharedProps>().props;
     const maintained = variant === 'maintained';
     const vat = plan.monthly_zar ? Math.round(plan.monthly_zar * 0.15) : null;

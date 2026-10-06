@@ -77,7 +77,7 @@ export function StatusChips({ items, whatsapp = true }: { items: { label: string
                 </div>
             ))}
             {whatsapp && (
-                <a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="ml-auto flex items-center gap-1.5 self-center rounded-[4px] border border-verified-500/40 px-3 py-1.5 text-xs font-semibold text-verified-700 hover:bg-verified-50">
+                <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="ml-auto flex items-center gap-1.5 self-center rounded-[4px] border border-verified-500/40 px-3 py-1.5 text-xs font-semibold text-verified-700 hover:bg-verified-50">
                     <MessageCircle className="size-4" aria-hidden="true" /> WhatsApp Support
                 </a>
             )}
@@ -206,7 +206,7 @@ export function ContextEditor({ open, onClose, industries, context, redirect }: 
             <label className="mt-3 block text-[0.8125rem] font-medium text-ink-800">
                 Country
                 <select value={country} onChange={(e) => setCountry(e.target.value)} className="mt-1 h-10 w-full rounded-[4px] border border-parchment-500 px-2 text-sm">
-                    <option value="ZA">South Africa (Phase 1)</option>
+                    <option value="ZA">South Africa</option>
                     <option value="EG">Egypt</option>
                     <option value="KE">Kenya</option>
                     <option value="NG">Nigeria</option>
@@ -227,7 +227,7 @@ export function ContextCard({ context, industries, title = 'Your Context', rows 
                     ['Primary Industry', context.industryName ?? 'Not selected'],
                     ['Sub-Industry', context.subIndustryName ?? 'Not selected'],
                     ['Country', context.countryName ?? 'South Africa'],
-                    ['Phase', 'Phase 1'],
+                    ['Market', 'Africa (Active)'],
                     ...rows,
                 ].map(([k, v]) => (
                     <div key={k as string} className="flex justify-between gap-3">

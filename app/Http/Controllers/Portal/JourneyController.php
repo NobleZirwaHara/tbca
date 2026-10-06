@@ -63,7 +63,7 @@ class JourneyController extends PortalController
             'side' => [
                 Ui::steps('Progress', array_map(fn ($s) => ['label' => $s['title']], $def['steps']), $done ? count($steps) + 1 : $step),
                 Ui::info('Saved automatically', 'Your progress is saved on our servers after every step, so you can continue on any device from the Save-State & Resume Centre.', 'info', Ui::action('Resume Centre', '/portal/resume')),
-                Ui::quick('Need help?', [Ui::action('Chat with NATASHA', '/portal/natasha'), Ui::action('Contact Support', '/portal/support?new=1'), Ui::action('Knowledge Base', '/portal/help')]),
+                Ui::quick('Need help?', [Ui::action('Chat with KAREN', '/portal/natasha'), Ui::action('Contact Support', '/portal/support?new=1'), Ui::action('Knowledge Base', '/portal/help')]),
             ],
         ]);
     }

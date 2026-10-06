@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { MousePointerClick } from 'lucide-react';
 import { Button } from '@/Components/ui/Button';
 import AdvIcon from '@/Components/Advisory/AdvIcon';
+import CoverArt from '@/Components/Art/CoverArt';
 import TechJourney, { type JourneyState } from '@/Components/Advisory/TechJourney';
 import { ArrowLink, Card, CheckList } from '@/Components/Advisory/ui';
 import { cn } from '@/lib/cn';
@@ -21,15 +22,24 @@ export default function Towers({ journey, towers }: { journey: JourneyState; tow
                 <div className="grid gap-4 xl:grid-cols-12">
                     <section className="xl:col-span-8">
                         <h2 className="font-semibold">7 Integrated Technology Solution Towers</h2>
-                        <p className="text-xs text-ink-500">Click a tower to explore capabilities, services and sample outcomes.</p>
+                        <p className="text-xs text-ink-500">Click a tower to open it and see every service (sprint) under it. Use “Select” to choose the tower for your journey.</p>
                         <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" role="radiogroup" aria-label="Towers">
                             {towers.map((x) => (
-                                <button key={x.code} type="button" role="radio" aria-checked={sel === x.code} onClick={() => setSel(x.code)} className={cn('flex flex-col rounded-[8px] border bg-white p-4 text-left', sel === x.code ? 'border-gold-500 ring-2 ring-gold-400' : 'border-parchment-400 hover:border-gold-300')}>
-                                    <div className="flex items-center gap-2"><AdvIcon name={x.icon} className="size-7 text-gold-600" /><span className="text-xs font-bold text-gold-700">{x.code}</span></div>
-                                    <span className="mt-2 text-sm font-semibold">{x.name}</span>
-                                    <span className="mt-1 flex-1 text-xs text-ink-600">{x.blurb}</span>
-                                    <span className="mt-3 flex justify-between text-[0.6875rem] text-ink-500"><span>{x.services} Services</span><span>Start from {x.start}</span></span>
-                                </button>
+                                <div key={x.code} className={cn('flex flex-col overflow-hidden rounded-[8px] border bg-white', sel === x.code ? 'border-gold-500 ring-2 ring-gold-400' : 'border-parchment-400 hover:border-gold-300')}>
+                                    <Link href={`/technology-solutions/towers/${x.slug}`} className="flex flex-1 flex-col text-left">
+                                        <CoverArt seed={x.slug} category="technology" label={x.name} className="aspect-[16/7]" />
+                                        <span className="flex flex-1 flex-col p-4 pb-2">
+                                            <span className="flex items-center gap-2"><AdvIcon name={x.icon} className="size-6 text-gold-600" /><span className="text-xs font-bold text-gold-700">{x.code}</span></span>
+                                            <span className="mt-2 text-sm font-semibold">{x.name}</span>
+                                            <span className="mt-1 flex-1 text-xs text-ink-600">{x.blurb}</span>
+                                            <span className="mt-3 flex justify-between text-[0.6875rem] text-ink-500"><span className="font-semibold text-gold-700">{x.services} Services →</span><span>Start from {x.start}</span></span>
+                                        </span>
+                                    </Link>
+                                    <div className="flex items-center justify-between gap-2 border-t border-parchment-300 px-4 py-2">
+                                        <Link href={`/technology-solutions/towers/${x.slug}`} className="text-xs font-semibold text-gold-700">Open Tower</Link>
+                                        <button type="button" role="radio" aria-checked={sel === x.code} aria-label={`Select ${x.name}`} onClick={() => setSel(x.code)} className={cn('rounded-[4px] border px-2.5 py-1 text-xs font-semibold', sel === x.code ? 'border-gold-500 bg-gold-500 text-ink-900' : 'border-parchment-500 hover:border-gold-400')}>{sel === x.code ? 'Selected' : 'Select'}</button>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     </section>

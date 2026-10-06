@@ -76,6 +76,7 @@ export function HeroIconTile({ description, className, boxed = true }: { descrip
 
 export function priceText(p: SprintPackage & { price_display?: string }, decimals = true) {
     if (p.price_display) return p.price_display.replace(/(\.\d{2})\d+/, '$1');
+    if (p.zar === null || p.zar === undefined) return 'On request';
     return `R${p.zar.toLocaleString('en-US')}${decimals ? '.00' : ''}`;
 }
 

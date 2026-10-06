@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Advisory;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sprint;
+use App\Models\User;
 use App\Support\Advisory\ServicesContent;
 use App\Support\Advisory\TechContent;
 use App\Support\Advisory\TechWorkflow;
+use App\Support\Advisory\TowerCatalogue;
+use App\Support\CorePages\AfricaCountries;
 use App\Support\Platform\Checkout;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -47,12 +51,17 @@ class TechJourneyController extends Controller
         return ['journey' => ['tower' => $j['tower'] ?? null, 'progress' => $this->progress($j), 'org' => $j['context']['legal_name'] ?? null]];
     }
 
+    /** The platform's 7 languages and 5 display currencies (ZAR is the source currency). */
+    public const LANGUAGES = ['English', 'Afrikaans', 'Portuguese', 'Chinese (Mandarin)', 'French', 'Swahili', 'Arabic'];
+
+    public const CURRENCIES = ['ZAR' => 'ZAR – South African Rand', 'USD' => 'USD – US Dollar', 'XOF' => 'XOF – West African CFA Franc', 'EUR' => 'EUR – Euro', 'CNY' => 'CNY (RMB) – Chinese Yuan'];
+
     public function index(): Response
     {
-        return Inertia::render('Advisory/Tech/Index', ['towers' => array_values(TechContent::towers())]);
+        return Inertia::render('Advisory/Tech/Index', ['towers' => self::towersWithCounts()]);
     }
 
-    public static function contextDefaults(?\App\Models\User $u = null): array
+    public static function contextDefaults(?User $u = null): array
     {
         return [
             'country' => 'South Africa', 'language' => 'English', 'currency' => 'ZAR', 'usd' => 'By Product',
@@ -69,6 +78,9 @@ class TechJourneyController extends Controller
             ...$this->shared($request),
             'context' => $this->journey($request)['context'] ?? self::contextDefaults($request->user()),
             'options' => [
+                'countries' => collect(AfricaCountries::all())->pluck('name')->sort()->values()->all(),
+                'languages' => self::LANGUAGES,
+                'currencies' => self::CURRENCIES,
                 'industries' => ['Manufacturing', 'Agriculture', 'Financial Services', 'Retail & eCommerce', 'Professional Services', 'Logistics & Transport', 'Health', 'Construction', 'Public Sector', 'Other'],
                 'models' => ['B2B', 'B2C', 'B2B2C', 'Public / Non-profit'],
                 'objectives' => ['Scale Operations & Improve Efficiency', 'Improve Data Visibility & Reporting', 'Automate Manual Processes', 'Launch Digital Channels', 'Strengthen Security & Compliance'],
@@ -84,14 +96,15 @@ class TechJourneyController extends Controller
     public function contextStore(Request $request): RedirectResponse
     {
         $d = $request->validate([
-            'country' => ['required', Rule::in(['South Africa'])], 'language' => ['required', Rule::in(['English', 'Afrikaans'])], 'currency' => ['required', Rule::in(['ZAR'])], 'usd' => ['required', 'string'],
-            'legal_name' => ['required', 'string', 'max:160'], 'trading_name' => ['nullable', 'string', 'max:160'], 'registration' => ['required', 'regex:/^\d{4}\/\d{6}\/\d{2}$/'],
+            'country' => ['required', Rule::in(array_column(AfricaCountries::all(), 'name'))], 'language' => ['required', Rule::in(self::LANGUAGES)], 'currency' => ['required', Rule::in(array_keys(self::CURRENCIES))], 'usd' => ['required', 'string'],
+            'legal_name' => ['required', 'string', 'max:160'], 'trading_name' => ['nullable', 'string', 'max:160'],
+            'registration' => ['required', 'string', 'max:40', Rule::when($request->input('country') === 'South Africa', ['regex:/^\d{4}\/\d{6}\/\d{2}$/'])],
             'email' => ['required', 'email'], 'phone' => ['required', 'string', 'max:40'], 'website' => ['nullable', 'string', 'max:160'],
             'industry' => ['required', 'string'], 'model' => ['required', 'string'], 'objective' => ['required', 'string'], 'challenge' => ['required', 'string', 'min:20', 'max:500'],
             'crm' => ['required', 'string'], 'accounting' => ['required', 'string'], 'platforms' => ['nullable', 'string', 'max:200'],
             'size' => ['required', 'string'], 'users' => ['required', 'integer', 'min:1', 'max:100000'], 'sites' => ['required', 'integer', 'min:1', 'max:1000'],
             'revenue' => ['required', 'string'], 'data' => ['required', 'string'], 'draft' => ['boolean'],
-        ], ['country.in' => 'Phase 1: South Africa only. Other countries coming soon.', 'registration.regex' => 'Use the CIPC format YYYY/NNNNNN/NN.']);
+        ], ['country.in' => 'Choose one of the 54 African countries (Africa Active).', 'registration.regex' => 'For South African companies use the CIPC format YYYY/NNNNNN/NN.']);
         $draft = $request->boolean('draft');
         unset($d['draft']);
         $this->put($request, ['context' => $d]);
@@ -101,7 +114,7 @@ class TechJourneyController extends Controller
 
     public function towers(Request $request): Response
     {
-        return Inertia::render('Advisory/Tech/Towers', [...$this->shared($request), 'towers' => array_values(TechContent::towers())]);
+        return Inertia::render('Advisory/Tech/Towers', [...$this->shared($request), 'towers' => self::towersWithCounts()]);
     }
 
     public function towersStore(Request $request): RedirectResponse
@@ -115,8 +128,26 @@ class TechJourneyController extends Controller
     public function tower(string $slug): Response
     {
         abort_unless(isset(TechContent::towers()[$slug]), 404);
+        $tower = TechContent::towerDetail($slug);
+        $catalogue = TowerCatalogue::forTower($tower['code']);
+        $live = array_flip(array_column($catalogue, 'slug'));
+        $existing = Sprint::whereIn('slug', array_column($tower['sprints'], 'slug'))->pluck('slug')->flip();
+        $tower['sprints'] = array_map(fn ($s) => [...$s, 'exists' => isset($existing[$s['slug']]) || isset($live[$s['slug']])], $tower['sprints']);
+        $tower['services'] = count($catalogue);
 
-        return Inertia::render('Advisory/Tech/Tower', ['tower' => TechContent::towerDetail($slug)]);
+        return Inertia::render('Advisory/Tech/Tower', [
+            'tower' => $tower,
+            'catalogue' => $catalogue,
+            'others' => array_values(array_filter(self::towersWithCounts(), fn ($t) => $t['slug'] !== $slug)),
+        ]);
+    }
+
+    /** Towers with the live count of catalogue sprints under each. */
+    private static function towersWithCounts(): array
+    {
+        $counts = TowerCatalogue::counts();
+
+        return array_values(array_map(fn ($t) => [...$t, 'services' => $counts[$t['code']] ?? 0], TechContent::towers()));
     }
 
     public function readiness(Request $request): Response

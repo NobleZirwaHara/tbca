@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import * as L from 'lucide-react';
-import AfricaMap from '@/Components/AfricaMap';
+import AfricaCountryMap from '@/Components/Map/AfricaCountryMap';
+import { bucketFill } from '@/Components/Map/countryMapHelpers';
 import { ButtonLink } from '@/Components/ui/Button';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { CountrySelector } from '@/Components/Countries/Shell';
@@ -53,7 +54,7 @@ export default function Landing({ counts, featured, countries, updates }: Props)
                             <div>
                                 <p className="text-xs text-ink-300">Current Controlled Coverage</p>
                                 <p className="text-xl font-bold text-gold-400">{counts.activated} Activated Country</p>
-                                <p className="text-xs text-ink-300">South Africa (Phase 1)</p>
+                                <p className="text-xs text-ink-300">Africa (Active) · South Africa</p>
                             </div>
                             <div>
                                 <p className="text-xs text-ink-300">Other Country Objects</p>
@@ -73,10 +74,18 @@ export default function Landing({ counts, featured, countries, updates }: Props)
                         </div>
                     </div>
                     <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_220px] lg:col-span-6">
-                        <div className="relative aspect-square max-h-[420px] rounded-[10px] border border-ink-800 bg-ink-900/60 p-4">
-                            <AfricaMap activeRegion="southern" />
+                        <div className="relative rounded-[10px] border border-ink-800 bg-ink-900/60 p-4 pb-10">
+                            <AfricaCountryMap
+                                className="mx-auto max-w-[420px]"
+                                colorFor={(c) => bucketFill(countries.find((x) => x.iso2 === c.iso2)?.bucket)}
+                                hrefFor={(_, c) => {
+                                    const match = countries.find((x) => x.iso2 === c.iso2);
+                                    return match ? `/countries/${match.slug}` : null;
+                                }}
+                                label="Map of Africa: select a country to open its country object"
+                            />
                             <p className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded bg-ink-950/80 px-2 py-1 text-[0.6875rem] text-gold-300">
-                                <L.MapPin className="size-3" aria-hidden="true" /> South Africa — Activated (schematic map)
+                                <L.MapPin className="size-3" aria-hidden="true" /> 54 country objects · click a country to open it
                             </p>
                         </div>
                         <div className="rounded-[10px] border border-gold-600/40 bg-ink-900/70 p-4">

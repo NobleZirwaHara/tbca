@@ -30,7 +30,7 @@ abstract class AiimController extends Controller
 
     protected function selection(Request $request): array
     {
-        return $request->session()->get('aiim.selection', ['country' => 'South Africa']);
+        return $request->session()->get('aiim.selection', ['country' => 'Africa (all 54 countries)']);
     }
 
     protected function render(Request $request, string $page, array $props = [], ?string $context = null): Response
@@ -41,7 +41,7 @@ abstract class AiimController extends Controller
 
         return Inertia::render($page, $props + [
             'selection' => [
-                'country' => $sel['country'] ?? 'South Africa',
+                'country' => $sel['country'] ?? 'Africa (all 54 countries)',
                 'province' => $province,
                 'provinceSlug' => $sel['province'] ?? null,
                 'sector' => $sector,

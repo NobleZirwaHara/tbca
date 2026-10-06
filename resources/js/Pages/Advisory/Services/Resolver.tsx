@@ -56,8 +56,8 @@ export default function Resolver({ step, answers, needs, outcomes, industries, s
                 tagline="Five simple steps to match your need with the best way to work with TBCA."
                 intro="Answer a few questions and we'll show you the best fit, all viable alternatives and any options that are not suitable — with clear reasons."
                 chips={[
-                    { label: 'Phase 1 Country', sub: 'South Africa' },
-                    { label: 'Languages', sub: 'English & Afrikaans' },
+                    { label: 'Market', sub: 'Africa (Active)' },
+                    { label: 'Languages', sub: '7 Languages' },
                     { label: 'Pricing From', sub: 'ZAR (Source) · USD (Display)' },
                     { label: 'Human Review', sub: 'Available' },
                     { label: 'Margin Neutral', sub: 'Only fit decides' },
@@ -193,7 +193,7 @@ export default function Resolver({ step, answers, needs, outcomes, industries, s
                     </aside>
                 </div>
             </div>
-            <TrustBand items={[['Free recommendation', 'No obligation'], ['Human review available', 'When you need it'], ['All viable options', 'Always shown'], ['Professional boundaries', 'Always respected'], ['South Africa Phase 1', 'ZAR Source Pricing'], ['Secure & Private', 'Your data is protected!']]} />
+            <TrustBand items={[['Free recommendation', 'No obligation'], ['Human review available', 'When you need it'], ['All viable options', 'Always shown'], ['Professional boundaries', 'Always respected'], ['Africa (Active)', 'ZAR Source Pricing'], ['Secure & Private', 'Your data is protected!']]} />
         </>
     );
 }

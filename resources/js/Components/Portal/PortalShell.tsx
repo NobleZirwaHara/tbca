@@ -4,7 +4,7 @@ import { Bell, ChevronDown, Info, Menu, MessageCircleQuestion, Rocket, ShieldChe
 import Header from '@/Components/Header';
 import Footer from '@/Components/Footer';
 import Flash from '@/Components/Flash';
-import AskQuestion, { openAskQuestion } from '@/Components/AskQuestion';
+import { openAskQuestion } from '@/Components/AskQuestion';
 import Breadcrumbs from '@/Components/ui/Breadcrumbs';
 import { StatusPill } from '@/Components/ui/Kit';
 import { cn } from '@/lib/cn';
@@ -216,7 +216,6 @@ export default function PortalShell({
             </div>
 
             <Footer />
-            <AskQuestion />
             <Flash />
         </div>
     );

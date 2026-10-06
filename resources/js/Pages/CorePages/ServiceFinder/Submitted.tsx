@@ -76,7 +76,7 @@ export default function Submitted({ request: r, summary }: Props) {
                         <p className="mt-4 flex gap-3 rounded-[8px] border border-gold-600/60 p-3 text-[0.75rem]"><Headset className="size-5 shrink-0 text-gold-500" aria-hidden="true" /><span><strong className="text-parchment-100">AI-Guided | Human-Reviewed Where Required</strong><br />Complex requests are reviewed by human experts.</span></p>
                         <p className="mt-4 text-[0.8125rem] font-semibold text-parchment-100">Need immediate help?</p>
                         <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                            <a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="inline-flex h-9 items-center justify-center gap-1.5 rounded-[4px] border border-verified-500 text-[0.75rem] text-parchment-100"><MessageCircle className="size-4" aria-hidden="true" />Continue on WhatsApp</a>
+                            <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="inline-flex h-9 items-center justify-center gap-1.5 rounded-[4px] border border-verified-500 text-[0.75rem] text-parchment-100"><MessageCircle className="size-4" aria-hidden="true" />Continue on WhatsApp</a>
                             <Link href="/discovery-call" className="inline-flex h-9 items-center justify-center gap-1.5 rounded-[4px] border border-gold-500 text-[0.75rem] text-parchment-100"><Phone className="size-4" aria-hidden="true" />Call / Book Consultation</Link>
                         </div>
                     </div>

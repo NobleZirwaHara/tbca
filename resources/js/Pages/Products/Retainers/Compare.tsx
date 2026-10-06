@@ -173,7 +173,7 @@ export default function Compare({ rows }: { rows: Row[] }) {
                         { icon: Users, title: 'Professional boundaries', body: 'We route to the right expertise.' },
                         { icon: ListChecks, title: 'Transparent pricing', body: 'Always see the full breakdown.' },
                         { icon: Lock, title: 'Your choice', body: 'You decide what fits you best.' },
-                        { icon: Flag, title: 'Phase 1 – South Africa', body: 'ZAR Source Pricing' },
+                        { icon: Flag, title: 'Africa (Active)', body: 'ZAR Source Pricing' },
                         { icon: ShieldCheck, title: 'Secure & Private', body: 'Your data is protected.' },
                     ]}
                 />

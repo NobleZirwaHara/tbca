@@ -16,6 +16,7 @@ use App\Support\DealRoom\StageData;
 use App\Support\DealRoom\Stages;
 use App\Support\DealRoom\Usage;
 use App\Support\DealRoom\Workflow;
+use App\Support\Platform\EmbeddedServices;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -52,6 +53,7 @@ class RoomController extends Controller
                 'questions' => $room->questions()->where('status', 'open')->count(),
                 'approvals' => $room->approvals()->where('status', 'pending')->count(),
             ],
+            'embedded' => EmbeddedServices::forModule('virtual-deal-room'),
         ]);
     }
 

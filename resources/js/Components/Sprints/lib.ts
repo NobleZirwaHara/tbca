@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import type { CatalogueFilters, CatalogueItem, Pricing, SprintAddon } from '@/types/sprints';
 import type { SprintPackage } from '@/types';
 
@@ -58,3 +58,25 @@ export function computeTotals(pkg: SprintPackage | null | undefined, addons: Spr
 }
 
 export const RECURRING_LABEL: Record<string, string> = { month: 'per month', year: 'per year', quarter: 'per quarter' };
+
+const tabSlug = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+/**
+ * Index of the tab a /sprints/{slug}/{tab} URL asks for, matched against a template's own
+ * tab labels ("inputs-required" -> "Inputs Required" or "Requirements"). 0 when nothing matches.
+ */
+export function urlTabIndex(labels: string[], urlTab: string | null | undefined): number {
+    if (!urlTab || urlTab === 'overview') return 0;
+    const slugs = labels.map(tabSlug);
+    const exact = slugs.indexOf(urlTab);
+    if (exact >= 0) return exact;
+    const stem = urlTab.replace(/^whats-/, '').split('-')[0].slice(0, 5);
+    const fuzzy = slugs.findIndex((s) => s.includes(stem) || (stem === 'input' && s.includes('requir')));
+    return fuzzy >= 0 ? fuzzy : 0;
+}
+
+/** The {tab} segment of the current sprint URL (Sprints/Show prop), if any. */
+export function useUrlTab(): string | null {
+    const props = usePage().props as { tab?: unknown };
+    return typeof props.tab === 'string' ? props.tab : null;
+}

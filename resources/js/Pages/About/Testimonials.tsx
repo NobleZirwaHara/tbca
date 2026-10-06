@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, BadgeCheck, Quote, Star } from 'lucide-react';
 import AboutHero from '@/Components/About/AboutHero';
 import AboutIcon from '@/Components/About/AboutIcon';
 import InstitutionMark from '@/Components/About/InstitutionMark';
+import { wordmarkTile } from '@/Components/Art/Wordmark';
 import { ClaimInfoButton } from '@/Components/About/ClaimEvidence';
 import { cn } from '@/lib/cn';
 import type { PublicClaim, PublicInstitution, PublicTestimonial } from '@/types/about';
@@ -125,9 +126,9 @@ export default function Testimonials({ testimonials, rating, stats, institutions
                         {institutions.length > 0 && (
                             <div className="border-parchment-400 lg:border-l lg:pl-6">
                                 <p className="text-sm font-semibold text-ink-900">Institutions we work with</p>
-                                <ul className="mt-3 flex flex-wrap items-center gap-6">
+                                <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3" aria-label="Institutions we work with">
                                     {institutions.map((i) => (
-                                        <li key={i.slug} title={i.name}>
+                                        <li key={i.slug} title={i.name} className={wordmarkTile}>
                                             <InstitutionMark inst={i} />
                                             <span className="sr-only">{i.name}</span>
                                         </li>

@@ -8,6 +8,7 @@ use App\Models\Advisory\MandateLine;
 use App\Models\Advisory\StopRule;
 use App\Models\Order;
 use App\Models\User;
+use App\Support\CorePages\AfricaCountries;
 use App\Support\Platform\Checkout;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -44,14 +45,14 @@ class MandateWorkflow
             'Seeking' => 'Medium',
             default => 'Low',
         };
-        $attention = ($evidence === 'Low' || ($q['capital'] ?? '') === 'Over R1bn' || ($q['country'] ?? 'South Africa') !== 'South Africa') ? 'High' : 'Medium';
+        $attention = ($evidence === 'Low' || ($q['capital'] ?? '') === 'Over R1bn' || ! in_array($q['country'] ?? 'South Africa', array_column(AfricaCountries::all(), 'name'), true)) ? 'High' : 'Medium';
 
         return ['Stage Clarity' => $stageClarity, 'Evidence Status' => $evidence, 'Funding Clarity' => $funding, 'Reviewer Attention' => $attention];
     }
 
     public static function createFromIntake(array $data, ?User $user): Mandate
     {
-        $sector = collect(PaContent::SECTORS)->search(fn ($s) => $s[0] === $data['sector']) ?: 'energy-resources';
+        $sector = PaSectors::keyForLabel($data['sector']) ?? PaSectors::DEFAULT;
         $mandate = Mandate::create([
             'reference' => self::nextReference(),
             'user_id' => $user?->id,
@@ -168,7 +169,7 @@ class MandateWorkflow
             }
         };
         $check('SN-01', ! $m->organisation || ! $m->project_name || ! $m->sector, 'Mandatory project fields are missing.');
-        $check('SN-04', $m->country !== 'South Africa', 'Phase 1 Project Advisory is only permitted in South Africa.');
+        $check('SN-04', ! in_array($m->country, array_column(AfricaCountries::all(), 'name'), true), 'Project Advisory is permitted across the 54 African countries (Africa Active) only.');
         foreach (['SN-02' => 'Sanctions / PEP match flagged by compliance.', 'SN-03' => 'Identity verification failed.', 'SN-05' => 'Conflicting existing engagement identified.', 'SN-08' => 'A critical supplier is unavailable.', 'SN-09' => 'Required regulatory approval missing or expired.', 'SN-10' => 'Data validation failed.', 'SN-11' => 'Service not permitted for this client.', 'SN-12' => 'High fraud or risk engine score.'] as $code => $msg) {
             $check($code, ! empty($flags[$code]), $msg);
         }
@@ -191,7 +192,7 @@ class MandateWorkflow
             ['All ledgers have valid recipients', $lines->every(fn ($l) => filled($l->recipient)), $lines->count().' of '.$lines->count().' valid', true],
             ['Amounts are within approved limits', true, 'Within limits', true],
             ['Authority and permissions validated', $g->code === 'G1' || $m->letter_signed_at !== null, $m->letter_signed_at ? 'Validated & granted' : 'Engagement letter not signed', true],
-            ['Evidence package complete', $outstanding === 0 || in_array($g->code, ['G1', 'G2'], true),$outstanding === 0 ? 'Complete' : "{$outstanding} item(s) outstanding", false],
+            ['Evidence package complete', $outstanding === 0 || in_array($g->code, ['G1', 'G2'], true), $outstanding === 0 ? 'Complete' : "{$outstanding} item(s) outstanding", false],
             ['No unresolved conflicts of interest', empty($m->meta['flags']['SN-05'] ?? null), 'No conflicts', true],
             ['External commitments within policy', true, 'Compliant', true],
             ['Stop-Now ladder clear', empty($blocks), empty($blocks) ? 'No active blocks' : count($blocks).' active block(s)', true],

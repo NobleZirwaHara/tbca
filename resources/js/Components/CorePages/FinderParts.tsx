@@ -3,7 +3,7 @@ import { CircleCheck, Clock, Compass, Gift, Lock, MessageCircle, Ban, Sparkles, 
 import type { ReactNode } from 'react';
 import Breadcrumbs, { type Crumb } from '@/Components/ui/Breadcrumbs';
 import { openAskQuestion } from '@/Components/AskQuestion';
-import { JourneySteps, Flag } from '@/Components/CorePages/Kit';
+import { JourneySteps } from '@/Components/CorePages/Kit';
 import type { FinderShared } from '@/types/core-pages';
 
 export function FinderHeader({
@@ -50,9 +50,9 @@ export function FinderHeader({
                         </div>
                     </div>
                     <ul className="grid grid-cols-2 gap-3 text-[0.75rem] sm:grid-cols-4">
-                        <li className="flex items-center gap-2"><Flag iso="ZA" className="text-xl" /><span>South Africa<br />Active Market</span></li>
-                        <li className="flex items-center gap-2"><MessageCircle className="size-5 text-gold-500" aria-hidden="true" /><span>English &amp;<br />Afrikaans</span></li>
-                        <li className="flex items-center gap-2"><span className="font-bold text-verified-500">R $</span><span>ZAR Source Pricing<br />USD Available</span></li>
+                        <li className="flex items-center gap-2"><span className="text-xl" aria-hidden="true">🌍</span><span>Africa<br />Active Market</span></li>
+                        <li className="flex items-center gap-2"><MessageCircle className="size-5 text-gold-500" aria-hidden="true" /><span>7<br />Languages</span></li>
+                        <li className="flex items-center gap-2"><span className="font-bold text-verified-500">R $</span><span>ZAR Source Pricing<br />5 Currencies</span></li>
                         <li className="flex items-center gap-2"><UserCheck className="size-5 text-gold-500" aria-hidden="true" /><span>Human-Reviewed<br />{assist ? 'Assistance' : 'Recommendations'}</span></li>
                     </ul>
                 </div>
@@ -107,7 +107,7 @@ export function FinderSidebar({ shared, currentLabel, next, children }: { shared
             <p className="mt-4 text-[0.75rem]">
                 Need help?{' '}
                 <button type="button" className="font-semibold text-gold-400 underline" onClick={() => openAskQuestion({ subject: 'Find the Right Service help', section: 'core' })}>Ask an Advisor</button> or start a{' '}
-                <a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="font-semibold text-gold-400 underline">WhatsApp chat</a>.
+                <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="font-semibold text-gold-400 underline">WhatsApp chat</a>.
             </p>
         </aside>
     );

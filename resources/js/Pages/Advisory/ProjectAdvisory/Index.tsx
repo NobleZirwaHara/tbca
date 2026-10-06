@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { ArrowRight, Scale, Target } from 'lucide-react';
 import { ButtonLink } from '@/Components/ui/Button';
 import AdvIcon from '@/Components/Advisory/AdvIcon';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import { DarkHero, LedgerBadge, TrustBand } from '@/Components/Advisory/ui';
 import { usePrice } from '@/lib/money';
 
@@ -11,9 +12,10 @@ interface Props {
     method: [string, string, string][];
     ledgers: Record<string, [string, string, string]>;
     sectors: { key: string; label: string; icon: string }[];
+    embedded?: EmbeddedSection;
 }
 
-export default function PaIndex({ services, method, ledgers, sectors }: Props) {
+export default function PaIndex({ services, method, ledgers, sectors, embedded }: Props) {
     const price = usePrice();
     return (
         <>
@@ -22,7 +24,7 @@ export default function PaIndex({ services, method, ledgers, sectors }: Props) {
                 title="Project Advisory."
                 tagline="From Vision to Viable Impact."
                 intro="End-to-end advisory for projects that create value, attract capital and deliver measurable impact. Strategy. Feasibility. Structuring. Implementation support."
-                chips={[{ label: 'Human-Reviewed', sub: 'Expert Advisory' }, { label: 'Data-Driven', sub: 'Strategic Insights' }, { label: 'Bankable &', sub: 'Investor-Grade' }, { label: 'POPIA & ESG', sub: 'Compliant' }, { label: 'South Africa', sub: 'Focused' }]}
+                chips={[{ label: 'Human-Reviewed', sub: 'Expert Advisory' }, { label: 'Data-Driven', sub: 'Strategic Insights' }, { label: 'Bankable &', sub: 'Investor-Grade' }, { label: 'POPIA & ESG', sub: 'Compliant' }, { label: 'Africa (Active)', sub: '54 Countries' }]}
                 box={{ title: 'Why Clients Choose TBCA', items: ['Published Method & Transparent Pricing', 'Your Work Product Is Portable', 'You Approve Before We Charge', 'Human Review Where Required', 'POPIA-Aware Data Controls', 'ESG-Integrated Advisory', 'Benchmark-Informed Methodology', 'Bankability & Investor-Readiness Process'] }}
             >
                 <ButtonLink href="/project-advisory/discovery" trailingIcon="arrow-right">Request Advisory</ButtonLink>
@@ -94,7 +96,7 @@ export default function PaIndex({ services, method, ledgers, sectors }: Props) {
                         </li>
                     ))}
                 </ol>
-                <h2 className="mt-8 font-serif text-xl font-semibold text-ink-900">Sectors We Serve</h2>
+                <h2 className="mt-8 font-serif text-xl font-semibold text-ink-900">Sectors We Serve ({sectors.length})</h2>
                 <div className="mt-3 flex flex-wrap gap-2">
                     {sectors.map((s) => (
                         <Link key={s.key} href={`/project-advisory/studies?sector=${s.key}`} className="inline-flex items-center gap-2 rounded-full border border-parchment-500 bg-white px-3 py-1.5 text-sm hover:border-gold-500"><AdvIcon name={s.icon} className="size-4 text-gold-600" />{s.label}</Link>
@@ -114,6 +116,7 @@ export default function PaIndex({ services, method, ledgers, sectors }: Props) {
                     </div>
                 </div>
             </section>
+            <EmbeddedServices section={embedded} />
             <TrustBand items={[['Proven Track Record', 'Evidence-cleared experience only'], ['Capital Access', 'Strong network of lenders & investors'], ['Impact Focused', 'Sustainable & measurable impact'], ['Quality Assurance', 'Human-reviewed, accuracy assured'], ['Method Before Money', 'Understand before you commit'], ['Five-Ledger Transparency', 'T, P, X, S and C shown separately']]} />
         </>
     );

@@ -24,8 +24,8 @@ export function CountryFrame({ crumbs, title, badge, lead, actions, aside, child
                 </div>
                 {footer && (
                     <p className="mt-3 flex flex-wrap justify-between gap-2 text-[0.75rem] text-ink-300">
-                        <span>Last updated: 15 Aug 2026 10:30 SAST</span>
-                        <span>All times shown in SAST (UTC+2)</span>
+                        <span>Last updated: 05 Oct 2026</span>
+                        <span>Africa (Active) · 54 countries · 5 regions</span>
                         <span>Information only. Not legal or tax advice.</span>
                     </p>
                 )}
@@ -61,6 +61,16 @@ export function NoPrice() {
         <SideBox tone="warn">
             <p className="flex gap-2 text-[0.8125rem] font-semibold text-attested-700"><TriangleAlert className="size-5 shrink-0" aria-hidden="true" />Country search does not imply commercial permission.</p>
             <p className="mt-1 text-center text-[0.8125rem] font-bold text-ink-900">No Resolution, No Price.</p>
+        </SideBox>
+    );
+}
+
+/** Africa (Active) pricing note: standard catalogue prices in the visitor's currency. */
+export function PricingNote() {
+    return (
+        <SideBox tone="good">
+            <p className="flex gap-2 text-[0.8125rem] font-semibold text-verified-700"><CircleCheck className="size-5 shrink-0" aria-hidden="true" />Africa (Active) — standard catalogue pricing.</p>
+            <p className="mt-1 text-[0.75rem] text-ink-700">Prices are shown in your selected currency (ZAR, USD, XOF, EUR or CNY). Statutory and partner fees are quoted at cost.</p>
         </SideBox>
     );
 }

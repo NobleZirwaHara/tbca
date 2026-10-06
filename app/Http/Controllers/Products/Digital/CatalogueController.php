@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Products\Digital;
 use App\Http\Controllers\Controller;
 use App\Models\Products\Digital\DpProduct;
 use App\Support\Products\Digital\Licences;
+use App\Support\Products\Digital\Markets;
 use App\Support\Products\Digital\Presenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -60,7 +61,7 @@ class CatalogueController extends Controller
             'compare' => $compared->map(fn ($p) => [
                 ...Presenter::card($p),
                 'licenceClasses' => collect($p->prices ?? [])->filter()->keys()->implode(', '),
-                'languagesLabel' => collect($p->languages ?? [])->where('state', 'approved')->pluck('code')->implode(', '),
+                'languagesLabel' => collect($p->languages ?? [])->where('state', 'approved')->pluck('label')->implode(', '),
                 'compareRows' => $p->compare ?? [],
             ]),
             'facets' => $this->facets($all),
@@ -97,7 +98,9 @@ class CatalogueController extends Controller
             'q' => trim((string) $request->query('q', '')),
             'types' => array_values(array_filter((array) $request->query('types', $request->query('type') ? [$request->query('type')] : []))),
             'audience' => (string) $request->query('audience', ''),
-            'language' => (string) $request->query('language', ''),
+            'language' => strtoupper((string) $request->query('language', '')),
+            'currency' => strtoupper((string) $request->query('currency', '')),
+            'jurisdiction' => strtoupper((string) $request->query('jurisdiction', '')),
             'format' => (string) $request->query('format', ''),
             'price' => (string) $request->query('price', ''),
             'licence' => (string) $request->query('licence', ''),
@@ -124,7 +127,9 @@ class CatalogueController extends Controller
             ->when($filters['audience'], fn ($c) => $c->filter(fn ($p) => in_array($filters['audience'], $p->audiences ?? [], true)))
             ->when($filters['industry'], fn ($c) => $c->filter(fn ($p) => in_array($filters['industry'], $p->industries ?? [], true)))
             ->when($filters['function'], fn ($c) => $c->where('business_function', $filters['function']))
-            ->when($filters['language'], fn ($c) => $c->filter(fn ($p) => collect($p->languages)->where('code', $filters['language'])->where('state', 'approved')->isNotEmpty()))
+            ->when($filters['language'], fn ($c) => $c->filter(fn ($p) => Markets::hasLanguage($p, $filters['language'])))
+            ->when($filters['currency'], fn ($c) => $c->filter(fn ($p) => Markets::hasCurrency($p, $filters['currency'])))
+            ->when($filters['jurisdiction'], fn ($c) => $c->filter(fn ($p) => Markets::appliesIn($p, $filters['jurisdiction'])))
             ->when($filters['format'], fn ($c) => $c->filter(fn ($p) => collect($p->formats)->contains('code', $filters['format'])))
             ->when($filters['licence'], fn ($c) => $c->filter(fn ($p) => ! empty(($p->prices ?? [])[$filters['licence']])))
             ->when(isset(self::PRICE_RANGES[$filters['price']]), function ($c) use ($filters) {
@@ -155,7 +160,9 @@ class CatalogueController extends Controller
             'audiences' => collect(self::AUDIENCES)->map(fn ($label, $key) => ['key' => $key, 'label' => $label, 'count' => $count(fn ($p) => in_array($key, $p->audiences ?? [], true))])->values(),
             'industries' => collect(self::INDUSTRIES)->map(fn ($label, $key) => ['key' => $key, 'label' => $label, 'count' => $count(fn ($p) => in_array($key, $p->industries ?? [], true))])->values(),
             'functions' => $all->pluck('business_function')->filter()->unique()->sort()->values()->map(fn ($f) => ['key' => $f, 'label' => $f, 'count' => $all->where('business_function', $f)->count()]),
-            'languages' => collect(['EN' => 'English', 'AF' => 'Afrikaans'])->map(fn ($label, $key) => ['key' => $key, 'label' => $label, 'count' => $count(fn ($p) => collect($p->languages)->where('code', $key)->where('state', 'approved')->isNotEmpty())])->values(),
+            'languages' => collect(Markets::LANGUAGES)->map(fn ($label, $key) => ['key' => $key, 'label' => $label, 'count' => $count(fn ($p) => Markets::hasLanguage($p, $key))])->values(),
+            'currencies' => collect(Markets::CURRENCIES)->map(fn ($label, $key) => ['key' => $key, 'label' => "{$key} – {$label}", 'count' => $count(fn ($p) => Markets::hasCurrency($p, $key))])->values(),
+            'jurisdictions' => collect(Markets::jurisdictionOptions())->map(fn ($o) => [...$o, 'count' => $count(fn ($p) => Markets::appliesIn($p, $o['key']))])->values(),
             'formats' => collect(['PDF', 'DOCX', 'XLSX', 'PPTX'])->map(fn ($f) => ['key' => $f, 'label' => $f, 'count' => $count(fn ($p) => collect($p->formats)->contains('code', $f))]),
             'prices' => collect(self::PRICE_RANGES)->map(fn ($r, $key) => ['key' => $key, 'label' => $r[0], 'count' => $count(fn ($p) => $p->fromPrice() >= $r[1] && $p->fromPrice() <= $r[2])])->values(),
             'licences' => collect(Licences::all())->map(fn ($l, $key) => ['key' => $key, 'label' => "{$key} {$l['short']}", 'count' => $count(fn ($p) => ! empty(($p->prices ?? [])[$key]))])->values(),

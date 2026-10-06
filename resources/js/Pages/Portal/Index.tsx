@@ -158,19 +158,19 @@ export default function PortalLanding() {
                     </div>
                     <div className="rounded-[10px] border border-parchment-400 bg-white p-5">
                         <p className="font-semibold text-ink-900">Need Help?</p>
-                        <p className="mt-1 text-sm text-ink-600">Our team and NATASHA are here to assist you.</p>
+                        <p className="mt-1 text-sm text-ink-600">Our team and KAREN are here to assist you.</p>
                         <div className="mt-4 flex flex-col gap-2">
                             <Link href={signedIn ? '/portal/support' : '/contact'} className="rounded-[4px] border border-ink-300 px-3 py-2 text-center text-sm font-medium hover:border-ink-900">
                                 Contact Support
                             </Link>
                             <button type="button" onClick={() => openAskQuestion({ subject: 'Client Portal', section: 'portal' })} className="rounded-[4px] bg-gold-500 px-3 py-2 text-sm font-semibold text-ink-900 hover:bg-gold-400">
-                                Chat with NATASHA
+                                Chat with KAREN
                             </button>
                         </div>
                     </div>
                     <div className="rounded-[10px] bg-ink-900 p-5 text-parchment-100">
                         <Bot className="size-8 text-gold-400" aria-hidden="true" />
-                        <p className="mt-2 font-serif text-lg font-bold">NATASHA</p>
+                        <p className="mt-2 font-serif text-lg font-bold">KAREN</p>
                         <p className="text-xs text-gold-300">Client Journey Assistant</p>
                         <p className="mt-2 text-sm text-parchment-200">I can help you find information, explain the Portal, and connect you to the right support.</p>
                         <Link href={signedIn ? '/portal/natasha' : '/login'} className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-gold-300 hover:underline">

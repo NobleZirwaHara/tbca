@@ -56,7 +56,7 @@ export default function Comparison({ reference, illustrative, answers, result, n
                             excluded: r.excluded, values: { use: r.use, get: r.get, who: r.who, commitment: r.commitment, price: `${r.price} ${r.price_note}`, exit: r.exit, best: r.best },
                         }))}
                     />
-                    <p className="mt-3 flex items-start gap-2 text-xs text-ink-500"><Info className="mt-0.5 size-3.5 shrink-0" />Prices are source pricing in ZAR. Display pricing may show ZAR and USD. All prices are indicative and exclude external costs. You will see the full breakdown before you pay.</p>
+                    <p className="mt-3 flex items-start gap-2 text-xs text-ink-500"><Info className="mt-0.5 size-3.5 shrink-0" />Prices are source pricing in ZAR. Display pricing can be shown in ZAR, USD, XOF, EUR or RMB. All prices are indicative and exclude external costs. You will see the full breakdown before you pay.</p>
 
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                         <section className="rounded-[8px] border border-verified-500/30 bg-white p-4">
@@ -109,7 +109,7 @@ export default function Comparison({ reference, illustrative, answers, result, n
                     </div>
                 </aside>
             </div>
-            <TrustBand items={[['No margin steering', 'We recommend by fit, not margin.'], ['Professional boundaries', 'We route to the right expertise.'], ['Transparent pricing', 'Always see the full breakdown.'], ['Your choice', 'You decide what fits you best.'], ['Phase 1 – South Africa', 'ZAR Source Pricing'], ['Secure & Private', 'Your data is protected.']]} />
+            <TrustBand items={[['No margin steering', 'We recommend by fit, not margin.'], ['Professional boundaries', 'We route to the right expertise.'], ['Transparent pricing', 'Always see the full breakdown.'], ['Your choice', 'You decide what fits you best.'], ['Africa (Active)', 'ZAR Source Pricing'], ['Secure & Private', 'Your data is protected.']]} />
             <Modal open={open !== undefined} onClose={() => setDetail(null)} title={open ? `${open.name} — price breakdown` : ''} footer={open && <ButtonLink href={open.href}>Continue with {open.name}</ButtonLink>}>
                 {open && (
                     <div className="space-y-2 text-sm text-ink-700">

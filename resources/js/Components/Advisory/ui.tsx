@@ -34,8 +34,8 @@ export function DarkHero({
     const chipList =
         chips === 'services'
             ? [
-                  { label: 'Phase 1', sub: 'South Africa' },
-                  { label: 'Languages', sub: 'English & Afrikaans' },
+                  { label: 'Market', sub: 'Africa (Active)' },
+                  { label: 'Languages', sub: '7 Languages' },
                   { label: 'Pricing in', sub: 'ZAR (Source) · USD (Display)' },
                   { label: 'Human Review', sub: 'Available' },
                   { label: 'We recommend', sub: 'by fit, not margin' },
@@ -144,7 +144,7 @@ export const SERVICES_TRUST: [string, string][] = [
     ['Human review available', 'When you need it.'],
     ['All viable options shown', 'Always equal visibility.'],
     ['Professional boundaries', 'Always respected.'],
-    ['South Africa Phase 1', 'ZAR Source Pricing'],
+    ['Africa (Active)', 'ZAR Source Pricing'],
     ['Secure & Private', 'Your data is protected.'],
 ];
 

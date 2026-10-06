@@ -8,17 +8,7 @@ namespace App\Support\Advisory;
  */
 class PaContent
 {
-    public const SECTORS = [
-        'energy-resources' => ['Energy & Resources', 'zap'],
-        'infrastructure-transport' => ['Infrastructure & Transport', 'train-front'],
-        'agriculture' => ['Agriculture & Agro-Industry', 'wheat'],
-        'manufacturing' => ['Manufacturing & Industries', 'factory'],
-        'property-construction' => ['Property & Construction', 'building'],
-        'ict-digital' => ['ICT & Digital', 'cpu'],
-        'health' => ['Health', 'heart-pulse'],
-        'tourism-hospitality' => ['Tourism & Hospitality', 'palmtree'],
-    ];
-
+    /** Sectors are the 17 canonical TBCA industries: see PaSectors (read from the Insights industry register). */
     public const SPONSORS = ['Corporate', 'Developer', 'Public Sector', 'DFI-backed', 'Founder-led', 'Investor Group'];
 
     public const STAGES = ['Idea', 'Pre-Feasibility', 'Feasibility', 'Structuring', 'Funding Readiness', 'Implementation'];
@@ -212,17 +202,8 @@ class PaContent
             ['Market Demand & Offtake Study', 'Validates demand, buyers, contract terms and revenue bankability.', 'available', 'Named Provider Required', 'Quote Required', '3–4 weeks', 'Reliance: Full · Rights: TBCA Standard (IP owned by client)', 'Reusable', 'High', 'High', 'Quote Required', [15000, 45000, 80000]],
             ['Technical Feasibility Study', 'Assesses technology options, sizing, performance and operational viability.', 'partial', 'Named Provider Required', 'Quote Pending', '4–6 weeks', 'Reliance: Full · Rights: TBCA Standard (IP owned by client)', 'Reusable', 'High', 'High', 'Quote Pending', [30000, 60000, 95000]],
         ];
-        $specific = [
-            'energy-resources' => [['Grid / Utility Interface Review', 'Confirms grid capacity, connection requirements and compliance.', 'missing', 'Open Provider List', 'Quote Required', '2–3 weeks', 'Reliance: Limited · Rights: Provider standard', 'Limited Reuse', 'Limited', 'Moderate', 'Quote Required', [15000, 35000, 60000]], ['Environmental & Social Baseline Study', 'Establishes environmental and social baseline for permitting and risk management.', 'human_review', 'Named Provider Required', 'Quote Pending', '4–6 weeks', 'Reliance: Full · Rights: TBCA Standard (IP owned by client)', 'Reusable', 'High', 'Moderate', 'Estimate Pending', [40000, 85000, 140000]]],
-            'infrastructure-transport' => [['Traffic & Demand Study', 'Forecasts traffic volumes, demand growth and revenue drivers.', 'missing', 'Named Provider Required', 'Quote Required', '4–6 weeks', 'Reliance: Full · Rights: TBCA Standard', 'Reusable', 'High', 'High', 'Quote Required', [35000, 70000, 120000]], ['Geotechnical Investigation', 'Assesses ground conditions for design and cost certainty.', 'missing', 'Open Provider List', 'Quote Required', '3–5 weeks', 'Reliance: Limited · Rights: Provider standard', 'Limited Reuse', 'Limited', 'Moderate', 'Quote Required', [25000, 55000, 90000]]],
-            'agriculture' => [['Soil & Water Assessment', 'Tests soil quality, water rights and irrigation capacity.', 'partial', 'Named Provider Required', 'Quote Pending', '3–4 weeks', 'Reliance: Full · Rights: TBCA Standard', 'Reusable', 'High', 'Moderate', 'Quote Pending', [18000, 38000, 65000]], ['Offtake & Aggregation Review', 'Confirms buyers, aggregation logistics and price risk.', 'missing', 'Open Provider List', 'Quote Required', '2–3 weeks', 'Reliance: Limited', 'Limited Reuse', 'Limited', 'Moderate', 'Quote Required', [12000, 28000, 45000]]],
-            'manufacturing' => [['Process & Plant Engineering Review', 'Validates process design, capacity and capex estimates.', 'human_review', 'Named Provider Required', 'Quote Pending', '4–6 weeks', 'Reliance: Full', 'Reusable', 'High', 'High', 'Quote Pending', [45000, 90000, 150000]], ['Supply Chain & Input Cost Study', 'Assesses input availability, logistics and cost exposure.', 'partial', 'Open Provider List', 'Quote Required', '2–3 weeks', 'Reliance: Limited', 'Limited Reuse', 'Limited', 'Moderate', 'Quote Required', [15000, 30000, 50000]]],
-            'property-construction' => [['Zoning & Planning Review', 'Confirms zoning rights, bulk and planning approvals path.', 'missing', 'Named Provider Required', 'Quote Required', '2–4 weeks', 'Reliance: Full', 'Reusable', 'High', 'Moderate', 'Quote Required', [15000, 32000, 55000]], ['Quantity Surveyor Cost Plan', 'Independent construction cost estimate and contingencies.', 'partial', 'Named Provider Required', 'Quote Pending', '3–4 weeks', 'Reliance: Full', 'Reusable', 'High', 'High', 'Quote Pending', [25000, 50000, 85000]]],
-            'ict-digital' => [['Network & Spectrum Review', 'Assesses coverage, spectrum licensing and network design.', 'missing', 'Open Provider List', 'Quote Required', '3–4 weeks', 'Reliance: Limited', 'Limited Reuse', 'Limited', 'Moderate', 'Quote Required', [20000, 45000, 75000]], ['Cybersecurity & Data Protection Review', 'POPIA and security architecture assessment.', 'human_review', 'Named Provider Required', 'Quote Pending', '2–3 weeks', 'Reliance: Full', 'Reusable', 'High', 'Moderate', 'Estimate Pending', [15000, 30000, 50000]]],
-            'health' => [['Clinical Service Demand Study', 'Quantifies catchment demand and service mix.', 'partial', 'Named Provider Required', 'Quote Pending', '4–6 weeks', 'Reliance: Full', 'Reusable', 'High', 'High', 'Quote Pending', [30000, 60000, 100000]], ['Regulatory Licensing Review', 'Maps licensing and accreditation requirements.', 'missing', 'Named Provider Required', 'Quote Required', '2–3 weeks', 'Reliance: Limited', 'Limited Reuse', 'Limited', 'Moderate', 'Quote Required', [12000, 25000, 40000]]],
-            'tourism-hospitality' => [['Hospitality Market & ADR Study', 'Forecasts occupancy, ADR and competitive set.', 'available', 'Named Provider Required', 'Quote Required', '3–4 weeks', 'Reliance: Full', 'Reusable', 'High', 'High', 'Quote Required', [25000, 50000, 80000]], ['Environmental Scoping', 'Screens environmental sensitivities and permits.', 'missing', 'Open Provider List', 'Quote Required', '2–3 weeks', 'Reliance: Limited', 'Limited Reuse', 'Limited', 'Moderate', 'Quote Required', [15000, 30000, 50000]]],
-        ];
-        $rows = array_merge($generic, $specific[$sector] ?? $specific['energy-resources']);
+        $sector = PaSectors::key($sector);
+        $rows = array_merge($generic, PaSectors::specificStudies($sector));
 
         return array_map(fn ($r, $i) => [
             'key' => $sector.'-'.$i, 'name' => $r[0], 'why' => $r[1], 'evidence' => $r[2], 'provider' => $r[3], 'quote' => $r[4],

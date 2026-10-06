@@ -1,3 +1,4 @@
+import CoverArt from '@/Components/Art/CoverArt';
 import type { ReactNode } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import {
@@ -32,7 +33,7 @@ const TONES: Record<string, string> = {
 };
 
 /** Product cover: gradient tile with the product title (replaces mockup photography). */
-export function DpCover({ name, type, tone = 'gold', size = 'md', className }: { name: string; type: string; tone?: string; size?: 'sm' | 'md' | 'lg'; className?: string }) {
+export function DpCover({ name, type, tone = 'gold', size = 'md', className, seed }: { name: string; type: string; tone?: string; size?: 'sm' | 'md' | 'lg'; className?: string; seed?: string }) {
     return (
         <div
             className={cn(
@@ -43,7 +44,9 @@ export function DpCover({ name, type, tone = 'gold', size = 'md', className }: {
             )}
             aria-hidden="true"
         >
-            <div className="pointer-events-none absolute inset-0 motif-grid opacity-20" />
+            {/* Unique generated picture per product (seeded by slug or name); text sits on a scrim above it. */}
+            <CoverArt seed={seed ?? name} category="digital-products" label={name} className="pointer-events-none absolute inset-0 h-full w-full" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/40 to-ink-950/10" />
             <span className={cn('relative font-bold tracking-wide text-gold-300 uppercase', size === 'sm' ? 'text-[0.4rem]' : 'text-[0.625rem]')}>{type}</span>
             <span
                 className={cn(
@@ -91,7 +94,7 @@ export const HERO_TRUST: { icon: LucideIcon; title: string; body?: string }[] = 
     { icon: BadgeCheck, title: 'Human-Reviewed Quality' },
     { icon: FileText, title: 'Version Controlled' },
     { icon: Download, title: 'Secure Downloads' },
-    { icon: Languages, title: 'English & Afrikaans Available' },
+    { icon: Languages, title: '7 Languages Available' },
     { icon: Globe, title: 'ZAR (Source) USD Available' },
 ];
 

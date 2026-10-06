@@ -32,7 +32,7 @@ export default function Risk({ risk }: Props) {
     return (
         <AiimPage
             title="Risk and Outlook"
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, { label: 'Risk & Outlook' }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: 'South Africa', href: '/aiim/country/south-africa' }, { label: 'Risk & Outlook' }]}
             subtitle="Country and sector risk landscape, outlook and early signals."
             description="Understand key risks, opportunities and future outlook to inform better investment decisions."
             rail={
@@ -87,7 +87,7 @@ export default function Risk({ risk }: Props) {
                     </div>
                 )}
                 {tab === 'Sector Risk' && <SectionCard title="Sector Risk"><ul className="space-y-2 text-sm">{risk.sectorRisk.map(([s, l, n]) => <li key={s} className="flex items-center justify-between gap-3"><span className="flex-1">{s}</span><Chip tone={riskTone(l)}>{l}</Chip><span className="w-10 text-right font-semibold">{n}</span></li>)}</ul></SectionCard>}
-                {tab === 'Regional Comparison' && <SectionCard title="Regional Comparison"><p className="text-sm text-ink-600">South Africa is the only active Phase 1 country pack. Regional risk comparisons will be published as additional country packs pass the activation gate.</p></SectionCard>}
+                {tab === 'Regional Comparison' && <SectionCard title="Regional Comparison"><p className="text-sm text-ink-600">All 54 African country cockpits are live with placeholder risk scores. South Africa carries the full risk pack shown here; side-by-side regional risk comparisons will be published as each country's Test Data and live API feeds replace the placeholders.</p></SectionCard>}
                 {tab === 'Early Warning Signals' && <SectionCard title="Early Warning Signals"><ul className="space-y-2 text-sm">{risk.signals.map(([s, c, st]) => <li key={s} className="flex items-center justify-between gap-2"><span className="flex-1">{s}</span><Chip tone="dark">{c}</Chip><Chip tone={st === 'Improving' ? 'good' : st === 'Elevated' ? 'bad' : 'warn'}>{st}</Chip></li>)}</ul></SectionCard>}
                 {tab === 'Scenario Outlook' && <div className="grid gap-4 md:grid-cols-3">{risk.scenarios.map(([t, d]) => <SectionCard key={t} title={t}><p className="text-sm text-ink-600">{d}</p></SectionCard>)}</div>}
                 {tab === 'Mitigation Factors' && <SectionCard title="Mitigation Factors"><ul className="space-y-2 text-sm">{risk.mitigation.map((m) => <li key={m} className="flex gap-2"><ArrowRight className="size-4 text-gold-600" />{m}</li>)}</ul></SectionCard>}

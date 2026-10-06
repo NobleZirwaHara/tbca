@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Support\Platform\Basket;
 use App\Support\Platform\Checkout;
 use App\Support\Platform\Money;
+use App\Support\Platform\PaymentOptions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,6 +21,7 @@ class BasketController extends Controller
         return Inertia::render('Checkout/Basket', [
             'items' => $basket->items(),
             'totals' => Money::totals($subtotal),
+            'paymentOptions' => PaymentOptions::register(),
         ]);
     }
 

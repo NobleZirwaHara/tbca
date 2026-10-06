@@ -31,7 +31,7 @@ export default function Profile({ country, profile, countries, categories, updat
                     <Card title="Country Control Panel">
                         <KV rows={[
                             ['Country State', <StateBadge bucket={country.bucket} label={country.state_label} />],
-                            ['Activation Scope', active ? 'Phase 1 (Controlled)' : 'None (shell)'],
+                            ['Activation Scope', active ? 'Controlled' : 'None (shell)'],
                             ['Evidence Status', active ? 'Evidence Current' : 'Partial / unresolved'],
                             ['Resolver Completeness', profile.rcs_label],
                             ['Hard Blocks', String(profile.hard_blocks)],
@@ -62,7 +62,7 @@ export default function Profile({ country, profile, countries, categories, updat
                     </div>
                     <p className="mt-3 max-w-3xl text-[0.8125rem] text-ink-600">
                         {active
-                            ? 'South Africa is the only activated country object in Phase 1. Commercial availability remains subject to service-by-service Country Resolver permission. Other African country objects are not implied active.'
+                            ? 'South Africa is currently the only activated country object. Commercial availability remains subject to service-by-service Country Resolver permission. Other African country objects are not implied active.'
                             : `${country.name} is a shell country object: a geographic and data shell only. No transaction, no numeric price, and no fact is published without approved evidence. ${country.gate_status}.`}
                     </p>
                 </div>

@@ -1,17 +1,19 @@
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { ArrowRight, BadgeCheck, BarChart3, CheckCircle2, Filter, Globe, HelpCircle, Layers, MousePointerClick, Search, ShieldCheck, Sparkles, Star, Target, Users, Zap } from 'lucide-react';
-import AfricaMap from '@/Components/AfricaMap';
+import AfricaCountryMap from '@/Components/Map/AfricaCountryMap';
 import { IndustriesSubNav, NextSteps, AdvisorCard } from '@/Components/Insights/Industries';
 import { DynIcon, TrustStrip } from '@/Components/Insights/Shared';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import type { IndustryCard, IndustryContextValue } from '@/types/insights';
 
 interface Props {
     industries: IndustryCard[];
     context: IndustryContextValue;
     glance: { industries: number; specialists: string; projects: string; capital: string; humanReviewed: string };
+    embedded?: EmbeddedSection;
 }
 
-export default function IndustriesIndex({ industries, context, glance }: Props) {
+export default function IndustriesIndex({ industries, context, glance, embedded }: Props) {
     const guidance = useForm({ q: '' });
 
     return (
@@ -21,8 +23,8 @@ export default function IndustriesIndex({ industries, context, glance }: Props) 
 
             {/* Hero (Front-end Industries page) */}
             <section className="relative overflow-hidden bg-ink-950 text-parchment-100">
-                <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 opacity-60 lg:block" aria-hidden="true">
-                    <AfricaMap />
+                <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 items-center justify-center opacity-40 lg:flex" aria-hidden="true">
+                    <AfricaCountryMap decorative className="w-[min(560px,90%)]" />
                 </div>
                 <div className="container-tbca relative grid gap-8 py-10 lg:grid-cols-[1fr_320px] lg:py-14">
                     <div>
@@ -76,7 +78,7 @@ export default function IndustriesIndex({ industries, context, glance }: Props) 
                         <div className="flex flex-wrap gap-3">
                             <Link href="/industries/select" className="inline-flex items-center gap-2 rounded-[4px] bg-gold-500 px-5 py-2.5 text-sm font-bold text-ink-900 uppercase">Select Industry <ArrowRight className="size-4" /></Link>
                             <Link href="/industries/sector-intelligence" className="inline-flex items-center gap-2 rounded-[4px] border border-ink-300 bg-white px-5 py-2.5 text-sm font-semibold text-ink-900 uppercase">View Sector Intelligence <ArrowRight className="size-4" /></Link>
-                            <a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-[4px] border border-verified-500/50 bg-white px-5 py-2.5 text-sm font-semibold text-verified-700">WhatsApp Support</a>
+                            <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-[4px] border border-verified-500/50 bg-white px-5 py-2.5 text-sm font-semibold text-verified-700">WhatsApp Support</a>
                         </div>
 
                         <div className="rounded-[8px] border border-gold-300 bg-gold-50/60 p-4">
@@ -172,6 +174,7 @@ export default function IndustriesIndex({ industries, context, glance }: Props) 
                     </ul>
                 </div>
             </div>
+            <EmbeddedServices section={embedded} intro="Fixed-price sector intelligence services: sector profiles, regulatory and incentive frameworks, competitive landscapes, gap calculators and rankings." />
             <TrustStrip variant="industries" />
         </>
     );

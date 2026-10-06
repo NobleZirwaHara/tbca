@@ -21,6 +21,8 @@ class DpProduct extends Model
             'audiences' => 'array',
             'industries' => 'array',
             'languages' => 'array',
+            'currencies' => 'array',
+            'jurisdictions' => 'array',
             'formats' => 'array',
             'prices' => 'array',
             'receive' => 'array',

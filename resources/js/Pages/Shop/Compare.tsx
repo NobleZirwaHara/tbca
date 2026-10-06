@@ -3,11 +3,12 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Check, Download, Headphones, Layers, Minus, Plus, Search, ShieldCheck, X } from 'lucide-react';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import ShopIcon from '@/Components/Shop/ShopIcon';
-import { ActTag, HeroStats, ShopCrumbs, ShopHero, SideCard, TrustStrip, zar } from '@/Components/Shop/Bits';
+import { ActTag, HeroStats, ShopCrumbs, ShopHero, SideCard, TrustStrip } from '@/Components/Shop/Bits';
 import { cn } from '@/lib/cn';
 import type { SharedProps } from '@/types';
 import type { ShopCard } from '@/types/shop';
 
+import { usePrice } from '@/lib/money';
 type Rows = Record<'commercial_act' | 'best_for' | 'format_access' | 'delivery' | 'human_review' | 'key_outcome' | 'includes' | 'updates' | 'support' | 'licence', string | null>;
 type Compared = ShopCard & { rows: Rows };
 
@@ -36,6 +37,7 @@ function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange:
 }
 
 export default function Compare({ products, candidates, codes, q, max, shareUrl }: { products: Compared[]; candidates: ShopCard[]; codes: string[]; q: string; max: number; shareUrl: string }) {
+    const fmt = usePrice();
     const { auth } = usePage<SharedProps>().props;
     const [highlight, setHighlight] = useState(true);
     const [showAll, setShowAll] = useState(true);
@@ -47,7 +49,7 @@ export default function Compare({ products, candidates, codes, q, max, shareUrl 
     const nav = (next: string[], query = '') => router.get('/shop/compare', { items: next.join(','), ...(query ? { q: query } : {}) }, { preserveScroll: true });
     const rows = CRITERIA.filter((c) => (delivery || c.group !== 'delivery')).filter((c) => showAll || new Set(products.map((p) => p.rows[c.key])).size > 1);
     const differs = (k: keyof Rows) => new Set(products.map((p) => p.rows[k])).size > 1;
-    const price = (p: Compared) => (p.price_zar ? `From ${zar(p.price_zar)}${p.price_unit ? ` /${p.price_unit}` : ''}` : p.act === 'A7' ? 'Free' : 'On request');
+    const price = (p: Compared) => (p.price_zar ? `From ${fmt(p.price_zar)}${p.price_unit ? ` /${p.price_unit}` : ''}` : p.act === 'A7' ? 'Free' : 'On request');
 
     return (
         <>
@@ -68,7 +70,7 @@ export default function Compare({ products, candidates, codes, q, max, shareUrl 
                             {candidates.map((c) => (
                                 <li key={c.code}>
                                     <button type="button" disabled={codes.length >= max} onClick={() => nav([...codes, c.code])} className="flex w-full items-center justify-between gap-2 rounded px-1 py-1 text-left text-xs hover:bg-parchment-200 disabled:opacity-40">
-                                        <span className="flex items-center gap-1.5"><Plus className="size-3.5 text-gold-700" />{c.name}</span><span className="text-ink-400">{c.price_zar ? zar(c.price_zar) : ''}</span>
+                                        <span className="flex items-center gap-1.5"><Plus className="size-3.5 text-gold-700" />{c.name}</span><span className="text-ink-400">{c.price_zar ? fmt(c.price_zar) : ''}</span>
                                     </button>
                                 </li>
                             ))}

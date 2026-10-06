@@ -2,6 +2,8 @@
 
 namespace App\Support\Countries;
 
+use App\Support\Platform\Africa;
+
 /**
  * Appendix V — the 54-country shell register. One canonical schema, 54 instances.
  * Identity reference data only (name, ISO, geography, ISO currency code). Country
@@ -9,65 +11,92 @@ namespace App\Support\Countries;
  */
 class CountryRegister
 {
-    /** [iso2, iso3, name, region, currency, income group, shell RCS %] */
-    public const COUNTRIES = [
-        ['DZ', 'DZA', 'Algeria', 'North Africa', 'DZD', 'Upper Middle Income', 18],
-        ['AO', 'AGO', 'Angola', 'Middle Africa', 'AOA', 'Lower Middle Income', 22],
-        ['BJ', 'BEN', 'Benin', 'West Africa', 'XOF', 'Lower Middle Income', 16],
-        ['BW', 'BWA', 'Botswana', 'Southern Africa', 'BWP', 'Upper Middle Income', 25],
-        ['BF', 'BFA', 'Burkina Faso', 'West Africa', 'XOF', 'Low Income', 17],
-        ['BI', 'BDI', 'Burundi', 'East Africa', 'BIF', 'Low Income', 14],
-        ['CV', 'CPV', 'Cabo Verde', 'West Africa', 'CVE', 'Lower Middle Income', 15],
-        ['CM', 'CMR', 'Cameroon', 'Middle Africa', 'XAF', 'Lower Middle Income', 19],
-        ['CF', 'CAF', 'Central African Republic', 'Middle Africa', 'XAF', 'Low Income', 8],
-        ['TD', 'TCD', 'Chad', 'Middle Africa', 'XAF', 'Low Income', 9],
-        ['KM', 'COM', 'Comoros', 'East Africa', 'KMF', 'Lower Middle Income', 10],
-        ['CG', 'COG', 'Congo', 'Middle Africa', 'XAF', 'Lower Middle Income', 12],
-        ['CI', 'CIV', "Cote d'Ivoire", 'West Africa', 'XOF', 'Lower Middle Income', 21],
-        ['CD', 'COD', 'Democratic Republic of the Congo', 'Middle Africa', 'CDF', 'Low Income', 11],
-        ['DJ', 'DJI', 'Djibouti', 'East Africa', 'DJF', 'Lower Middle Income', 13],
-        ['EG', 'EGY', 'Egypt', 'North Africa', 'EGP', 'Lower Middle Income', 24],
-        ['GQ', 'GNQ', 'Equatorial Guinea', 'Middle Africa', 'XAF', 'Upper Middle Income', 9],
-        ['ER', 'ERI', 'Eritrea', 'East Africa', 'ERN', 'Low Income', 6],
-        ['SZ', 'SWZ', 'Eswatini', 'Southern Africa', 'SZL', 'Lower Middle Income', 20],
-        ['ET', 'ETH', 'Ethiopia', 'East Africa', 'ETB', 'Low Income', 17],
-        ['GA', 'GAB', 'Gabon', 'Middle Africa', 'XAF', 'Upper Middle Income', 12],
-        ['GM', 'GMB', 'Gambia', 'West Africa', 'GMD', 'Low Income', 11],
-        ['GH', 'GHA', 'Ghana', 'West Africa', 'GHS', 'Lower Middle Income', 27],
-        ['GN', 'GIN', 'Guinea', 'West Africa', 'GNF', 'Lower Middle Income', 10],
-        ['GW', 'GNB', 'Guinea-Bissau', 'West Africa', 'XOF', 'Low Income', 8],
-        ['KE', 'KEN', 'Kenya', 'East Africa', 'KES', 'Lower Middle Income', 29],
-        ['LS', 'LSO', 'Lesotho', 'Southern Africa', 'LSL', 'Lower Middle Income', 18],
-        ['LR', 'LBR', 'Liberia', 'West Africa', 'LRD', 'Low Income', 10],
-        ['LY', 'LBY', 'Libya', 'North Africa', 'LYD', 'Upper Middle Income', 7],
-        ['MG', 'MDG', 'Madagascar', 'Southern Africa', 'MGA', 'Low Income', 13],
-        ['MW', 'MWI', 'Malawi', 'Southern Africa', 'MWK', 'Low Income', 16],
-        ['ML', 'MLI', 'Mali', 'West Africa', 'XOF', 'Low Income', 9],
-        ['MR', 'MRT', 'Mauritania', 'North Africa', 'MRU', 'Lower Middle Income', 10],
-        ['MU', 'MUS', 'Mauritius', 'Southern Africa', 'MUR', 'High Income', 28],
-        ['MA', 'MAR', 'Morocco', 'North Africa', 'MAD', 'Lower Middle Income', 23],
-        ['MZ', 'MOZ', 'Mozambique', 'Southern Africa', 'MZN', 'Low Income', 15],
-        ['NA', 'NAM', 'Namibia', 'Southern Africa', 'NAD', 'Upper Middle Income', 24],
-        ['NE', 'NER', 'Niger', 'West Africa', 'XOF', 'Low Income', 7],
-        ['NG', 'NGA', 'Nigeria', 'West Africa', 'NGN', 'Lower Middle Income', 26],
-        ['RW', 'RWA', 'Rwanda', 'East Africa', 'RWF', 'Low Income', 22],
-        ['ST', 'STP', 'Sao Tome and Principe', 'Middle Africa', 'STN', 'Lower Middle Income', 8],
-        ['SN', 'SEN', 'Senegal', 'West Africa', 'XOF', 'Lower Middle Income', 19],
-        ['SC', 'SYC', 'Seychelles', 'Southern Africa', 'SCR', 'High Income', 14],
-        ['SL', 'SLE', 'Sierra Leone', 'West Africa', 'SLE', 'Low Income', 9],
-        ['SO', 'SOM', 'Somalia', 'East Africa', 'SOS', 'Low Income', 5],
-        ['ZA', 'ZAF', 'South Africa', 'Southern Africa', 'ZAR', 'Upper Middle Income', 100],
-        ['SS', 'SSD', 'South Sudan', 'East Africa', 'SSP', 'Low Income', 5],
-        ['SD', 'SDN', 'Sudan', 'North Africa', 'SDG', 'Low Income', 6],
-        ['TZ', 'TZA', 'Tanzania', 'East Africa', 'TZS', 'Lower Middle Income', 23],
-        ['TG', 'TGO', 'Togo', 'West Africa', 'XOF', 'Low Income', 12],
-        ['TN', 'TUN', 'Tunisia', 'North Africa', 'TND', 'Lower Middle Income', 20],
-        ['UG', 'UGA', 'Uganda', 'East Africa', 'UGX', 'Low Income', 18],
-        ['ZM', 'ZMB', 'Zambia', 'Southern Africa', 'ZMW', 'Lower Middle Income', 21],
-        ['ZW', 'ZWE', 'Zimbabwe', 'Southern Africa', 'ZWG', 'Lower Middle Income', 14],
+    /**
+     * Countries-section fields per country: [income group, shell RCS %]. Shared base facts
+     * (ISO3, name, AU region, currency) come from App\Support\Platform\Africa.
+     */
+    public const EXTRAS = [
+        'DZ' => ['Upper Middle Income', 18],
+        'AO' => ['Lower Middle Income', 22],
+        'BJ' => ['Lower Middle Income', 16],
+        'BW' => ['Upper Middle Income', 25],
+        'BF' => ['Low Income', 17],
+        'BI' => ['Low Income', 14],
+        'CV' => ['Lower Middle Income', 15],
+        'CM' => ['Lower Middle Income', 19],
+        'CF' => ['Low Income', 8],
+        'TD' => ['Low Income', 9],
+        'KM' => ['Lower Middle Income', 10],
+        'CG' => ['Lower Middle Income', 12],
+        'CI' => ['Lower Middle Income', 21],
+        'CD' => ['Low Income', 11],
+        'DJ' => ['Lower Middle Income', 13],
+        'EG' => ['Lower Middle Income', 24],
+        'GQ' => ['Upper Middle Income', 9],
+        'ER' => ['Low Income', 6],
+        'SZ' => ['Lower Middle Income', 20],
+        'ET' => ['Low Income', 17],
+        'GA' => ['Upper Middle Income', 12],
+        'GM' => ['Low Income', 11],
+        'GH' => ['Lower Middle Income', 27],
+        'GN' => ['Lower Middle Income', 10],
+        'GW' => ['Low Income', 8],
+        'KE' => ['Lower Middle Income', 29],
+        'LS' => ['Lower Middle Income', 18],
+        'LR' => ['Low Income', 10],
+        'LY' => ['Upper Middle Income', 7],
+        'MG' => ['Low Income', 13],
+        'MW' => ['Low Income', 16],
+        'ML' => ['Low Income', 9],
+        'MR' => ['Lower Middle Income', 10],
+        'MU' => ['High Income', 28],
+        'MA' => ['Lower Middle Income', 23],
+        'MZ' => ['Low Income', 15],
+        'NA' => ['Upper Middle Income', 24],
+        'NE' => ['Low Income', 7],
+        'NG' => ['Lower Middle Income', 26],
+        'RW' => ['Low Income', 22],
+        'ST' => ['Lower Middle Income', 8],
+        'SN' => ['Lower Middle Income', 19],
+        'SC' => ['High Income', 14],
+        'SL' => ['Low Income', 9],
+        'SO' => ['Low Income', 5],
+        'ZA' => ['Upper Middle Income', 100],
+        'SS' => ['Low Income', 5],
+        'SD' => ['Low Income', 6],
+        'TZ' => ['Lower Middle Income', 23],
+        'TG' => ['Low Income', 12],
+        'TN' => ['Lower Middle Income', 20],
+        'UG' => ['Low Income', 18],
+        'ZM' => ['Lower Middle Income', 21],
+        'ZW' => ['Lower Middle Income', 14],
     ];
 
-    public const REGIONS = ['North Africa', 'West Africa', 'Middle Africa', 'East Africa', 'Southern Africa'];
+    /** Legacy display names kept so existing /countries slugs stay stable. */
+    private const NAMES = ['CG' => 'Congo'];
+
+    /**
+     * [iso2, iso3, name, region, currency, income group, shell RCS %], alphabetical by name.
+     *
+     * @return list<array{0: string, 1: string, 2: string, 3: string, 4: string, 5: string, 6: int}>
+     */
+    public static function countries(): array
+    {
+        return collect(Africa::all())
+            ->map(fn (array $c, string $iso) => [
+                $iso,
+                $c['iso3'],
+                self::NAMES[$iso] ?? $c['name'],
+                $c['region_name'],
+                $c['currency_code'],
+                ...self::EXTRAS[$iso],
+            ])
+            ->sortBy(fn (array $row) => Africa::slug($row[2]))
+            ->values()
+            ->all();
+    }
+
+    public const REGIONS = Africa::REGIONS_LIST;
 
     /**
      * The nine resolver domains (CT-008) with required-field counts and the

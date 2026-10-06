@@ -25,12 +25,17 @@ interface Props extends AiimPageProps {
     province: { slug: string; name: string } | null;
     grade: { grade: string; label: string };
     opportunities: ProjectItem[];
+    opportunityCounts: { province: number | null; sector: number };
     saved: string[];
 }
 
-export default function Sector({ sector, province, grade, opportunities, saved }: Props) {
+export default function Sector({ sector, province, grade, opportunities, opportunityCounts, saved }: Props) {
     const p = sector.profile;
     const where = province ? ` in ${province.name}` : '';
+    // Scope the opportunity search to the province only when it has matches, so the button never lands on an empty list.
+    const scoped = Boolean(province) && (opportunityCounts.province ?? 0) > 0;
+    const opportunitiesHref = `/aiim/opportunities?sector=${sector.slug}${scoped && province ? `&province=${province.slug}` : ''}`;
+    const opportunitiesCount = scoped ? opportunityCounts.province : opportunityCounts.sector;
     const top = p.topOpportunities.length ? p.topOpportunities : opportunities.map((o) => [o.name, o.type, o.level] as [string, string, string]);
 
     return (
@@ -47,7 +52,7 @@ export default function Sector({ sector, province, grade, opportunities, saved }
                     <RailBox title="Next Steps">
                         <p className="mb-3 text-xs text-ink-300">Take action to explore opportunities, compare sectors, and connect with our expert advisors.</p>
                         <div className="space-y-2">
-                            <ButtonLink href={`/aiim/opportunities?sector=${sector.slug}${province ? `&province=${province.slug}` : ''}`} size="sm" className="w-full" trailingIcon="arrow-right">View Opportunities</ButtonLink>
+                            <ButtonLink href={opportunitiesHref} size="sm" className="w-full" trailingIcon="arrow-right">View Opportunities ({opportunitiesCount})</ButtonLink>
                             <ButtonLink href={`/aiim/sectors${province ? `?province=${province.slug}` : ''}`} size="sm" variant="outline-light" className="w-full">Compare Sector</ButtonLink>
                             <ListToggle list="saved" type="sector" itemKey={sector.slug} saved={saved} dark />
                         </div>
@@ -87,7 +92,16 @@ export default function Sector({ sector, province, grade, opportunities, saved }
                     <ul className="space-y-1.5 text-xs">
                         {top.slice(0, 6).map(([n, t, l]) => <li key={n} className="flex items-center justify-between gap-2"><span className="flex-1">{n}</span><Chip tone="dark">{t}</Chip><Chip tone={levelTone(l)}>{l.replace(' Opportunity', '')}</Chip></li>)}
                     </ul>
-                    {opportunities[0] && <div className="mt-2 flex gap-2"><CompareButton type="opportunity" itemKey={opportunities[0].slug} label="Compare top item" /></div>}
+                    {opportunities.length > 0 && (
+                        <ul className="mt-2 space-y-1 border-t border-parchment-300 pt-2 text-xs">
+                            {opportunities.slice(0, 3).map((o) => <li key={o.slug}><Link href={`/aiim/opportunities/${o.slug}`} className="font-semibold text-gold-700 hover:underline">{o.name}</Link></li>)}
+                        </ul>
+                    )}
+                    <div className="mt-2 flex flex-wrap gap-2">
+                        <ButtonLink href={opportunitiesHref} size="sm" trailingIcon="arrow-right">View Opportunities ({opportunitiesCount})</ButtonLink>
+                        {opportunities[0] && <CompareButton type="opportunity" itemKey={opportunities[0].slug} label="Compare top item" />}
+                    </div>
+                    {province && !scoped && <p className="mt-1 text-[0.65rem] text-ink-500">No listed opportunities in {province.name} yet — showing this sector across all regions.</p>}
                 </SectionCard>
                 <SectionCard number={5} title="Key Risks & Constraints">
                     <ul className="space-y-1.5 text-xs">{p.risks.map(([r, l]) => <li key={r} className="flex justify-between gap-2"><span>{r}</span><Chip tone={riskTone(l)}>{l}</Chip></li>)}</ul>

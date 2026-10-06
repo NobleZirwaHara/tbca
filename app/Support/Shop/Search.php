@@ -5,6 +5,7 @@ namespace App\Support\Shop;
 use App\Models\Shop\Product;
 use App\Models\Sprint;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
@@ -29,17 +30,36 @@ class Search
             ->unique()->values()->all();
     }
 
-    /** Every eligible record (listed shop masters + published sprints), normalised. */
+    /** Sprint columns the search index needs (the JSON packages / attributes columns are ~10 MB). */
+    private const SPRINT_COLUMNS = ['id', 'code', 'slug', 'title', 'type', 'category', 'subcategory', 'summary', 'price_zar', 'delivery', 'commercial_act', 'featured', 'rating'];
+
+    /**
+     * Every eligible record (listed shop masters + published sprints), normalised.
+     *
+     * Building it means reading ~1,900 rows, so the normalised index is cached and keyed on
+     * each table's row count and latest update: any seeder or admin edit rebuilds it.
+     */
     public static function corpus(): Collection
+    {
+        $version = implode('|', [
+            Product::query()->count(), Product::query()->max('updated_at'),
+            Sprint::query()->count(), Sprint::query()->max('updated_at'),
+        ]);
+
+        return collect(Cache::remember('shop.search-corpus.'.md5($version), now()->addDay(), fn () => self::buildCorpus()));
+    }
+
+    /** @return list<array<string, mixed>> */
+    private static function buildCorpus(): array
     {
         $shop = Product::query()->listed()->get()->map(fn (Product $p) => self::fromProduct($p));
 
-        $shopCodes = $shop->pluck('code')->all();
-        $sprints = Sprint::query()->where('status', 'published')->get()
-            ->reject(fn (Sprint $s) => in_array($s->code, $shopCodes, true))
+        $shopCodes = array_flip($shop->pluck('code')->all());
+        $sprints = Sprint::query()->where('status', 'published')->get(self::SPRINT_COLUMNS)
+            ->reject(fn (Sprint $s) => isset($shopCodes[$s->code]))
             ->map(fn (Sprint $s) => self::fromSprint($s));
 
-        return $shop->concat($sprints)->values();
+        return $shop->concat($sprints)->values()->all();
     }
 
     public static function fromProduct(Product $p): array

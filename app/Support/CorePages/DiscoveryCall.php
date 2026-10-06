@@ -66,7 +66,7 @@ class DiscoveryCall
     {
         return [
             'nneka' => ['name' => 'Nneka Okafor', 'title' => 'Senior Partner', 'email' => 'nneka.okafor@tbca.africa', 'phone' => '+234 809 123 4567', 'initials' => 'NO'],
-            'david' => ['name' => 'David M.', 'title' => 'Research Lead', 'email' => 'david.m@tbca.africa', 'phone' => '+27 12 001 0567', 'initials' => 'DM'],
+            'david' => ['name' => 'David M.', 'title' => 'Research Lead', 'email' => 'david.m@tbca.africa', 'phone' => '+27 60 801 1365', 'initials' => 'DM'],
             'tosin' => ['name' => 'Tosin A.', 'title' => 'Strategy Director', 'email' => 'tosin.a@tbca.africa', 'phone' => '+234 809 555 0101', 'initials' => 'TA'],
             'michael' => ['name' => 'Michael K.', 'title' => 'Tech Lead', 'email' => 'michael.k@tbca.africa', 'phone' => '+27 12 001 0590', 'initials' => 'MK'],
         ];

@@ -55,6 +55,12 @@ export default function BriefWizard({ step, steps, reference, data, options, est
                                 <div className="max-w-2xl">
                                     <h1 className="font-serif text-3xl font-bold text-ink-900 md:text-4xl">Submit Your Marketplace Brief</h1>
                                     <p className="mt-2 text-ink-600">Tell us what you need, your goals, timeline and budget. We'll review your brief and match you with the right specialists.</p>
+                                    {data.package_label && (
+                                        <p className="mt-3 rounded-[6px] border border-gold-300/60 bg-gold-50 px-3 py-2 text-sm text-ink-800">
+                                            Based on <Link href={`/marketplace/services/${data.service}?package=${data.package}`} className="font-semibold text-controlled-600 underline">{data.service_title}</Link>
+                                            {' '}– <strong>{data.package_label} Package</strong> ({zarCode(data.package_price_zar)}{data.package_delivery ? ` · ${data.package_delivery}` : ''})
+                                        </p>
+                                    )}
                                 </div>
                                 <div className="rounded-[8px] border border-gold-300/60 bg-parchment-100 px-4 py-3 text-xs">
                                     <p><span className="text-ink-500">Brief ID:</span> <strong>{reference ?? '(Auto-generated)'}</strong></p>

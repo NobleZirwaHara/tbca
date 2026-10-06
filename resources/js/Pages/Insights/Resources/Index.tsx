@@ -2,6 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowRight, BadgeCheck, BookOpen, Bot, Briefcase, CheckCircle2, ClipboardList, Clock, Compass, Download, Eye, FileText, GraduationCap, Lightbulb, Lock, Megaphone, PlayCircle, Settings, Shield, ShieldCheck, Sparkles, Target, TrendingUp, Users, Wallet, Zap } from 'lucide-react';
 import { CurrentnessChip, NeedSomething, TrustStrip, label } from '@/Components/Insights/Shared';
 import { PriceLine, ResourceCard } from '@/Components/Insights/Resources';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import type { ResourceCard as RC } from '@/types/insights';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
     tools: RC[];
     popular: RC[];
     overview: { guides: number; templates: number; caseStudies: number; compliance: number; webinars: number; reports: number };
+    embedded?: EmbeddedSection;
 }
 
 const CAT_META: Record<string, [typeof Target, string]> = {
@@ -24,7 +26,7 @@ const CAT_META: Record<string, [typeof Target, string]> = {
     'learning-development': [GraduationCap, 'Courses, eBooks, skill assessments and learning pathways'],
 };
 
-export default function ResourcesIndex({ categories, featured, guides, tools, popular, overview }: Props) {
+export default function ResourcesIndex({ categories, featured, guides, tools, popular, overview, embedded }: Props) {
     const sub = useForm({ email: '' });
     const cats = categories.filter((c) => CAT_META[c.key]);
 
@@ -152,6 +154,7 @@ export default function ResourcesIndex({ categories, featured, guides, tools, po
                     <p className="text-center text-xs text-ink-500">{label('library')}: <Link href="/resources/library" className="text-gold-700">{categories.reduce((a, c) => a + c.count, 0)} published resources</Link> · <Link href="/resources/content-status" className="text-gold-700">Content status</Link> · <Link href="/resources/value-exchange" className="text-gold-700">Value exchange</Link></p>
                 </div>
             </div>
+            <EmbeddedServices section={embedded} intro="Fixed-price toolkits, calculators, templates and resource services that run inside TBCA Resources." />
             <TrustStrip variant="resources" />
         </>
     );

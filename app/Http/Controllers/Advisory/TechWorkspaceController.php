@@ -22,7 +22,7 @@ class TechWorkspaceController extends Controller
 {
     private function load(Request $request, TechEngagement $e): TechEngagement
     {
-        abort_unless($e->user_id === $request->user()->id || $request->user()->role === 'admin', 403);
+        abort_unless((int) $e->user_id === (int) $request->user()->id || $request->user()->role === 'admin', 403);
         TechWorkflow::reconcile($e);
 
         return $e->refresh()->load('gates');

@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="antialiased">
+@php
+    $tbcaLanguage = session('tbca.language', 'en');
+    $tbcaLanguageMeta = collect(config('tbca.languages'))->firstWhere('code', $tbcaLanguage);
+    $tbcaHtmlLang = $tbcaLanguageMeta['html'] ?? 'en';
+    $tbcaDir = $tbcaLanguageMeta['dir'] ?? 'ltr';
+@endphp
+<html lang="{{ $tbcaHtmlLang }}" dir="{{ $tbcaDir }}" class="antialiased">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +17,6 @@
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/brand/tbca-mark.png" type="image/png">
     <link rel="apple-touch-icon" href="/brand/icon-180.png">
-
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|playfair-display:400,500,600,700&display=swap" rel="stylesheet">
 
     @routes
     @viteReactRefresh

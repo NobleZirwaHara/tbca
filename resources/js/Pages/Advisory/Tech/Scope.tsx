@@ -24,7 +24,7 @@ function Body({ lines, summary, context, engagement }: Props) {
         <div className="grid gap-4 xl:grid-cols-12">
             <div className="space-y-4 xl:col-span-8">
                 <Card num={1} title="Project Scope">
-                    <KV rows={[['Solution', summary.tower ?? engagement?.tower ?? '—'], ['Engagement Type', 'Advisory + Implementation'], ['Organisation', context?.legal_name ?? engagement?.organisation ?? '—'], ['Primary Objective', context?.objective ?? 'Implement an integrated business system to streamline operations, improve data visibility and support scalable growth.'], ['Challenge', context?.challenge ?? '—'], ['Region', 'South Africa'], ['Estimated Timeline', summary.complexity ?? '—'], ['Auto-Renewal', 'No (support requires explicit S13 activation)']]} />
+                    <KV rows={[['Solution', summary.tower ?? engagement?.tower ?? '—'], ['Engagement Type', 'Advisory + Implementation'], ['Organisation', context?.legal_name ?? engagement?.organisation ?? '—'], ['Primary Objective', context?.objective ?? 'Implement an integrated business system to streamline operations, improve data visibility and support scalable growth.'], ['Challenge', context?.challenge ?? '—'], ['Region', 'Africa (Active)'], ['Estimated Timeline', summary.complexity ?? '—'], ['Auto-Renewal', 'No (support requires explicit S13 activation)']]} />
                 </Card>
                 <Card num={2} title="Deliverables">
                     <SimpleTable columns={['Deliverable', 'Description', 'Acceptance Criteria', 'Due Gate']} rows={DELIVERABLES.filter((d) => hasIntegration || !d[0].startsWith('Data Migration')).map((d) => [<b>{d[0]}</b>, d[1], d[2], d[3]])} />
@@ -37,7 +37,7 @@ function Body({ lines, summary, context, engagement }: Props) {
                 <Card title="Key Risks & Mitigations"><SimpleTable columns={['Risk', 'Mitigation']} rows={[['Data quality issues', 'Data clean-up and validation plan'], ['Scope changes', 'Change control process (VAR gate)'], ['User adoption', 'Training and change management'], ['Integration delays', 'Early technical validation']]} /></Card>
             </div>
             <aside className="space-y-4 xl:col-span-4">
-                <Card title="Engagement Summary"><KV rows={[['Solution', summary.tower ?? engagement?.tower ?? '—'], ['Engagement Type', 'Advisory + Implementation'], ['Timeline', summary.complexity ?? '—'], ['Delivery Model', 'Hybrid (Cloud + On-Premise)'], ['Region', 'South Africa']]} />
+                <Card title="Engagement Summary"><KV rows={[['Solution', summary.tower ?? engagement?.tower ?? '—'], ['Engagement Type', 'Advisory + Implementation'], ['Timeline', summary.complexity ?? '—'], ['Delivery Model', 'Hybrid (Cloud + On-Premise)'], ['Region', 'Africa (Active)']]} />
                     <p className="mt-3 text-xs text-ink-500">Next Step — Review scope and deliverables, then proceed to fees.</p>
                     {!engagement && <ButtonLink href="/technology-solutions/fees" className="mt-3 w-full" trailingIcon="arrow-right">Proceed to Fees</ButtonLink>}
                     <button type="button" onClick={() => window.print()} className="mt-2 w-full rounded border border-ink-300 py-2 text-sm">Download Scope (PDF)</button>

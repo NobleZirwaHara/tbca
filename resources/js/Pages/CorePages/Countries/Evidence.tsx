@@ -1,7 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { ArrowRight, CalendarDays, CircleCheck, Download, FileSearch, History, Landmark, Scale, ShieldCheck, Ban, UserSearch, Wallet, Handshake, Receipt } from 'lucide-react';
 import { useState } from 'react';
-import { CountryFrame, Kpi, NoPrice, SideBox, StatePill } from '@/Components/CorePages/CountryParts';
+import { CountryFrame, Kpi, PricingNote, SideBox, StatePill } from '@/Components/CorePages/CountryParts';
 import { Flag } from '@/Components/CorePages/Kit';
 import Icon from '@/Components/ui/Icon';
 import type { CountryObject } from '@/types/core-pages';
@@ -22,7 +22,7 @@ export default function Evidence({ country: c, domains, items, totalItems, manif
     const [f, setF] = useState(filters);
     const iso = c.iso.toLowerCase();
     const apply = (next = f) => router.get(`/find-the-right-service/countries/${iso}/evidence`, next, { preserveState: true, preserveScroll: true, replace: true });
-    const nav = [[FileSearch, 'Evidence Panel', `/find-the-right-service/countries/${iso}/evidence`], [Receipt, 'Tax & Statutory', '/find-the-right-service/corridors/za-ae/ledger-s'], [Wallet, 'Payments', `/find-the-right-service/countries/${iso}`], [Handshake, 'Partners', '/partner-services'], [Scale, 'Legal & Regulatory', `/find-the-right-service/countries/${iso}/legal`], [Ban, 'Limitations', `/find-the-right-service/countries/${iso}/services/ZA-BCS-001`], [History, 'Change History', `/find-the-right-service/countries/${iso}/legal`]] as const;
+    const nav = [[FileSearch, 'Evidence Panel', `/find-the-right-service/countries/${iso}/evidence`], [Receipt, 'Tax & Statutory', '/find-the-right-service/corridors/za-ae/ledger-s'], [Wallet, 'Payments', `/find-the-right-service/countries/${iso}`], [Handshake, 'Partners', '/partner-services'], [Scale, 'Legal & Regulatory', `/find-the-right-service/countries/${iso}/legal`], [Ban, 'Limitations', `/find-the-right-service/countries/${iso}/services/${c.iso}-BCS-001`], [History, 'Change History', `/find-the-right-service/countries/${iso}/legal`]] as const;
 
     return (
         <div>
@@ -44,7 +44,7 @@ export default function Evidence({ country: c, domains, items, totalItems, manif
                         </SideBox>
                         <SideBox title="Evidence Filters">
                             <form onSubmit={(e) => { e.preventDefault(); apply(); }} className="space-y-2 text-[0.75rem]">
-                                {([['domain', 'Domain', domains.map((d) => d.name)], ['class', 'Evidence Class', classes], ['freshness', 'Freshness', ['Current', 'Stale']], ['confidence', 'Confidence', ['High', 'Medium', 'Low']]] as const).map(([k, l, opts]) => (
+                                {([['domain', 'Domain', domains.map((d) => d.name)], ['class', 'Evidence Class', classes], ['freshness', 'Freshness', ['Current', 'Baseline', 'Stale']], ['confidence', 'Confidence', ['High', 'Medium', 'Low']]] as const).map(([k, l, opts]) => (
                                     <label key={k} className="grid grid-cols-[5.5rem_1fr] items-center gap-2">{l}<select value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} className="h-8 rounded-[4px] border border-parchment-500 text-[0.75rem]"><option value="">All</option>{opts.map((o) => <option key={o}>{o}</option>)}</select></label>
                                 ))}
                                 <div className="flex gap-3"><button type="submit" className="font-semibold text-gold-700">Apply Filters →</button><button type="button" onClick={() => { const e = { domain: '', class: '', freshness: '', confidence: '' }; setF(e); apply(e); }} className="text-ink-500 underline">Reset</button></div>
@@ -54,7 +54,7 @@ export default function Evidence({ country: c, domains, items, totalItems, manif
                             <p className="flex gap-2 text-[0.75rem] text-ink-600"><UserSearch className="size-5 shrink-0" aria-hidden="true" />Book a 1:1 TBCA advisor or sector expert for tailored advice.</p>
                             <Link href="/discovery-call" className="mt-2 inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-[4px] border border-ink-300 text-[0.8125rem]"><CalendarDays className="size-4" aria-hidden="true" />Book Discovery Call</Link>
                         </SideBox>
-                        <NoPrice />
+                        <PricingNote />
                     </>
                 }
             >
@@ -67,12 +67,12 @@ export default function Evidence({ country: c, domains, items, totalItems, manif
                         <Link href="/find-the-right-service/countries" className="flex items-center gap-2 rounded-[6px] border border-parchment-400 p-2 text-[0.75rem]"><Landmark className="size-4" aria-hidden="true" />54 African Countries</Link>
                     </nav>
                     <div>
-                        <div className="flex items-center gap-4"><span className="text-[3rem]" aria-hidden="true"><Flag iso={c.iso} /></span><div><p className="text-[1.375rem] font-bold text-ink-900">{c.name}</p><p className="text-[0.75rem] text-ink-500">Phase 1 controlled country environment</p></div></div>
+                        <div className="flex items-center gap-4"><span className="text-[3rem]" aria-hidden="true"><Flag iso={c.iso} /></span><div><p className="text-[1.375rem] font-bold text-ink-900">{c.name}</p><p className="text-[0.75rem] text-ink-500">{`Africa (Active) · ${c.region}`}</p></div></div>
                         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                            <Kpi label="Evidence Currentness" value="Current" sub="All critical domains current" icon={<ShieldCheck className="size-6" aria-hidden="true" />} tone="good" />
+                            <Kpi label="Evidence Currentness" value={c.confirmed ? 'Current' : 'Baseline'} sub={c.confirmed ? 'All critical domains current' : 'Placeholder sources — to be confirmed'} icon={<ShieldCheck className="size-6" aria-hidden="true" />} tone={c.confirmed ? 'good' : 'warn'} />
                             <Kpi label="Contradictions" value="0 Open" sub="No unresolved contradictions" icon={<Scale className="size-6" aria-hidden="true" />} />
-                            <Kpi label="Evidence Confidence" value="High" sub="Overall confidence rating" icon={<CircleCheck className="size-6" aria-hidden="true" />} tone="good" />
-                            <Kpi label="Last Quality Review" value="15 Aug 2026" sub="Next review: 12 Sep 2026" icon={<CalendarDays className="size-6" aria-hidden="true" />} />
+                            <Kpi label="Evidence Confidence" value={c.confirmed ? 'High' : 'Medium'} sub="Overall confidence rating" icon={<CircleCheck className="size-6" aria-hidden="true" />} tone={c.confirmed ? 'good' : undefined} />
+                            <Kpi label="Last Quality Review" value={c.updated} sub={c.confirmed ? 'Next review: 12 Sep 2026' : 'Country-desk verification pending'} icon={<CalendarDays className="size-6" aria-hidden="true" />} />
                         </div>
                         <h2 className="mt-5 text-[0.9375rem] font-bold text-ink-900">Evidence Summary by Domain</h2>
                         <ul className="mt-2 grid gap-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-7">

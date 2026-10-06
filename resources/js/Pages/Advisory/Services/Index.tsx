@@ -38,7 +38,7 @@ export default function ServicesIndex({ clusters, featured, needs, categories, s
                 tagline="Complete Advisory. Intelligent Execution. Measurable Growth."
                 intro="Explore the full spectrum of TBCA services, tools and platforms designed to help you Diagnose, Plan, Fund, Execute and Scale with confidence."
                 chips={[
-                    { label: 'South Africa', sub: 'Active Market' },
+                    { label: 'Africa (Active)', sub: '54 Countries' },
                     { label: 'English &', sub: 'Afrikaans' },
                     { label: 'ZAR (Source)', sub: '& USD' },
                     { label: 'Human-Reviewed', sub: 'Outputs' },

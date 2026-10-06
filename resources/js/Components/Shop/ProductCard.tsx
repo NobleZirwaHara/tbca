@@ -1,5 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { Clock, ShoppingCart, UserCheck } from 'lucide-react';
+import CoverArt from '@/Components/Art/CoverArt';
 import ShopIcon from '@/Components/Shop/ShopIcon';
 import { Chip } from '@/Components/Shop/Bits';
 import { PriceLabel } from '@/Components/Shop/ResultRow';
@@ -11,12 +12,13 @@ export default function ProductCard({ p }: { p: ShopCard }) {
     const direct = p.purchasable && (p.act === 'A1' || p.act === 'A2') && !p.configurable;
 
     return (
-        <article className="flex h-full flex-col rounded-[8px] border border-parchment-400 bg-white p-4 shadow-card">
+        <article className="relative flex h-full flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-4 shadow-card transition-shadow hover:border-gold-300">
+            <CoverArt seed={p.slug} category={p.vehicle} label={p.name} className="-mx-4 -mt-4 mb-3 aspect-[16/9] w-[calc(100%+2rem)] max-w-none" />
             <div className="flex items-start gap-3">
                 <ShopIcon name={p.icon} size="md" />
                 <div className="min-w-0">
                     <h3 className="text-sm leading-snug font-semibold text-ink-900">
-                        <Link href={p.url} className="hover:text-gold-700">{p.name}</Link>
+                        <Link href={p.url} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">{p.name}</Link>
                     </h3>
                     {p.tagline && <p className="mt-1 line-clamp-2 text-xs text-ink-500">{p.tagline}</p>}
                 </div>
@@ -35,7 +37,7 @@ export default function ProductCard({ p }: { p: ShopCard }) {
                 ))}
                 <span className="text-ink-500">ZAR (Source)</span>
             </div>
-            <div className="mt-auto pt-3">
+            <div className="relative z-10 mt-auto pt-3">
                 {direct ? (
                     <button
                         type="button"

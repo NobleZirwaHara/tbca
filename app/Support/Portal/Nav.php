@@ -52,6 +52,7 @@ class Nav
                 ['label' => 'Renewals & Price Changes', 'href' => '/portal/renewals', 'icon' => 'refresh-cw'],
                 ['label' => 'Usage & Top-Ups', 'href' => '/portal/usage', 'icon' => 'gauge'],
                 ['label' => 'Arrears & Payment Help', 'href' => '/portal/arrears', 'icon' => 'alert-triangle'],
+                ['label' => 'Payment Methods', 'href' => '/portal/payment-methods', 'icon' => 'credit-card'],
                 ['label' => 'What TBCA Owes Me', 'href' => '/portal/obligations', 'icon' => 'hand-coins'],
                 ['label' => 'Forward Exposure', 'href' => '/portal/forward-exposure', 'icon' => 'trending-up'],
                 ['label' => 'Group Billing', 'href' => '/portal/billing/group', 'icon' => 'building-2'],
@@ -76,11 +77,11 @@ class Nav
                 ['label' => 'Reports & Dashboards', 'href' => '/portal/reports', 'icon' => 'bar-chart-3'],
                 ['label' => 'Benchmarks & Consent', 'href' => '/portal/benchmarks', 'icon' => 'pie-chart'],
             ]],
-            ['title' => 'Support & Communication', 'key' => 'support', 'icon' => 'life-buoy', 'description' => 'Messages, support tickets, NATASHA and help.', 'items' => [
+            ['title' => 'Support & Communication', 'key' => 'support', 'icon' => 'life-buoy', 'description' => 'Messages, support tickets, KAREN and help.', 'items' => [
                 ['label' => 'Secure Messages', 'href' => '/portal/messages', 'icon' => 'message-square'],
                 ['label' => 'WhatsApp Preferences', 'href' => '/portal/whatsapp', 'icon' => 'message-circle'],
                 ['label' => 'Support Tickets', 'href' => '/portal/support', 'icon' => 'life-buoy'],
-                ['label' => 'NATASHA Assistant', 'href' => '/portal/natasha', 'icon' => 'bot'],
+                ['label' => 'KAREN Assistant', 'href' => '/portal/natasha', 'icon' => 'bot'],
                 ['label' => 'Human Handoff & Escalation', 'href' => '/portal/natasha/handoff', 'icon' => 'user-round'],
                 ['label' => 'Knowledge Base & Help', 'href' => '/portal/help', 'icon' => 'book-open'],
                 ['label' => 'Escalation Ladder', 'href' => '/portal/escalations', 'icon' => 'trending-up'],
@@ -166,7 +167,7 @@ class Nav
             ['title' => 'Support & Trust', 'items' => [
                 ['label' => 'Support, SLA & Complaints', 'href' => '/admin/portal/support', 'icon' => 'life-buoy'],
                 ['label' => 'Communications & WhatsApp', 'href' => '/admin/portal/communications', 'icon' => 'message-circle'],
-                ['label' => 'NATASHA Console', 'href' => '/admin/portal/natasha', 'icon' => 'bot'],
+                ['label' => 'KAREN Console', 'href' => '/admin/portal/natasha', 'icon' => 'bot'],
                 ['label' => 'Consent, Rights & Retention', 'href' => '/admin/portal/consent', 'icon' => 'file-lock'],
                 ['label' => 'Security & Anomaly', 'href' => '/admin/portal/security', 'icon' => 'shield'],
                 ['label' => 'Successor & Estate Access', 'href' => '/admin/portal/successor-access', 'icon' => 'scroll'],

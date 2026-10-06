@@ -3,6 +3,7 @@
 namespace Database\Seeders\Sections;
 
 use App\Models\Sprint;
+use App\Support\Sprints\Packages;
 use Illuminate\Database\Seeder;
 
 /**
@@ -19,9 +20,11 @@ class SprintTypesBSeeder extends Seeder
     public function run(): void
     {
         $rows = [];
+        $overrides = require __DIR__.'/data/sprint-package-overrides.php';
         foreach (glob(__DIR__.'/data/sprint-types-b/*.php') ?: [] as $file) {
             foreach (require $file as $row) {
-                $rows[$row['code']] = $row;
+                $row['attributes'] = (array) ($row['attributes'] ?? []);
+                $rows[$row['code']] = Packages::applyToRow($row, $overrides);
             }
         }
 
@@ -54,7 +57,7 @@ class SprintTypesBSeeder extends Seeder
                 'price_zar' => $row['price_zar'],
                 'delivery' => $row['delivery'] !== null ? mb_substr($row['delivery'], 0, 250) : null,
                 'commercial_act' => $row['commercial_act'],
-                'packages' => $row['packages'] === null ? null : json_encode($row['packages'], JSON_UNESCAPED_UNICODE),
+                'packages' => json_encode($row['packages'], JSON_UNESCAPED_UNICODE),
                 'attributes' => json_encode($row['attributes'] ?: new \stdClass, JSON_UNESCAPED_UNICODE),
                 'featured' => (bool) $row['featured'],
                 'popular' => (bool) $row['popular'],

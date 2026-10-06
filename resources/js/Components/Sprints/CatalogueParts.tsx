@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import CoverArt from '@/Components/Art/CoverArt';
 import { ArrowRight, Bot, ChevronDown, CircleCheck, Clock, LayoutGrid, List, RefreshCw, Rocket, Scale, UserRound, X } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { Modal } from '@/Components/ui/Kit';
@@ -6,7 +7,7 @@ import { openAskQuestion } from '@/Components/AskQuestion';
 import { cn } from '@/lib/cn';
 import { usePrice } from '@/lib/money';
 import type { CatalogueFilters, CatalogueItem, FacetOption, Facets, Paginated } from '@/types/sprints';
-import { CardBadge, IconTile, Rating } from './CatalogueCard';
+import { CardBadge, Rating } from './CatalogueCard';
 import { hasValue, priceText, toggleValue } from './lib';
 
 /* ------------------------------------------------------------------ Filters */
@@ -241,13 +242,17 @@ export function Spotlight({ item, label, whyLabel, compared, onCompare }: { item
         <article className="relative mt-4 grid gap-5 rounded-[8px] border border-gold-400 bg-gold-50/50 p-5 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_200px]">
             <span className="absolute -top-2.5 left-4 rounded-[3px] bg-gold-500 px-2 py-0.5 text-[0.625rem] font-bold tracking-wide text-ink-900 uppercase">{label}</span>
             <div className="flex gap-4">
-                <IconTile name={item.icon} size="lg" />
+                <Link href={`/sprints/${item.slug}`} tabIndex={-1} aria-hidden="true" className="relative z-10 hidden w-36 shrink-0 overflow-hidden rounded-[6px] sm:block">
+                    <CoverArt seed={item.slug} category={item.category} label={item.title} className="aspect-[4/3]" />
+                </Link>
                 <div className="min-w-0">
                     <div className="flex flex-wrap gap-1.5">
                         <span className="rounded-[3px] border border-gold-300 bg-white px-1.5 py-0.5 text-[0.625rem] font-semibold text-gold-800">{item.category_label}</span>
                         <CardBadge label={item.badge} />
                     </div>
-                    <h3 className="mt-1.5 text-lg font-bold text-ink-900">{item.title}</h3>
+                    <h3 className="mt-1.5 text-lg font-bold text-ink-900">
+                        <Link href={`/sprints/${item.slug}`} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">{item.title}</Link>
+                    </h3>
                     <p className="mt-1 text-[0.8125rem] text-ink-600">{item.summary}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-3 text-[0.75rem] text-ink-600">
                         <Rating value={item.rating} reviews={item.reviews} />
@@ -282,10 +287,10 @@ export function Spotlight({ item, label, whyLabel, compared, onCompare }: { item
             <div className="flex flex-col justify-center gap-2 border-parchment-400 md:border-l md:pl-5">
                 <p className="text-[0.75rem] text-ink-500">{p.label}</p>
                 <p className="text-2xl font-bold text-ink-900">{p.value}</p>
-                <Link href={`/sprints/${item.slug}`} className="inline-flex h-10 items-center justify-center gap-1.5 rounded-[4px] bg-gold-500 text-sm font-semibold text-ink-900 hover:bg-gold-400">
+                <Link href={`/sprints/${item.slug}`} className="relative z-10 inline-flex h-10 items-center justify-center gap-1.5 rounded-[4px] bg-gold-500 text-sm font-semibold text-ink-900 hover:bg-gold-400">
                     View Sprint <ArrowRight className="size-4" aria-hidden="true" />
                 </Link>
-                <button type="button" onClick={() => onCompare(item)} aria-pressed={compared} className={cn('inline-flex h-10 items-center justify-center gap-1.5 rounded-[4px] border text-sm', compared ? 'border-gold-500 bg-gold-50' : 'border-ink-300 bg-white')}>
+                <button type="button" onClick={() => onCompare(item)} aria-pressed={compared} className={cn('relative z-10 inline-flex h-10 items-center justify-center gap-1.5 rounded-[4px] border text-sm', compared ? 'border-gold-500 bg-gold-50' : 'border-ink-300 bg-white')}>
                     <Scale className="size-4" aria-hidden="true" />
                     Compare
                 </button>

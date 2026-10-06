@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import CoverArt from '@/Components/Art/CoverArt';
 import { ArrowRight, Bookmark, Clock, Scale, Star } from 'lucide-react';
 import Icon from '@/Components/ui/Icon';
 import { cn } from '@/lib/cn';
@@ -72,7 +73,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
     const delivery = item.delivery ?? 'Delivery confirmed after scope';
 
     const compare = onCompare && (
-        <label className="inline-flex cursor-pointer items-center gap-1.5 text-[0.75rem] text-ink-600">
+        <label className="relative z-10 inline-flex cursor-pointer items-center gap-1.5 text-[0.75rem] text-ink-600">
             <input type="checkbox" checked={compared} onChange={() => onCompare(item)} className="size-3.5 accent-gold-600" />
             Compare
         </label>
@@ -80,12 +81,12 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
 
     if (variant === 'list') {
         return (
-            <article className="flex flex-col gap-4 rounded-[8px] border border-parchment-400 bg-white p-4 sm:flex-row sm:items-center">
-                <IconTile name={item.icon} size="sm" />
+            <article className="relative flex flex-col gap-4 rounded-[8px] border border-parchment-400 bg-white p-4 sm:flex-row sm:items-center">
+                <CoverArt seed={item.slug} category={item.category} label={item.title} className="aspect-[16/10] w-full shrink-0 rounded-[6px] sm:w-28" />
                 <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                         <h3 className="text-sm font-semibold text-ink-900">
-                            <Link href={href} className="hover:text-gold-700">
+                            <Link href={href} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">
                                 {item.title}
                             </Link>
                         </h3>
@@ -109,7 +110,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
                 </dl>
                 <div className="flex items-center gap-3">
                     {compare}
-                    <Link href={href} className="inline-flex h-9 items-center gap-1.5 rounded-[4px] border border-gold-500 px-3 text-[0.8125rem] font-semibold text-ink-900 hover:bg-gold-50">
+                    <Link href={href} className="relative z-10 inline-flex h-9 items-center gap-1.5 rounded-[4px] border border-gold-500 px-3 text-[0.8125rem] font-semibold text-ink-900 hover:bg-gold-50">
                         View Sprint <ArrowRight className="size-3.5" aria-hidden="true" />
                     </Link>
                 </div>
@@ -119,17 +120,15 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
 
     if (variant === 'tile') {
         return (
-            <article className="relative flex flex-col rounded-[8px] border border-gold-300/70 bg-white p-4 text-center transition-shadow hover:shadow-card">
+            <article className="relative flex flex-col overflow-hidden rounded-[8px] border border-gold-300/70 bg-white p-4 text-center transition-shadow hover:shadow-card">
+                <CoverArt seed={item.slug} category={item.category} label={item.title} className="-mx-4 -mt-4 mb-3 aspect-[16/7] w-[calc(100%+2rem)] max-w-none" />
                 <div className="flex items-start justify-between">
                     <CardBadge label={item.badge ?? (item.is_new ? 'New' : null)} />
                     <Bookmark className="size-4 text-ink-300" aria-hidden="true" />
                 </div>
-                <div className="mx-auto mt-1">
-                    <IconTile name={item.icon} size="md" tone="light" />
-                </div>
                 <p className="mt-1 text-[0.6875rem] font-semibold text-gold-700">{item.category_label}</p>
                 <h3 className="mt-1 text-[0.9375rem] leading-snug font-bold text-ink-900">
-                    <Link href={href} className="hover:text-gold-700">
+                    <Link href={href} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">
                         {item.title}
                     </Link>
                 </h3>
@@ -155,7 +154,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
                     {p.label} {p.value}
                 </p>
                 <div className="mt-auto pt-4">
-                    <Link href={href} className="flex h-9 w-full items-center justify-center gap-1.5 rounded-[4px] bg-ink-900 text-[0.8125rem] font-semibold text-parchment-100 hover:bg-ink-800">
+                    <Link href={href} className="relative z-10 flex h-9 w-full items-center justify-center gap-1.5 rounded-[4px] bg-ink-900 text-[0.8125rem] font-semibold text-parchment-100 hover:bg-ink-800">
                         View Sprint <ArrowRight className="size-3.5" aria-hidden="true" />
                     </Link>
                     {compare && <div className="mt-2 flex justify-center">{compare}</div>}
@@ -165,7 +164,8 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
     }
 
     return (
-        <article className="flex flex-col rounded-[8px] border border-parchment-400 bg-white p-4 transition-shadow hover:border-gold-300 hover:shadow-card">
+        <article className="relative flex flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-4 transition-shadow hover:border-gold-300 hover:shadow-card">
+            <CoverArt seed={item.slug} category={item.category} label={item.title} className="-mx-4 -mt-4 mb-3 aspect-[16/6] w-[calc(100%+2rem)] max-w-none" />
             <div className="flex gap-3.5">
                 <IconTile name={item.icon} />
                 <div className="min-w-0 flex-1">
@@ -174,7 +174,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
                         <CardBadge label={item.badge} />
                     </div>
                     <h3 className="mt-1.5 text-[0.9375rem] leading-snug font-bold text-ink-900">
-                        <Link href={href} className="hover:text-gold-700">
+                        <Link href={href} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">
                             {item.title}
                         </Link>
                     </h3>
@@ -203,7 +203,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
                     {p.label} <span className="font-bold text-ink-900">{p.value}</span>
                 </p>
                 <div className="flex items-center gap-2">
-                    <Link href={href} className="inline-flex h-8 items-center gap-1.5 rounded-[4px] bg-gold-500 px-3 text-[0.75rem] font-semibold text-ink-900 hover:bg-gold-400">
+                    <Link href={href} className="relative z-10 inline-flex h-8 items-center gap-1.5 rounded-[4px] bg-gold-500 px-3 text-[0.75rem] font-semibold text-ink-900 hover:bg-gold-400">
                         View Sprint <ArrowRight className="size-3.5" aria-hidden="true" />
                     </Link>
                     {onCompare && (
@@ -212,7 +212,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
                             onClick={() => onCompare(item)}
                             aria-pressed={compared}
                             className={cn(
-                                'inline-flex h-8 items-center gap-1.5 rounded-[4px] border px-2.5 text-[0.75rem] font-medium',
+                                'relative z-10 inline-flex h-8 items-center gap-1.5 rounded-[4px] border px-2.5 text-[0.75rem] font-medium',
                                 compared ? 'border-gold-500 bg-gold-50 text-gold-800' : 'border-parchment-500 text-ink-700 hover:border-ink-400',
                             )}
                         >

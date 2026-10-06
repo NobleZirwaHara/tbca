@@ -5,6 +5,7 @@ import type { LucideIcon } from 'lucide-react';
 import Header from '@/Components/Header';
 import Footer from '@/Components/Footer';
 import Flash from '@/Components/Flash';
+import Backdrop, { type BackdropVariant } from '@/Components/Backdrop';
 import Breadcrumbs, { type Crumb } from '@/Components/ui/Breadcrumbs';
 import { cn } from '@/lib/cn';
 import type { SharedProps } from '@/types';
@@ -46,6 +47,7 @@ export default function ConsoleLayout({
     description,
     actions,
     children,
+    backdrop = 'topo',
 }: {
     area: string;
     areaIcon?: LucideIcon;
@@ -56,12 +58,15 @@ export default function ConsoleLayout({
     description?: ReactNode;
     actions?: ReactNode;
     children: ReactNode;
+    /** Faint full-page background picture behind the workspace. */
+    backdrop?: BackdropVariant;
 }) {
     const { url } = usePage<SharedProps>().props;
     const [collapsed, setCollapsed] = useState(false);
 
     return (
-        <div className="flex min-h-screen flex-col bg-parchment-200">
+        <div className="relative isolate flex min-h-screen flex-col bg-parchment-200">
+            <Backdrop variant={backdrop} />
             <Header variant="dark" />
 
             <div className="flex flex-1">

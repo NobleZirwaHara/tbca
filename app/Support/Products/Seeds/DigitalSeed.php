@@ -17,6 +17,7 @@ use App\Models\Products\Digital\DpVersion;
 use App\Models\User;
 use App\Support\Platform\Money;
 use App\Support\Products\Digital\Catalogue;
+use App\Support\Products\Digital\Markets;
 use Illuminate\Support\Carbon;
 
 /**
@@ -42,7 +43,7 @@ class DigitalSeed
         foreach (Catalogue::products() as $row) {
             $current = collect($row['versions'])->firstWhere(1, 'current');
             $releasedAt = Carbon::parse($current[3]);
-            $af = $row['af'] ?? 'unavailable';
+            $markets = Markets::forRow($row);
 
             $product = DpProduct::updateOrCreate(['code' => $row['code']], [
                 'sku' => $row['sku'],
@@ -51,23 +52,16 @@ class DigitalSeed
                 'type' => $row['type'],
                 'category' => $row['category'],
                 'tagline' => $row['tagline'],
-                'description' => $row['description'] ?? $row['tagline'].' Built and human-reviewed by TBCA specialists for South African use, version-controlled and supported.',
+                'description' => $row['description'] ?? $row['tagline'].' Built and human-reviewed by TBCA specialists for African markets, version-controlled and supported.',
                 'audience' => $row['audience'],
                 'best_for' => $row['best_for'] ?? 'Planning, decision support and governance-ready deliverables',
                 'audiences' => $row['audiences'],
                 'industries' => $row['industries'],
                 'business_function' => $row['business_function'],
-                'jurisdiction' => 'South Africa',
-                'languages' => [
-                    ['code' => 'EN', 'label' => 'English', 'state' => 'approved', 'note' => 'Full content available'],
-                    ['code' => 'AF', 'label' => 'Afrikaans', 'state' => $af, 'note' => match ($af) {
-                        'approved' => 'Human-reviewed translation',
-                        'review' => 'In progress – human review pending',
-                        default => 'Not available',
-                    }],
-                    ['code' => 'FR', 'label' => 'Français', 'state' => 'unavailable', 'note' => 'Not available'],
-                    ['code' => 'PT', 'label' => 'Português', 'state' => 'unavailable', 'note' => 'Not available'],
-                ],
+                'jurisdiction' => $markets['jurisdiction'],
+                'jurisdictions' => $markets['jurisdictions'],
+                'currencies' => $markets['currencies'],
+                'languages' => $markets['languages'],
                 'formats' => collect($row['formats'])->map(fn ($f) => ['code' => $f, 'label' => $f, 'note' => Catalogue::FORMAT_NOTES[$f]])->all(),
                 'primary_format' => $row['primary_format'],
                 'prices' => $row['prices'],
@@ -90,7 +84,7 @@ class DigitalSeed
                 'recurring_evidence' => $row['recurring_evidence'] ?? null,
                 'receive' => $row['receive'],
                 'compare' => Catalogue::compareRows($row['type']),
-                'badges' => $row['badges'] ?? ['Human Reviewed', 'Version Controlled', 'South Africa Context', 'Professional Standard'],
+                'badges' => $row['badges'] ?? ['Human Reviewed', 'Version Controlled', 'African Market Context', 'Professional Standard'],
                 'content' => [
                     'how_to_use' => [
                         'Download the licensed file from your Digital Products Library.',

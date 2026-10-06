@@ -30,6 +30,7 @@ import ZoomPreview from '@/Components/SprintTypes/B/ZoomPreview';
 import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 import type { ReportAttributes } from '@/types/sprint-types-b';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 
 const heroFactIcon: Record<string, LucideIcon> = { Format: FileText, Language: Globe, Delivery: Zap, 'Risk Rating': ShieldCheck, 'Human Review': UserCheck };
 const metaIcons: LucideIcon[] = [FileText, Globe, Tag, CalendarDays, RefreshCw, CalendarClock, Layers, Headset, ShieldCheck, UserCheck, UserCheck];
@@ -44,7 +45,8 @@ export default function ReportSprint({ sprint, related }: { sprint: SprintRecord
     const packages = sprint.packages ?? [];
     const [selected, setSelected] = useState(packages.find((p) => p.popular)?.key ?? packages[0]?.key ?? null);
     const tabs = (list(a.tabs).length ? list(a.tabs) : ['Overview', 'Report Contents', 'Method & Sources', 'Requirements', 'Licence & Use', 'FAQs']).map((t) => ({ key: tabKey(t), label: t }));
-    const [tab, setTab] = useState(tabs[0].key);
+    const urlTab = useUrlTab();
+    const [tab, setTab] = useState(() => tabs[urlTabIndex(tabs.map((t) => t.label), urlTab)].key);
     const n = (i: number, label: string) => (a.section_numbering ? `${i}. ${label}` : label);
     const panels = a.preview?.panels ?? [];
     const card = cn('rounded-[8px] border p-4', dark ? 'border-ink-700 bg-ink-900 text-parchment-100' : 'border-parchment-400 bg-white');

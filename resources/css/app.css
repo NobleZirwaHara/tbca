@@ -64,8 +64,10 @@
   --color-risk-700: #8d271c;
 
   /* --- Typography ------------------------------------------------------ */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Playfair Display', ui-serif, Georgia, 'Times New Roman', serif;
+  /* Segoe UI across the whole platform (review 5 Oct 2026). `font-serif` is kept
+     as a utility name for display headings but now resolves to the same stack. */
+  --font-sans: 'Segoe UI', 'Segoe UI Variable', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Segoe UI', 'Segoe UI Variable', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
 
   --text-display: 3.75rem;
   --text-display--line-height: 1.02;
@@ -87,7 +89,9 @@
 
 @layer base {
   :root {
-    --tbca-header-h: 148px;
+    --tbca-header-h: 156px;
+    /* Utility bar grows to 108px on xl to hold the full logo lockup. */
+    @media (min-width: 1280px) { --tbca-header-h: 196px; }
   }
 
   html {
@@ -99,7 +103,6 @@
     background-color: var(--color-parchment-200);
     color: var(--color-ink-800);
     font-family: var(--font-sans);
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -117,6 +120,16 @@
 
   h1, h2, h3, h4 {
     text-wrap: balance;
+  }
+
+  /* Display headings formerly set in Playfair: Segoe needs slightly tighter
+     tracking to hold the same visual weight. Tracking utilities still win. */
+  .font-serif {
+    letter-spacing: -0.015em;
+  }
+
+  [dir='rtl'] body {
+    text-align: start;
   }
 
   p {
@@ -198,4 +211,21 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ==========================================================================
+   Page backdrops — very faint full-page pictures behind every layout
+   (see Components/Backdrop.tsx). Inline SVG only, no external images.
+   ========================================================================== */
+
+/* Africa network constellation: nodes joined by fine gold lines. */
+@utility page-motif-network {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' viewBox='0 0 360 360'%3E%3Cg fill='none' stroke='%23b0781e' stroke-opacity='0.13' stroke-width='0.8'%3E%3Cpath d='M24 40L118 86L196 52L292 104L360 70M0 70L24 40M118 86L96 190L180 236L196 52M180 236L290 210L292 104M96 190L30 280L130 330L180 236M290 210L332 318L230 344L180 236M30 280L0 300M332 318L360 300M196 52L210 0M230 344L210 360'/%3E%3C/g%3E%3Cg fill='%23b0781e' fill-opacity='0.2'%3E%3Ccircle cx='24' cy='40' r='2.2'/%3E%3Ccircle cx='118' cy='86' r='2.6'/%3E%3Ccircle cx='196' cy='52' r='2'/%3E%3Ccircle cx='292' cy='104' r='2.6'/%3E%3Ccircle cx='96' cy='190' r='2'/%3E%3Ccircle cx='180' cy='236' r='3'/%3E%3Ccircle cx='290' cy='210' r='2'/%3E%3Ccircle cx='30' cy='280' r='2.2'/%3E%3Ccircle cx='130' cy='330' r='2'/%3E%3Ccircle cx='332' cy='318' r='2.4'/%3E%3Ccircle cx='230' cy='344' r='2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 360px 360px;
+}
+
+/* Topographic contour lines. */
+@utility page-motif-topo {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='240' viewBox='0 0 480 240'%3E%3Cg fill='none' stroke='%237c561a' stroke-opacity='0.08' stroke-width='1'%3E%3Cpath d='M0 30C80 0 160 70 240 30S400 0 480 30'/%3E%3Cpath d='M0 70C90 40 150 110 240 70S390 40 480 70'/%3E%3Cpath d='M0 110C70 80 170 150 240 110S410 80 480 110'/%3E%3Cpath d='M0 150C90 120 150 190 240 150S390 120 480 150'/%3E%3Cpath d='M0 190C80 160 160 230 240 190S400 160 480 190'/%3E%3Cpath d='M0 230C90 200 150 270 240 230S390 200 480 230'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 480px 240px;
 }

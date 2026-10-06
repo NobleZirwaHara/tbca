@@ -32,8 +32,8 @@ import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 import type { QuoteRouteAttributes } from '@/types/sprint-types-b';
 
-const rand = (zar: number) => `R${zar.toLocaleString('en-US')}`;
 
+import { usePrice } from '@/lib/money';
 const summaryIcons: Record<string, LucideIcon> = {
     'Service Name': Briefcase,
     'Sprint Code': Hash,
@@ -90,6 +90,7 @@ function Bullets({ items, cols = 1 }: { items: string[]; cols?: 1 | 2 }) {
 }
 
 export default function QuoteRouteSprint({ sprint, related }: { sprint: SprintRecord; related: SprintRecord[] }) {
+    const rand = usePrice();
     const a = attrsOf<QuoteRouteAttributes>(sprint);
     const gridRef = useRef<HTMLDivElement>(null);
     const packages = sprint.packages ?? [];

@@ -5,8 +5,8 @@ import { PageTitle, TrustRow, CheckList } from '@/Components/Products/Shared';
 import { Tag } from '@/Components/ui/Kit';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import type { RetService, RetServiceFull } from '@/Components/Products/Retainers/types';
-import { zar } from '@/Components/Products/Retainers/ui';
 
+import { usePrice } from '@/lib/money';
 const STATE_COPY: Record<string, { ok: boolean; text: string }> = {
     ELIGIBLE: { ok: true, text: 'Proposal request permitted — not an instant purchase.' },
     DRAFT_NOT_CERTIFIED: { ok: false, text: 'This Retainer has not yet passed the C1–C5 Capacity Test. Proposals are not available.' },
@@ -35,6 +35,7 @@ function Card({ icon: Icon, title, children, link }: { icon: typeof Clock; title
 }
 
 export default function Show({ service: s, alternatives }: { service: RetServiceFull; alternatives: RetService[] }) {
+    const zar = usePrice();
     const state = STATE_COPY[s.sale_state] ?? { ok: false, text: s.sale_state };
     const owner = s.owner ?? {};
 

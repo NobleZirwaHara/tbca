@@ -6,15 +6,18 @@ import { Input, Select } from '@/Components/ui/Form';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import Breadcrumbs from '@/Components/ui/Breadcrumbs';
 import { cn } from '@/lib/cn';
+import { artCategory } from '@/Components/Marketplace/ui';
+import CoverArt from '@/Components/Art/CoverArt';
 import type { MkListing } from '@/types/marketplace';
 
 interface Props {
     categories: { value: string; label: string; count: number }[];
     services: MkListing[];
     filters: { category: string; q?: string; sort?: string };
+    total: number;
 }
 
-export default function ChooseService({ categories, services, filters }: Props) {
+export default function ChooseService({ categories, services, filters, total }: Props) {
     const [q, setQ] = useState(filters.q ?? '');
     const [selected, setSelected] = useState<string | null>(null);
     const chosen = services.find((s) => s.slug === selected);
@@ -35,7 +38,7 @@ export default function ChooseService({ categories, services, filters }: Props) 
                 <div className="flex flex-wrap items-end justify-between gap-4">
                     <div>
                         <h1 className="font-serif text-3xl font-bold text-ink-900">Choose a Partner Service</h1>
-                        <p className="mt-1 text-sm text-ink-500">Select a category to view available services.</p>
+                        <p className="mt-1 text-sm text-ink-500">Select a category to view available services. Full catalogue: {total} professional services across {categories.length} categories.</p>
                     </div>
                     <div className="flex items-center gap-3 text-xs text-ink-500">
                         Step 1 of 3
@@ -90,7 +93,7 @@ export default function ChooseService({ categories, services, filters }: Props) 
                             {services.length === 0 && <p className="p-6 text-center text-sm text-ink-400">No services match your search in this category.</p>}
                             {services.map((s) => (
                                 <div key={s.slug} className={cn('flex items-center gap-3 p-3', selected === s.slug && 'bg-gold-50')}>
-                                    <span className="flex size-9 shrink-0 items-center justify-center rounded-[6px] border border-gold-300 text-gold-700"><ClipboardList className="size-4" aria-hidden="true" /></span>
+                                    <CoverArt seed={s.slug} category={artCategory(s.category)} label={s.title} src={s.details.image ?? null} className="h-12 w-20 shrink-0 rounded-[6px]" />
                                     <button type="button" role="radio" aria-checked={selected === s.slug} onClick={() => setSelected(s.slug)} className="min-w-0 flex-1 text-left">
                                         <span className="block text-[0.875rem] font-semibold text-ink-900">{s.title}</span>
                                         <span className="block text-xs text-ink-500">{s.summary}</span>

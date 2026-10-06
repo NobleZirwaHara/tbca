@@ -110,7 +110,7 @@ export function HelpCards() {
             <div className="rounded-[8px] bg-ink-950 p-4 text-parchment-200">
                 <p className="text-[0.8125rem] font-semibold text-parchment-100">WhatsApp Communication</p>
                 <p className="mt-1 text-[0.6875rem]">Recent conversations on WhatsApp.</p>
-                <a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="mt-3 inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-[4px] bg-verified-500 text-[0.8125rem] font-semibold text-white">
+                <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="mt-3 inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-[4px] bg-verified-500 text-[0.8125rem] font-semibold text-white">
                     Open WhatsApp <ExternalLink className="size-3.5" aria-hidden="true" />
                 </a>
             </div>

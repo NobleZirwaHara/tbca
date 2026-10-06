@@ -10,6 +10,7 @@ use App\Support\DealRoom\Audit;
 use App\Support\DealRoom\Rooms;
 use App\Support\DealRoom\Stages;
 use App\Support\DealRoom\Workflow;
+use App\Support\Platform\EmbeddedServices;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -26,6 +27,7 @@ class PublicController extends Controller
     {
         return Inertia::render('DealRoom/Landing', [
             'stages' => collect(Stages::all())->map(fn ($s, $c) => ['code' => (string) $c, 'name' => $s['name'], 'phase' => $s['phase']])->values(),
+            'embedded' => EmbeddedServices::forModule('virtual-deal-room'),
         ]);
     }
 

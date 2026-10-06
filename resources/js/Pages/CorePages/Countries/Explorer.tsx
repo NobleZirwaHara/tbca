@@ -1,6 +1,9 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { ArrowRight, BookOpen, ChevronLeft, ChevronRight, Database, FileSearch, Globe2, Grid2x2, HelpCircle, Landmark, List, Lock, Network, Search, ShieldCheck, TrendingUp, Users } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
+import { ArrowRight, BadgeDollarSign, BookOpen, ChevronLeft, ChevronRight, Database, FileSearch, Globe2, Grid2x2, HelpCircle, Landmark, List, MapPin, Network, ShieldCheck, TrendingUp, Users } from 'lucide-react';
+import { useState } from 'react';
+import CountrySearch from '@/Components/CorePages/CountrySearch';
+import AfricaCountryMap from '@/Components/Map/AfricaCountryMap';
+import { bucketFill, regionId } from '@/Components/Map/countryMapHelpers';
 import { Flag, STATUS_DOT } from '@/Components/CorePages/Kit';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { Modal } from '@/Components/ui/Kit';
@@ -9,7 +12,8 @@ import type { CountryObject } from '@/types/core-pages';
 
 interface Props {
     countries: CountryObject[];
-    mapCountries: { iso: string; state: string }[];
+    mapCountries: { iso: string; name: string; region: string; state: string }[];
+    regionCounts: Record<string, number>;
     total: number;
     page: number;
     per: number;
@@ -21,16 +25,11 @@ interface Props {
 const sel = 'mt-1 h-9 w-full rounded-[4px] border border-ink-700 bg-ink-900 px-2 text-[0.8125rem] text-parchment-100';
 const legend = [['Activated', 'Commercially active with full resolver and services'], ['Shell', 'Country objects created not yet activated'], ['Degraded', 'Limited availability or partial restrictions'], ['Suspended', 'Temporarily suspended services'], ['Restricted', 'Restricted or prohibited access / services']];
 
-export default function Explorer({ countries, mapCountries, total, page, per, counts, regions, filters }: Props) {
-    const [q, setQ] = useState(filters.q);
+export default function Explorer({ countries, mapCountries, regionCounts, total, page, per, counts, regions, filters }: Props) {
     const [help, setHelp] = useState(false);
     const [view, setView] = useState<'list' | 'grid'>('list');
     const pages = Math.max(1, Math.ceil(total / per));
     const go = (n: Record<string, string | number>) => router.get('/find-the-right-service/countries', { ...filters, page: 1, per, ...n }, { preserveState: true, preserveScroll: true, replace: true });
-    const search = (e: FormEvent) => {
-        e.preventDefault();
-        go({ q });
-    };
     const activated = mapCountries.filter((c) => c.state === 'Activated').length;
 
     return (
@@ -40,14 +39,13 @@ export default function Explorer({ countries, mapCountries, total, page, per, co
                 <div className="grid gap-5 lg:grid-cols-12">
                     <div className="lg:col-span-4">
                         <h1 className="font-serif text-[2.25rem] font-semibold text-parchment-100">Country Explorer</h1>
-                        <p className="mt-1 text-[0.9375rem]">Explore and compare African country objects with resolver state, evidence quality and availability at a glance.</p>
+                        <p className="mt-1 text-[0.9375rem]">Explore all 54 African countries across 5 regions — Africa (Active) — with evidence quality, services and standard pricing at a glance.</p>
                         <button type="button" onClick={() => setHelp(true)} className="mt-3 inline-flex items-center gap-1.5 rounded-[4px] border border-gold-600/60 px-3 py-1.5 text-[0.75rem] text-gold-300"><HelpCircle className="size-3.5" aria-hidden="true" />How to use this explorer</button>
                     </div>
                     <div className="grid gap-3 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-5">
-                        <form onSubmit={search} className="rounded-[8px] border border-gold-700/40 p-3 lg:col-span-1">
-                            <label htmlFor="c-search" className="text-[0.75rem] font-semibold text-parchment-100">Search countries</label>
-                            <div className="relative"><input id="c-search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Type country name..." className={cn(sel, 'pr-7')} /><button type="submit" aria-label="Search" className="absolute top-3.5 right-2"><Search className="size-4" /></button></div>
-                        </form>
+                        <div className="rounded-[8px] border border-gold-700/40 p-3 sm:col-span-2 lg:col-span-1">
+                            <CountrySearch countries={mapCountries} initial={filters.q} onSearch={(q) => go({ q })} inputClassName={sel} />
+                        </div>
                         <div className="rounded-[8px] border border-gold-700/40 p-3"><label htmlFor="c-region" className="text-[0.75rem] font-semibold text-parchment-100">Region</label><select id="c-region" value={filters.region} onChange={(e) => go({ region: e.target.value })} className={sel}><option value="">All Regions</option>{regions.map((r) => <option key={r}>{r}</option>)}</select></div>
                         <div className="rounded-[8px] border border-gold-700/40 p-3"><label htmlFor="c-state" className="text-[0.75rem] font-semibold text-parchment-100">Availability State</label><select id="c-state" value={filters.state} onChange={(e) => go({ state: e.target.value })} className={sel}><option value="">All States</option>{Object.keys(counts).map((s) => <option key={s}>{s}</option>)}</select></div>
                         <div className="rounded-[8px] border border-gold-700/40 p-3"><label htmlFor="c-service" className="text-[0.75rem] font-semibold text-parchment-100">Service Category</label><select id="c-service" value={filters.service} onChange={(e) => go({ service: e.target.value })} className={sel}><option value="">All Services</option><option>Business & Corporate Services</option><option>Advisory Services</option><option>Market Intelligence</option></select></div>
@@ -55,8 +53,16 @@ export default function Explorer({ countries, mapCountries, total, page, per, co
                     </div>
                 </div>
 
-                <ul className="mt-5 grid gap-px overflow-hidden rounded-[8px] border border-gold-700/40 bg-gold-700/20 sm:grid-cols-3 lg:grid-cols-6">
-                    {[[Globe2, String(mapCountries.length), 'African Country Objects', 'Complete geographic coverage'], [ShieldCheck, String(activated), 'Activated', 'Commercially active with full resolver and services'], [Database, String(counts.Shell ?? 0), 'Shells', 'Country objects created not yet activated'], [Network, '0', 'Current Sellable Directional Corridors', 'Until pair-specific evidence and release gates pass'], [Database, '100+', 'Local Data Sources', 'Government, private and verified proprietary sources'], [Lock, 'No Resolution,', 'No Price', 'Country Resolver governs all commercial actions']].map(([I, v, l, s]) => {
+                <div className="mt-5 flex flex-wrap items-center gap-2" role="group" aria-label="Filter by region">
+                    <span className="text-[0.75rem] font-semibold text-parchment-100">Regions:</span>
+                    <button type="button" onClick={() => go({ region: '' })} aria-pressed={!filters.region} className={cn('rounded-full border px-3 py-1 text-[0.75rem]', !filters.region ? 'border-gold-500 bg-gold-500 text-ink-900' : 'border-ink-700 hover:border-gold-500')}>All Africa ({mapCountries.length})</button>
+                    {regions.map((r) => (
+                        <button key={r} type="button" onClick={() => go({ region: filters.region === r ? '' : r })} aria-pressed={filters.region === r} className={cn('rounded-full border px-3 py-1 text-[0.75rem]', filters.region === r ? 'border-gold-500 bg-gold-500 text-ink-900' : 'border-ink-700 hover:border-gold-500')}>{r} ({regionCounts[r] ?? 0})</button>
+                    ))}
+                </div>
+
+                <ul className="mt-4 grid gap-px overflow-hidden rounded-[8px] border border-gold-700/40 bg-gold-700/20 sm:grid-cols-3 lg:grid-cols-6">
+                    {[[Globe2, String(mapCountries.length), 'African Countries', 'Complete geographic coverage'], [ShieldCheck, String(activated), 'Activated', 'Africa (Active) — standard catalogue available'], [MapPin, String(regions.length), 'Regions', 'North, West, Central, East and Southern Africa'], [Network, '4', 'Regional Corridors', 'SADC, SACU, EAC and ECOWAS'], [Database, '100+', 'Local Data Sources', 'Government, private and verified proprietary sources'], [BadgeDollarSign, 'Standard', 'Catalogue Pricing', 'Shown in your selected currency']].map(([I, v, l, s]) => {
                         const Ico = I as typeof Globe2;
                         return <li key={l as string} className="flex gap-3 bg-ink-950 p-4"><Ico className="size-7 shrink-0 text-gold-500" aria-hidden="true" /><span><span className="block text-[1.375rem] leading-tight font-bold text-parchment-100">{v as string}</span><span className="block text-[0.75rem] font-semibold text-parchment-100">{l as string}</span><span className="block text-[0.6875rem] text-ink-300">{s as string}</span></span></li>;
                     })}
@@ -64,25 +70,30 @@ export default function Explorer({ countries, mapCountries, total, page, per, co
 
                 <div className="mt-5 grid gap-5 lg:grid-cols-12">
                     <section className="rounded-[8px] border border-gold-700/40 p-4 lg:col-span-4">
-                        <h2 className="text-[0.9375rem] font-semibold text-parchment-100">African Country Objects Map</h2>
-                        <div className="mt-3 grid grid-cols-2 gap-3">
+                        <h2 className="text-[0.9375rem] font-semibold text-parchment-100">African Countries Map</h2>
+                        <div className="mt-3 grid gap-3">
                             <ul className="space-y-2 rounded-[6px] border border-ink-700 p-3 text-[0.6875rem]">
                                 <li className="text-[0.75rem] font-semibold text-parchment-100">Legend</li>
                                 {legend.map(([s, d]) => (
                                     <li key={s}><button type="button" onClick={() => go({ state: filters.state === s ? '' : s })} className="flex gap-2 text-left"><span className={cn('mt-1 size-2.5 shrink-0 rounded-full', STATUS_DOT[s])} /><span><strong className="text-parchment-100">{s} ({counts[s] ?? 0})</strong><br />{d}</span></button></li>
                                 ))}
                             </ul>
-                            <div className="grid grid-cols-6 content-start gap-1" aria-label="Country state grid">
-                                {mapCountries.map((c) => (
-                                    <Link key={c.iso} href={`/find-the-right-service/countries/${c.iso.toLowerCase()}`} title={`${c.iso} — ${c.state}`} className={cn('flex aspect-square items-center justify-center rounded-[3px] text-[0.5625rem] font-bold', c.state === 'Activated' ? 'bg-verified-500 text-white' : 'bg-ink-800 text-ink-300 hover:bg-ink-700')}>{c.iso}</Link>
-                                ))}
-                            </div>
+                            <AfricaCountryMap
+                                className="order-first"
+                                activeRegion={regionId(filters.region)}
+                                colorFor={(c) => {
+                                    const state = mapCountries.find((m) => m.iso === c.iso2)?.state;
+                                    return state && state !== 'Activated' ? bucketFill(state.toLowerCase()) : undefined;
+                                }}
+                                hrefFor={(_, c) => `/find-the-right-service/countries/${c.iso2.toLowerCase()}`}
+                                label="Map of Africa: select a country to open its country profile"
+                            />
                         </div>
                         <p className="mt-2 text-[0.6875rem] text-ink-300">Click a country or row to view details.</p>
                     </section>
 
                     <section className="rounded-[8px] border border-gold-700/40 p-4 lg:col-span-8">
-                        <h2 className="text-[0.9375rem] font-semibold text-parchment-100">All African Country Objects ({total})</h2>
+                        <h2 className="text-[0.9375rem] font-semibold text-parchment-100">{filters.region || 'All African Countries'} ({total})</h2>
                         {view === 'list' ? (
                             <div className="mt-3 overflow-x-auto">
                                 <table className="w-full min-w-[640px] text-left text-[0.8125rem]">
@@ -119,14 +130,14 @@ export default function Explorer({ countries, mapCountries, total, page, per, co
                                 <button type="button" disabled={page >= pages} onClick={() => go({ page: page + 1 })} className="rounded border border-ink-700 p-1 disabled:opacity-40" aria-label="Next page"><ChevronRight className="size-3.5" /></button>
                             </span>
                         </div>
-                        <p className="mt-2 text-[0.6875rem] text-ink-300">Resolver Completeness (RCS): Measures completeness of all required fields. 100% required for price resolution.</p>
+                        <p className="mt-2 text-[0.6875rem] text-ink-300">Evidence “Baseline” means reference data is loaded and awaiting country-desk verification.</p>
                     </section>
                 </div>
 
                 <div className="mt-5 grid gap-4 rounded-[8px] border border-gold-700/40 p-4 md:grid-cols-4">
-                    <p className="text-[0.75rem]"><strong className="block text-gold-400">Important Notice</strong>Country objects not shown as Activated are not transaction-permitted. All prices are suppressed until Country Resolver completeness is 100% and a valid ResolvedPricePermit is in place.</p>
+                    <p className="text-[0.75rem]"><strong className="block text-gold-400">Africa (Active)</strong>All 54 African countries are activated. Standard catalogue prices are shown in your selected currency; statutory and partner fees are quoted at cost.</p>
                     <p className="text-[0.75rem]"><strong className="block text-gold-400">Evidence First</strong>All commercial actions are evidence-backed. Currentness and confidence matter.</p>
-                    <p className="text-[0.75rem]"><strong className="block text-gold-400">No Bypass</strong>No override. No manual set to 100%. No fail-open. No assumptions.</p>
+                    <p className="text-[0.75rem]"><strong className="block text-gold-400">Baseline Data</strong>Country reference data marked “to be confirmed” is a working baseline pending country-desk verification.</p>
                     <div className="flex items-center justify-between gap-2 text-[0.75rem]"><p><strong className="block text-gold-400">Questions?</strong>Speak to our specialists or ask a question.</p><button type="button" onClick={() => openAskQuestion({ subject: 'Country Explorer question', section: 'core' })} className="rounded-[4px] border border-gold-500 px-3 py-1.5 text-gold-400">Ask a Question</button></div>
                 </div>
 
@@ -142,8 +153,8 @@ export default function Explorer({ countries, mapCountries, total, page, per, co
                 <ol className="list-decimal space-y-2 pl-5 text-sm text-ink-700">
                     <li>Filter by region, availability state or service category, or search by name.</li>
                     <li>Click a country tile or row to open its Country Profile.</li>
-                    <li>Only Activated countries (currently South Africa) are transaction-permitted. Shells are discovery only.</li>
-                    <li>Prices are shown only after Country Resolver completeness reaches 100% and a ResolvedPricePermit is issued.</li>
+                    <li>Use the region chips to focus on North, West, Central, East or Southern Africa.</li>
+                    <li>All 54 countries are activated (Africa Active). Each profile lists the standard service catalogue with prices in your selected currency.</li>
                 </ol>
             </Modal>
         </div>

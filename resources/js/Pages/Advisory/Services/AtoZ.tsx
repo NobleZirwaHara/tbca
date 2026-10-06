@@ -178,7 +178,7 @@ export default function AtoZ({ categories, counts, services, filters }: Props) {
                             <ButtonLink href="/services/proposal-request" className="mt-3 w-full" trailingIcon="arrow-right">
                                 Talk to a Consultant
                             </ButtonLink>
-                            <a href="https://wa.me/27120010567" className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded border border-ink-300 text-sm font-medium">
+                            <a href="https://wa.me/27608011365" className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded border border-ink-300 text-sm font-medium">
                                 <MessageCircle className="size-4 text-verified-500" /> Ask on WhatsApp
                             </a>
                         </div>

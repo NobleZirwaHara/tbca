@@ -4,7 +4,8 @@ import { BadgeCheck, MapPin, Search, Star, UserPlus } from 'lucide-react';
 import { Input, Select } from '@/Components/ui/Form';
 import { Button, ButtonLink } from '@/Components/ui/Button';
 import { Tag } from '@/Components/ui/Kit';
-import { MkHeader } from '@/Components/Marketplace/ui';
+import { MkHeader, artCategory } from '@/Components/Marketplace/ui';
+import CoverArt from '@/Components/Art/CoverArt';
 import type { MkProvider, Option } from '@/types/marketplace';
 
 interface Props {
@@ -54,7 +55,7 @@ export default function Providers({ providers, filters, categories, countries, t
                         {providers.map((p) => (
                             <li key={p.slug} className="flex flex-col rounded-[8px] border border-parchment-400 bg-white p-5">
                                 <div className="flex items-start gap-3">
-                                    <span className="flex size-12 shrink-0 items-center justify-center rounded-[6px] bg-ink-900 font-serif text-xl font-bold text-gold-400" aria-hidden="true">{p.name.slice(0, 1)}</span>
+                                    <CoverArt seed={p.slug} category={artCategory(p.category)} label={p.name} src={p.profile.logo ?? null} className="size-12 shrink-0 rounded-[6px]" />
                                     <div className="min-w-0">
                                         <p className="font-semibold text-ink-900">{p.name}</p>
                                         <p className="text-xs text-ink-500">{p.categoryLabel}</p>

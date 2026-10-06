@@ -70,7 +70,7 @@ export default function Handoff({ threshold, used, usage, handoff: h }: Props) {
                     <Box title={<span className="flex items-center gap-2 font-serif text-lg"><CheckCircle2 className="size-5" />Quick Actions</span>}>
                         <ul className="space-y-2 text-sm">
                             <li><Link href="/sprints?category=business-management" className="flex items-center gap-2"><Users className="size-4" />View Recommended Services</Link></li>
-                            <li><a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="flex items-center gap-2"><MessageCircle className="size-4" />Talk to an Advisor</a></li>
+                            <li><a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="flex items-center gap-2"><MessageCircle className="size-4" />Talk to an Advisor</a></li>
                             <li><Link href="/resources/account/library" className="flex items-center gap-2"><FileText className="size-4" />View My Activity Report</Link></li>
                         </ul>
                     </Box>

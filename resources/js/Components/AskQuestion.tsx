@@ -1,40 +1,88 @@
-import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { ArrowUpRight, Bot, CalendarDays, CircleCheck, Compass, Minus, Package, RotateCcw, Send, ShieldCheck, Tag, UserRound } from 'lucide-react';
-import { assistant, STARTER_SUGGESTIONS, useAssistant, type AssistantMessage } from '@/lib/assistant';
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react';
+import { Link, useForm } from '@inertiajs/react';
+import {
+    ArrowUpRight,
+    CalendarDays,
+    CircleCheck,
+    Compass,
+    FileText,
+    Flag,
+    FolderOpen,
+    HelpCircle,
+    Minus,
+    Package,
+    Receipt,
+    RotateCcw,
+    Send,
+    ShieldCheck,
+    Tag,
+    Ticket,
+    UserRound,
+    type LucideIcon,
+} from 'lucide-react';
+import { assistant, STARTER_SUGGESTIONS, threadOf, useAssistant, type AssistantContext, type AssistantMessage } from '@/lib/assistant';
 import { cn } from '@/lib/cn';
 import type { SharedProps } from '@/types';
+import Face from '@/Components/Assistant/Face';
+import { MicButton, VoiceToggle } from '@/Components/Assistant/Controls';
+import { PERSONAS, type PersonaId, type QuickAction } from '@/Components/Assistant/personas';
+import { secureChat } from '@/Components/Assistant/secureChatStore';
+import { stopSpeaking } from '@/Components/Assistant/voice';
 
 /**
- * Opens the NATASHA assistant from anywhere, optionally with context:
+ * Opens the page's assistant (NATASHA site-wide, KAREN in the Client Portal,
+ * MICHAELA in the Virtual Deal Room) from anywhere, optionally with context:
  *   openAskQuestion({ subject: 'Financial Performance Overview Dashboard', section: 'sprints' })
  */
 export function openAskQuestion(detail: { subject?: string; section?: string } = {}) {
     assistant.open(detail);
 }
 
-const QUICK_ACTIONS = [
-    { label: 'Find the right Sprint', icon: Compass },
-    { label: 'Pricing & payment', icon: Tag },
-    { label: 'Book a discovery call', icon: CalendarDays },
-    { label: 'Track my order', icon: Package },
-];
+/** Opens NIKIWE's secure chat (the header "WhatsApp / Talk" drop-down). */
+export function openSecureChat() {
+    assistant.minimise();
+    secureChat.open();
+}
 
 /**
- * Floating site assistant ("Ask a Question"). Conversation state lives in
- * lib/assistant so it survives page navigation; replies come from the
- * provider there (interim intent matcher until the AI agent is wired in).
+ * Legacy mount point. The assistant is now mounted once for every page by
+ * Components/Assistant/AssistantHost (wired in app.tsx), so rendering
+ * <AskQuestion /> in a layout is a harmless no-op.
  */
 export default function AskQuestion() {
-    const { auth, url } = usePage<SharedProps>().props;
-    const chat = useAssistant();
+    return null;
+}
+
+const ICONS: Record<QuickAction['icon'], LucideIcon> = {
+    compass: Compass,
+    tag: Tag,
+    calendar: CalendarDays,
+    package: Package,
+    folder: FolderOpen,
+    help: HelpCircle,
+    flag: Flag,
+    file: FileText,
+    invoice: Receipt,
+    ticket: Ticket,
+    shield: ShieldCheck,
+    user: UserRound,
+};
+
+/**
+ * Floating persona assistant. Conversation state lives in lib/assistant so it
+ * survives page navigation; replies come from the persona's provider there
+ * (interim intent matcher until the AI agent is wired in).
+ */
+export function AssistantPanel({ persona, ctx, user }: { persona: PersonaId; ctx: Omit<AssistantContext, 'subject' | 'section'>; user: SharedProps['auth']['user'] }) {
+    const store = useAssistant();
+    const thread = threadOf(store, persona);
+    const p = PERSONAS[persona];
     const [draft, setDraft] = useState('');
     const scroller = useRef<HTMLDivElement>(null);
     const input = useRef<HTMLTextAreaElement>(null);
 
-    const ctx = { page: url.path, signedIn: Boolean(auth.user), userName: auth.user?.name };
     const send = (text: string) => {
-        void assistant.send(text, ctx);
+        void assistant.send(persona, text, ctx);
         setDraft('');
         if (input.current) input.current.style.height = '';
     };
@@ -42,93 +90,106 @@ export default function AskQuestion() {
     // Keep the newest message in view (DOM sync with the conversation).
     useEffect(() => {
         scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' });
-    }, [chat.messages.length, chat.pending, chat.open]);
+    }, [thread.messages.length, store.pending, store.open]);
 
     // Escape minimises the panel.
     useEffect(() => {
-        if (!chat.open) return;
+        if (!store.open) return;
         const onKey = (e: globalThis.KeyboardEvent) => e.key === 'Escape' && assistant.minimise();
         window.addEventListener('keydown', onKey);
         return () => window.removeEventListener('keydown', onKey);
-    }, [chat.open]);
+    }, [store.open]);
 
-    if (!chat.open) {
+    if (!store.open) {
         return (
             <button
                 type="button"
                 onClick={() => assistant.open()}
-                className="group fixed right-5 bottom-5 z-40 inline-flex h-12 items-center gap-2.5 rounded-full bg-ink-900 pr-5 pl-1.5 text-sm font-semibold text-parchment-100 shadow-raised ring-1 ring-gold-600/50 transition hover:bg-ink-800"
-                aria-label="Ask NATASHA, the TBCA assistant"
+                className="group fixed right-5 bottom-5 z-40 inline-flex h-14 items-center gap-2.5 rounded-full bg-ink-900 pr-5 pl-1.5 text-sm font-semibold text-parchment-100 shadow-raised ring-1 ring-gold-600/50 transition hover:bg-ink-800"
+                aria-label={`Ask ${p.name}, the ${p.title}`}
             >
-                <Avatar size="sm" />
-                <span>
-                    Ask <span className="text-gold-300">NATASHA</span>
+                <Face persona={persona} size={44} online />
+                <span className="text-left leading-tight">
+                    Ask <span className="text-gold-300">{p.name}</span>
+                    <span className="block text-[0.625rem] font-normal text-ink-300">{p.title}</span>
                 </span>
-                {chat.messages.length > 0 && <span className="size-2 rounded-full bg-verified-500" aria-hidden="true" />}
+                {thread.messages.length > 0 && <span className="size-2 rounded-full bg-verified-500" aria-hidden="true" />}
             </button>
         );
     }
 
-    const lastAssistant = [...chat.messages].reverse().find((m) => m.role === 'assistant');
+    const lastAssistant = [...thread.messages].reverse().find((m) => m.role === 'assistant');
+    const quick = p.quickActions(ctx);
 
     return (
         <section
             role="dialog"
-            aria-label="NATASHA, TBCA assistant"
-            className="fixed z-50 flex flex-col overflow-hidden bg-parchment-100 shadow-raised ring-1 ring-parchment-500 max-sm:inset-0 sm:right-5 sm:bottom-5 sm:h-[min(620px,calc(100vh-2.5rem))] sm:w-[390px] sm:rounded-[14px]"
+            aria-label={`${p.name}, ${p.title}`}
+            className="fixed z-50 flex flex-col overflow-hidden bg-parchment-100 shadow-raised ring-1 ring-parchment-500 max-sm:inset-0 sm:right-5 sm:bottom-5 sm:h-[min(640px,calc(100vh-2.5rem))] sm:w-[400px] sm:rounded-[14px]"
         >
             {/* Header */}
             <header className="flex items-center gap-3 bg-ink-950 px-4 py-3 text-parchment-100">
-                <Avatar />
+                <Face persona={persona} size={48} online />
                 <div className="min-w-0 flex-1">
                     <p className="text-sm leading-tight font-semibold">
-                        NATASHA <span className="font-normal text-ink-300">· TBCA Assistant</span>
+                        {p.name} <span className="font-normal text-ink-300">· {p.title}</span>
                     </p>
                     <p className="flex items-center gap-1.5 text-[0.6875rem] text-ink-300">
                         <span className="size-1.5 rounded-full bg-verified-500" /> Online · AI-assisted, human-reviewed
                     </p>
                 </div>
-                {chat.messages.length > 0 && (
-                    <IconButton label="Start a new conversation" onClick={() => assistant.reset()}>
+                <VoiceToggle className="text-ink-300 hover:bg-ink-800 hover:text-white" />
+                {thread.messages.length > 0 && (
+                    <IconButton label="Start a new conversation" onClick={() => assistant.reset(persona)}>
                         <RotateCcw className="size-4" />
                     </IconButton>
                 )}
-                <IconButton label="Minimise" onClick={() => assistant.minimise()}>
+                <IconButton
+                    label="Minimise"
+                    onClick={() => {
+                        stopSpeaking();
+                        assistant.minimise();
+                    }}
+                >
                     <Minus className="size-4" />
                 </IconButton>
             </header>
 
             {/* Conversation */}
             <div ref={scroller} className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
-                <Bubble role="assistant">
-                    Hi{auth.user ? ` ${auth.user.name.split(' ')[0]}` : ''}! I'm NATASHA. I can help you find the right Sprint, explain pricing and payment, book a call, or pass
-                    your question to a TBCA specialist.
+                <Bubble role="assistant" persona={persona}>
+                    {p.greeting(ctx)}
                 </Bubble>
 
-                {chat.messages.length === 0 && (
+                {thread.messages.length === 0 && quick.length > 0 && (
                     <div className="grid grid-cols-2 gap-2 pt-1">
-                        {QUICK_ACTIONS.map(({ label, icon: Icon }) => (
-                            <button
-                                key={label}
-                                type="button"
-                                onClick={() => send(label)}
-                                className="flex items-center gap-2 rounded-[8px] border border-parchment-400 bg-white px-3 py-2.5 text-left text-[0.8125rem] font-medium text-ink-800 transition hover:border-gold-400 hover:bg-gold-50"
-                            >
-                                <Icon className="size-4 shrink-0 text-gold-600" />
-                                {label}
-                            </button>
-                        ))}
+                        {quick.map((a) => {
+                            const Icon = ICONS[a.icon];
+                            const cls =
+                                'flex items-center gap-2 rounded-[8px] border border-parchment-400 bg-white px-3 py-2.5 text-left text-[0.8125rem] font-medium text-ink-800 transition hover:border-gold-400 hover:bg-gold-50';
+                            return a.href ? (
+                                <Link key={a.label} href={a.href} className={cls}>
+                                    <Icon className="size-4 shrink-0 text-gold-600" />
+                                    {a.label}
+                                </Link>
+                            ) : (
+                                <button key={a.label} type="button" onClick={() => send(a.prompt ?? a.label)} className={cls}>
+                                    <Icon className="size-4 shrink-0 text-gold-600" />
+                                    {a.label}
+                                </button>
+                            );
+                        })}
                     </div>
                 )}
 
-                {chat.messages.map((m) => (
-                    <Message key={m.id} message={m} isLatest={m.id === lastAssistant?.id} onSuggest={send} />
+                {thread.messages.map((m) => (
+                    <Message key={m.id} persona={persona} message={m} isLatest={m.id === lastAssistant?.id} onSuggest={send} />
                 ))}
 
-                {chat.pending && <Typing />}
+                {store.pending && <Typing persona={persona} />}
 
-                {lastAssistant?.handoff && !chat.pending && lastAssistant.id === chat.messages.at(-1)?.id && (
-                    <Handoff subject={chat.subject} section={chat.section} messages={chat.messages} page={url.path} signedIn={Boolean(auth.user)} />
+                {lastAssistant?.handoff && !store.pending && lastAssistant.id === thread.messages.at(-1)?.id && (
+                    <Handoff persona={persona} subject={thread.subject} section={thread.section} messages={thread.messages} ctx={ctx} signedIn={Boolean(user)} />
                 )}
             </div>
 
@@ -147,7 +208,7 @@ export default function AskQuestion() {
                         rows={1}
                         maxLength={1000}
                         value={draft}
-                        placeholder="Type your question…"
+                        placeholder={`Ask ${p.name}…`}
                         aria-label="Your question"
                         onChange={(e) => {
                             setDraft(e.target.value);
@@ -162,9 +223,10 @@ export default function AskQuestion() {
                         }}
                         className="max-h-[120px] min-h-6 flex-1 resize-none bg-transparent text-sm text-ink-900 placeholder:text-ink-400 focus:outline-none"
                     />
+                    <MicButton onText={setDraft} className="text-ink-500 hover:bg-parchment-300" />
                     <button
                         type="submit"
-                        disabled={!draft.trim() || chat.pending}
+                        disabled={!draft.trim() || store.pending}
                         className="inline-flex size-8 shrink-0 items-center justify-center rounded-[8px] bg-gold-500 text-ink-900 transition hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-40"
                         aria-label="Send"
                     >
@@ -179,14 +241,16 @@ export default function AskQuestion() {
     );
 }
 
-function Message({ message: m, isLatest, onSuggest }: { message: AssistantMessage; isLatest: boolean; onSuggest: (t: string) => void }) {
+function Message({ persona, message: m, isLatest, onSuggest }: { persona: PersonaId; message: AssistantMessage; isLatest: boolean; onSuggest: (t: string) => void }) {
     if (m.role === 'system') {
         return <p className="text-center text-[0.6875rem] font-medium text-ink-400">{m.text}</p>;
     }
 
     return (
         <div className="space-y-2">
-            <Bubble role={m.role}>{m.text}</Bubble>
+            <Bubble role={m.role} persona={persona}>
+                {m.text}
+            </Bubble>
 
             {m.links && m.links.length > 0 && (
                 <ul className="ml-9 space-y-1.5">
@@ -225,7 +289,7 @@ function Message({ message: m, isLatest, onSuggest }: { message: AssistantMessag
     );
 }
 
-function Bubble({ role, children }: { role: 'user' | 'assistant'; children: React.ReactNode }) {
+function Bubble({ role, persona, children }: { role: 'user' | 'assistant'; persona: PersonaId; children: ReactNode }) {
     if (role === 'user') {
         return (
             <div className="flex justify-end">
@@ -236,18 +300,16 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
 
     return (
         <div className="flex items-end gap-2">
-            <Avatar size="xs" />
-            <p className="max-w-[85%] rounded-[12px] rounded-bl-[4px] border border-parchment-400 bg-white px-3.5 py-2 text-sm whitespace-pre-wrap text-ink-800">
-                {children}
-            </p>
+            <Face persona={persona} size={28} />
+            <p className="max-w-[85%] rounded-[12px] rounded-bl-[4px] border border-parchment-400 bg-white px-3.5 py-2 text-sm whitespace-pre-wrap text-ink-800">{children}</p>
         </div>
     );
 }
 
-function Typing() {
+function Typing({ persona }: { persona: PersonaId }) {
     return (
-        <div className="flex items-end gap-2" aria-label="NATASHA is typing">
-            <Avatar size="xs" />
+        <div className="flex items-end gap-2" aria-label={`${PERSONAS[persona].name} is typing`}>
+            <Face persona={persona} size={28} />
             <div className="flex gap-1 rounded-[12px] rounded-bl-[4px] border border-parchment-400 bg-white px-3.5 py-3">
                 {[0, 150, 300].map((d) => (
                     <span key={d} className="size-1.5 animate-bounce rounded-full bg-ink-300" style={{ animationDelay: `${d}ms` }} />
@@ -259,29 +321,35 @@ function Typing() {
 
 /** "Talk to a person": stores the question (with transcript) for a TBCA specialist. */
 function Handoff({
+    persona,
     subject,
     section,
     messages,
-    page,
+    ctx,
     signedIn,
 }: {
+    persona: PersonaId;
     subject?: string;
     section?: string;
     messages: AssistantMessage[];
-    page: string;
+    ctx: Omit<AssistantContext, 'subject' | 'section'>;
     signedIn: boolean;
 }) {
+    const name = PERSONAS[persona].name;
     const lastQuestion = [...messages].reverse().find((m) => m.role === 'user')?.text ?? '';
     const form = useForm({
         name: '',
         email: '',
         message: lastQuestion,
-        subject: subject ?? 'Question from the site assistant',
-        section: section ?? 'assistant',
-        page,
+        subject: subject ?? `Question from ${name}`,
+        section: section ?? (persona === 'michaela' ? 'deal-room' : persona === 'karen' ? 'portal' : 'assistant'),
+        assistant: name,
+        page: ctx.page,
+        room: ctx.room?.slug ?? '',
+        room_reference: ctx.room?.reference ?? '',
         transcript: messages
             .filter((m) => m.role !== 'system')
-            .map((m) => `${m.role === 'user' ? 'Client' : 'NATASHA'}: ${m.text}`)
+            .map((m) => `${m.role === 'user' ? 'Client' : name}: ${m.text}`)
             .join('\n'),
     });
 
@@ -293,6 +361,7 @@ function Handoff({
             onSuccess: (p) => {
                 const ref = (p.props as unknown as SharedProps).flash.reference;
                 assistant.note(
+                    persona,
                     `Thanks — your question is with a TBCA specialist${ref ? ` (reference ${ref})` : ''}. We usually reply within one business day${signedIn ? ', and you will see the reply in your Client Portal' : ' by email'}.`,
                 );
             },
@@ -345,21 +414,7 @@ function Handoff({
     );
 }
 
-function Avatar({ size = 'md' }: { size?: 'xs' | 'sm' | 'md' }) {
-    return (
-        <span
-            aria-hidden="true"
-            className={cn(
-                'inline-flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold-300 to-gold-600 text-ink-950 ring-2 ring-ink-950/10',
-                { xs: 'size-7', sm: 'size-9', md: 'size-10' }[size],
-            )}
-        >
-            <Bot className={size === 'xs' ? 'size-3.5' : 'size-5'} />
-        </span>
-    );
-}
-
-function IconButton({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
+function IconButton({ label, onClick, children }: { label: string; onClick: () => void; children: ReactNode }) {
     return (
         <button
             type="button"

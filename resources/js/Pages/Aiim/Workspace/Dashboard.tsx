@@ -31,7 +31,7 @@ export default function Dashboard({ kpis, portfolio, activity, mandates, payment
             crumbs={[{ label: 'AIIM', href: '/aiim' }, { label: 'My Workspace' }, { label: 'Client Dashboard' }]}
             title="Client Dashboard"
             description={`Welcome back. Here's your AIIM workspace overview. Last login ${lastLogin}.`}
-            badge={<Chip tone="good">South Africa (Phase 1) · Active Country</Chip>}
+            badge={<Chip tone="good">Africa Market (Active)</Chip>}
         >
             <Head title="Client Dashboard | AIIM" />
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">

@@ -96,9 +96,9 @@ class SprintsCatalogueTest extends TestCase
             ->has('related')
             ->where('tab', 'overview'));
 
-        $this->get('/sprints/investor-readiness-pitch-deck-sprint/add-ons?package=growth')->assertInertia(fn (Assert $p) => $p
+        $this->get('/sprints/investor-readiness-pitch-deck-sprint/add-ons?package=standard')->assertInertia(fn (Assert $p) => $p
             ->where('tab', 'add-ons')
-            ->where('selectedPackage', 'growth'));
+            ->where('selectedPackage', 'standard'));
 
         $this->get('/sprints/does-not-exist')->assertNotFound();
     }

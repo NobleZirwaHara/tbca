@@ -210,6 +210,8 @@ class Navigation
                 ['label' => 'FAQ', 'href' => '/resources/faq', 'note' => 'Access, licensing and downloads'],
                 ['label' => 'My Resource Library', 'href' => '/resources/account/library', 'note' => 'Your entitlements and downloads'],
                 ['label' => 'Preference Centre', 'href' => '/resources/preferences', 'note' => 'Consent and communication preferences'],
+                ['label' => 'Company Profile', 'href' => '/resources/company-profile', 'note' => 'Who TBCA is, in one downloadable profile'],
+                ['label' => 'Policies', 'href' => '/policies', 'note' => 'Privacy, terms, refunds, cookies and more'],
             ],
             '/aiim' => [
                 ['label' => 'AIIM Home', 'href' => '/aiim', 'note' => 'Africa investment intelligence map'],
@@ -296,6 +298,8 @@ class Navigation
                 ['label' => 'Tools & Calculators', 'href' => '/tools'],
                 ['label' => 'Countries', 'href' => '/countries'],
                 ['label' => 'Industries', 'href' => '/industries'],
+                ['label' => 'Policies', 'href' => '/policies'],
+                ['label' => 'Company Profile', 'href' => '/resources/company-profile'],
             ],
             'Company' => [
                 ['label' => 'About TBCA', 'href' => '/about'],

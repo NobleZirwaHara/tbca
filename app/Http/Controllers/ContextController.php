@@ -16,6 +16,11 @@ class ContextController extends Controller
         $languages = collect(config('tbca.languages'))->pluck('code')->all();
         $currencies = collect(config('tbca.currencies'))->pluck('code')->all();
 
+        // RMB is the common name for the Chinese yuan; the ISO code is CNY.
+        if (strtoupper((string) $request->input('currency')) === 'RMB') {
+            $request->merge(['currency' => 'CNY']);
+        }
+
         $validated = $request->validate([
             'language' => ['nullable', Rule::in($languages)],
             'currency' => ['nullable', Rule::in($currencies)],

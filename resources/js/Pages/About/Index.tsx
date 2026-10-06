@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRight, ChevronRight, Quote } from 'lucide-react';
 import CtaBand from '@/Components/CtaBand';
-import AfricaMark from '@/Components/AfricaMark';
+import HeroArt from '@/Components/Art/HeroArt';
 import Card from '@/Components/ui/Card';
 import Icon from '@/Components/ui/Icon';
 import LedgerChip from '@/Components/ui/LedgerChip';
@@ -46,22 +46,22 @@ export default function AboutIndex({
         <>
             <Head title="About TBCA" />
 
-            <header className="relative overflow-hidden border-b border-parchment-400 bg-parchment-100">
-                <AfricaMark className="pointer-events-none absolute top-6 right-[42%] hidden h-72 w-auto text-gold-500/25 lg:block" strokeWidth={1.5} />
+            <header className="relative overflow-hidden bg-ink-950">
+                <HeroArt tone="dark" focus="center" fade="left" />
 
-                <div className="container-tbca relative py-10 md:py-14">
+                <div className="container-tbca relative py-14 md:py-20">
                     <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
                         <div className="lg:col-span-6">
-                            <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-gold-700 uppercase">About TBCA</p>
-                            <h1 className="mt-3 font-serif text-[2.25rem] leading-[1.05] font-semibold tracking-[-0.02em] text-ink-900 md:text-[3rem]">
-                                Who We Are. <span className="text-gold-700">Why We Exist.</span>
+                            <p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-gold-400 uppercase">About TBCA</p>
+                            <h1 className="mt-3 font-serif text-[2.25rem] leading-[1.05] font-semibold tracking-[-0.02em] text-parchment-50 md:text-[3.25rem]">
+                                Who We Are. <span className="text-gold-400">Why We Exist.</span>
                             </h1>
-                            <p className="mt-5 text-[1rem] leading-relaxed font-medium text-ink-800">{identity.statement}</p>
-                            <p className="mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-ink-600">{identity.purpose}</p>
+                            <p className="mt-5 text-[1rem] leading-relaxed font-medium text-parchment-100 [text-shadow:0_1px_12px_rgb(0_0_0/0.6)]">{identity.statement}</p>
+                            <p className="mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-ink-200 [text-shadow:0_1px_12px_rgb(0_0_0/0.6)]">{identity.purpose}</p>
                         </div>
 
                         <div className="lg:col-span-6">
-                            <Card className="p-6">
+                            <Card className="p-6 shadow-2xl shadow-black/40">
                                 <h2 className="font-serif text-[1.0625rem] font-semibold text-ink-900">TBCA TRUST RAIL</h2>
                                 <p className="mt-0.5 text-[0.8125rem] text-gold-700">Evidence Classes at a Glance</p>
                                 <ul className="mt-5 grid gap-px overflow-hidden rounded-[5px] border border-parchment-400 bg-parchment-400 sm:grid-cols-2 lg:grid-cols-4">
@@ -80,9 +80,13 @@ export default function AboutIndex({
                             </Card>
                         </div>
                     </div>
+                </div>
+            </header>
 
+            <section className="border-b border-parchment-400 bg-parchment-100">
+                <div className="container-tbca py-10">
                     {/* Claim cards — rendered only from published Claim Register records */}
-                    <ul className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                    <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
                         {claims.map((claim) => (
                             <Card as="li" key={claim.key} className="flex flex-col p-5">
                                 <div className="flex items-start gap-4">
@@ -123,7 +127,7 @@ export default function AboutIndex({
                         </Card>
                     </ul>
                 </div>
-            </header>
+            </section>
 
             {/* TBCA at a glance (dark band) — every tile is a published claim */}
             {glance.length > 0 && (

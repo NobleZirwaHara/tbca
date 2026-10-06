@@ -4,11 +4,13 @@ import { ArrowLeft, Bookmark, Download, Info, Lock, Minus, Plus, ShoppingBag, Tr
 import { Button, ButtonLink } from '@/Components/ui/Button';
 import { Field, Input } from '@/Components/ui/Form';
 import { Modal } from '@/Components/ui/Kit';
-import ShopIcon from '@/Components/Shop/ShopIcon';
 import { ActTag, ShopCrumbs, SideCard, TrustStrip, zar, zar2 } from '@/Components/Shop/Bits';
 import { HelpCard } from '@/Components/Shop/CheckoutParts';
+import ChargedInZar from '@/Components/ChargedInZar';
 import { cn } from '@/lib/cn';
 import type { BasketItem, SharedProps, Totals } from '@/types';
+import CoverArt from '@/Components/Art/CoverArt';
+import { AcceptedPayments, type PaymentRegister } from '@/Components/PaymentOptions';
 
 type Group = 'purchase' | 'quote' | 'subscription' | 'retainer' | 'brief' | 'free';
 
@@ -40,6 +42,8 @@ function groupOf(item: BasketItem): Group {
 function nextHref(item: BasketItem, group: Group): string {
     const slug = meta(item, 'slug');
     if (!slug) return '/shop';
+    // Sprint lines carry a sprint slug, which has no /shop/product page.
+    if (item.item_type.startsWith('sprint')) return group === 'quote' ? `/sprints/${slug}/quote` : `/sprints/${slug}`;
     return {
         purchase: `/shop/product/${slug}`,
         quote: `/shop/product/${slug}`,
@@ -75,10 +79,10 @@ function ItemCell({ item }: { item: BasketItem }) {
     const slug = meta(item, 'slug');
     return (
         <div className="flex gap-3">
-            <ShopIcon name={item.item_type === 'digital-product' ? 'file-text' : item.commercial_act === 'quote' ? 'users' : 'target'} size="md" />
+            <CoverArt seed={slug ?? item.item_code} label={item.name} className="aspect-square w-14 shrink-0 rounded-[6px]" />
             <div className="min-w-0">
                 {slug ? (
-                    <Link href={`/shop/product/${slug}`} className="font-semibold text-ink-900 hover:text-gold-700">{item.name}</Link>
+                    <Link href={item.item_type.startsWith('sprint') ? `/sprints/${slug}` : `/shop/product/${slug}`} className="font-semibold text-ink-900 hover:text-gold-700">{item.name}</Link>
                 ) : (
                     <p className="font-semibold text-ink-900">{item.name}</p>
                 )}
@@ -94,7 +98,7 @@ function ItemCell({ item }: { item: BasketItem }) {
     );
 }
 
-export default function Basket({ items, totals }: { items: BasketItem[]; totals: Totals }) {
+export default function Basket({ items, totals, paymentOptions }: { items: BasketItem[]; totals: Totals; paymentOptions: PaymentRegister }) {
     const { auth } = usePage<SharedProps>().props;
     const [saved, setSaved] = useState<SavedBasket[]>([]);
     const [savedVersion, setSavedVersion] = useState(0);
@@ -142,8 +146,8 @@ export default function Basket({ items, totals }: { items: BasketItem[]; totals:
             <div className="container-tbca py-6 md:py-8">
                 <ShopCrumbs tone="light" items={[{ label: 'Online Shop', href: '/shop' }, { label: title }]} />
 
-                <div className="grid gap-6 lg:grid-cols-12">
-                    <div className="min-w-0 space-y-5 lg:col-span-8">
+                <div className="grid gap-6 md:grid-cols-12">
+                    <div className="min-w-0 space-y-5 md:col-span-7 lg:col-span-8">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                             <div>
                                 <h1 className="font-serif text-2xl font-semibold text-ink-900 md:text-3xl">
@@ -344,7 +348,8 @@ export default function Basket({ items, totals }: { items: BasketItem[]; totals:
                         </SideCard>
                     </div>
 
-                    <aside className="space-y-4 lg:col-span-4">
+                    {/* Right column from tablet width up, so "We Accept" / "Need Help?" sit on the right, clear of the floating assistant. */}
+                    <aside className="space-y-4 pb-24 md:col-span-5 lg:col-span-4">
                         <SideCard title={mixed ? 'Basket Summary' : 'Order Summary'}>
                             {mixed ? (
                                 <dl className="space-y-2 text-[0.8125rem]">
@@ -367,6 +372,7 @@ export default function Basket({ items, totals }: { items: BasketItem[]; totals:
                                         <dt className="font-semibold">Estimated Total (Incl. VAT)</dt>
                                         <dd className="text-xl font-bold text-verified-700">{zar2(purchaseSubtotal + vat)}</dd>
                                     </div>
+                                    <ChargedInZar zar={purchaseSubtotal + vat} className="text-right" />
                                     <p className="text-[0.6875rem] text-ink-400">Platform and bank charges for your chosen payment method are shown at payment.</p>
                                 </dl>
                             )}
@@ -400,18 +406,16 @@ export default function Basket({ items, totals }: { items: BasketItem[]; totals:
                             </ul>
                         </SideCard>
 
+                        <div className="ml-auto w-full max-w-md space-y-4 md:max-w-none">
                         <SideCard>
                             <p className="font-semibold text-ink-900">We Accept</p>
-                            <div className="mt-2 flex flex-wrap gap-2 text-xs font-bold">
-                                {['VISA', 'Mastercard', 'EFT', 'TBCA Wallet'].map((m) => (
-                                    <span key={m} className="rounded-[4px] border border-parchment-500 px-2 py-1 text-ink-700">{m}</span>
-                                ))}
-                            </div>
+                            <AcceptedPayments register={paymentOptions} className="mt-2" />
                             <p className="mt-3 text-xs font-semibold text-ink-900">Delivery & Access</p>
                             <p className="text-xs text-ink-500">Digital products: Instant access. Sprint deliveries: As per item details.</p>
                         </SideCard>
 
                         <HelpCard body="Talk to a TBCA advisor for help with your selection or to request a custom proposal." />
+                        </div>
                     </aside>
                 </div>
             </div>

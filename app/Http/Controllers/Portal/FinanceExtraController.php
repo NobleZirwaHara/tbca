@@ -7,6 +7,7 @@ use App\Models\Portal\PortalCase;
 use App\Models\Portal\Project;
 use App\Models\Portal\Record;
 use App\Support\Platform\Checkout;
+use App\Support\Platform\PaymentOptions;
 use App\Support\Portal\Billing;
 use App\Support\Portal\Portal;
 use App\Support\Portal\Ui;
@@ -112,6 +113,35 @@ class FinanceExtraController extends PortalController
                 ], 'Request Help')],
             ],
             'side' => [Ui::checklist('Always available (client floor)', array_map(fn ($f) => Ui::check($f), Portal::FLOOR)), Ui::info('Communication is key', 'Hardship and dispute paths are always visible before any restriction. Talk to us early.', 'gold', Ui::action('Contact Finance Team', '/portal/messages'))],
+        ]);
+    }
+
+    /** Accepted payment methods, gateways and banks (App\Support\Platform\PaymentOptions). */
+    public function paymentMethods(): Response
+    {
+        $reg = PaymentOptions::register();
+        $live = array_values(array_filter($reg['methods'], fn ($m) => $m['live']));
+
+        return $this->register([
+            'title' => 'Payment Methods', 'icon' => 'credit-card',
+            'subtitle' => 'How you can pay TBCA today, and the payment partners being integrated next.',
+            'kpis' => [
+                Ui::kpi('Available Now', (string) (count($live) + 1), 'Card, EFT and TBCA Wallet', 'good', 'badge-check'),
+                Ui::kpi('Coming Soon', (string) (count($reg['methods']) - count($live)), 'Additional payment methods', 'info', 'calendar'),
+                Ui::kpi('Payment Partners', (string) count($reg['gateways']), 'Gateways being integrated', 'neutral', 'building-2'),
+                Ui::kpi('Billing Currency', 'ZAR', 'Prices stored and charged in ZAR', 'gold', 'wallet'),
+            ],
+            'main' => [
+                Ui::table('Payment Methods', ['Method', 'How it works', 'Status'], array_map(fn ($m) => [
+                    $m['label'], $m['note'], Ui::pill($m['status'], $m['live'] ? 'good' : 'neutral'),
+                ], $reg['methods'])),
+                Ui::info('TBCA Wallet', $reg['platform_wallet'], 'gold', Ui::action('Usage & Top-Ups', '/portal/usage')),
+            ],
+            'side' => [
+                Ui::list('Payment Gateways', array_map(fn ($g) => Ui::item($g, 'Coming soon'), $reg['gateways'])),
+                Ui::list('Banks', array_map(fn ($b) => Ui::item($b), $reg['banks'])),
+                Ui::info('Good to know', $reg['note'], 'info', Ui::action('Payments & Billing Policy', '/policies/payments-and-billing')),
+            ],
         ]);
     }
 

@@ -49,10 +49,10 @@ export default function Recurrence({ vehicles, targets, changes }: { vehicles: V
                 </Card>
                 <aside className="space-y-4 lg:col-span-3">
                     <Card title="Is recurrence right for you?"><CheckList items={['You need ongoing advice or implementation.', 'Your environment or regulations change.', 'You want proactive risk management.', 'You want predictable costs and planning.', 'You value continuous improvement.']} /></Card>
-                    <Card title="Prefer to chat now?" tone="gold"><a href="https://wa.me/27120010567" className="flex h-10 items-center justify-center gap-2 rounded border border-verified-500 bg-white text-sm font-semibold text-verified-700"><MessageCircle className="size-4" />Chat on WhatsApp</a></Card>
+                    <Card title="Prefer to chat now?" tone="gold"><a href="https://wa.me/27608011365" className="flex h-10 items-center justify-center gap-2 rounded border border-verified-500 bg-white text-sm font-semibold text-verified-700"><MessageCircle className="size-4" />Chat on WhatsApp</a></Card>
                 </aside>
             </div>
-            <TrustBand items={[['We recommend by fit, not margin', 'Your success is our priority.'], ['Human review included', 'Real experts. Real accountability.'], ['Transparent pricing', 'Clear, itemised and upfront.'], ['Secure & private', 'Your data is protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.'], ['Fresh assent', 'No silent renewals']]} />
+            <TrustBand items={[['We recommend by fit, not margin', 'Your success is our priority.'], ['Human review included', 'Real experts. Real accountability.'], ['Transparent pricing', 'Clear, itemised and upfront.'], ['Secure & private', 'Your data is protected.'], ['Africa (Active)', 'ZAR source pricing.'], ['Fresh assent', 'No silent renewals']]} />
         </>
     );
 }

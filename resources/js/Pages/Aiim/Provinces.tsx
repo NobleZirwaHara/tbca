@@ -18,7 +18,7 @@ export default function Provinces({ sort, glance, provinces }: Props) {
     return (
         <AiimPage
             title="Select a Province"
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, { label: 'Province Selector' }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: 'South Africa', href: '/aiim/country/south-africa' }, { label: 'Province Selector' }]}
             subtitle="Explore investment opportunities across South Africa's 9 provinces"
             description="Choose a province to view detailed investment intelligence, priority sectors, key projects, investors, infrastructure, and risk insights."
             actions={<ButtonLink href="/aiim/country/south-africa" size="sm" variant="outline">Back to Cockpit</ButtonLink>}

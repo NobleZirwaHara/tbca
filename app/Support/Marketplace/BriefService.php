@@ -73,6 +73,10 @@ class BriefService
                 'ledgers' => ['a' => $env['a'], 'b' => $env['b'], 'c' => $env['c'], 'c_state' => $env['c_state']],
                 'floor' => ['status' => $env['floor_status'], 'floor' => $env['floor'], 'target' => $env['target'], 'cts' => $env['cts'], 'benchmark' => $env['benchmark']],
                 'provider_selection' => 'Not Yet Selected',
+                'package' => isset($d['package']) ? [
+                    'service' => $d['service'] ?? null, 'service_title' => $d['service_title'] ?? null, 'key' => $d['package'], 'name' => $d['package_label'] ?? ucfirst($d['package']),
+                    'price_zar' => $d['package_price_zar'] ?? null, 'delivery' => $d['package_delivery'] ?? null, 'scope' => $d['package_scope'] ?? null,
+                ] : null,
             ],
         ]);
     }

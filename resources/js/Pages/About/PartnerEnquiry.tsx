@@ -132,7 +132,7 @@ export default function PartnerEnquiry({ options }: { options: Options }) {
                             <h2 className="flex items-center gap-2 font-semibold text-ink-900"><Headphones className="size-5" aria-hidden="true" /> Need Help?</h2>
                             <p className="mt-1 text-[0.8125rem] text-ink-600">Our Partner Relations Team is here to assist you.</p>
                             <p className="mt-2 flex items-center gap-2 text-[0.8125rem]"><Mail className="size-4" aria-hidden="true" /> partnerships@thebusinessclinic.africa</p>
-                            <p className="mt-1 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4" aria-hidden="true" /> +27 12 001 0557</p>
+                            <p className="mt-1 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4" aria-hidden="true" /> +27 60 801 1365</p>
                             <ButtonLink href="/complaints/track" variant="outline" size="sm" className="mt-3 w-full">Track an Enquiry</ButtonLink>
                         </div>
                     </aside>

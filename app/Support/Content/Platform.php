@@ -175,7 +175,7 @@ class Platform
     {
         return [
             ['wave' => 'Wave 0', 'focus' => 'Governance and architecture', 'gate' => 'Approved architecture, field dictionaries and test strategy.'],
-            ['wave' => 'Wave 1', 'focus' => 'Core South African launch', 'gate' => 'Paid order completes end to end and reconciles.'],
+            ['wave' => 'Wave 1', 'focus' => 'Core platform launch', 'gate' => 'Paid order completes end to end and reconciles.'],
             ['wave' => 'Wave 2', 'focus' => 'AIIM and Due Diligence launch', 'gate' => 'Verified AIIM data and complete DD test cases pass.'],
             ['wave' => 'Wave 3', 'focus' => 'Enterprise operations', 'gate' => 'Enterprise role, review and bulk workflows pass.'],
             ['wave' => 'Wave 4', 'focus' => 'Virtual Deal Room', 'gate' => 'Transaction scenario passes security and evidence tests.'],

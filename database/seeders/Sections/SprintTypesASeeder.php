@@ -3,6 +3,7 @@
 namespace Database\Seeders\Sections;
 
 use App\Models\Sprint;
+use App\Support\Sprints\Packages;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,7 @@ class SprintTypesASeeder extends Seeder
     {
         // Slugs already taken by sprints other sections seed (slug is unique across the catalogue).
         $taken = Sprint::query()->pluck('code', 'slug')->all();
+        $overrides = require __DIR__.'/data/sprint-package-overrides.php';
 
         foreach (self::TYPES as $type) {
             $file = require __DIR__.'/data/sprint-types-a/'.$type.'.php';
@@ -38,6 +40,7 @@ class SprintTypesASeeder extends Seeder
                     $attributes += $defaults;
                 }
                 $row['attributes'] = $attributes;
+                $row = Packages::applyToRow($row, $overrides);
                 $row['status'] = 'published';
                 $row['slug'] = $this->freeSlug($row['slug'], $row['code'], $taken);
                 $taken[$row['slug']] = $row['code'];

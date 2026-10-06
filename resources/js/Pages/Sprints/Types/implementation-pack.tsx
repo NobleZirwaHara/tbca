@@ -26,6 +26,7 @@ import { DarkPackageCard, HeroIconTile } from '@/Components/SprintTypes/B/DarkHe
 import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 import type { ImplementationPackAttributes } from '@/types/sprint-types-b';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 
 const TAB_LABELS = ['Overview', "What's Included", 'Implementation Process', 'Deliverables', 'Requirements', 'FAQs'];
 const tabKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -103,7 +104,8 @@ export default function ImplementationPackSprint({ sprint, related }: { sprint: 
     const a = attrsOf<ImplementationPackAttributes>(sprint);
     const { packages, selected, setSelected, current } = usePackage(sprint);
     const tabs = (list(a.tabs).length ? list(a.tabs) : TAB_LABELS).map((t) => ({ key: tabKey(t), label: t }));
-    const [tab, setTab] = useState(tabs[0].key);
+    const urlTab = useUrlTab();
+    const [tab, setTab] = useState(() => tabs[urlTabIndex(tabs.map((t) => t.label), urlTab)].key);
     const facts = pairs(a.facts);
     const notes = list(a.notes).length ? list(a.notes) : ['VAT exclusive | VAT added separately', 'Vendor / licence costs separate where applicable', 'Partner / integration costs separate where applicable'];
     const faqs = a.faqs?.length ? a.faqs : defaultFaqs(sprint);

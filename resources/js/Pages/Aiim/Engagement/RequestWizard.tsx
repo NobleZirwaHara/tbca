@@ -1,12 +1,13 @@
 import { useForm } from '@inertiajs/react';
-import { CheckCircle2, ClipboardList, FileSearch, ShieldCheck, Users } from 'lucide-react';
+import { CheckCircle2, ClipboardList, FileSearch, ShieldCheck, Users, X } from 'lucide-react';
+import CountryPicker from '@/Components/Aiim/CountryPicker';
 import type { FormEvent } from 'react';
 import { HumanLed } from '@/Components/Aiim/EngagementKit';
 import AiimPage, { RailBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
 import { Checkbox, ChoiceCard, Field, Input, Select, Textarea } from '@/Components/ui/Form';
 import { Stepper } from '@/Components/ui/Kit';
 import { Button, ButtonLink } from '@/Components/ui/Button';
-import type { AiimPageProps } from '@/types/aiim';
+import type { AiimPageProps, CountryOption } from '@/types/aiim';
 
 type Req = Record<string, any>;
 
@@ -14,7 +15,9 @@ interface Props extends AiimPageProps {
     type: 'custom-intelligence' | 'advisory';
     engagement: { reference: string; status: string; step: number; request: Req } | null;
     step: number;
+    prefill: { countries: string[] };
     options: {
+        countries: CountryOption[];
         categories: string[]; areas: string[]; depths: { value: string; label: string; description: string; time: string }[];
         provinces: { slug: string; name: string }[]; sectors: { slug: string; name: string }[];
         seniority: string[]; timelines: string[]; engagementTypes: string[]; formats: string[];
@@ -36,18 +39,27 @@ function Multi({ label, options, value, onChange, error }: { label: string; opti
     );
 }
 
-export default function RequestWizard({ type, engagement, step, options }: Props) {
+export default function RequestWizard({ type, engagement, step, prefill, options }: Props) {
     const ci = type === 'custom-intelligence';
     const r: Req = engagement?.request ?? {};
     const form = useForm<Req>({
         type, step, ref: engagement?.reference ?? '', draft: false,
-        title: r.title ?? '', detail: r.detail ?? '', category: r.category ?? '', subcategory: r.subcategory ?? '', provinces: r.provinces ?? [], sectors: r.sectors ?? [], depth: r.depth ?? 'standard',
+        title: r.title ?? '', detail: r.detail ?? '', category: r.category ?? '', subcategory: r.subcategory ?? '', countries: r.countries ?? prefill.countries, provinces: r.provinces ?? [], sectors: r.sectors ?? [], depth: r.depth ?? 'standard',
         questions: r.questions ?? '', outputs: r.outputs ?? [], background: r.background ?? '', decision: r.decision ?? '', format: r.format ?? '', required_by: r.required_by ?? '', channel: r.channel ?? 'Workspace + email',
         areas: r.areas ?? [], other: r.other ?? '', summary: r.summary ?? '', expertise: r.expertise ?? [], seniority: r.seniority ?? '', engagement_type: r.engagement_type ?? '', timeline: r.timeline ?? '', start_date: r.start_date ?? '', terms: false,
     });
     const d = form.data;
     const set = (k: string, v: unknown) => form.setData(k, v);
-    const submit = (draft: boolean) => (e?: FormEvent) => { e?.preventDefault(); form.transform((x) => ({ ...x, draft })); form.post('/aiim/workspace/engagements/request'); };
+    // Step and reference always come from the current page props: form.post preserves component state, so the
+    // initial form values would otherwise stay on step 1 with no reference and re-create the draft every time.
+    // State is kept only when validation fails, so a successful save re-initialises the form from the saved draft.
+    const submit = (draft: boolean) => (e?: FormEvent) => {
+        e?.preventDefault();
+        form.transform((x) => ({ ...x, draft, step, ref: engagement?.reference ?? '' }));
+        form.post('/aiim/workspace/engagements/request', { preserveState: 'errors' });
+    };
+    const countryNames = (d.countries as string[]).map((s) => options.countries.find((c) => c.slug === s)?.name ?? s);
+    const focus = countryNames.join(', ') || 'Africa (no country selected)';
     const base = ci ? '/aiim/custom-intelligence' : '/aiim/workspace/advisor-request';
     const sectorOpts = options.sectors.map((s) => ({ value: s.slug, label: s.name }));
     const provOpts = options.provinces.map((s) => ({ value: s.slug, label: s.name }));
@@ -55,7 +67,7 @@ export default function RequestWizard({ type, engagement, step, options }: Props
     const e = form.errors as Record<string, string>;
 
     const review: [string, string][] = ci
-        ? [['Request Title', d.title], ['Intelligence Category', `${d.category}${d.subcategory ? ` — ${d.subcategory}` : ''}`], ['Geographic Focus', 'South Africa'], ['Province Focus', names(d.provinces, options.provinces)], ['Sectors', names(d.sectors, options.sectors)], ['Intelligence Depth', options.depths.find((x) => x.value === d.depth)?.label ?? d.depth], ['Key Questions', d.questions], ['Expected Outputs', (d.outputs as string[]).join(', ')], ['Delivery Preference', d.format], ['Required By', d.required_by || 'To be confirmed after expert review'], ['Customer Notes / Background', d.background]]
+        ? [['Request Title', d.title], ['Intelligence Category', `${d.category}${d.subcategory ? ` — ${d.subcategory}` : ''}`], ['Geographic Focus', focus], ...((d.countries as string[]).includes('south-africa') ? [['South Africa Province Focus', names(d.provinces, options.provinces)] as [string, string]] : []), ['Sectors', names(d.sectors, options.sectors)], ['Intelligence Depth', options.depths.find((x) => x.value === d.depth)?.label ?? d.depth], ['Key Questions', d.questions], ['Expected Outputs', (d.outputs as string[]).join(', ')], ['Delivery Preference', d.format], ['Required By', d.required_by || 'To be confirmed after expert review'], ['Customer Notes / Background', d.background]]
         : [['Advisory Areas', (d.areas as string[]).join(', ')], ['Summary', d.summary], ['Advisor Expertise', (d.expertise as string[]).join(', ')], ['Industries', names(d.sectors, options.sectors)], ['Seniority', d.seniority || 'Any'], ['Background', d.background], ['Provinces', names(d.provinces, options.provinces)], ['Engagement Type', d.engagement_type], ['Estimated Timeline', d.timeline], ['Preferred Start Date', d.start_date || '—']];
 
     return (
@@ -95,8 +107,21 @@ export default function RequestWizard({ type, engagement, step, options }: Props
                                     </div>
                                 </SectionCard>
                                 <SectionCard number={3} title="Geographic Focus">
-                                    <p className="mb-2 text-xs">Country: <strong>South Africa</strong> <span className="text-ink-500">(the only active Phase 1 country)</span></p>
-                                    <Multi label="Provinces (select one or more)" options={provOpts} value={d.provinces} onChange={(v) => set('provinces', v)} error={e.provinces} />
+                                    <p className="mb-1 text-[0.8125rem] font-medium text-ink-800">Countries (select one or more of 54) <span className="text-risk-500">*</span></p>
+                                    <CountryPicker tone="light" countries={options.countries} onSelect={(slug) => set('countries', (d.countries as string[]).includes(slug) ? d.countries : [...d.countries, slug])} placeholder="Search and add a country…" label="Add a country" />
+                                    <ul className="mt-2 flex flex-wrap gap-1.5" aria-label="Selected countries">
+                                        {(d.countries as string[]).map((slug) => {
+                                            const c = options.countries.find((x) => x.slug === slug);
+                                            return (
+                                                <li key={slug} className="inline-flex items-center gap-1 rounded-full border border-referenced-500/40 bg-referenced-50 px-2 py-0.5 text-xs text-referenced-700">
+                                                    <span aria-hidden="true">{c?.flag}</span>{c?.name ?? slug}
+                                                    <button type="button" aria-label={`Remove ${c?.name ?? slug}`} onClick={() => set('countries', (d.countries as string[]).filter((x) => x !== slug))}><X className="size-3" /></button>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                    {(e.countries || e['countries.0']) && <p role="alert" className="mt-1 text-xs text-risk-500">{e.countries ?? e['countries.0']}</p>}
+                                    {(d.countries as string[]).includes('south-africa') && <div className="mt-3"><Multi label="South Africa provinces (optional)" options={provOpts} value={d.provinces} onChange={(v) => set('provinces', v)} error={e.provinces} /></div>}
                                 </SectionCard>
                                 <SectionCard number={4} title="Sector Focus"><Multi label="Select one or more sectors" options={sectorOpts} value={d.sectors} onChange={(v) => set('sectors', v)} error={e.sectors} /></SectionCard>
                                 <SectionCard number={5} title="Intelligence Depth">
@@ -179,7 +204,7 @@ export default function RequestWizard({ type, engagement, step, options }: Props
                 </form>
                 <div className="space-y-4">
                     <SectionCard title="Your Request Summary">
-                        <dl className="space-y-1.5 text-xs">{[['Request Type', ci ? 'Custom Intelligence' : 'Advisor Request'], ['Geographic Focus', 'South Africa'], ['Sectors', d.sectors.length ? `${d.sectors.length} selected` : 'Not selected'], [ci ? 'Depth' : 'Engagement Type', ci ? d.depth : d.engagement_type || 'Not selected'], ['Estimated Delivery', 'To be confirmed']].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><dt className="text-ink-500">{k}</dt><dd className="text-right font-medium capitalize">{v}</dd></div>)}</dl>
+                        <dl className="space-y-1.5 text-xs">{[['Request Type', ci ? 'Custom Intelligence' : 'Advisor Request'], ['Geographic Focus', ci ? (countryNames.length ? `${countryNames.length} ${countryNames.length === 1 ? 'country' : 'countries'}` : 'Not selected') : 'Africa'], ['Sectors', d.sectors.length ? `${d.sectors.length} selected` : 'Not selected'], [ci ? 'Depth' : 'Engagement Type', ci ? d.depth : d.engagement_type || 'Not selected'], ['Estimated Delivery', 'To be confirmed']].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><dt className="text-ink-500">{k}</dt><dd className="text-right font-medium capitalize">{v}</dd></div>)}</dl>
                         <p className="mt-3 text-xs text-ink-500">Estimated Investment</p>
                         <p className="text-xl font-bold text-referenced-700">Quote on Review</p>
                         <p className="text-xs text-ink-400">(Excl. VAT)</p>

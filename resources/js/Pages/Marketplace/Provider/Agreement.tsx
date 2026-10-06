@@ -29,7 +29,7 @@ export default function Agreement({ provider: p, terms, acks, agreementRef }: Pr
                     </div>
                 </Card>
                 <div className="space-y-4 xl:col-span-4">
-                    <Card title="Provider & Agreement Details"><InfoRows dense rows={[['Provider Name', p.name], ['Provider ID', p.applicationRef ?? p.code], ['Agreement Version', 'MP-PA-v2.1'], ['Effective On', signed ? p.agreementSigned : 'Effective on signature'], ['Governing Territory', 'South Africa Phase 1']]} /></Card>
+                    <Card title="Provider & Agreement Details"><InfoRows dense rows={[['Provider Name', p.name], ['Provider ID', p.applicationRef ?? p.code], ['Agreement Version', 'MP-PA-v2.1'], ['Effective On', signed ? p.agreementSigned : 'Effective on signature'], ['Governing Territory', 'Africa (Active)']]} /></Card>
                     <Card title="Signature Status">
                         <ul className="space-y-2 text-sm">{[['Read Summary', true], ['Review Full Agreement', true], ['Accept Key Terms', signed || allAck], ['Sign Agreement', signed]].map(([k, d]) => <li key={k as string} className="flex items-center gap-2">{d ? <CheckCircle2 className="size-4 text-verified-500" aria-hidden="true" /> : <Circle className="size-4 text-ink-300" aria-hidden="true" />}{k as string}<span className="ml-auto text-xs text-ink-400">{d ? 'Completed' : 'Pending your signature'}</span></li>)}</ul>
                         <Notice tone="warn" className="mt-3">Submission of an application does not create approval. Signature does not guarantee work volume.</Notice>

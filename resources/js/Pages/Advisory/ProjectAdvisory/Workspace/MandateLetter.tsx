@@ -39,7 +39,7 @@ export default function MandateLetter({ mandate: m, value, deposit, letterRef }:
                     ) : null}
                     <Button type="button" variant="outline" className="w-full" icon="download" onClick={() => window.print()}>Download PDF</Button>
                     <Link href="/services/mandatory-partner-escalation" className="flex h-11 items-center justify-center gap-2 rounded border border-ink-300 text-sm"><UserCheck className="size-4" />Request Human Review</Link>
-                    <p className="text-center text-xs text-ink-500">Need help? Chat with our Engagement Team | Call +27 12 001 0567</p>
+                    <p className="text-center text-xs text-ink-500">Need help? Chat with our Engagement Team | Call +27 60 801 1365</p>
                 </form>
                 <section className="rounded-[10px] bg-ink-800 p-4 lg:col-span-7">
                     <article className="mx-auto max-w-xl bg-white text-xs text-ink-800 shadow">

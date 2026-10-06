@@ -61,7 +61,7 @@ export function NeedHelp() {
                     </button>
                 </li>
                 <li>
-                    <a href="https://wa.me/27120010567" className="flex items-center gap-3 py-2" target="_blank" rel="noreferrer">
+                    <a href="https://wa.me/27608011365" className="flex items-center gap-3 py-2" target="_blank" rel="noreferrer">
                         <MessageCircle className="size-5 text-verified-500" aria-hidden="true" />
                         <span className="flex-1"><strong className="block text-ink-900">WhatsApp Support</strong>Chat with us on WhatsApp.</span>
                         <ChevronRight className="size-4" aria-hidden="true" />

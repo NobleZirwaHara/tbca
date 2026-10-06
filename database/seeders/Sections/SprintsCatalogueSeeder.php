@@ -3,6 +3,7 @@
 namespace Database\Seeders\Sections;
 
 use App\Models\Sprint;
+use App\Support\Sprints\Packages;
 use App\Support\Sprints\SprintContent;
 use Illuminate\Database\Seeder;
 
@@ -15,9 +16,12 @@ class SprintsCatalogueSeeder extends Seeder
 {
     public function run(): void
     {
+        $overrides = require __DIR__.'/data/sprint-package-overrides.php';
+
         foreach (self::specs() as $i => $spec) {
             $code = sprintf('SPR-%04d', $i + 1);
-            Sprint::updateOrCreate(['code' => $code], SprintContent::build($spec));
+            $row = Packages::applyToRow(['code' => $code, ...SprintContent::build($spec)], $overrides);
+            Sprint::updateOrCreate(['code' => $code], collect($row)->except('code')->all());
         }
     }
 

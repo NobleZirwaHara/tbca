@@ -7,6 +7,7 @@ use App\Models\Sprint;
 use App\Models\Submission;
 use App\Support\Platform\Reference;
 use App\Support\Sprints\Catalogue;
+use App\Support\Sprints\Packages;
 use App\Support\Sprints\SprintOffer;
 use App\Support\Sprints\Taxonomy;
 use Illuminate\Http\RedirectResponse;
@@ -26,9 +27,20 @@ class SprintController extends Controller
         'risk-review', 'add-ons', 'reviews', 'faqs', 'support', 'ask-a-question',
     ];
 
-    public function show(Request $request, string $slug, string $tab = 'overview'): Response
+    public function show(Request $request, string $slug, string $tab = 'overview'): Response|RedirectResponse
     {
         $sprint = self::find($slug);
+
+        // Old package keys (?package=starter / growth / executive ...) redirect to basic / standard / premium.
+        $requested = $request->query('package');
+        if (is_string($requested) && $requested !== '' && ($tier = Packages::resolveKey($requested)) !== $requested) {
+            $query = array_filter([...$request->query(), 'package' => $tier]);
+
+            return redirect()->to($request->url().($query ? '?'.http_build_query($query) : ''), 301);
+        }
+
+        // Every sprint shows exactly Basic / Standard / Premium, whatever the stored row holds.
+        $sprint->packages = SprintOffer::packages($sprint);
 
         $related = Sprint::query()
             ->where('status', 'published')
@@ -36,7 +48,8 @@ class SprintController extends Controller
             ->where(fn ($q) => $q->where('category', $sprint->category)->orWhere('type', $sprint->type))
             ->orderByDesc('featured')->orderByDesc('rating')
             ->limit(4)
-            ->get();
+            ->get()
+            ->each(fn (Sprint $r) => $r->packages = SprintOffer::packages($r));
 
         $category = Taxonomy::categories()[$sprint->category] ?? null;
         $package = SprintOffer::package($sprint, $request->query('package'));

@@ -3,12 +3,13 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, Bookmark, CheckCircle2, FileText, Headphones, Search, SlidersHorizontal } from 'lucide-react';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { PageTitle } from '@/Components/Products/Shared';
-import { ClassChip, PLAN_ICON, rand } from '@/Components/Products/Subscriptions/ui';
+import { ClassChip, PLAN_ICON } from '@/Components/Products/Subscriptions/ui';
 import type { SubPlan } from '@/Components/Products/Subscriptions/types';
 import { Stepper } from '@/Components/ui/Kit';
 import { cn } from '@/lib/cn';
 import type { SharedProps } from '@/types';
 
+import { usePrice } from '@/lib/money';
 interface Props {
     categories: { name: string; count: number }[];
     plans: SubPlan[];
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function Choose({ categories, plans, selected, filters }: Props) {
+    const rand = usePrice();
     const { auth } = usePage<SharedProps>().props;
     const [q, setQ] = useState(filters.q);
     const [showFilters, setShowFilters] = useState(Boolean(filters.class));

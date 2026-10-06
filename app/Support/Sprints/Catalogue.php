@@ -364,7 +364,7 @@ class Catalogue
             'badge' => (is_string($a['badge'] ?? null) ? $a['badge'] : null) ?? ($s->is_new ? 'New' : ($s->popular ? 'Popular' : null)),
             'icon' => is_string($a['icon'] ?? null) ? $a['icon'] : ($cat['icon'] ?? 'briefcase'),
             'ideal_for' => array_slice(self::strings($a['ideal_for'] ?? []), 0, 4),
-            'packages' => collect($s->packages ?? [])->pluck('name')->all(),
+            'packages' => array_values(Packages::TIERS), // every sprint sells Basic / Standard / Premium
             'why' => array_slice(self::strings($a['why'] ?? $a['outcomes'] ?? []), 0, 4),
             'featured' => $s->featured,
             'popular' => $s->popular,

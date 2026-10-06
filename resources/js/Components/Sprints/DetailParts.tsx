@@ -3,7 +3,9 @@ import { ArrowRight, CalendarDays, CircleCheck, Clock, Lock, ShieldCheck, Star, 
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { Field, Input, Select, Textarea } from '@/Components/ui/Form';
 import { Modal } from '@/Components/ui/Kit';
+import CoverArt from '@/Components/Art/CoverArt';
 import Icon from '@/Components/ui/Icon';
+import ChargedInZar from '@/Components/ChargedInZar';
 import { cn } from '@/lib/cn';
 import { formatZar, usePrice } from '@/lib/money';
 import type { SharedProps, SprintPackage } from '@/types';
@@ -56,9 +58,12 @@ export function DetailHero({
     delivery,
     idealFor,
     chips,
+    art,
 }: {
     crumbs: { label: string; href?: string }[];
     icon: string;
+    /** Generated cover picture (unique per sprint) shown beside the title instead of the icon tile. */
+    art?: { seed: string; category?: string | null; src?: string | null };
     title: string;
     summary: string | null;
     rating?: number | null;
@@ -73,7 +78,14 @@ export function DetailHero({
             <div className="container-tbca relative py-8 md:py-10">
                 <Crumbs items={crumbs} />
                 <div className="flex flex-col gap-6 md:flex-row md:items-start lg:max-w-[calc(100%-400px)]">
-                    <IconTile name={icon} size="xl" />
+                    {art ? (
+                        <div className="relative w-full shrink-0 overflow-hidden rounded-[8px] border border-ink-700 md:w-56">
+                            <CoverArt seed={art.seed} category={art.category} src={art.src} label={title} className="aspect-[16/10]" />
+                            <span className="absolute bottom-2 left-2"><IconTile name={icon} size="sm" /></span>
+                        </div>
+                    ) : (
+                        <IconTile name={icon} size="xl" />
+                    )}
                     <div className="min-w-0">
                         <h1 className="text-[1.875rem] leading-tight font-bold tracking-[-0.02em] text-white md:text-[2.5rem]">{title}</h1>
                         {summary && <p className="mt-2 max-w-2xl text-[0.9375rem] leading-relaxed text-parchment-200 md:text-base">{summary}</p>}
@@ -157,7 +169,7 @@ export function PackageChooser({
     recurringLabel?: string | null;
     quote?: boolean;
 }) {
-    const price = usePrice();
+    const price = usePrice('On request');
     return (
         <div className="rounded-[10px] border border-ink-700 bg-ink-900 p-4 text-parchment-100 shadow-raised">
             <p className="mb-3 font-semibold">{quote ? 'Scoped & Priced on Request' : 'Choose Your Sprint Package'}</p>
@@ -288,6 +300,7 @@ export function OrderSummaryCard({
                 <span className="font-semibold">Total Due Today</span>
                 <span className="text-lg font-bold text-white">{zar(totals.total)}</span>
             </div>
+            <ChargedInZar zar={totals.total} tone="dark" className="mt-1 text-right" />
             <button type="button" disabled={primaryDisabled} onClick={onPrimary} className="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-[4px] bg-gold-500 font-semibold text-ink-900 hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-50">
                 <Lock className="size-4" aria-hidden="true" /> {primaryLabel} <ArrowRight className="size-4" aria-hidden="true" />
             </button>

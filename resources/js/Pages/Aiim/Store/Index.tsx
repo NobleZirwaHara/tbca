@@ -33,7 +33,7 @@ export default function StoreIndex({ filters, results, categories, owned }: Prop
             crumbs={[{ label: 'Premium Intelligence' }, { label: 'Premium Brief Store' }]}
             heading={<>AIIM Premium Brief Store <Lock className="size-6 text-gold-600" /></>}
             subtitle="Citable. Source-backed. Decision-ready."
-            description="Purchase standard premium briefs and data products for South Africa. All products include verified sources, methodology notes and clear usage rights."
+            description="Purchase standard premium briefs and data products across Africa's 54 markets. All products include verified sources, methodology notes and clear usage rights."
             rail={<><SelectionBox /><RailBox title="Need Help?"><p className="mb-3 text-xs text-ink-300">Our team is here to help you find the right intelligence for your decision.</p><ButtonLink href="/aiim/custom-intelligence" size="sm" className="w-full">Request Human Assistance</ButtonLink><ButtonLink href="/aiim/workspace/advisor-request" size="sm" variant="outline-light" className="mt-2 w-full">Talk to an AIIM Advisor</ButtonLink></RailBox></>}
         >
             <div className="mb-3 flex flex-wrap gap-3">
@@ -56,7 +56,7 @@ export default function StoreIndex({ filters, results, categories, owned }: Prop
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {results.data.map((b) => (
                     <li key={b.sku} className="flex flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white">
-                        <div className="relative"><BriefArt image={b.image} className="h-32" />{b.badge && <Chip tone="gold" className="absolute top-2 left-2 uppercase">{b.badge}</Chip>}</div>
+                        <div className="relative"><BriefArt seed={b.sku} category={b.category} label={b.title} src={b.image} className="aspect-[16/9] w-full" />{b.badge && <Chip tone="gold" className="absolute top-2 left-2 uppercase">{b.badge}</Chip>}</div>
                         <div className="flex flex-1 flex-col p-3">
                             <Link href={`/aiim/store/${b.sku}`} className="font-semibold text-ink-900 hover:text-gold-700">{b.title}</Link>
                             <p className="mt-1 flex-1 text-xs text-ink-600">{b.summary}</p>

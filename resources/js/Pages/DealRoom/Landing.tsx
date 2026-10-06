@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { openAskQuestion } from '@/Components/AskQuestion';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import { ButtonLink } from '@/Components/ui/Button';
 import { Modal } from '@/Components/ui/Kit';
 import type { SharedProps } from '@/types';
@@ -54,7 +55,7 @@ function Card({ title, children, cta, href }: { title: string; children: React.R
 }
 
 /** Virtual Deal Room landing (Stage 1 / front-end page). */
-export default function Landing({ stages }: { stages: { code: string; name: string; phase: string }[] }) {
+export default function Landing({ stages, embedded }: { stages: { code: string; name: string; phase: string }[]; embedded?: EmbeddedSection }) {
     const { auth } = usePage<SharedProps>().props;
     const [video, setVideo] = useState(false);
     const [lifecycle, setLifecycle] = useState(false);
@@ -142,6 +143,8 @@ export default function Landing({ stages }: { stages: { code: string; name: stri
                     </section>
                 </div>
             </div>
+
+            <EmbeddedServices section={embedded} intro="Fixed-price services that run inside the Virtual Deal Room: provisioning, access control, indexing, watermarking, Q&A, disclosure and closing support." />
 
             <Modal open={video} onClose={() => setVideo(false)} title="Deal Room Set Up — 120 seconds" size="lg">
                 <ol className="space-y-2 text-sm">

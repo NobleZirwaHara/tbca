@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Marketplace;
 
 use App\Http\Controllers\Controller;
 use App\Models\Marketplace\Brief;
+use App\Models\Marketplace\Listing;
 use App\Models\Marketplace\Proposal;
 use App\Support\Marketplace\BriefService;
 use App\Support\Marketplace\Matching;
 use App\Support\Marketplace\Options;
+use App\Support\Marketplace\Packages;
 use App\Support\Marketplace\Presenter;
 use App\Support\Marketplace\Pricing;
 use App\Support\Platform\Checkout;
@@ -57,8 +59,38 @@ class BriefController extends Controller
         return $id ? Brief::where('id', $id)->where('user_id', $request->user()->id)->where('status', 'draft')->first() : null;
     }
 
+    /** Keys carried from a service page into a new brief (the chosen Basic / Standard / Premium package). */
+    private const SERVICE_KEYS = ['service', 'service_title', 'package', 'package_label', 'package_price_zar', 'package_delivery', 'package_scope'];
+
+    /** "Customise via a Brief" from a service page: starts a fresh brief seeded with the service and chosen package. */
+    private function seedFromService(Request $request): void
+    {
+        $listing = Listing::where('slug', (string) $request->query('service'))->where('status', 'published')->whereIn('kind', ['fixed', 'recurring'])->first();
+        if (! $listing) {
+            return;
+        }
+        $package = Packages::find($listing, (string) $request->query('package', 'standard'));
+        $request->session()->forget('mkt.brief_id');
+        $request->session()->put('mkt.quick_brief', array_filter([
+            'title' => "{$listing->title} – {$package['name']} Package",
+            'description' => $listing->summary,
+            'category' => array_key_exists($listing->category, Options::CATEGORIES) ? $listing->category : null,
+            'deliverables' => implode('; ', $package['features'] ?? []),
+            'service' => $listing->slug,
+            'service_title' => $listing->title,
+            'package' => $package['key'],
+            'package_label' => $package['name'],
+            'package_price_zar' => $package['priceZar'],
+            'package_delivery' => $package['delivery'] ?? null,
+            'package_scope' => $package['scope'] ?? null,
+        ]));
+    }
+
     public function wizard(Request $request, int $step = 1): Response|RedirectResponse
     {
+        if ($request->filled('service')) {
+            $this->seedFromService($request);
+        }
         $brief = $request->query('draft')
             ? Brief::where('reference', $request->query('draft'))->where('user_id', $request->user()->id)->where('status', 'draft')->first()
             : $this->draft($request);
@@ -150,7 +182,9 @@ class BriefController extends Controller
                 'data' => [],
             ]);
             $request->session()->put('mkt.brief_id', $brief->id);
+            $seeded = array_intersect_key($request->session()->get('mkt.quick_brief', []), array_flip(self::SERVICE_KEYS));
             $request->session()->forget('mkt.quick_brief');
+            $data = [...$seeded, ...$data];
         }
 
         unset($data['confirm_not_atp'], $data['confirm_accuracy']);

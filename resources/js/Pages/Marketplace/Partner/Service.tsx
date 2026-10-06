@@ -4,7 +4,8 @@ import Breadcrumbs from '@/Components/ui/Breadcrumbs';
 import { ButtonLink, Button } from '@/Components/ui/Button';
 import { StatusPill } from '@/Components/ui/Kit';
 import { openAskQuestion } from '@/Components/AskQuestion';
-import { Card, InfoRows } from '@/Components/Marketplace/ui';
+import { Card, InfoRows, artCategory } from '@/Components/Marketplace/ui';
+import CoverArt from '@/Components/Art/CoverArt';
 import { PsBody, money } from '@/Components/Marketplace/PartnerKit';
 import type { MkListing } from '@/types/marketplace';
 
@@ -32,6 +33,7 @@ export default function Service({ listing, related }: { listing: MkListing; rela
                             <p className="mt-1 text-ink-600">Before you request, see exactly how this engagement works, who does what, and how we are paid.</p>
                             <div className="mt-3 flex flex-wrap gap-2">{['Permission Based', 'Professional Standards', 'Regulated Access', 'Conflict Before Money'].map((c) => <span key={c} className="flex items-center gap-1.5 rounded border border-gold-400/60 bg-white px-3 py-1 text-xs"><Shield className="size-3.5 text-gold-600" aria-hidden="true" />{c}</span>)}</div>
                         </div>
+                        <CoverArt seed={listing.slug} category={artCategory(listing.category)} label={listing.title} src={d.image ?? null} className="aspect-[16/5] rounded-[8px]" />
                         <div className="grid gap-4 rounded-[8px] bg-ink-950 p-5 text-parchment-100 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
                             <div><p className="text-xs font-bold tracking-wide text-gold-400 uppercase">Service Overview</p><p className="mt-1 font-serif text-xl font-bold">{listing.title}</p><p className="mt-1 text-xs text-ink-300">{listing.summary}</p></div>
                             {[['Profession', d.profession], ['Jurisdiction', d.jurisdiction], ['Typical Timeline', d.timeline]].map(([k, v]) => <div key={k}><p className="text-xs text-ink-400">{k}</p><p className="font-semibold text-gold-400">{v}</p></div>)}

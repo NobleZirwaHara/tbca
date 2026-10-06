@@ -32,6 +32,7 @@ import { HeroIconTile, priceText } from '@/Components/SprintTypes/B/DarkHeroPack
 import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 import type { DueDiligenceTrustAttributes } from '@/types/sprint-types-b';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 
 const TAB_LABELS = ['Overview', "What's Included", 'Process', 'Deliverables', 'Inputs & Evidence', 'Fees & External Costs', 'FAQs'];
 const tabKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -62,7 +63,8 @@ export default function DueDiligenceTrustSprint({ sprint, related }: { sprint: S
     const layout = a.layout ?? 'A';
     const { packages, selected, setSelected } = usePackage(sprint);
     const tabs = (list(a.tabs).length ? list(a.tabs) : TAB_LABELS).map((t) => ({ key: tabKey(t), label: t }));
-    const [tab, setTab] = useState(tabs[0].key);
+    const urlTab = useUrlTab();
+    const [tab, setTab] = useState(() => tabs[urlTabIndex(tabs.map((t) => t.label), urlTab)].key);
     const faqs = a.faqs?.length ? a.faqs : defaultFaqs(sprint);
     const numbering = list(a.section_numbering);
     /** Prefixes a section title with its number on numbered (layout C) pages. */

@@ -2,6 +2,7 @@ import { Head, router } from '@inertiajs/react';
 import { CheckCircle2, CircleAlert, CircleX, Plus, Trash2, UserCheck } from 'lucide-react';
 import { Button, ButtonLink } from '@/Components/ui/Button';
 import AdvIcon from '@/Components/Advisory/AdvIcon';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import { Card, CheckList, KV, PageTitle, Stat, TrustBand, zarRange } from '@/Components/Advisory/ui';
 import { cn } from '@/lib/cn';
 
@@ -13,7 +14,9 @@ interface Props {
     studies: Study[];
     path: string[];
     snapshot: { active: number; reusable: number; pending: number; review: number };
-    sectors: { key: string; label: string; icon: string }[];
+    sectors: { key: string; code: string; label: string; icon: string; blurb: string }[];
+    plan: { key: string; code: string; label: string; focus: string; subs: string[]; approvals: string[]; risks: string[]; funders: string[]; phases: [string, string, string, string[]][] };
+    embedded?: EmbeddedSection;
 }
 
 const EV: Record<string, [string, typeof CheckCircle2, string]> = {
@@ -23,7 +26,7 @@ const EV: Record<string, [string, typeof CheckCircle2, string]> = {
     human_review: ['Human Review Required', UserCheck, 'text-controlled-700'],
 };
 
-export default function Studies({ ctx, sector, sectorLabel, studies, path, snapshot, sectors }: Props) {
+export default function Studies({ ctx, sector, sectorLabel, studies, path, snapshot, sectors, plan, embedded }: Props) {
     const act = (study: string, action: 'add' | 'remove' | 'evidence') => router.post('/project-advisory/studies', { study, action }, { preserveScroll: true });
     return (
         <>
@@ -38,13 +41,34 @@ export default function Studies({ ctx, sector, sectorLabel, studies, path, snaps
                 <div className="grid gap-5 lg:grid-cols-12">
                     <div className="space-y-5 lg:col-span-9">
                         <section>
-                            <h2 className="text-sm font-semibold">1. Select a Sector</h2>
-                            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4 xl:grid-cols-8" role="radiogroup">
+                            <h2 className="text-sm font-semibold">1. Select a Sector <span className="font-normal text-ink-500">— all 17 TBCA sectors</span></h2>
+                            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6" role="radiogroup" aria-label="Sector">
                                 {sectors.map((s) => (
-                                    <button key={s.key} type="button" role="radio" aria-checked={sector === s.key} onClick={() => router.get('/project-advisory/studies', { sector: s.key }, { preserveScroll: true })} className={cn('flex flex-col items-center gap-1 rounded-[8px] border p-3 text-center text-xs', sector === s.key ? 'border-gold-500 bg-gold-50 font-semibold ring-1 ring-gold-500' : 'border-parchment-400 bg-white hover:border-gold-300')}>
-                                        <AdvIcon name={s.icon} className="size-7 text-gold-600" />{s.label}
+                                    <button key={s.key} type="button" role="radio" aria-checked={sector === s.key} title={s.blurb} onClick={() => router.get('/project-advisory/studies', { sector: s.key }, { preserveScroll: true })} className={cn('flex flex-col items-center gap-1 rounded-[8px] border p-3 text-center text-xs', sector === s.key ? 'border-gold-500 bg-gold-50 font-semibold ring-1 ring-gold-500' : 'border-parchment-400 bg-white hover:border-gold-300')}>
+                                        <AdvIcon name={s.icon} className="size-7 text-gold-600" /><span className="text-[0.625rem] text-ink-500">{s.code}</span>{s.label}
                                     </button>
                                 ))}
+                            </div>
+                        </section>
+                        <section className="rounded-[8px] border border-gold-300 bg-white p-4" aria-labelledby="plan-h">
+                            <p className="text-[0.6875rem] font-semibold tracking-wider text-gold-700 uppercase">{plan.code} · Sector advisory plan</p>
+                            <h2 id="plan-h" className="font-serif text-lg font-semibold">{plan.label}</h2>
+                            <p className="text-xs text-ink-600">{plan.focus}</p>
+                            <ol className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                                {plan.phases.map(([stages, title, body, outputs], i) => (
+                                    <li key={title} className="rounded-[6px] border border-parchment-400 p-3">
+                                        <p className="flex items-center gap-2 text-xs font-semibold"><span className="flex size-6 items-center justify-center rounded-full bg-gold-500 text-[0.6875rem] text-ink-900">{i + 1}</span>{title}</p>
+                                        <p className="mt-0.5 text-[0.625rem] text-ink-500">Lifecycle {stages}</p>
+                                        <p className="mt-1 text-[0.6875rem] text-ink-600">{body}</p>
+                                        <CheckList className="mt-2" items={outputs} />
+                                    </li>
+                                ))}
+                            </ol>
+                            <div className="mt-3 grid gap-3 text-xs md:grid-cols-4">
+                                <div><p className="font-semibold">Sub-sectors</p><p className="text-ink-600">{plan.subs.join(' · ')}</p></div>
+                                <div><p className="font-semibold">Typical approvals</p><ul className="list-disc pl-4 text-ink-600">{plan.approvals.map((a) => <li key={a}>{a}</li>)}</ul></div>
+                                <div><p className="font-semibold">Key risks</p><ul className="list-disc pl-4 text-ink-600">{plan.risks.map((a) => <li key={a}>{a}</li>)}</ul></div>
+                                <div><p className="font-semibold">Typical funders</p><ul className="list-disc pl-4 text-ink-600">{plan.funders.map((a) => <li key={a}>{a}</li>)}</ul></div>
                             </div>
                         </section>
                         <section className="rounded-[8px] border border-parchment-400 bg-white p-4">
@@ -100,6 +124,7 @@ export default function Studies({ ctx, sector, sectorLabel, studies, path, snaps
                     </aside>
                 </div>
             </div>
+            <EmbeddedServices section={embedded} />
             <TrustBand items={[['Published Method', 'Transparent frameworks and assumptions.'], ['You Approve Before We Charge', 'No costs without your confirmed go-ahead.'], ['Human Review Where Required', 'Specialists validate high-impact judgements.'], ['Your Work Product Is Portable', 'You own your reports, data and decision files.'], ['POPIA-Aware Data Controls', 'Role-based and consent controls.'], ['Five ledgers', 'T, P, X, S, C separate']]} />
         </>
     );

@@ -21,10 +21,11 @@ import {
 } from 'lucide-react';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { PageTitle, TrustRow } from '@/Components/Products/Shared';
-import { ClassChip, PLAN_ICON, rand } from '@/Components/Products/Subscriptions/ui';
+import { ClassChip, PLAN_ICON } from '@/Components/Products/Subscriptions/ui';
 import type { SubPlan } from '@/Components/Products/Subscriptions/types';
 import { cn } from '@/lib/cn';
 
+import { usePrice } from '@/lib/money';
 interface ClassInfo {
     code: string;
     name: string;
@@ -33,6 +34,7 @@ interface ClassInfo {
 }
 
 export default function Compare({ plans, classes }: { plans: SubPlan[]; classes: ClassInfo[] }) {
+    const rand = usePrice();
     const rows: { label: string; icon: LucideIcon; cell: (p: SubPlan) => ReactNode }[] = [
         { label: 'Recurrence Class', icon: Repeat, cell: (p) => <ClassChip code={p.recurrence_class} label={p.class_name} /> },
         { label: 'What Repeats', icon: RefreshCw, cell: (p) => p.what_recurs },

@@ -1,6 +1,7 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Bot, Check, Send, X } from 'lucide-react';
+import { Check, Send, X } from 'lucide-react';
 import PortalShell from '@/Components/Portal/PortalShell';
+import Face from '@/Components/Assistant/Face';
 import { Button } from '@/Components/ui/Button';
 import { Panel, StatusPill } from '@/Components/ui/Kit';
 
@@ -21,7 +22,7 @@ interface Props {
 const CAN = ['Provide guidance on portal features and processes', 'Find and explain permitted information', 'Track tasks, tickets and complaint status', 'Help prepare drafts and documents', 'Point you to the right human expert'];
 const CANNOT = ['Approve payments or transactions', 'Provide legal or tax advice', 'Make sanctions or KYC decisions', 'Release deliverables or results', 'Override portal administrators'];
 
-/** CP-SCR-076 NATASHA Assistant Panel: rule-based answers from permitted portal data. */
+/** CP-SCR-076 KAREN Assistant Panel: rule-based answers from permitted portal data. */
 export default function Natasha({ name, disabled, conversation, prompts }: Props) {
     const form = useForm({ question: '' });
     const ask = (q: string) => {
@@ -30,22 +31,20 @@ export default function Natasha({ name, disabled, conversation, prompts }: Props
     };
 
     return (
-        <PortalShell title="NATASHA Assistant Panel" icon="bot" subtitle="Your TBCA Client Journey Assistant. NATASHA helps you understand tasks, find information and take the right next steps." crumbs={[{ label: 'NATASHA' }]}>
-            <Head title="NATASHA Assistant" />
-            {disabled && <p className="mb-4 rounded-[8px] border border-risk-500/30 bg-risk-50 p-3 text-sm text-risk-800">NATASHA is temporarily unavailable (safety kill switch active). Please use Support Tickets or Secure Messages.</p>}
+        <PortalShell title="KAREN Assistant Panel" icon="bot" subtitle="Your TBCA Client Journey Assistant. KAREN helps you understand tasks, find information and take the right next steps." crumbs={[{ label: 'KAREN' }]}>
+            <Head title="KAREN Assistant" />
+            {disabled && <p className="mb-4 rounded-[8px] border border-risk-500/30 bg-risk-50 p-3 text-sm text-risk-800">KAREN is temporarily unavailable (safety kill switch active). Please use Support Tickets or Secure Messages.</p>}
             <div className="grid gap-5 xl:grid-cols-[16rem_minmax(0,1fr)_18rem]">
                 <aside className="space-y-4">
                     <Panel>
                         <div className="flex items-center gap-3">
-                            <span className="flex size-12 items-center justify-center rounded-full bg-ink-900 text-gold-300">
-                                <Bot className="size-6" aria-hidden="true" />
-                            </span>
+                            <Face persona="karen" size={56} online={!disabled} />
                             <div>
                                 <p className="font-semibold text-ink-900">Hello, {name}!</p>
                                 <StatusPill status={disabled ? 'Offline' : 'Online'} tone={disabled ? 'bad' : 'good'} />
                             </div>
                         </div>
-                        <p className="mt-3 text-xs text-ink-600">I'm NATASHA. I can help you navigate the portal, find information you're allowed to see, and guide you to the right resources or human experts when needed.</p>
+                        <p className="mt-3 text-xs text-ink-600">I'm KAREN. I can help you navigate the portal, find information you're allowed to see, and guide you to the right resources or human experts when needed.</p>
                     </Panel>
                     <Panel title="Suggested Prompts">
                         <ul className="space-y-1.5">
@@ -74,7 +73,7 @@ export default function Natasha({ name, disabled, conversation, prompts }: Props
                                 </div>
                                 {c.answer && (
                                     <div className="max-w-[90%] rounded-[8px] border border-gold-300 bg-gold-50/60 p-3 text-sm">
-                                        <p className="text-[0.6875rem] text-ink-500">NATASHA · {c.answer.tier}</p>
+                                        <p className="text-[0.6875rem] text-ink-500">KAREN · {c.answer.tier}</p>
                                         <p className="text-ink-800">{c.answer.text}</p>
                                         {c.answer.items.length > 0 && (
                                             <ul className="mt-2 space-y-1">
@@ -107,18 +106,18 @@ export default function Natasha({ name, disabled, conversation, prompts }: Props
                         }}
                     >
                         <label htmlFor="ask" className="sr-only">
-                            Ask NATASHA
+                            Ask KAREN
                         </label>
-                        <input id="ask" disabled={disabled} value={form.data.question} onChange={(e) => form.setData('question', e.target.value)} placeholder="Ask NATASHA anything…" className="h-10 flex-1 rounded-[4px] border border-parchment-500 px-3 text-sm focus:border-gold-500 focus:outline-none" />
+                        <input id="ask" disabled={disabled} value={form.data.question} onChange={(e) => form.setData('question', e.target.value)} placeholder="Ask KAREN anything…" className="h-10 flex-1 rounded-[4px] border border-parchment-500 px-3 text-sm focus:border-gold-500 focus:outline-none" />
                         <Button type="submit" size="sm" disabled={disabled || form.processing} aria-label="Send">
                             <Send className="size-4" />
                         </Button>
                     </form>
-                    <p className="px-3 pb-3 text-[0.6875rem] text-ink-500">NATASHA responses are generated from permitted portal data and logged securely.</p>
+                    <p className="px-3 pb-3 text-[0.6875rem] text-ink-500">KAREN responses are generated from permitted portal data and logged securely.</p>
                 </section>
 
                 <aside className="space-y-4">
-                    <Panel title="What NATASHA Can Help With">
+                    <Panel title="What KAREN Can Help With">
                         <ul className="space-y-1.5 text-[0.8125rem]">
                             {CAN.map((c) => (
                                 <li key={c} className="flex gap-2">
@@ -133,7 +132,7 @@ export default function Natasha({ name, disabled, conversation, prompts }: Props
                             {CANNOT.map((c) => (
                                 <li key={c} className="flex gap-2">
                                     <X className="mt-0.5 size-4 shrink-0 text-risk-500" aria-hidden="true" />
-                                    NATASHA cannot {c.charAt(0).toLowerCase() + c.slice(1)}
+                                    KAREN cannot {c.charAt(0).toLowerCase() + c.slice(1)}
                                 </li>
                             ))}
                         </ul>

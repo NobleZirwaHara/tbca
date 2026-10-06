@@ -50,7 +50,7 @@ export default function RequestQuote({ sprint, package: pkg, categories, options
     });
     const e = form.errors as Record<string, string | undefined>;
     const attachError = Object.entries(e).find(([k]) => k.startsWith('attachments'))?.[1];
-    const whatsapp = (contact?.whatsapp ?? '+27105941044').replace(/[^\d]/g, '');
+    const whatsapp = (contact?.whatsapp ?? '+27608011365').replace(/[^\d]/g, '');
 
     function send(kind: 'submit' | 'save') {
         form.transform((d) => ({ ...d, action: kind }));
@@ -114,8 +114,8 @@ export default function RequestQuote({ sprint, package: pkg, categories, options
                             Continue on WhatsApp <MessageCircle className="size-4 text-verified-500" aria-hidden="true" />
                         </a>
                         <p className="mt-3 text-[0.75rem] text-ink-600">Or call us between 08:00 – 17:00 (SAST)</p>
-                        <a href={`tel:${contact?.phone ?? '+27105941044'}`} className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-gold-700">
-                            <Phone className="size-4" aria-hidden="true" /> {contact?.phone ?? '+27 10 594 1044'}
+                        <a href={`tel:${contact?.phone ?? '+27608011365'}`} className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-gold-700">
+                            <Phone className="size-4" aria-hidden="true" /> {contact?.phone ?? '+27 60 801 1365'}
                         </a>
                     </div>
                 </div>

@@ -10,6 +10,7 @@ use App\Models\Aiim\Brief;
 use App\Models\Aiim\CaseFile;
 use App\Models\Aiim\Comparison;
 use App\Models\Aiim\Corridor;
+use App\Models\Aiim\Country;
 use App\Models\Aiim\Engagement;
 use App\Models\Aiim\EngagementEvent;
 use App\Models\Aiim\Entitlement;
@@ -28,6 +29,7 @@ use App\Models\Aiim\Source;
 use App\Models\Aiim\VerificationItem;
 use App\Models\Aiim\WalletTransaction;
 use App\Models\User;
+use App\Support\Aiim\CountryData;
 use App\Support\Aiim\EngagementFlow;
 use App\Support\Aiim\Pricing;
 use App\Support\Aiim\SeedData;
@@ -40,6 +42,9 @@ class AiimSeeder extends Seeder
 {
     public function run(): void
     {
+        foreach (CountryData::rows() as $c) {
+            Country::updateOrCreate(['iso2' => $c['iso2']], $c);
+        }
         foreach (SeedData::provinces() as $i => $p) {
             Province::updateOrCreate(['slug' => $p['slug']], $p + ['rank' => $i + 1]);
         }

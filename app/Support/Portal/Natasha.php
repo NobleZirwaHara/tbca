@@ -11,7 +11,7 @@ use App\Models\Portal\Ticket;
 use App\Models\User;
 
 /**
- * NATASHA client journey assistant (CP-TEB Part 20). Deterministic, rule-based
+ * KAREN client journey assistant (CP-TEB Part 20). Deterministic, rule-based
  * answers composed only from data the signed-in client is permitted to see
  * (authority level N1/N2). Reserved decisions (N5) are refused with a handoff.
  */
@@ -78,7 +78,7 @@ class Natasha
             return ['text' => 'You can book, reschedule or cancel meetings from Meetings & Bookings. Double-booked slots are rejected automatically.', 'items' => [], 'actions' => [['label' => 'Meetings & Bookings', 'href' => '/portal/meetings']], 'tier' => 'N2 · Guidance'];
         }
         if ($has(['password', 'mfa', 'security', 'sign in', 'login'])) {
-            return ['text' => 'You can change your password and enable MFA under Security & Access History. TBCA will never ask for your password or one-time codes via WhatsApp, email or NATASHA.', 'items' => [], 'actions' => [['label' => 'Security Settings', 'href' => '/portal/security']], 'tier' => 'N2 · Guidance'];
+            return ['text' => 'You can change your password and enable MFA under Security & Access History. TBCA will never ask for your password or one-time codes via WhatsApp, email or KAREN.', 'items' => [], 'actions' => [['label' => 'Security Settings', 'href' => '/portal/security']], 'tier' => 'N2 · Guidance'];
         }
         if ($has(['data', 'privacy', 'popia', 'consent', 'delete'])) {
             return ['text' => 'Under POPIA you can request access, export, correction or deletion of your personal data. Requests are answered within 30 days.', 'items' => [], 'actions' => [['label' => 'Data Access & Export', 'href' => '/portal/privacy/data'], ['label' => 'Consent Centre', 'href' => '/portal/privacy']], 'tier' => 'N2 · Guidance'];

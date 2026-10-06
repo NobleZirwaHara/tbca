@@ -91,7 +91,7 @@ trait SupportExtras
     public function storeHandoff(Request $request): RedirectResponse
     {
         $d = $request->validate(['subject' => 'required|string|max:120', 'priority' => 'required|in:low,medium,high', 'body' => 'required|string|max:5000', 'channel' => 'required|string|max:40', 'escalate' => 'boolean']);
-        $t = SupportController::createTicket($this->user(), ['subject' => $d['subject'], 'priority' => ! empty($d['escalate']) ? 'high' : $d['priority'], 'body' => $d['body'], 'category' => 'General', 'channel' => $d['channel'], 'area' => 'NATASHA handoff'], 'natasha');
+        $t = SupportController::createTicket($this->user(), ['subject' => $d['subject'], 'priority' => ! empty($d['escalate']) ? 'high' : $d['priority'], 'body' => $d['body'], 'category' => 'General', 'channel' => $d['channel'], 'area' => 'KAREN handoff'], 'natasha');
         if (! empty($d['escalate'])) {
             $t->update(['escalation_level' => 1]);
         }
@@ -104,7 +104,7 @@ trait SupportExtras
         $incidents = Record::whereNull('user_id')->where('register', 'incident')->orderBy('sort')->get();
         $active = $incidents->whereNotIn('status', ['resolved']);
         $maint = Record::whereNull('user_id')->where('register', 'maintenance')->where('status', 'upcoming')->get();
-        $systems = ['Client Portal' => 'Client Portal', 'NATASHA Assistant' => 'NATASHA', 'Documents & Files' => 'Documents & Files', 'Payments' => 'Payment Gateway', 'WhatsApp Comms' => 'WhatsApp', 'Integrations' => 'CRM (Zoho)', 'Reports & Dashboards' => 'Reports & Dashboards', 'API Services' => 'Marketplace'];
+        $systems = ['Client Portal' => 'Client Portal', 'KAREN Assistant' => 'NATASHA', 'Documents & Files' => 'Documents & Files', 'Payments' => 'Payment Gateway', 'WhatsApp Comms' => 'WhatsApp', 'Integrations' => 'CRM (Zoho)', 'Reports & Dashboards' => 'Reports & Dashboards', 'API Services' => 'Marketplace'];
 
         return $this->register([
             'title' => 'System Status and Incident Notices', 'icon' => 'activity', 'subtitle' => 'Real-time system status, incident updates, and maintenance notices to keep you informed.',

@@ -18,7 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
-/** CP-SCR-104..111, 117, 139, 140: support, communications, NATASHA, consent/rights, security, successor, integrations, UAT/release, handoffs, entry surfaces, continuity. */
+/** CP-SCR-104..111, 117, 139, 140: support, communications, KAREN, consent/rights, security, successor, integrations, UAT/release, handoffs, entry surfaces, continuity. */
 class AdminTrustController extends PortalController
 {
     protected function admin(array $props): Response
@@ -93,9 +93,9 @@ class AdminTrustController extends PortalController
         $kill = Natasha::killSwitchOn();
 
         return $this->admin([
-            'title' => 'NATASHA Permissions, Prompt, Tool and Action Console', 'subtitle' => 'Policies, authority tiers (N0–N5), evaluation and the mandatory human-controlled kill switch.',
-            'actions' => [Ui::action($kill ? 'Turn Kill Switch OFF' : 'Activate Kill Switch', '/admin/portal/natasha/kill-switch', 'post', ['variant' => $kill ? 'gold' : 'danger', 'confirm' => $kill ? 'Re-enable NATASHA for clients?' : 'Disable NATASHA for all clients immediately?'])],
-            'banner' => $kill ? ['tone' => 'bad', 'title' => 'Kill switch ACTIVE', 'body' => 'NATASHA is disabled for all clients.'] : null,
+            'title' => 'KAREN Permissions, Prompt, Tool and Action Console', 'subtitle' => 'Policies, authority tiers (N0–N5), evaluation and the mandatory human-controlled kill switch.',
+            'actions' => [Ui::action($kill ? 'Turn Kill Switch OFF' : 'Activate Kill Switch', '/admin/portal/natasha/kill-switch', 'post', ['variant' => $kill ? 'gold' : 'danger', 'confirm' => $kill ? 'Re-enable KAREN for clients?' : 'Disable KAREN for all clients immediately?'])],
+            'banner' => $kill ? ['tone' => 'bad', 'title' => 'Kill switch ACTIVE', 'body' => 'KAREN is disabled for all clients.'] : null,
             'kpis' => [Ui::kpi('Active Policies', $policies->where('status', 'active')->count(), null, 'good', 'shield-check'), Ui::kpi('Conversations Logged', $logs->count(), null, 'neutral', 'message-square'), Ui::kpi('Refused (N5)', $logs->filter(fn ($l) => str_starts_with($l->data['answer']['tier'] ?? '', 'N5'))->count(), 'Handed off', 'warn', 'user-x'), Ui::kpi('Kill Switch', $kill ? 'ON' : 'OFF', null, $kill ? 'bad' : 'good', 'shield-alert')],
             'main' => [
                 Ui::table('Policies', ['Policy ID', 'Policy Name', 'Type', 'Tier', 'Status', 'Next Review', 'Created By', ''], $policies->map(fn ($p) => [Ui::ref($p->reference), $p->title, $p->data['type'] ?? '', $p->data['tier'] ?? '', Ui::pill($p->status), Ui::date($p->data['next_review'] ?? null), $p->data['by'] ?? '', Ui::actions([Ui::action($p->status === 'active' ? 'Deactivate' : 'Activate', '/admin/portal/records/'.$p->id.'/status', 'post', ['data' => ['status' => $p->status === 'active' ? 'inactive' : 'active']])])])->all()),
@@ -107,10 +107,10 @@ class AdminTrustController extends PortalController
 
     public function killSwitch(): RedirectResponse
     {
-        $r = Record::firstOrCreate(['user_id' => null, 'register' => 'setting', 'reference' => 'natasha_kill_switch'], ['title' => 'NATASHA kill switch', 'status' => 'off']);
+        $r = Record::firstOrCreate(['user_id' => null, 'register' => 'setting', 'reference' => 'natasha_kill_switch'], ['title' => 'KAREN kill switch', 'status' => 'off']);
         $r->update(['status' => $r->status === 'on' ? 'off' : 'on']);
 
-        return back()->with('success', 'NATASHA kill switch is now '.strtoupper($r->status).'.');
+        return back()->with('success', 'KAREN kill switch is now '.strtoupper($r->status).'.');
     }
 
     public function consent(Request $request): Response

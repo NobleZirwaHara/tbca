@@ -248,7 +248,7 @@ class AuthController extends Controller
                 'keep_documents' => ['nullable', 'array'],
                 'contact_channels' => ['required', 'array', 'min:1'],
                 'contact_channels.*' => [Rule::in(['Email', 'Telephone', 'WhatsApp', 'Client Portal Notification'])],
-                'comm_language' => ['required', Rule::in(['English', 'Afrikaans', 'English and Afrikaans'])],
+                'comm_language' => ['required', Rule::in(['English', 'Afrikaans', 'Portuguese', 'Chinese (Mandarin)', 'French', 'Swahili', 'Arabic'])],
                 'comm_purposes' => ['nullable', 'array'],
                 'comm_purposes.*' => ['string', 'max:80'],
             ],
@@ -319,13 +319,18 @@ class AuthController extends Controller
             ->with('reference', $reference);
     }
 
-    /** @return list<array{value: string, label: string}> */
+    /** @return list<array{value: string, label: string}> The 54 African countries, then key markets outside Africa. */
     public static function countries(): array
     {
-        return collect([
-            'ZA' => 'South Africa', 'BW' => 'Botswana', 'NA' => 'Namibia', 'LS' => 'Lesotho', 'SZ' => 'Eswatini', 'ZW' => 'Zimbabwe', 'ZM' => 'Zambia', 'MW' => 'Malawi',
-            'MZ' => 'Mozambique', 'KE' => 'Kenya', 'TZ' => 'Tanzania', 'UG' => 'Uganda', 'RW' => 'Rwanda', 'NG' => 'Nigeria', 'GH' => 'Ghana', 'LR' => 'Liberia',
-            'EG' => 'Egypt', 'MA' => 'Morocco', 'MU' => 'Mauritius', 'GB' => 'United Kingdom', 'US' => 'United States', 'AE' => 'United Arab Emirates',
-        ])->map(fn ($l, $v) => ['value' => $v, 'label' => $l])->values()->all();
+        $africa = collect(\App\Support\Platform\Africa::all())
+            ->map(fn (array $c) => ['value' => $c['iso2'], 'label' => $c['short_name']])
+            ->sortBy('label')->values();
+
+        return $africa->concat([
+            ['value' => 'GB', 'label' => 'United Kingdom'],
+            ['value' => 'US', 'label' => 'United States'],
+            ['value' => 'AE', 'label' => 'United Arab Emirates'],
+            ['value' => 'CN', 'label' => 'China'],
+        ])->all();
     }
 }

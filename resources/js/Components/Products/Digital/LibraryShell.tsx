@@ -113,7 +113,7 @@ export function HelpPanel() {
                     </button>
                 </li>
                 <li>
-                    <a href="https://wa.me/27120010567" target="_blank" rel="noreferrer" className="flex items-center gap-3 py-2">
+                    <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="flex items-center gap-3 py-2">
                         <MessageCircle className="size-5 text-verified-500" aria-hidden="true" />
                         <span className="flex-1"><strong className="block text-ink-900">WhatsApp Support</strong>Chat with us on WhatsApp</span>
                         <ChevronRight className="size-4" aria-hidden="true" />

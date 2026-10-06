@@ -4,6 +4,7 @@ import { AlertTriangle, ArrowLeft, Building2, CreditCard, Landmark, Lock, Shield
 import { Button } from '@/Components/ui/Button';
 import { Checkbox, ChoiceCard, Field, Input, Select } from '@/Components/ui/Form';
 import LedgerReview from '@/Components/Shop/LedgerReview';
+import { AcceptedPayments, PaymentMethodList, type PaymentRegister } from '@/Components/PaymentOptions';
 import { FlowSteps, ShopCrumbs, SideCard, TrustStrip, zar } from '@/Components/Shop/Bits';
 import { AfterPaymentCard, HelpCard, OrderReferenceCard, OrderSummaryCard, PaymentSummaryCard } from '@/Components/Shop/CheckoutParts';
 import type { Order, Payment as PaymentRecord, SharedProps, Totals } from '@/types';
@@ -14,6 +15,9 @@ interface Props {
     order: Order;
     feeOptions: Record<Method, Totals>;
     lastPayment: PaymentRecord | null;
+    paymentOptions: PaymentRegister;
+    /** The 54 African countries (canonical register) plus "Other". */
+    countries?: string[];
 }
 
 const METHODS: { key: Method; title: string; body: string; icon: typeof CreditCard; speed: string; badge?: string }[] = [
@@ -21,8 +25,6 @@ const METHODS: { key: Method; title: string; body: string; icon: typeof CreditCa
     { key: 'eft', title: 'EFT / Bank Transfer', body: 'Make a direct payment from your bank account. Reference will be provided.', icon: Landmark, speed: '1-2 Business Days' },
     { key: 'wallet', title: 'Wallet / Secure Platform Payment', body: 'Pay using your TBCA Wallet balance or secure platform payment.', icon: Wallet, speed: 'Instant' },
 ];
-
-const COUNTRIES = ['South Africa', 'Botswana', 'Namibia', 'Lesotho', 'Eswatini', 'Zimbabwe', 'Zambia', 'Mozambique', 'Kenya', 'Nigeria', 'Ghana', 'Other'];
 
 function formatCard(value: string): string {
     return value.replace(/\D/g, '').slice(0, 19).replace(/(\d{4})(?=\d)/g, '$1 ');
@@ -33,7 +35,7 @@ function formatExpiry(value: string): string {
     return d.length > 2 ? `${d.slice(0, 2)} / ${d.slice(2)}` : d;
 }
 
-export default function Payment({ order, feeOptions, lastPayment }: Props) {
+export default function Payment({ order, feeOptions, lastPayment, paymentOptions, countries = ['South Africa', 'Other'] }: Props) {
     const { auth } = usePage<SharedProps>().props;
     const user = auth.user;
     const billing = order.billing ?? {};
@@ -159,6 +161,11 @@ export default function Payment({ order, feeOptions, lastPayment }: Props) {
                                         })}
                                     </div>
                                     {errors.method && <p className="mt-2 text-xs text-risk-500">{errors.method}</p>}
+                                    <details className="mt-3 rounded-[6px] border border-parchment-400 p-3 text-[0.8125rem]">
+                                        <summary className="cursor-pointer font-semibold text-ink-800">More payment options coming soon</summary>
+                                        <p className="mt-2 text-xs text-ink-500">{paymentOptions.note}</p>
+                                        <PaymentMethodList register={paymentOptions} className="mt-2 sm:grid-cols-1" />
+                                    </details>
                                 </SideCard>
 
                                 <SideCard title={form.data.method === 'card' ? '2. Card Details' : form.data.method === 'eft' ? '2. EFT Instructions' : '2. Wallet Payment'}>
@@ -228,14 +235,14 @@ export default function Payment({ order, feeOptions, lastPayment }: Props) {
                                         {(id) => <Input id={id} autoComplete="street-address" value={form.data.billing_address} onChange={(e) => form.setData('billing_address', e.target.value)} />}
                                     </Field>
                                     <Field label="Country" error={errors.billing_country}>
-                                        {(id) => <Select id={id} options={COUNTRIES} value={form.data.billing_country} onChange={(e) => form.setData('billing_country', e.target.value)} />}
+                                        {(id) => <Select id={id} options={countries} value={form.data.billing_country} onChange={(e) => form.setData('billing_country', e.target.value)} />}
                                     </Field>
                                 </div>
                                 <div className="mt-4">
                                     <Checkbox
                                         checked={form.data.accept_terms}
                                         onChange={(e) => form.setData('accept_terms', e.target.checked)}
-                                        label={<>I agree to the <a href="/terms" className="text-gold-700 underline">Terms of Service</a> and <a href="/refund-policy" className="text-gold-700 underline">Refund Policy</a>.</>}
+                                        label={<>I agree to the <a href="/terms" className="text-gold-700 underline">Terms of Service</a> and <a href="/policies/refund-and-cancellation" className="text-gold-700 underline">Refund Policy</a>.</>}
                                     />
                                     {errors.accept_terms && <p role="alert" className="mt-1 text-xs font-medium text-risk-500">{errors.accept_terms}</p>}
                                 </div>
@@ -261,6 +268,9 @@ export default function Payment({ order, feeOptions, lastPayment }: Props) {
 
                         <aside className="space-y-4 lg:col-span-4">
                             <PaymentSummaryCard order={order} totals={totals} />
+                            <SideCard title="We Accept">
+                                <AcceptedPayments register={paymentOptions} />
+                            </SideCard>
                             <OrderReferenceCard reference={order.reference} />
                             <AfterPaymentCard />
                             <HelpCard />

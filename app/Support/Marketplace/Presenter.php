@@ -66,6 +66,7 @@ class Presenter
             'badge' => $l->badge,
             'status' => $l->status,
             'details' => $l->details ?? [],
+            'packages' => Packages::for($l),
             'provider' => $l->relationLoaded('provider') && $l->provider ? ['name' => $l->provider->name, 'slug' => $l->provider->slug, 'status' => $l->provider->status] : null,
         ];
     }

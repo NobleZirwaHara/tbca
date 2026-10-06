@@ -21,7 +21,7 @@ export default function Downgrade({ vehicles, targets, changes }: { vehicles: Ve
                 title="Downgrade and Exit"
                 tagline="Change your path. Keep control. Exit with confidence."
                 intro="Your needs may change. We make it easy to scale down, switch vehicles or exit completely — without disruption, hidden fees or losing your progress."
-                chips={[{ label: 'Phase 1', sub: 'South Africa' }, { label: 'Languages', sub: 'English & Afrikaans' }, { label: 'No lock-in', sub: 'Fair terms always' }, { label: 'Human Review', sub: 'Available' }, { label: 'We recommend', sub: 'by fit, not margin' }]}
+                chips={[{ label: 'Market', sub: 'Africa (Active)' }, { label: 'Languages', sub: '7 Languages' }, { label: 'No lock-in', sub: 'Fair terms always' }, { label: 'Human Review', sub: 'Available' }, { label: 'We recommend', sub: 'by fit, not margin' }]}
                 box={{ title: 'Why you’re in control', items: ['Your business. Your decision.', 'Change at any time.', 'We protect your information.', 'Transparent terms. No penalties.', 'We help you land on the right next step.'] }}
             />
             <div className="container-tbca grid gap-5 py-8 lg:grid-cols-12">
@@ -55,10 +55,10 @@ export default function Downgrade({ vehicles, targets, changes }: { vehicles: Ve
                 </Card>
                 <aside className="space-y-4 lg:col-span-3">
                     <Card title="You keep what's yours"><CheckList items={['All work and deliverables you’ve paid for.', 'Key insights, reports and frameworks.', 'Access to completed tools and assets.', 'Secure handover and confirmation.']} /></Card>
-                    <Card title="Prefer to chat now?" tone="gold"><a href="https://wa.me/27120010567" className="flex h-10 items-center justify-center gap-2 rounded border border-verified-500 bg-white text-sm font-semibold text-verified-700"><MessageCircle className="size-4" />Chat on WhatsApp</a></Card>
+                    <Card title="Prefer to chat now?" tone="gold"><a href="https://wa.me/27608011365" className="flex h-10 items-center justify-center gap-2 rounded border border-verified-500 bg-white text-sm font-semibold text-verified-700"><MessageCircle className="size-4" />Chat on WhatsApp</a></Card>
                 </aside>
             </div>
-            <TrustBand items={[['No penalties', 'No lock-in contracts. No hidden fees.'], ['Fair pricing', 'Prorated credits where applicable.'], ['Human review included', 'Real experts. Real accountability.'], ['Secure & private', 'Your data is protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.'], ['Clean handover', 'Confirmed in writing']]} />
+            <TrustBand items={[['No penalties', 'No lock-in contracts. No hidden fees.'], ['Fair pricing', 'Prorated credits where applicable.'], ['Human review included', 'Real experts. Real accountability.'], ['Secure & private', 'Your data is protected.'], ['Africa (Active)', 'ZAR source pricing.'], ['Clean handover', 'Confirmed in writing']]} />
         </>
     );
 }

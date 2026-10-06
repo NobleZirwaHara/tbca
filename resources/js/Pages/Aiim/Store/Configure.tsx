@@ -25,7 +25,7 @@ export default function Configure({ report, estimate, options }: Props) {
     const step = report.step;
     const form = useForm({ step, draft: false, type: c.type, nationwide: c.nationwide, provinces: c.provinces, sectors: c.sectors, modules: c.modules, delivery: c.delivery, format: c.format, notes: c.notes ?? '' });
     const [sectorQ, setSectorQ] = useState('');
-    const save = (draft: boolean) => (e?: FormEvent) => { e?.preventDefault(); form.transform((d) => ({ ...d, draft })); form.post(`/aiim/reports/${report.reference}/step`, { preserveScroll: true }); };
+    const save = (draft: boolean) => (e?: FormEvent) => { e?.preventDefault(); form.transform((d) => ({ ...d, draft, step: report.step })); form.post(`/aiim/reports/${report.reference}/step`, { preserveScroll: true, preserveState: 'errors' }); };
     const name = (list: Opt[], key: string) => list.find((o) => (o.slug ?? o.value) === key)?.name ?? list.find((o) => o.value === key)?.label ?? key;
 
     return (

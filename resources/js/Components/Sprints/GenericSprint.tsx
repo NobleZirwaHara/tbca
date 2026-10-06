@@ -113,31 +113,18 @@ export default function GenericSprint({ sprint, related, tab: initialTab, select
         <>
             <Head title={step ? `${step.title} – ${sprint.title}` : sprint.title} />
 
-            {step && pkg ? (
-                <DetailHero
-                    crumbs={crumbs}
-                    icon={step.icon}
-                    title={tab === 'ask-a-question' ? 'Ask a Question' : `${step.title} (${pkg.name} Package)`}
-                    summary={stepSummary(tab, sprint, a)}
-                    chips={[
-                        { label: `Package: ${pkg.name}`, icon: 'layers' },
-                        { label: `Delivery: ${pkg.delivery ?? sprint.delivery ?? 'after scope'}`, icon: 'clock' },
-                        { label: `Format: ${a.format ?? 'Digital'}`, icon: 'file-text' },
-                        { label: 'Secure & Confidential', icon: 'shield-check' },
-                    ]}
-                />
-            ) : (
-                <DetailHero
-                    crumbs={crumbs}
-                    icon={a.icon ?? 'briefcase'}
-                    title={sprint.title}
-                    summary={sprint.summary}
-                    rating={sprint.rating}
-                    reviews={a.reviews_data?.count ?? a.reviews}
-                    delivery={sprint.delivery}
-                    idealFor={a.ideal_for}
-                />
-            )}
+            {/* The sprint hero is identical on every tab; only the tab content below changes. */}
+            <DetailHero
+                crumbs={crumbs}
+                icon={a.icon ?? 'briefcase'}
+                art={{ seed: sprint.slug, category: sprint.category }}
+                title={sprint.title}
+                summary={sprint.summary}
+                rating={sprint.rating}
+                reviews={a.reviews_data?.count ?? a.reviews}
+                delivery={sprint.delivery}
+                idealFor={a.ideal_for}
+            />
 
             <div className="bg-parchment-100">
                 <div className="container-tbca grid gap-6 pb-10 lg:grid-cols-[minmax(0,1fr)_360px]">
@@ -185,6 +172,26 @@ export default function GenericSprint({ sprint, related, tab: initialTab, select
                     <div className="min-w-0 pt-2 lg:pt-4">
                         <Tabs tabs={TABS} value={tab === 'ask-a-question' ? 'support' : tab} onChange={go} className="bg-white" />
                         <div className="mt-5 space-y-5">
+                            {step && pkg && (
+                                <section className="rounded-[8px] border border-parchment-400 bg-white p-5">
+                                    <p className="text-[0.75rem] font-semibold tracking-wide text-gold-700 uppercase">{sprint.title}</p>
+                                    <h2 className="mt-1 text-lg font-bold text-ink-900">{tab === 'ask-a-question' ? 'Ask a Question' : `${step.title} (${pkg.name} Package)`}</h2>
+                                    <p className="mt-1 text-[0.8125rem] text-ink-600">{stepSummary(tab, sprint, a)}</p>
+                                    <ul className="mt-3 flex flex-wrap gap-2">
+                                        {[
+                                            { label: `Package: ${pkg.name}`, icon: 'layers' },
+                                            { label: `Delivery: ${pkg.delivery ?? sprint.delivery ?? 'after scope'}`, icon: 'clock' },
+                                            { label: `Format: ${a.format ?? 'Digital'}`, icon: 'file-text' },
+                                            { label: 'Secure & Confidential', icon: 'shield-check' },
+                                        ].map((c) => (
+                                            <li key={c.label} className="inline-flex items-center gap-1.5 rounded-[4px] border border-parchment-400 bg-parchment-50 px-2.5 py-1 text-[0.75rem] text-ink-700">
+                                                <Icon name={c.icon} className="size-3.5 text-gold-600" />
+                                                {c.label}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </section>
+                            )}
                             {tab === 'overview' && <OverviewTab sprint={sprint} a={a} onTab={go} />}
                             {tab === 'packages' && <PackagesTab packages={packages} a={a} value={pkg?.key ?? null} onChange={setPkgKey} onOrder={order} recurringLabel={recurringLabel} quote={quote} />}
                             {tab === 'whats-included' && <IncludedTab sprint={sprint} a={a} packages={packages} value={pkg?.key ?? null} onChange={setPkgKey} />}
@@ -337,7 +344,7 @@ function OverviewTab({ sprint, a, onTab }: { sprint: SprintRecord; a: GenericAtt
 }
 
 function PackagesTab({ packages, a, value, onChange, onOrder, recurringLabel, quote }: { packages: Pkg[]; a: GenericAttributes; value: string | null; onChange: (k: string) => void; onOrder: () => void; recurringLabel: string | null; quote: boolean }) {
-    const price = usePrice();
+    const price = usePrice('On request');
     if (quote) {
         return (
             <Box title="Packages" subtitle="This Sprint is scoped to your project and priced on request.">
@@ -591,7 +598,7 @@ function ProcessTab({ a }: { a: GenericAttributes }) {
 }
 
 function DeliverablesTab({ sprint, a, packages }: { sprint: SprintRecord; a: GenericAttributes; packages: Pkg[] }) {
-    const price = usePrice();
+    const price = usePrice('On request');
     return (
         <>
             <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_260px]">
@@ -796,7 +803,7 @@ function RiskTab({ sprint, a, pkg, addons, terms, onTerms }: { sprint: SprintRec
 }
 
 function AddonsTab({ a, selected, onToggle, slug }: { a: GenericAttributes; selected: string[]; onToggle: (k: string) => void; slug: string }) {
-    const price = usePrice();
+    const price = usePrice('On request');
     const [details, setDetails] = useState<string | null>(null);
     return (
         <>
@@ -990,7 +997,7 @@ function FaqsTab({ sprint, a }: { sprint: SprintRecord; a: GenericAttributes }) 
 
 function WhatsAppLink({ label }: { label: string }) {
     const { contact } = usePage<SharedProps>().props;
-    const number = (contact?.whatsapp ?? '+27105941044').replace(/[^\d]/g, '');
+    const number = (contact?.whatsapp ?? '+27608011365').replace(/[^\d]/g, '');
     return (
         <a href={`https://wa.me/${number}`} target="_blank" rel="noreferrer" className="inline-flex h-10 items-center gap-2 rounded-[4px] border border-verified-500/40 bg-white px-4 text-[0.8125rem] font-semibold text-ink-900 hover:border-verified-500">
             <MessageCircle className="size-4 text-verified-500" aria-hidden="true" /> {label}
@@ -1010,8 +1017,8 @@ const SUPPORT_TOPICS = [
 function SupportTab({ sprint, onAsk, onBook, delivery }: { sprint: SprintRecord; onAsk: () => void; onBook: () => void; delivery: string | null }) {
     const { contact } = usePage<SharedProps>().props;
     const [topic, setTopic] = useState<number | null>(null);
-    const email = contact?.email ?? 'info@thebusinessclinic.africa';
-    const number = (contact?.whatsapp ?? '+27105941044').replace(/[^\d]/g, '');
+    const email = contact?.email ?? 'Consult@thebusinessclinic.africa';
+    const number = (contact?.whatsapp ?? '+27608011365').replace(/[^\d]/g, '');
     const cards = [
         { title: 'Ask a Question', body: 'Get quick answers from our TBCA experts.', icon: <MessageCircle className="size-5 text-verified-500" />, cta: <button type="button" onClick={onAsk} className="h-9 w-full rounded-[4px] border border-verified-500 text-[0.8125rem] font-semibold text-verified-700">Ask a Question →</button>, foot: 'Typical reply: Under 5 minutes' },
         { title: 'WhatsApp Support', body: 'Chat with our team on WhatsApp for fast assistance.', icon: <Phone className="size-5 text-gold-600" />, cta: <a href={`https://wa.me/${number}`} target="_blank" rel="noreferrer" className="flex h-9 w-full items-center justify-center gap-1 rounded-[4px] border border-gold-500 text-[0.8125rem] font-semibold text-gold-800">Chat on WhatsApp <ExternalLink className="size-3.5" /></a>, foot: 'Available: Mon – Fri, 08:00 – 17:00 SAST' },

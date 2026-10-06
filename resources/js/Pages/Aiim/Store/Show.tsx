@@ -38,12 +38,12 @@ export default function StoreShow({ brief, owned, saved }: Props) {
             rail={<><SelectionBox /><RailBox title="Need Help?"><p className="mb-3 text-xs text-ink-300">Our team is here to help you find the right intelligence for your decision.</p><ButtonLink href="/aiim/workspace/advisor-request" size="sm" variant="outline-light" className="w-full">Talk to an AIIM Advisor</ButtonLink></RailBox></>}
         >
             <div className="mb-4 flex flex-wrap items-center gap-4">
-                <BriefArt image={brief.image} className="h-28 w-48 rounded-[8px]" />
+                <BriefArt seed={brief.sku} category={brief.category} label={brief.title} src={brief.image} className="aspect-[16/9] w-56 rounded-[8px]" />
                 <div className="flex flex-wrap gap-3 text-xs text-ink-600">
                     <span className="flex items-center gap-1"><FileText className="size-3.5" />{brief.format}</span>
                     <span className="flex items-center gap-1"><Layers className="size-3.5" />{brief.size}</span>
                     <span>{brief.published}</span>
-                    <span className="flex items-center gap-1"><Globe className="size-3.5" />South Africa</span>
+                    <span className="flex items-center gap-1"><Globe className="size-3.5" />{(brief.profile?.coverage as string | undefined) ?? 'South Africa'}</span>
                     <Chip tone="bad">Synthetic data only</Chip>
                 </div>
             </div>

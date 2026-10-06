@@ -60,7 +60,7 @@ class SecurityController extends PortalController
                 Ui::kv('Account Protection', [['Multi-factor Authentication (MFA)', $account->mfa_enabled_at ? Ui::pill('On', 'good') : Ui::pill('Off', 'bad')], ['Recovery Email', 'Verified'], ['Backup Codes', $account->mfa_enabled_at ? 'Available' : '—'], ['Last Password Change', Ui::date($account->password_changed_at)]],
                     $account->mfa_enabled_at ? Ui::action('Disable MFA', '/portal/security/mfa/disable', 'post', ['confirm' => 'Disable multi-factor authentication?', 'variant' => 'danger']) : Ui::action('Enable MFA', '/portal/security/mfa/start', 'post', ['variant' => 'gold'])),
                 Ui::quick('Quick Actions', [Ui::action('Review Sessions', '/portal/security/sessions'), Ui::action('Step-up Verification', '/portal/security/step-up'), Ui::action('Account Ownership Dispute', '/portal/security/ownership-dispute'), Ui::action('Security Settings', '/portal/settings')]),
-                Ui::info('Need Security Help?', 'TBCA will never ask for your password, OTP, PIN or security key through WhatsApp, email or NATASHA.', 'info', Ui::action('Chat with NATASHA', '/portal/natasha')),
+                Ui::info('Need Security Help?', 'TBCA will never ask for your password, OTP, PIN or security key through WhatsApp, email or KAREN.', 'info', Ui::action('Chat with KAREN', '/portal/natasha')),
             ],
             'forms' => ['mfa-verify' => Ui::form('Verify authenticator code', '/portal/security/mfa/verify', [Ui::field('code', '6-digit code', 'text', ['required' => true, 'placeholder' => '123456'])], 'Verify & Enable')],
         ]);

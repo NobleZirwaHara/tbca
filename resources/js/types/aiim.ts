@@ -287,6 +287,7 @@ export interface Engagement {
     request?: Record<string, any>;
     sectorNames?: string[];
     provinceNames?: string[];
+    countryNames?: string[];
     booking?: string | null;
     discoveryAt?: string | null;
     outcome?: Record<string, any> | null;
@@ -298,4 +299,36 @@ export interface Engagement {
     deliverables?: { name: string; format: string; size: string | null; status: string }[];
     events?: { actor: string; action: string; note: string | null; at: string }[];
     depositOrder?: string | null;
+}
+
+/* --- Country register (54 countries) ------------------------------------- */
+
+export interface CountryOption {
+    slug: string;
+    name: string;
+    iso2: string;
+    region: 'north' | 'west' | 'central' | 'east' | 'southern';
+    regionName: string;
+    flag: string;
+}
+
+export interface CountryIndicator {
+    label: string;
+    value: number | null;
+    unit: string;
+    year: number | null;
+    source: string;
+    /** "placeholder" until replaced by an API feed / client Test Data. */
+    status: 'placeholder' | 'permanent' | 'live';
+}
+
+export interface CountryProfile extends CountryOption {
+    iso3: string;
+    capital: string;
+    currencyCode: string;
+    currencyName: string;
+    areaKm2: number;
+    indicators: Record<string, CountryIndicator>;
+    subregions: string[];
+    hasProvincePack: boolean;
 }

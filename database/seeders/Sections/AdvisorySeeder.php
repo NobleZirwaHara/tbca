@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Sections;
 
+use App\Http\Controllers\Advisory\TechJourneyController;
 use App\Models\Advisory\BiasAlert;
 use App\Models\Advisory\Crosswalk;
 use App\Models\Advisory\Disposition;
@@ -19,6 +20,7 @@ use App\Models\Advisory\TechEngagement;
 use App\Models\Advisory\TechGate;
 use App\Models\Advisory\TechTicket;
 use App\Models\Advisory\Vehicle;
+use App\Models\Advisory\VehicleChange;
 use App\Models\User;
 use App\Support\Advisory\MandateWorkflow;
 use App\Support\Advisory\PaContent;
@@ -35,6 +37,9 @@ class AdvisorySeeder extends Seeder
         $client = User::query()->where('email', 'amahle@agritechsa.co.za')->first();
         $this->services();
         $this->vehicles($client);
+        if ($client) {
+            $this->relationshipDemo($client);
+        }
         $this->governance();
         $this->stopRules();
         $this->evidence();
@@ -153,6 +158,79 @@ class AdvisorySeeder extends Seeder
         }
     }
 
+    /**
+     * Full client relationship test data for the demo client: every vehicle carries fee / statement
+     * lines, plus an on-hold and a completed vehicle and recent change activity, so the
+     * Cross-Vehicle Dashboard, Statement and Vehicle Fee Panel can all be exercised.
+     */
+    private function relationshipDemo(User $client): void
+    {
+        $extra = [
+            ['VEH-2025-0013', 'Market Entry Sprint: Kenya', 'Sprint', 'Sprint (Project)', 'SP-2025-00140', 'on_hold', '2025-06-02', 'Client Inputs', 'Lerato Mabaso', 70, 18500, 9250, 0, 35, 'Milestone'],
+            ['VEH-2025-0014', 'Business Health Review', 'Sprint', 'Sprint (Project)', 'SP-2025-00098', 'completed', '2025-02-10', 'Closed', 'Thabo Mokoena', 100, 14800, 14800, 0, 100, 'Once-off'],
+        ];
+        foreach ($extra as [$code, $name, $type, $label, $eng, $status, $start, $milestone, $owner, $health, $inv, $paid, $over, $progress, $billing]) {
+            Vehicle::updateOrCreate(['code' => $code], [
+                'user_id' => $client->id, 'name' => $name, 'client' => $client->company ? "{$client->company} (Pty) Ltd" : 'AgriTech SA (Pty) Ltd', 'type' => $type,
+                'engagement_ref' => $eng, 'status' => $status, 'start_date' => $start, 'next_due_date' => $status === 'completed' ? null : now()->addDays(21)->toDateString(),
+                'next_milestone' => $milestone, 'owner' => $owner, 'health' => $health, 'last_activity' => now()->subDays(6), 'billing_cycle' => $billing,
+                'invoiced_zar' => $inv, 'paid_zar' => $paid, 'overdue_zar' => $over, 'current_price_zar' => $inv, 'floor_price_zar' => (int) round($inv * 0.8),
+                'meta' => ['progress' => $progress, 'label' => $label],
+            ]);
+        }
+
+        // Fee / statement lines for every client vehicle that does not already carry the detailed set.
+        $line = fn ($code, $desc, $type, $basis, $qty, $unit, $status) => compact('code', 'desc', 'type', 'basis', 'qty', 'unit', 'status');
+        $sets = [
+            'Mandate' => fn ($v) => [
+                $line('MND-RET', 'Mandate Retainer', 'Subscription', 'Per Month', 1, 15000, 'Active'),
+                $line('MND-MS1', 'Milestone 1 — Discovery Report', 'One-off', 'Milestone', 1, 30000, 'Paid'),
+                $line('MND-MS2', 'Milestone 2 — Structuring Pack', 'One-off', 'Milestone', 1, 15000, 'Paid'),
+                $line('MND-SUC', 'Success Fee Accrual', 'Usage', 'Contingent', 1, 15000, 'Active'),
+                $line('DISB-TRAVEL', 'Site Visit Travel', 'Disbursement', 'Pass-through', 1, 3200, 'Active'),
+                $line('TAX-VAT', 'Value Added Tax (15%)', 'Tax', 'On Taxable Items', 0, 0, 'Calculated'),
+            ],
+            'Sprint' => fn ($v) => [
+                $line('SPR-DEP', 'Sprint Deposit (30%)', 'One-off', 'On acceptance', 1, (int) round($v->invoiced_zar * 0.3), 'Paid'),
+                $line('SPR-MID', 'Sprint Mid-point (40%)', 'One-off', 'Milestone', 1, (int) round($v->invoiced_zar * 0.4), $v->status === 'completed' ? 'Paid' : 'Active'),
+                $line('SPR-FIN', 'Sprint Final (30%)', 'One-off', 'On delivery', 1, (int) round($v->invoiced_zar * 0.3), $v->status === 'completed' ? 'Paid' : 'Active'),
+                $line('TAX-VAT', 'Value Added Tax (15%)', 'Tax', 'On Taxable Items', 0, 0, 'Calculated'),
+            ],
+            'Product' => fn ($v) => [
+                $line('PRD-LIC', 'Digital Product Licence (12 months)', 'One-off', 'One-time', 1, $v->invoiced_zar, 'Paid'),
+                $line('TAX-VAT', 'Value Added Tax (15%)', 'Tax', 'On Taxable Items', 0, 0, 'Calculated'),
+            ],
+            'Retainer' => fn ($v) => [
+                $line('RET-BASE', 'Monthly Retainer Fee', 'Subscription', 'Per Month', 1, 30100, 'Active'),
+                $line('RET-HRS', 'Additional Advisory Hours', 'Usage', 'Per Hour', 6, 1850, 'Active'),
+                $line('RET-PRIOR', 'Prior Months (3)', 'Subscription', 'Per Month', 3, 30100, 'Paid'),
+                $line('DISB-SARS', 'Revenue Authority Filing Fee', 'Disbursement', 'Pass-through', 1, 450, 'Active'),
+                $line('ADJ-DISC', 'Annual Commitment Discount', 'Adjustment', 'Per Month', 1, -1500, 'Active'),
+                $line('TAX-VAT', 'Value Added Tax (15%)', 'Tax', 'On Taxable Items', 0, 0, 'Calculated'),
+            ],
+        ];
+        Vehicle::query()->where('user_id', $client->id)->get()->each(function (Vehicle $v) use ($sets) {
+            if (! empty($v->fees) || ! isset($sets[$v->type])) {
+                return;
+            }
+            $v->update(['fees' => $sets[$v->type]($v)]);
+        });
+
+        $changes = [
+            ['VCH-DEMO-0001', 'VEH-2025-0002', 'upgrade', 'requested', 'Sprint: Operational Efficiency', 'Mandate: Operational Efficiency', 85000, 19950, 65050, 3],
+            ['VCH-DEMO-0002', 'VEH-2025-0003', 'recurrence', 'approved', 'Compliance Subscription (Quarterly)', 'Compliance Subscription (Annual)', 149000, 12400, 136600, 9],
+            ['VCH-DEMO-0003', 'VEH-2025-0014', 'transition', 'completed', 'Business Health Review', 'Retainer: Tax & Advisory', 120400, 0, 0, 30],
+        ];
+        foreach ($changes as [$ref, $code, $type, $status, $from, $to, $value, $credit, $payable, $daysAgo]) {
+            $change = VehicleChange::updateOrCreate(['reference' => $ref], [
+                'user_id' => $client->id, 'vehicle_id' => Vehicle::query()->where('code', $code)->value('id'), 'type' => $type, 'status' => $status,
+                'from_vehicle' => $from, 'to_vehicle' => $to, 'new_value_zar' => $value, 'credit_zar' => $credit, 'payable_now_zar' => $payable,
+                'payload' => ['seeded' => true],
+            ]);
+            $change->forceFill(['created_at' => now()->subDays($daysAgo)])->saveQuietly();
+        }
+    }
+
     private function governance(): void
     {
         $disp = [
@@ -261,7 +339,7 @@ class AdvisorySeeder extends Seeder
         // 1) Active mandate in feasibility (P17 workspace, P11 ledger, P16 settlement, P18 gate, P19 meter)
         $m = Mandate::updateOrCreate(['reference' => 'PA-2026-0319'], [
             'user_id' => $client->id, 'project_name' => 'Blue Horizon Solar & Grid Project', 'organisation' => 'Blue Horizon Infrastructure SPV', 'contact' => $client->name, 'email' => $client->email,
-            'country' => 'South Africa', 'sector' => 'energy-resources', 'sponsor_type' => 'Developer', 'project_stage' => 'Feasibility', 'size_band' => '250m-1bn',
+            'country' => 'South Africa', 'sector' => 'energy-utilities', 'sponsor_type' => 'Developer', 'project_stage' => 'Feasibility', 'size_band' => '250m-1bn',
             'engagement_route' => 'co-advisory', 'entry_route' => 'discovery', 'status' => 'active', 'stage' => 8, 'current_gate' => 'G4', 'service_code' => 'feasibility-studies',
             'lead_adviser' => 'Thandi Ndlovu', 'senior_reviewer' => 'Michael Roberts', 'nda_signed_at' => '2026-04-09 10:00', 'nda_signer' => $client->name.', Director',
             'method_card_approved_at' => '2026-05-18 09:00', 'letter_signed_at' => '2026-04-22 15:00', 'mandate_signed_at' => '2026-04-23 10:00', 'signer_name' => $client->name,
@@ -324,7 +402,7 @@ class AdvisorySeeder extends Seeder
         // 2) Mandate awaiting method card approval (P20)
         $m2 = Mandate::updateOrCreate(['reference' => 'PA-2026-0147'], [
             'user_id' => $client->id, 'project_name' => 'Working Capital Optimisation', 'organisation' => $client->company ? "{$client->company} (Pty) Ltd" : 'AgriTech SA (Pty) Ltd', 'contact' => $client->name, 'email' => $client->email,
-            'country' => 'South Africa', 'sector' => 'agriculture', 'sponsor_type' => 'Founder-led', 'project_stage' => 'Pre-Feasibility', 'size_band' => '10m-50m',
+            'country' => 'South Africa', 'sector' => 'agriculture-agro-industry', 'sponsor_type' => 'Founder-led', 'project_stage' => 'Pre-Feasibility', 'size_band' => '10m-50m',
             'engagement_route' => 'fixed-scope', 'entry_route' => 'intake', 'status' => 'qualified', 'stage' => 3, 'current_gate' => 'G1',
             'nda_signed_at' => '2026-09-20 10:00', 'nda_signer' => $client->name.', Managing Director',
             'qualification' => ['signals' => ['Stage Clarity' => 'Medium', 'Evidence Status' => 'Low', 'Funding Clarity' => 'Medium', 'Reviewer Attention' => 'High']],
@@ -339,7 +417,7 @@ class AdvisorySeeder extends Seeder
         // 3) New intake awaiting NDA
         $m3 = Mandate::updateOrCreate(['reference' => 'PA-2026-0402'], [
             'user_id' => $client->id, 'project_name' => 'Gauteng Integrated Agro-Logistics Hub', 'organisation' => 'Blue Ridge Infrastructure (Pty) Ltd', 'contact' => $client->name, 'email' => $client->email,
-            'country' => 'South Africa', 'sector' => 'infrastructure-transport', 'sponsor_type' => 'Corporate', 'project_stage' => 'Pre-Feasibility', 'size_band' => '50m-250m',
+            'country' => 'South Africa', 'sector' => 'infrastructure-public-projects', 'sponsor_type' => 'Corporate', 'project_stage' => 'Pre-Feasibility', 'size_band' => '50m-250m',
             'engagement_route' => 'fixed-scope', 'entry_route' => 'intake', 'status' => 'enquiry', 'stage' => 1, 'current_gate' => 'G0',
             'qualification' => ['signals' => ['Stage Clarity' => 'Medium', 'Evidence Status' => 'Low', 'Funding Clarity' => 'Low', 'Reviewer Attention' => 'High']],
             'meta' => ['evidence_requests' => [], 'deliverables' => [], 'milestones' => []],
@@ -355,7 +433,7 @@ class AdvisorySeeder extends Seeder
         $e = TechEngagement::updateOrCreate(['reference' => 'ENG-TS-1042'], [
             'user_id' => $client->id, 'tower' => 'TS-1', 'organisation' => 'Acme Manufacturing (Pty) Ltd', 'owner' => 'Thabo Mokoena', 'status' => 'qa_review', 'stage' => 9, 'current_gate' => 5,
             'health' => 'on_track', 'letter_signed_at' => '2026-04-15 10:00', 'signer_name' => $client->name, 'payment_plan' => 'deposit_milestones',
-            'context' => [...\App\Http\Controllers\Advisory\TechJourneyController::contextDefaults(), 'legal_name' => 'Acme Manufacturing (Pty) Ltd', 'trading_name' => 'Acme Manufacturing', 'registration' => '2019/123456/07', 'email' => 'info@acmemanufacturing.co.za', 'phone' => '+27 11 123 4567', 'website' => 'www.acmemanufacturing.co.za', 'challenge' => 'We need to automate core processes, integrate systems, and improve data visibility to support growth.', 'platforms' => 'Zoho Books, Gmail, Microsoft 365', 'whatsapp' => ['opt_in' => true, 'since' => '15 May 2026, 09:02']],
+            'context' => [...TechJourneyController::contextDefaults(), 'legal_name' => 'Acme Manufacturing (Pty) Ltd', 'trading_name' => 'Acme Manufacturing', 'registration' => '2019/123456/07', 'email' => 'info@acmemanufacturing.co.za', 'phone' => '+27 11 123 4567', 'website' => 'www.acmemanufacturing.co.za', 'challenge' => 'We need to automate core processes, integrate systems, and improve data visibility to support growth.', 'platforms' => 'Zoho Books, Gmail, Microsoft 365', 'whatsapp' => ['opt_in' => true, 'since' => '15 May 2026, 09:02']],
             'diagnostic' => ['score' => 72], 'config' => $config, 'fee_lines' => $lines,
             'meters' => ['term_start' => now()->subDays(29)->toDateString(), 'term_end' => now()->addDays(31)->toDateString(), 'cap' => 100000, 'cap_unit' => 'task-runs', 'consumed' => 68200, 'warning' => 80, 'services' => [
                 ['service' => 'API Calls', 'sub' => 'Zoho CRM Integration', 'inclusion' => 50000, 'unit' => 'calls', 'used' => 18450],

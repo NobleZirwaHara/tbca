@@ -24,22 +24,48 @@ return [
             'Blue Gum Road, Lynnwood Ridge,',
             'Pretoria, 0081, South Africa',
         ],
-        'phone' => '+27 12 001 0557',
-        'email' => 'info@thebusinessclinic.africa',
-        'whatsapp' => '+27 12 001 0557',
+        'phone' => '+27 60 801 1365',
+        'email' => 'Consult@thebusinessclinic.africa',
+        'whatsapp' => '+27 60 801 1365',
+        'whatsapp_url' => 'https://wa.me/27608011365',
     ],
 
     /*
-    | Phase 1 approved languages and currencies (Wave 1 — South Africa).
+    | Platform languages and currencies — Africa (Active).
+    | Languages: UI chrome is English-only until a translation provider is chosen;
+    | the selection persists and sets <html lang/dir> (Arabic is right-to-left).
     */
     'languages' => [
-        ['code' => 'en', 'label' => 'English', 'status' => 'approved'],
-        ['code' => 'af', 'label' => 'Afrikaans', 'status' => 'approved'],
+        ['code' => 'en', 'label' => 'English', 'native' => 'English', 'html' => 'en', 'dir' => 'ltr', 'status' => 'live'],
+        ['code' => 'af', 'label' => 'Afrikaans', 'native' => 'Afrikaans', 'html' => 'af', 'dir' => 'ltr', 'status' => 'coming_soon'],
+        ['code' => 'pt', 'label' => 'Portuguese', 'native' => 'Português', 'html' => 'pt', 'dir' => 'ltr', 'status' => 'coming_soon'],
+        ['code' => 'zh', 'label' => 'Chinese (Mandarin)', 'native' => '中文', 'html' => 'zh-Hans', 'dir' => 'ltr', 'status' => 'coming_soon'],
+        ['code' => 'fr', 'label' => 'French', 'native' => 'Français', 'html' => 'fr', 'dir' => 'ltr', 'status' => 'coming_soon'],
+        ['code' => 'sw', 'label' => 'Swahili', 'native' => 'Kiswahili', 'html' => 'sw', 'dir' => 'ltr', 'status' => 'coming_soon'],
+        ['code' => 'ar', 'label' => 'Arabic', 'native' => 'العربية', 'html' => 'ar', 'dir' => 'rtl', 'status' => 'coming_soon'],
     ],
 
+    /*
+    | Display currencies. Prices are stored and charged in ZAR; other currencies
+    | are display conversions using the live daily FX feed (App\Support\Platform\Fx).
+    | `fallback_rate` = units of the currency per 1 ZAR, used when the feed fails.
+    */
     'currencies' => [
-        ['code' => 'ZAR', 'symbol' => 'R', 'label' => 'South African Rand', 'status' => 'approved'],
-        ['code' => 'USD', 'symbol' => '$', 'label' => 'United States Dollar', 'status' => 'approved'],
+        ['code' => 'ZAR', 'display' => 'ZAR', 'symbol' => 'R', 'label' => 'South African Rand', 'fallback_rate' => 1.0, 'decimals' => 0, 'status' => 'approved'],
+        ['code' => 'USD', 'display' => 'USD', 'symbol' => '$', 'label' => 'United States Dollar', 'fallback_rate' => 0.060, 'decimals' => 0, 'status' => 'approved'],
+        ['code' => 'XOF', 'display' => 'XOF', 'symbol' => 'CFA', 'label' => 'West African CFA Franc', 'fallback_rate' => 35.1, 'decimals' => 0, 'status' => 'approved'],
+        ['code' => 'EUR', 'display' => 'EUR', 'symbol' => '€', 'label' => 'Euro', 'fallback_rate' => 0.0536, 'decimals' => 0, 'status' => 'approved'],
+        ['code' => 'CNY', 'display' => 'RMB', 'symbol' => '¥', 'label' => 'Chinese Yuan Renminbi (RMB)', 'fallback_rate' => 0.4035, 'decimals' => 0, 'status' => 'approved'],
+    ],
+
+    /*
+    | Live FX feed (ZAR base, free, no key). Cached for a day; falls back to the
+    | currency `fallback_rate` values on any failure.
+    */
+    'fx' => [
+        'url' => env('TBCA_FX_URL', 'https://open.er-api.com/v6/latest/ZAR'),
+        'cache_seconds' => 86400,
+        'timeout_seconds' => 3,
     ],
 
     'default_country' => 'ZA',
@@ -75,11 +101,11 @@ return [
     */
     'stats' => [
         ['value' => '7,008', 'label' => 'Governed TBCA Sprints', 'icon' => 'rocket'],
-        ['value' => 'South Africa', 'label' => 'Active Market', 'icon' => 'map'],
+        ['value' => 'Africa', 'label' => 'Africa (Active)', 'icon' => 'map'],
         ['value' => '100+', 'label' => 'Business Tools, Templates & Calculators', 'icon' => 'wrench'],
         ['value' => '24/7', 'label' => 'Digital Platform Availability', 'icon' => 'clock'],
-        ['value' => 'ZAR and USD', 'label' => 'Approved Phase 1 Currency Architecture', 'icon' => 'coins'],
-        ['value' => 'English and Afrikaans', 'label' => 'Approved Languages', 'icon' => 'languages'],
+        ['value' => '5 Currencies', 'label' => 'ZAR, USD, XOF, EUR and RMB with Daily FX', 'icon' => 'coins'],
+        ['value' => '7 Languages', 'label' => 'English, Afrikaans, Portuguese, Mandarin, French, Swahili and Arabic', 'icon' => 'languages'],
     ],
 
     /*

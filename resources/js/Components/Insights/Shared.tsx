@@ -305,7 +305,7 @@ export function TrustStrip({ variant }: { variant: 'industries' | 'resources' })
     const items =
         variant === 'industries'
             ? [
-                  ['Taxonomy', 'Proposed (17)', Layers], ['South Africa', 'Phase 1', Globe], ['Human Gate', 'Mandatory', Users], ['Visible Fees', 'T / P / X / S', Scale],
+                  ['Taxonomy', 'Proposed (17)', Layers], ['Market', 'Africa (Active)', Globe], ['Human Gate', 'Mandatory', Users], ['Visible Fees', 'T / P / X / S', Scale],
                   ['AIIM', 'Intelligence Layer', BarChart3], ['Support', 'Always Available', Headphones], ['Source & Confidence', 'Evidence Tracked', ShieldCheck], ['Industry Activation', 'Evidence Required', CheckCircle2],
               ]
             : [

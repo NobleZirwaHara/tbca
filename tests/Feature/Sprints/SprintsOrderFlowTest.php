@@ -26,7 +26,7 @@ class SprintsOrderFlowTest extends TestCase
     private function payload(array $overrides = []): array
     {
         return [
-            'package' => 'growth',
+            'package' => 'standard',
             'addons' => [],
             'name' => 'Thabo Nkosi',
             'email' => 'thabo@example.co.za',
@@ -50,15 +50,15 @@ class SprintsOrderFlowTest extends TestCase
 
     public function test_order_page_new_and_existing_customer_variants(): void
     {
-        $this->get('/sprints/'.self::SLUG.'/order?package=executive&addons=nope')->assertOk()->assertInertia(fn (Assert $p) => $p
+        $this->get('/sprints/'.self::SLUG.'/order?package=premium&addons=nope')->assertOk()->assertInertia(fn (Assert $p) => $p
             ->component('Sprints/Order')
-            ->where('selectedPackage', 'executive')
+            ->where('selectedPackage', 'premium')
             ->where('selectedAddons', [])
             ->where('customer', null));
 
         $user = User::factory()->create(['phone' => '+27 82 123 4567', 'company' => 'AgriTech SA']);
         $this->actingAs($user)->get('/sprints/'.self::SLUG.'/order')->assertInertia(fn (Assert $p) => $p
-            ->where('selectedPackage', 'growth')
+            ->where('selectedPackage', 'standard')
             ->where('customer.email', $user->email));
     }
 
@@ -82,7 +82,7 @@ class SprintsOrderFlowTest extends TestCase
         $this->get("/sprints/".self::SLUG."/success?order={$order->reference}")->assertOk()->assertInertia(fn (Assert $p) => $p
             ->component('Sprints/Success')
             ->where('order.reference', $order->reference)
-            ->where('package.key', 'growth'));
+            ->where('package.key', 'standard'));
     }
 
     public function test_success_page_is_private_to_the_ordering_visitor(): void
@@ -130,7 +130,7 @@ class SprintsOrderFlowTest extends TestCase
 
     public function test_free_sprint_confirms_instantly(): void
     {
-        $this->post('/sprints/business-health-check/order', $this->payload(['package' => 'free', 'purposes' => ['Funding']]))
+        $this->post('/sprints/business-health-check/order', $this->payload(['package' => 'basic', 'purposes' => ['Funding']]))
             ->assertRedirect();
         $order = Order::firstOrFail();
         $this->assertTrue($order->isPaid());
@@ -140,7 +140,7 @@ class SprintsOrderFlowTest extends TestCase
 
     public function test_retainer_order_is_flagged_recurring(): void
     {
-        $this->post('/sprints/growth-advisory-retainer/order', $this->payload(['package' => 'growth', 'purposes' => ['Funding']]))->assertRedirect();
+        $this->post('/sprints/growth-advisory-retainer/order', $this->payload(['package' => 'standard', 'purposes' => ['Funding']]))->assertRedirect();
         $order = Order::firstOrFail();
         $this->assertSame('retainer', $order->meta['commercial_act']);
         $this->assertSame('month', $order->meta['recurring']['period']);
@@ -148,7 +148,7 @@ class SprintsOrderFlowTest extends TestCase
 
     public function test_quote_sprint_routes_to_quote_request(): void
     {
-        $this->get('/sprints/project-structuring-sprint/order')->assertRedirect('/sprints/project-structuring-sprint/quote');
+        $this->get('/sprints/project-structuring-sprint/order')->assertRedirectContains('/sprints/project-structuring-sprint/quote');
         $this->post('/sprints/project-structuring-sprint/order', $this->payload())->assertStatus(422);
 
         $this->post('/sprints/project-structuring-sprint/quote', [
@@ -184,7 +184,7 @@ class SprintsOrderFlowTest extends TestCase
     {
         $this->post('/sprints/'.self::SLUG.'/question', [
             'name' => 'Amahle Dlamini', 'email' => 'amahle@example.com', 'contact_method' => 'email',
-            'package' => 'growth', 'topic' => 'Timeline and delivery', 'question' => 'How soon can we start the Growth package?',
+            'package' => 'standard', 'topic' => 'Timeline and delivery', 'question' => 'How soon can we start the Growth package?',
         ])->assertRedirect()->assertSessionHas('reference');
 
         $this->assertSame('sprint-question', Submission::firstOrFail()->type);

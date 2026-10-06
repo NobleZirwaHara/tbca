@@ -15,7 +15,7 @@ const HERO_FEATURES = [
     { icon: Headphones, label: 'Priority Support & Response' },
 ];
 
-const INCLUDED = ['Named Account Owner', 'Human-Reviewed Outputs', 'Monthly Dashboard Access', 'Priority Support Channels', 'Secure Client Portal', 'POPIA-Compliant', 'Audit Trail & Reporting', 'ZAR & USD Pricing Options'];
+const INCLUDED = ['Named Account Owner', 'Human-Reviewed Outputs', 'Monthly Dashboard Access', 'Priority Support Channels', 'Secure Client Portal', 'POPIA-Compliant', 'Audit Trail & Reporting', 'Pricing in 5 Currencies'];
 
 const BENEFITS = [
     { icon: ClipboardList, title: 'Service Level Agreements', body: 'Defined response & delivery times.' },

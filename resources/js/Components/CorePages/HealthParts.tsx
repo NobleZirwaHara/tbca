@@ -56,7 +56,7 @@ export function AssistanceBox() {
             <button type="button" onClick={() => openAskQuestion({ subject: 'Business Health Score help', section: 'core' })} className="mt-3 inline-flex h-9 w-full items-center justify-center gap-2 rounded-[4px] border border-gold-500 text-[0.8125rem] text-gold-300 hover:bg-gold-500 hover:text-ink-900">
                 <MessageCircle className="size-4" aria-hidden="true" /> Chat with NATASHA
             </button>
-            <a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="mt-2 inline-flex h-9 w-full items-center justify-center gap-2 rounded-[4px] border border-parchment-200/40 text-[0.8125rem] text-parchment-100 hover:border-verified-500">
+            <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="mt-2 inline-flex h-9 w-full items-center justify-center gap-2 rounded-[4px] border border-parchment-200/40 text-[0.8125rem] text-parchment-100 hover:border-verified-500">
                 Message us on WhatsApp
             </a>
         </div>

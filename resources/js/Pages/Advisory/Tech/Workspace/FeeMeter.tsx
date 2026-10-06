@@ -56,7 +56,7 @@ export default function FeeMeter({ engagement: e, ledgers, gates, next, meter, e
                         <KV rows={[['Approved Cap', `${meter.cap.toLocaleString()} task-runs`], ['Consumed', `${meter.consumed.toLocaleString()} task-runs`], ['Warning Threshold', `${meter.warning}%`], ['Hard pause', 'At 100% of cap']]} />
                         <p className="mt-2 text-[0.6875rem] text-ink-500">Metered usage may influence future disclosed charges but is not an automatic approval.</p>
                     </Card>
-                    <Card title="Need Help?" tone="gold"><p className="text-xs">Raise a billing query or speak to our team.</p><Link href={`/technology-solutions/workspace/${e.reference}/support`} className="mt-2 block text-xs font-semibold underline">Raise Billing Query →</Link><a href="https://wa.me/27120010567" className="mt-1 flex items-center gap-1 text-xs text-verified-700"><MessageCircle className="size-3" />WhatsApp Support</a></Card>
+                    <Card title="Need Help?" tone="gold"><p className="text-xs">Raise a billing query or speak to our team.</p><Link href={`/technology-solutions/workspace/${e.reference}/support`} className="mt-2 block text-xs font-semibold underline">Raise Billing Query →</Link><a href="https://wa.me/27608011365" className="mt-1 flex items-center gap-1 text-xs text-verified-700"><MessageCircle className="size-3" />WhatsApp Support</a></Card>
                 </aside>
             </div>
         </TechPortal>

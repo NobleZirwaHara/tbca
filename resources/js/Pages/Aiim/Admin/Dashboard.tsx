@@ -14,7 +14,7 @@ interface Props {
 
 export default function AdminDashboard({ data, counts, byStage }: Props) {
     return (
-        <ConsoleLayout area="AIIM Admin Area" areaIcon={ShieldCheck} groups={ADMIN_NAV} crumbs={[{ label: 'Admin', href: '/admin' }, { label: 'AIIM' }, { label: 'Administration Dashboard' }]} title="AIIM Administration Dashboard" description="System-wide overview of AIIM platform operations, users, data, performance and compliance." badge={<Chip tone="good">South Africa (Phase 1)</Chip>}>
+        <ConsoleLayout area="AIIM Admin Area" areaIcon={ShieldCheck} groups={ADMIN_NAV} crumbs={[{ label: 'Admin', href: '/admin' }, { label: 'AIIM' }, { label: 'Administration Dashboard' }]} title="AIIM Administration Dashboard" description="System-wide overview of AIIM platform operations, users, data, performance and compliance." badge={<Chip tone="good">Africa (Active)</Chip>}>
             <Head title="AIIM Administration Dashboard" />
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">{data.kpis.map(([l, v, c]) => <KpiTile key={l} label={l} value={v} caption={c} />)}</div>
             <div className="mt-4 grid gap-4 lg:grid-cols-3">

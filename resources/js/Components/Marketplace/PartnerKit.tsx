@@ -67,6 +67,6 @@ export function PsBody({ children, className }: { children: ReactNode; className
     return <div className={cn('bg-parchment-100 py-8 md:py-10', className)}><div className="container-tbca space-y-6">{children}</div></div>;
 }
 
-export const TRUST_CHIPS = ['South Africa · Active Market', 'English & Afrikaans', 'ZAR (Source) & USD', 'Human-Reviewed Expertise', 'POPIA Ready · Confidential', 'Conflict Checked Engagements'];
+export const TRUST_CHIPS = ['Africa Market (Active)', '7 Languages', 'ZAR (Source) & 5 Currencies', 'Human-Reviewed Expertise', 'POPIA Ready · Confidential', 'Conflict Checked Engagements'];
 
 export const money = (n: number | null | undefined) => `R ${Number(n ?? 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, ' ')}`;

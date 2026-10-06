@@ -3,8 +3,9 @@
 namespace App\Support\Platform;
 
 /**
- * Pricing rules shared by every checkout. All stored amounts are whole ZAR;
- * USD is a display conversion only (Phase 1 currency architecture).
+ * Pricing rules shared by every checkout. All stored and charged amounts are
+ * whole ZAR; USD, XOF, EUR and CNY (RMB) are display conversions only, using
+ * the daily FX feed (see Fx).
  */
 class Money
 {
@@ -15,7 +16,15 @@ class Money
 
     public static function toUsd(int $zar): int
     {
-        return (int) round($zar / config('tbca.commerce.zar_per_usd'));
+        return self::convert($zar, 'USD');
+    }
+
+    /**
+     * Whole-unit display conversion of a ZAR amount into another currency.
+     */
+    public static function convert(int $zar, string $currency): int
+    {
+        return (int) round(Fx::convert($zar, $currency));
     }
 
     /**

@@ -130,7 +130,7 @@ class AboutController extends Controller
             'testimonials' => $items->map->toPublic()->values(),
             'rating' => $items->isEmpty() ? null : ['average' => round($items->avg('rating'), 1), 'count' => $items->count()],
             'stats' => Claim::forSurface('testimonials'),
-            'institutions' => Institution::query()->displayable('trusted-strip')->limit(4)->get()->map->toPublic(),
+            'institutions' => Institution::query()->displayable('trusted-strip')->limit(9)->get()->map->toPublic(),
         ]);
     }
 

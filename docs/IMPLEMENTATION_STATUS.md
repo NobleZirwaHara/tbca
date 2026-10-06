@@ -2,6 +2,8 @@
 
 A guide to the modules that work on http://tbca.test: what each one does, how to try it, and the demo data you can use.
 
+The plan for connecting external services (payment gateways, email and WhatsApp, the AI agents, translation and data feeds) is in [`docs/INTEGRATIONS_PLAN.md`](INTEGRATIONS_PLAN.md).
+
 ---
 
 ## Mockup coverage
@@ -78,8 +80,12 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **Payments:** the payment gateway is simulated.
 - **Messages:** emails and WhatsApp messages are recorded but not sent. This covers invitations, reminders and notifications.
+- **External integrations are not connected yet.** This covers payment gateways, email and WhatsApp, the AI agents, translation and data feeds. The plan is in `docs/INTEGRATIONS_PLAN.md`.
+- **Translation:** the language selector saves your choice and switches Arabic to right-to-left, but the text stays in English ("coming soon") until a translation provider is connected.
+- **Payment options:** 7 gateways and 11 methods are listed, but only card, EFT and wallet work today. The rest show "coming soon".
 - **AI features are stand-ins:**
-  - NATASHA answers from a built-in intent matcher.
+  - NATASHA, KAREN, MICHAELA and NIKIWE answer from built-in intent matchers.
+  - The persona faces are illustrated placeholders.
   - The deal-room AI tools give deterministic answers.
   - Due Diligence vendor checks are simulated.
 - **Downloads:** Due Diligence reports download as watermarked HTML files. Resources downloads are generated one-page PDFs.
@@ -89,6 +95,55 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
   - Some Client Portal admin consoles show figures that are labelled as illustrative.
   - Some Marketplace admin KPIs are fixed values copied from the mockups.
 - **Uploads (Marketplace and Partner Services):** only the file name is stored, not the file itself.
+- **Provisional prices:**
+  - Sprints that had a single price use it as Standard. Basic (60%) and Premium (150%) are derived until the Batch 4A–4C price lists are loaded.
+  - Country service prices in Find the Right Service are indicative, to be confirmed.
+  - AIIM country indicators are labelled placeholders.
+- **Documents awaiting the client:**
+  - The policies at `/policies` are drafts pending approval.
+  - The Company Profile download only works once `public/docs/TBCA-Company-Profile.pdf` is added; until then `/resources/company-profile/download` returns 404.
+
+---
+
+## Platform-wide features
+
+These are available on every page or across all modules.
+
+- **Look and feel:**
+  - Segoe UI font.
+  - Rebuilt header logo, with separate sizes for the header and footer.
+  - Subtle page backdrops.
+  - Generated cover art on sprint, product and brief cards.
+- **Language selector (header):** 7 languages: English, Afrikaans, Portuguese, Mandarin, French, Swahili and Arabic. Choosing Arabic switches the page to right-to-left. Only English is translated today; the others show "coming soon".
+- **Currency selector (header):**
+  - 5 currencies: ZAR, USD, XOF, EUR and RMB.
+  - Rates come from a live daily feed (open.er-api.com) and fall back to fixed rates in `config/tbca.php` if the feed fails.
+  - Prices are always charged in ZAR. Other currencies are shown as "Charged in ZAR · approx.".
+- **Notification bell:** shows the unread count and opens `/portal/notifications`.
+- **Footer:**
+  - Policies, Company Profile and social icons.
+  - Contact details: Consult@thebusinessclinic.africa and WhatsApp +27 60 801 1365.
+  - Platform badges: "Africa (Active)", "5 Currencies" and "7 Languages".
+- **Assistants** (`resources/js/Components/Assistant/`). NATASHA, KAREN and MICHAELA each have an illustrated face, a choice of outfits and optional voice output with microphone input.
+
+| Assistant | Where | What it does |
+|---|---|---|
+| NATASHA | Every page (floating button) | Quick actions, link cards and suggestion chips, plus a "talk to a specialist" handoff that saves the transcript and gives a reference |
+| KAREN | Client Portal | Portal help |
+| MICHAELA | Virtual Deal Room | Room-aware help that knows the current room and stage |
+| NIKIWE | "WhatsApp / Talk" in the header | A secure-chat style session. You pick a topic and it routes you to the right Functional Lead mailbox (e.g. Due Diligence → advisorylead@…, Finance / Billing → financecontroller@…). It captures your details, saves the transcript (`/forms/whatsapp-chat`) with a reference, and offers "Continue on WhatsApp". |
+
+- **Embedded services:**
+  - 569 Batch 4D services (sprint type `embedded`, at 4D prices).
+  - They appear inside Virtual Deal Room, Project Advisory, country profiles, Industries, Resources, KP Thought Leadership and Webinars.
+  - Full lists by module are at `/embedded-services` and `/embedded-services/{module}`, e.g. `/embedded-services/virtual-deal-room`, `/embedded-services/project-advisory` and `/embedded-services/report-universe`.
+- **Payment options:**
+  - The checkout, basket and `/portal/payment-methods` list 7 gateways (Flutterwave, Paystack, Yoco, Pesapal, Onafriq, DPO Pay, Cellulant Tingg) and 11 methods.
+  - Card, EFT and wallet work today; the rest show "coming soon".
+- **Policies and company profile:**
+  - `/policies` hub with these policies: refund-and-cancellation, cookies, popia-paia, acceptable-use, payments-and-billing.
+  - Short links `/refund-policy`, `/cookie-policy` and `/paia` redirect to the matching policy.
+  - The Company Profile page is `/resources/company-profile`.
 
 ---
 
@@ -101,6 +156,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
   - Login accepts an email or a Client ID.
   - Registration has 5 steps.
   - Basket, checkout, payment, processing and confirmation pages.
+  - The basket and checkout list the payment options. Card, EFT and wallet work today.
   - Generic enquiry forms and bookings.
   - Saved items (heart icon) for signed-in users.
 - **How to use:**
@@ -118,12 +174,21 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
   - Business Health Score: a multi-step assessment with save and resume, results and a download.
   - Tools, Templates & Calculators: browse, buy and download from a secure page.
   - Find the Right Service: a 4-stage finder that gives recommendations or a request for a person to help.
-  - Country and corridor views.
+  - Countries inside Find the Right Service:
+    - All 54 African countries and 5 regions are active and searchable.
+    - Each country has its own page, with indicative service prices.
+    - Corridor views.
+  - Contact page:
+    - Head Office and 12 Country Offices; clicking an office opens its Google Map.
+    - A directory of Functional Leads.
+  - Diagnostics page with a walkthrough player.
 - **How to use:**
   - **Book a call:** open `/discovery-call`, pick a slot, review and confirm. Signed-in clients can then manage it at `/discovery-call/meetings`.
   - **Health score:** open `/business-health-score`, answer each step and view your results.
   - **Tools:** open `/tools/calculators`, open a calculator, check out with a test card, then download from `/tools/my-downloads`.
   - **Finder:** open `/find-the-right-service` and answer the 4 stages to get recommendations.
+  - **Countries:** open `/find-the-right-service/countries`, search for a country, then open its page, e.g. `/find-the-right-service/countries/ng` or `/countries/ke`.
+  - **Contact:** open `/contact` and click an office to show its map.
 - **URLs:**
   - Landing pages: `/`, `/contact`, `/webinars`, `/kp-thought-leadership`, `/diagnostics`
   - Journeys: `/discovery-call`, `/business-health-score`, `/tools`, `/find-the-right-service`
@@ -135,15 +200,19 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 ### Sprints
 
-- **What it does:** a catalogue of 1,849 fixed-scope "sprints". Each sprint type has its own product page template.
+- **What it does:** a catalogue of 1,850 fixed-scope "sprints", plus the 569 embedded services (see Platform-wide features). Each sprint type has its own product page template.
 - **Features:**
   - Browse the catalogue: A–Z, category, audience and the featured, new, popular, recommended and marketplace views.
-  - Sprint pages with 12 tabs: overview, packages, what's included, inputs required, process, deliverables, risk review, add-ons, reviews, FAQs, support, ask a question.
-  - Package and add-on selection with live totals.
+  - Fast search; the whole card is clickable; generated cover art on each card.
+  - Sprint pages with 12 tabs: overview, packages, what's included, inputs required, process, deliverables, risk review, add-ons, reviews, FAQs, support, ask a question. The Inputs Required tab keeps the page hero.
+  - Every sprint offers **Basic / Standard / Premium** packages:
+    - For sprints that had a single price, Standard is that price, Basic is derived at 60% and Premium at 150%.
+    - Confirmed prices go in `database/seeders/Sections/data/sprint-package-overrides.php`.
+  - Add-on selection with live totals.
   - Ordering, quote requests and a success page.
 - **How to use:**
   1. Log in as the demo client.
-  2. Open `/sprints/business-plan-development-sprint` and choose a package (Starter, Growth or Executive).
+  2. Open `/sprints/business-plan-development-sprint` and choose a package (Basic, Standard or Premium).
   3. Click through to order. You land on `/sprints/{slug}/order`.
   4. Pay with any card number not ending 0002. You land on `/sprints/{slug}/success`.
   5. To ask for a quote instead, open `/sprints/{slug}/quote` or `/sprints/request-a-quote`.
@@ -158,7 +227,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 | Dashboard | 322 | `/sprints/executive-task-dashboard` |
 | Technology setup | 97 | `/sprints/client-portal-onboarding-support` |
 | Core service / AI advisory / diagnostic / premium service | 79 / 9 / 9 / 6 | `/sprints/business-plan-development-sprint` |
-| Digital toolkit | 47 | `/sprints/executive-office-upgrade-pack` |
+| Digital toolkit | 48 | `/sprints/executive-office-upgrade-pack` |
 | Partner-delivered | 20 | `/sprints/enterprise-admin-desk-partner-reviewed-sprint` |
 | Dashboard + data | 12 | `/sprints/executive-bi-command-centre-sprint` |
 | Due diligence / trust | 12 | `/sprints/due-diligence-case-file-admin` |
@@ -194,6 +263,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **What it does:** sells licensed toolkits, reports, templates and courses, and keeps the buyer's library of versioned downloads.
 - **Features:**
+  - Browse filters for language (7), currency (5) and jurisdiction (54 countries plus Pan-African).
   - Product options, licence terms and disclosures.
   - Checkout, payment status and receipt.
   - A library page for each entitlement: download, updates, upgrade, version status, maintained access and next steps.
@@ -317,6 +387,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 - **What it does:** the full catalogue of 110 advisory services and the ways to work with TBCA. A "vehicle" is one of those ways, such as a sprint, retainer or mandate.
 - **Features:**
   - Services A–Z, category and capability pages, and a resolver.
+  - Fee panel at `/services/fee-panel`. For the demo client it opens the fees of a seeded vehicle; demo vehicles are seeded for this client.
   - "Not sure which?" help and a choice comparison.
   - Proposal requests.
   - Relationship dashboard and statement.
@@ -333,7 +404,9 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **What it does:** advisory mandates for large projects, from a readiness check through gated delivery.
 - **Features:**
+  - Covers 17 sectors.
   - Readiness and cost-exposure tools, a contingent fee calculator, studies, engagement options and discovery.
+  - Embedded services for Project Advisory are listed on its pages and at `/embedded-services/project-advisory`.
   - Mandate workspace:
     - Gates G0–G10.
     - 5 ledgers and a fee meter.
@@ -355,6 +428,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 - **What it does:** technology engagements organised by tower, from readiness and configuration through delivery and exit.
 - **Features:**
   - Towers, readiness, scope, configurator, fees and external costs.
+  - Each tower page lists the sprints that belong to it.
   - Fees show separate T, X and S subtotals, with no combined total.
   - Checkout is gated behind a signed engagement letter.
   - Workspace: fee meter, payments, usage, tasks, UAT, subscription, statement, support, documents and exit.
@@ -370,6 +444,8 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **What it does:** a governed, secure room that runs a transaction from mandate to close.
 - **Features:**
+  - MICHAELA, an in-room assistant that knows the current room and stage.
+  - Embedded services for deal rooms are listed at `/embedded-services/virtual-deal-room`.
   - Enquiry, then pre-mandate stages A–C and stages 0–15.
   - Each stage has gates, tick lists, approvals and stage fees.
   - A setup wizard.
@@ -397,7 +473,8 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **What it does:** buyers brief vetted analysts and specialist providers, and TBCA controls pricing, QA and payment.
 - **Features (buyer):**
-  - Services catalogue with search, filters and sorting; service pages.
+  - Services catalogue with search, filters and sorting.
+  - Service pages with Basic / Standard / Premium packages and Packages, Inputs Required and Process tabs.
   - Directory of verified providers, with profiles.
   - 5-step brief wizard, then:
     1. Scope and price review
@@ -448,6 +525,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **What it does:** routes regulated and specialist work (legal, audit, tax, environmental, engineering) to vetted partner firms. TBCA checks jurisdiction and conflicts and makes responsibilities explicit.
 - **Features (client):**
+  - 45 partner services.
   - Choose a service, how it works, coverage by profession and jurisdiction, service pages, the professional limitation notice and the partner network.
   - Request journey:
     1. Intake
@@ -496,6 +574,8 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **What it does:** company information, trust and governance pages, careers, newsroom, complaints and whistleblowing.
 - **Features:**
+  - Hero artwork on the About pages, including the How TBCA Works hero.
+  - Institution wordmarks on the testimonials.
   - About: story, methodology, team, governance, certifications and verifications, institutional relationships, testimonials, corrections log, AI disclosure.
   - Trust centre, privacy, terms and system status.
   - Careers with a multi-step application and status tracking.
@@ -516,6 +596,8 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 - **What it does:** the signed-in client's home for everything they hold with TBCA.
 - **Features:**
   - Dashboard and One Action Centre.
+  - The header bell shows the unread count and opens `/portal/notifications`.
+  - Saved payment options at `/portal/payment-methods`.
   - Money: orders, invoices (printable), statement (CSV) and arrears. Each unpaid item has a Pay-now link to checkout.
   - Document vault: private storage and share links.
   - Projects, deliverables and approvals.
@@ -525,7 +607,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
   - Team and organisation.
   - Guided journeys: verification, organisation, authority, terms, intake, offboarding and others.
   - Continuity and restricted-account pages.
-  - NATASHA help inside the portal.
+  - KAREN, the in-portal assistant.
 - **How to use:**
   1. Log in as the demo client. You land on `/portal/dashboard`.
   2. Open `/portal/invoices` and pay an unpaid invoice with Pay now and a test card.
@@ -546,6 +628,10 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 
 - **What it does:** trade and investment intelligence for Africa. Users search opportunities, projects, investors and funders, buy briefs and unlock data.
 - **Features (working):**
+  - Explore Africa: pick any of the 54 countries to open its Investor Cockpit (`/aiim/country/{slug}`, e.g. `/aiim/country/nigeria`).
+  - An interactive map of Africa.
+  - Country indicators, clearly labelled as placeholders.
+  - Custom intelligence wizard (`/aiim/custom-intelligence`) and cover art in the brief store.
   - Searches with filters across opportunities, projects, investors, funders, sectors, corridors and risk.
   - Confidence and source chips. Items below 60% confidence cannot be sold.
   - Saved items and watchlists.
@@ -555,7 +641,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
   - Premium brief store, and a report configurator that produces a quote.
   - Engagement journey: discovery booking → quote → letter → typed signature → deposit → mandate.
 - **How to use:**
-  1. Open `/aiim/country/south-africa` (the Investor Cockpit), then search `/aiim/opportunities` or `/aiim/investors` with the filters.
+  1. Open `/aiim`, pick a country in Explore Africa (e.g. `/aiim/country/south-africa`), then search `/aiim/opportunities` or `/aiim/investors` with the filters.
   2. Save items, then view them at `/aiim/workspace/saved` and `/aiim/workspace/watchlist`.
   3. Buy a brief from `/aiim/store`, e.g. `/aiim/store/GP-EP-2025`, or start at `/aiim/fees/discover`. Then pay at checkout.
   4. Top up or spend credits at `/aiim/wallet`.
@@ -571,19 +657,25 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 - **Display-only:** mandate stages 7–15, the enterprise, government, API and white-label desks, and staff actions in the admin consoles.
 - **Admin:** `/admin/aiim`, `/admin/aiim/advisor`, `/admin/aiim/finance`, `/admin/aiim/pricing`, `/admin/aiim/sources`
 
-### NATASHA site assistant
+### Assistants: NATASHA, KAREN, MICHAELA, NIKIWE
 
-- **What it does:** the "Ask NATASHA" floating button on every public page opens a chat assistant.
+- **What it does:** a chat assistant for each area of the site, each with its own persona. The table under Platform-wide features says where each one appears.
 - **Features:**
   - Quick actions, link cards, suggestion chips and a typing indicator.
   - History is kept for the browser session.
-  - "Talk to a specialist" hands the conversation to a person: it saves a question submission with the transcript and shows a reference number.
+  - An illustrated face with a choice of outfits.
+  - Optional voice replies and microphone input.
+  - NATASHA's "Talk to a specialist" saves a `question` submission with the transcript and shows a reference number.
+  - NIKIWE routes each topic to the right Functional Lead mailbox and captures the visitor's details as a lead. It saves the chat to `/forms/whatsapp-chat` with a reference and offers "Continue on WhatsApp".
 - **How to use:**
-  1. Click **Ask NATASHA** on any page.
-  2. Pick a quick action or type a question, e.g. "How do I order a sprint?".
-  3. Choose "Talk to a specialist" and submit the form to get a reference.
-  4. The handoff is saved as a `question` submission with the transcript. `/admin/portal/natasha` holds the separate NATASHA policy console for the portal assistant.
-- **Note:** replies come from a built-in intent matcher in `resources/js/lib/assistant.ts`. To connect the real AI agent, replace `getReply()`.
+  1. Click **Ask NATASHA** on any page, then pick a quick action or type a question, e.g. "How do I order a sprint?". Choose "Talk to a specialist" to get a reference.
+  2. In the Client Portal, open KAREN. In a deal room (e.g. `/virtual-deal-room/rooms/baobab-capital-raise`), open MICHAELA; she answers about the current stage.
+  3. Click **WhatsApp / Talk** in the header to open NIKIWE.
+  4. Choose a topic (e.g. Due Diligence or Finance / Billing), leave your details and get a reference. You can then continue on WhatsApp (+27 60 801 1365).
+- **Note:**
+  - Replies come from built-in intent matchers in `resources/js/lib/assistant.ts`. To connect the real AI agent, replace `getReply()`; `docs/INTEGRATIONS_PLAN.md` describes the plan.
+  - The UI lives in `resources/js/Components/Assistant/`.
+  - `/admin/portal/natasha` is the policy console for the portal assistant.
 
 ### Admin hub
 
@@ -599,5 +691,5 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
   - Partner Services menu: Home, Choose a Partner Service, How Partner Engagements Work, Profession & Jurisdiction Coverage, Request Partner Review, My Partner Requests, Partner Network, Professional Limitation Notice, Apply to Become a Partner, Partner Workspace.
   - Client Portal menu: Dashboard, Action Centre, Orders & Invoices, Projects & Deliverables, Document Vault, Support, My Meetings, DD Cases, Deal Rooms, Subscriptions, Retainers, Privacy.
   - AIIM menu: Home, South Africa Investor Cockpit, Sectors, Opportunities, Projects, Investors & Funders, Corridors, Risk & Outlook, Brief Store, Custom Intelligence, Methodology, Workspace, Wallet.
-- **Links:** the menus and footer are built from `app/Support/Content/Navigation.php`. They hold 167 unique links (22 tabs, 158 menu links and 39 footer links). Every link opens for the signed-in client except Provider Portal and Partner Workspace, which correctly need the provider or partner login.
-- **Logo:** the header uses `public/brand/tbca-logo-header.png` (with an `@2x` version), 46px tall in the 68px header bar. The footer logo is unchanged.
+- **Links:** the menus and footer are built from `app/Support/Content/Navigation.php`. They hold 169 unique links (22 tabs, 160 menu links and 41 footer links). Every link opens for the signed-in client except Provider Portal and Partner Workspace, which correctly need the provider or partner login.
+- **Logo:** the header uses `public/brand/tbca-logo-header.png` (with an `@2x` version), 46px tall in the 68px header bar. The footer uses its own logo size.

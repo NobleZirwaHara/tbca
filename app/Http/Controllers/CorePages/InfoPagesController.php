@@ -4,6 +4,9 @@ namespace App\Http\Controllers\CorePages;
 
 use App\Http\Controllers\Controller;
 use App\Support\CorePages\InfoContent;
+use App\Support\Platform\Directory;
+use App\Support\Platform\EmbeddedServices;
+use App\Support\Platform\Offices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
@@ -17,7 +20,10 @@ class InfoPagesController extends Controller
     public function contact(): Response
     {
         return Inertia::render('CorePages/Contact', [
-            'offices' => InfoContent::offices(),
+            'headOffice' => Offices::headOffice(),
+            'offices' => Offices::countryOffices(),
+            'leads' => Directory::clientFacing(),
+            'generalEmail' => Directory::GENERAL_EMAIL,
             'serviceAreas' => InfoContent::serviceAreas(),
             'hours' => InfoContent::officeHours(),
         ]);
@@ -50,6 +56,7 @@ class InfoPagesController extends Controller
             'topics' => $all->pluck('topic')->unique()->sort()->values(),
             'upcoming' => InfoContent::upcomingWebinar(),
             'filters' => ['category' => $filters['category'] ?? 'all', 'topic' => $filters['topic'] ?? '', 'date' => $filters['date'] ?? '', 'q' => $filters['q'] ?? ''],
+            'embedded' => EmbeddedServices::forModule('webinars'),
         ]);
     }
 
@@ -70,6 +77,7 @@ class InfoPagesController extends Controller
             'formats' => InfoContent::kpFormats(),
             'topics' => InfoContent::kpTopics(),
             'filters' => ['format' => $format, 'topic' => $topic],
+            'embedded' => EmbeddedServices::forModule('kp-thought-leadership'),
         ]);
     }
 

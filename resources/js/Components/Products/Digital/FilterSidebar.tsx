@@ -8,6 +8,8 @@ export interface DpFilters {
     types: string[];
     audience: string;
     language: string;
+    currency: string;
+    jurisdiction: string;
     format: string;
     price: string;
     licence: string;
@@ -22,6 +24,8 @@ export interface DpFacets {
     industries: DpFacet[];
     functions: DpFacet[];
     languages: DpFacet[];
+    currencies: DpFacet[];
+    jurisdictions: DpFacet[];
     formats: DpFacet[];
     prices: DpFacet[];
     licences: DpFacet[];
@@ -49,6 +53,39 @@ function Option({ checked, label, count, onChange, type = 'checkbox', name }: { 
             </span>
             <span className="text-ink-400">({count})</span>
         </label>
+    );
+}
+
+/** Jurisdiction: Pan-African or any of the 54 countries, grouped by AU region (too long for checkboxes). */
+function JurisdictionSelect({ value, options, onChange, open }: { value: string; options: DpFacet[]; onChange: (v: string) => void; open: boolean }) {
+    const groups = options.reduce<Record<string, DpFacet[]>>((acc, o) => {
+        (acc[o.group ?? 'Africa'] ??= []).push(o);
+        return acc;
+    }, {});
+    return (
+        <Group title="Jurisdiction" open={open || Boolean(value)}>
+            <label htmlFor="dp-jurisdiction" className="sr-only">
+                Jurisdiction
+            </label>
+            <select
+                id="dp-jurisdiction"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                className="h-9 w-full rounded-[4px] border border-parchment-500 bg-white px-2 text-xs focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20 focus:outline-none"
+            >
+                <option value="">All jurisdictions</option>
+                {Object.entries(groups).map(([group, list]) => (
+                    <optgroup key={group} label={group}>
+                        {list.map((o) => (
+                            <option key={o.key} value={o.key}>
+                                {o.label} ({o.count})
+                            </option>
+                        ))}
+                    </optgroup>
+                ))}
+            </select>
+            <p className="text-[0.6875rem] text-ink-400">Country filters include Pan-African products.</p>
+        </Group>
     );
 }
 
@@ -81,7 +118,7 @@ export default function FilterSidebar({
                     type="button"
                     onClick={() => {
                         setQ('');
-                        apply({ q: '', types: [], audience: '', language: '', format: '', price: '', licence: '', industry: '', function: '' });
+                        apply({ q: '', types: [], audience: '', language: '', currency: '', jurisdiction: '', format: '', price: '', licence: '', industry: '', function: '' });
                     }}
                     className="text-xs font-semibold text-gold-700 hover:underline"
                 >
@@ -126,6 +163,8 @@ export default function FilterSidebar({
             {extended && single('function', facets.functions, 'Business Function')}
             {single('licence', facets.licences, 'Licence Class', extended)}
             {single('language', facets.languages.map((l) => ({ ...l, label: `${l.key} ${l.label}` })), 'Language', extended)}
+            {single('currency', facets.currencies, 'Currency', extended)}
+            <JurisdictionSelect value={filters.jurisdiction} options={facets.jurisdictions} onChange={(jurisdiction) => apply({ jurisdiction })} open={extended} />
             {single('format', facets.formats, 'File Format')}
             {single('price', facets.prices, 'Price Range (ZAR)')}
             {!extended && single('industry', facets.industries, 'Industries')}

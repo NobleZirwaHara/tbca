@@ -7,15 +7,6 @@ namespace App\Support\CorePages;
  */
 class InfoContent
 {
-    public static function offices(): array
-    {
-        return [
-            ['title' => 'South Africa – Head Office', 'lines' => ['5th Floor, Blocktrax Building,', 'Blue Gate Road, Lynnwood Ridge,', 'Pretoria, 0081, South Africa'], 'phone' => '+27 12 001 0567'],
-            ['title' => 'Malawi – Regional Office', 'lines' => ['Area 18, Plot 473,', 'Lilongwe, Malawi'], 'phone' => '+265 1 770 050'],
-            ['title' => 'West Africa – Regional Office', 'lines' => ['Liberia, Accra,', 'Ghana'], 'phone' => '+233 30 276 3400'],
-        ];
-    }
-
     public static function serviceAreas(): array
     {
         return [

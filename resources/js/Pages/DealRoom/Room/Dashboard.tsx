@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRight, BarChart3, CreditCard, FileStack, FolderLock, MessagesSquare, Receipt, ShieldCheck, Users } from 'lucide-react';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import RoomShell, { roomUrl, stageHref } from '@/Components/DealRoom/RoomShell';
 import { AuditPanel, Bar, Stat, zar } from '@/Components/DealRoom/Ui';
 import { Panel, SimpleTable, StatusPill } from '@/Components/ui/Kit';
@@ -11,10 +12,11 @@ interface Props extends RoomPageProps {
     charges: Charge[];
     usage: UsageRow[];
     counts: { documents: number; parties: number; questions: number; approvals: number };
+    embedded?: EmbeddedSection;
 }
 
 /** Room home: where the deal stands, what is blocking the next stage, and quick links. */
-export default function Dashboard({ room, audit, gate, charges, usage, counts }: Props) {
+export default function Dashboard({ room, audit, gate, charges, usage, counts, embedded }: Props) {
     const current = room.stepper.find((s) => s.code === room.currentStage.code)!;
     const done = room.stepper.filter((s) => s.status === 'completed').length;
     const links = [
@@ -71,6 +73,7 @@ export default function Dashboard({ room, audit, gate, charges, usage, counts }:
                 )}
                 <div className={room.manages ? 'lg:col-span-3' : 'lg:col-span-3'}><AuditPanel audit={audit} /></div>
             </div>
+            <EmbeddedServices section={embedded} contained={false} pageSize={4} />
         </RoomShell>
     );
 }

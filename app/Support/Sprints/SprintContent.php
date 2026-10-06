@@ -27,8 +27,12 @@ class SprintContent
         $delivery = $spec['delivery'] ?? null;
 
         $packages = $spec['packages'] ?? ($act === 'quote' || $price === null ? null : self::packages($title, $price, $delivery, $spec['package_style'] ?? 'tiered', $act));
+        // Every sprint sells exactly Basic / Standard / Premium.
+        $mapped = Packages::map($packages, ['price' => $price, 'delivery' => $delivery, 'act' => $act, 'title' => $title]);
+        $packages = $mapped['packages'];
+        $priced = array_filter(array_column($packages, 'zar'), fn ($z) => $z !== null);
         $why = $spec['why'] ?? self::defaultWhy($topic);
-        $overrides = $spec['attributes'] ?? [];
+        $overrides = Packages::remapAttributes(Packages::relabel($spec['attributes'] ?? [], $mapped['names']), $mapped['renames'], $packages);
 
         $attributes = array_merge([
             'icon' => $spec['icon'] ?? (Taxonomy::categories()[$spec['category']]['icon'] ?? 'briefcase'),
@@ -110,7 +114,7 @@ class SprintContent
             'audience' => $spec['audience'] ?? 'smes,founders',
             'summary' => $spec['summary'],
             'description' => $spec['description'] ?? "Our {$title} is a fixed-scope, expert-led engagement. {$spec['summary']} Every output is human-reviewed by TBCA experts and delivered securely through the Client Portal.",
-            'price_zar' => $act === 'quote' ? null : ($packages ? min(array_column($packages, 'zar')) : $price),
+            'price_zar' => $act === 'quote' ? null : ($priced ? min($priced) : $price),
             'delivery' => $delivery,
             'commercial_act' => $act,
             'packages' => $packages,

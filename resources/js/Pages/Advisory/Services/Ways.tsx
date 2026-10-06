@@ -48,7 +48,7 @@ export default function Ways({ vehicles, enterprise }: { vehicles: V[]; enterpri
                     </article>
                 </div>
             </section>
-            <TrustBand items={[['We recommend by fit, not margin', 'You see every viable option with equal visibility.'], ['Professional boundaries first', 'We will route you to Partners where required.'], ['Transparent pricing', 'Prices are clear, itemised and upfront.'], ['Secure & private', 'Your data and decisions are protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.'], ['Human review', 'Available on every vehicle']]} />
+            <TrustBand items={[['We recommend by fit, not margin', 'You see every viable option with equal visibility.'], ['Professional boundaries first', 'We will route you to Partners where required.'], ['Transparent pricing', 'Prices are clear, itemised and upfront.'], ['Secure & private', 'Your data and decisions are protected.'], ['Africa (Active)', 'ZAR source pricing.'], ['Human review', 'Available on every vehicle']]} />
         </>
     );
 }

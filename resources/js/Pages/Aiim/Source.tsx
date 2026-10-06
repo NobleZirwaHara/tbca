@@ -32,7 +32,7 @@ export default function Source({ source, access, usedBy, saved }: Props) {
     return (
         <AiimPage
             title="Source and Evidence Preview"
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, { label: 'Sources & Evidence', href: '/aiim/methodology' }, { label: 'Source and Evidence Preview' }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: 'Sources & Evidence', href: '/aiim/methodology' }, { label: 'Source and Evidence Preview' }]}
             heading={<>Source and Evidence Preview<ListToggle list="watchlist" type="source" itemKey={source.code} saved={saved} variant="icon" /></>}
             subtitle="Detailed preview of source metadata, methodology and supporting evidence."
             description="Understand where intelligence comes from and how it is generated."

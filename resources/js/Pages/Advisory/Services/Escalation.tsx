@@ -31,7 +31,7 @@ export default function Escalation({ reference, reasons }: Props) {
                 title="Mandatory Partner Escalation"
                 tagline="Your situation needs a partner. We escalate — at no extra cost to you."
                 intro="Based on the information provided, this engagement requires partner-level involvement to ensure the right solution, quality and accountability. We'll connect you with the right partner specialist."
-                chips={[{ label: 'Phase 1', sub: 'South Africa' }, { label: 'Languages', sub: 'English & Afrikaans' }, { label: 'No extra cost', sub: 'Escalation included' }, { label: 'Partner review', sub: 'Mandatory' }, { label: 'We act in your best', sub: 'interests, always' }]}
+                chips={[{ label: 'Market', sub: 'Africa (Active)' }, { label: 'Languages', sub: '7 Languages' }, { label: 'No extra cost', sub: 'Escalation included' }, { label: 'Partner review', sub: 'Mandatory' }, { label: 'We act in your best', sub: 'interests, always' }]}
                 box={{ title: 'Why partner escalation?', items: ['Complexity or risk requires partner oversight.', 'Greater impact and better outcomes.', 'Specialist insight and accountability.', 'Aligned with our quality and governance standards.', 'No extra charge. It’s part of our commitment.'] }}
             />
             <div className="container-tbca grid gap-5 py-8 lg:grid-cols-12">
@@ -78,8 +78,8 @@ export default function Escalation({ reference, reasons }: Props) {
                     <div className="rounded-[8px] border border-parchment-400 bg-white p-5 text-sm">
                         <p className="font-semibold text-ink-900">Continue via WhatsApp</p>
                         <p className="text-xs text-ink-500">Chat with our team and we&rsquo;ll escalate you.</p>
-                        <a href="https://wa.me/27120010567" className="mt-2 flex h-10 items-center justify-center gap-2 rounded border border-verified-500 text-sm font-semibold text-verified-700"><MessageCircle className="size-4" />Chat on WhatsApp</a>
-                        <p className="mt-3 flex items-center gap-1.5 text-xs text-ink-500"><Phone className="size-3.5" />+27 12 001 0567</p>
+                        <a href="https://wa.me/27608011365" className="mt-2 flex h-10 items-center justify-center gap-2 rounded border border-verified-500 text-sm font-semibold text-verified-700"><MessageCircle className="size-4" />Chat on WhatsApp</a>
+                        <p className="mt-3 flex items-center gap-1.5 text-xs text-ink-500"><Phone className="size-3.5" />+27 60 801 1365</p>
                     </div>
                     <div className="rounded-[8px] border border-parchment-400 bg-white p-5 text-xs text-ink-600">
                         <p className="font-semibold text-ink-900">What you can expect</p>
@@ -92,7 +92,7 @@ export default function Escalation({ reference, reasons }: Props) {
                     </div>
                 </aside>
             </div>
-            <TrustBand items={[['We recommend by fit, not margin', 'Your success is our priority.'], ['Human review mandatory', 'Real experts. Real accountability.'], ['Secure & private', 'Your information is protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.'], ['Partner network', 'Legal, audit, tax, ESG'], ['No extra cost', 'Escalation included']]} />
+            <TrustBand items={[['We recommend by fit, not margin', 'Your success is our priority.'], ['Human review mandatory', 'Real experts. Real accountability.'], ['Secure & private', 'Your information is protected.'], ['Africa (Active)', 'ZAR source pricing.'], ['Partner network', 'Legal, audit, tax, ESG'], ['No extra cost', 'Escalation included']]} />
         </>
     );
 }

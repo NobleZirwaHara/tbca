@@ -195,10 +195,10 @@ export default function Ticket({ ticket: t }: Props) {
                             )}
                         </div>
                     </Panel>
-                    <Panel title="Ask NATASHA">
+                    <Panel title="Ask KAREN">
                         <p className="text-xs text-ink-600">Your AI assistant can explain this ticket and suggest next steps.</p>
                         <Link href="/portal/natasha" className="mt-2 block rounded-[4px] bg-ink-900 px-3 py-2 text-center text-[0.8125rem] text-parchment-100 hover:bg-ink-800">
-                            Chat with NATASHA
+                            Chat with KAREN
                         </Link>
                     </Panel>
                 </aside>

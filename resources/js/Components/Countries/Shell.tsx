@@ -96,7 +96,7 @@ export function CountrySidebar({ country, mode = 'profile', engagement }: { coun
             </div>
             <div className="space-y-2 text-xs">
                 <Link href="/countries/south-africa" className="flex items-center gap-2 rounded-[6px] border border-parchment-400 bg-white p-2.5 hover:border-gold-500">
-                    <Flag iso="ZA" className="text-lg" /> <span><b>Phase 1 Active Market: South Africa</b><br />Phase 1 controlled environment</span>
+                    <Flag iso="ZA" className="text-lg" /> <span><b>Africa Market (Active)</b><br />South Africa: controlled environment</span>
                 </Link>
                 <Link href="/countries/explorer" className="flex items-center gap-2 rounded-[6px] border border-parchment-400 bg-white p-2.5 hover:border-gold-500">
                     <L.Globe className="size-5 text-ink-500" /> <span><b>54 African Countries</b><br />53 shell objects (not active)</span>

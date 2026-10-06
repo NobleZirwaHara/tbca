@@ -47,7 +47,7 @@ class StoreController extends AiimController
         return $this->render($request, 'Aiim/Store/Index', [
             'filters' => $f,
             'results' => $q->paginate(8)->withQueryString()->through(fn ($b) => Catalogue::brief($b)),
-            'categories' => ['Investment Climate', 'Sectors', 'Provinces', 'Infrastructure', 'Projects', 'Markets & Trade', 'Regulatory & Policy', 'Risk & Outlook', 'Data Packs'],
+            'categories' => ['Investment Climate', 'Countries', 'Sectors', 'Provinces', 'Infrastructure', 'Projects', 'Markets & Trade', 'Regulatory & Policy', 'Risk & Outlook', 'Data Packs'],
             'owned' => $request->user() ? \App\Models\Aiim\Entitlement::query()->where('user_id', $request->user()->id)->where('object_type', 'brief')->pluck('object_key') : [],
         ], 'Premium Brief Store');
     }

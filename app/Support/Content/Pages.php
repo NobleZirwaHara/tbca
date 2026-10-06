@@ -42,7 +42,7 @@ class Pages
                     ['q' => 'How do I choose the right service?', 'a' => 'Start with a diagnostic. The Business Health Score assesses strategy, finance, operations and risk, then recommends the Sprint sequence that addresses the highest-priority gaps first.'],
                     ['q' => 'What is a Sprint?', 'a' => 'A Sprint is a fixed-scope, fixed-price engagement with a defined turnaround, named owner, quality gate and bankable deliverable. You buy it like a product and receive it through the client portal.'],
                     ['q' => 'Is the work AI generated?', 'a' => 'AI assists with analysis, drafting and automation inside defined boundaries. Material decisions and final outputs are made and approved by qualified people. Every AI-assisted output carries a review record.'],
-                    ['q' => 'Can you work outside South Africa?', 'a' => 'Phase 1 is South Africa. The architecture is built for all 54 African countries and additional markets activate through the country readiness gate in Wave 5.'],
+                    ['q' => 'Can you work outside South Africa?', 'a' => 'Yes. TBCA serves Africa (Active) on an architecture built for all 54 African countries; specific country services activate through the country readiness gate.'],
                 ],
                 'cta' => ['title' => 'Not sure which service you need?', 'body' => 'Start with a structured diagnostic and receive a recommended route within minutes.', 'primary' => ['label' => 'Start Diagnostic', 'href' => '/diagnostics'], 'secondary' => ['label' => 'Request Consultation', 'href' => '/contact']],
             ],
@@ -175,7 +175,7 @@ class Pages
                 'users' => ['Country-focused investors and traders', 'Businesses planning market entry', 'Institutions operating regionally'],
                 'boundary' => 'Country information reflects verified sources at the stated date. It is not legal, tax or regulatory advice for a specific transaction.',
                 'faq' => [
-                    ['q' => 'Which markets are live now?', 'a' => 'Phase 1 is South Africa, with English and Afrikaans, ZAR and USD. Additional country packs activate in Wave 5 as each passes the readiness gate.'],
+                    ['q' => 'Which markets are live now?', 'a' => 'Africa (Active). The platform offers 7 languages and 5 display currencies (ZAR, USD, XOF, EUR and RMB). Country packs activate as each passes the readiness gate.'],
                     ['q' => 'Can I get intelligence on a market that is not yet live?', 'a' => 'Yes. AIIM covers all 54 countries under one data model. Unverified records are clearly labelled and routed to human verification before premium use.'],
                 ],
                 'cta' => ['title' => 'Planning entry into an African market?', 'body' => 'Explore country intelligence in AIIM or request a market entry brief.', 'primary' => ['label' => 'Explore AIIM', 'href' => '/aiim'], 'secondary' => ['label' => 'Compare Countries', 'href' => '/aiim/compare']],

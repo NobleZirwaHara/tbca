@@ -25,7 +25,7 @@ export default function ActivationLedger({ counts, rows, za, outlook }: { counts
                 <>
                     <Card title="Current Controlled Public State">
                         <p className="text-[0.8125rem] text-ink-700">
-                            South Africa: Phase 1 controlled country environment, subject to service-by-service resolver permission. Other {counts.shell} African country objects: shells / non-activated. Current sellable African directional corridors: {counts.sellable_corridors} until pair-specific evidence and release gates pass.
+                            South Africa: controlled country environment, subject to service-by-service resolver permission. Other {counts.shell} African country objects: shells / non-activated. Current sellable African directional corridors: {counts.sellable_corridors} until pair-specific evidence and release gates pass.
                         </p>
                     </Card>
                     <Card title="Key Actions">

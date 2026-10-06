@@ -4,7 +4,8 @@ import Breadcrumbs from '@/Components/ui/Breadcrumbs';
 import { Button, ButtonLink } from '@/Components/ui/Button';
 import { StatusPill, Tag } from '@/Components/ui/Kit';
 import { openAskQuestion } from '@/Components/AskQuestion';
-import { Card, MiniBar, Stars } from '@/Components/Marketplace/ui';
+import { Card, MiniBar, Stars, artCategory } from '@/Components/Marketplace/ui';
+import CoverArt from '@/Components/Art/CoverArt';
 import type { SharedProps } from '@/types';
 import type { MkProvider } from '@/types/marketplace';
 
@@ -56,7 +57,7 @@ export default function ProviderProfile({ provider: p, breakdown, reviews, recen
                     <div className="grid gap-5 lg:grid-cols-12">
                         <Card className="lg:col-span-7">
                             <div className="flex flex-wrap items-start gap-4">
-                                <span className="flex size-20 items-center justify-center rounded-[8px] bg-ink-950 font-serif text-4xl font-bold text-gold-400" aria-hidden="true">{p.name.slice(0, 1)}</span>
+                                <CoverArt seed={p.slug} category={artCategory(p.category)} label={p.name} src={p.profile.logo ?? null} className="size-20 shrink-0 rounded-[8px]" />
                                 <div className="min-w-0 flex-1">
                                     <div className="flex flex-wrap items-center gap-2"><h2 className="font-serif text-2xl font-bold text-ink-900">{p.name}</h2><Tag tone="good">{p.routable ? 'Verified Provider' : p.statusLabel}</Tag></div>
                                     <p className="text-sm text-ink-500">{p.categoryLabel} · <MapPin className="inline size-3.5" aria-hidden="true" /> {p.city}, {p.country}</p>

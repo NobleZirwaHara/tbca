@@ -224,14 +224,14 @@ class Copy
     {
         return [
             'channels' => [
-                ['icon' => 'phone', 'title' => 'Call Us', 'value' => '+27 12 001 0557', 'note' => 'Mon – Fri: 08:00 – 17:00 (SAST)', 'href' => 'tel:+27120010557'],
-                ['icon' => 'message-circle', 'title' => 'WhatsApp / Talk', 'value' => '+27 82 123 4567', 'note' => 'Chat with our team', 'href' => 'https://wa.me/27821234567'],
-                ['icon' => 'mail', 'title' => 'Email Us', 'value' => 'info@thebusinessclinic.africa', 'note' => "We'll get back to you", 'href' => 'mailto:info@thebusinessclinic.africa'],
+                ['icon' => 'phone', 'title' => 'Call Us', 'value' => '+27 60 801 1365', 'note' => 'Mon – Fri: 08:00 – 17:00 (SAST)', 'href' => 'tel:+27608011365'],
+                ['icon' => 'message-circle', 'title' => 'WhatsApp / Talk', 'value' => '+27 60 801 1365', 'note' => 'Chat with our team', 'href' => 'https://wa.me/27608011365'],
+                ['icon' => 'mail', 'title' => 'Email Us', 'value' => 'Consult@thebusinessclinic.africa', 'note' => "We'll get back to you", 'href' => 'mailto:Consult@thebusinessclinic.africa'],
                 ['icon' => 'map-pin', 'title' => 'Visit Us', 'value' => "5th Floor, Business's Building, Blue Gum Road, Lynnwood Ridge, Pretoria, 0081, South Africa", 'note' => 'By appointment', 'href' => null],
                 ['icon' => 'globe', 'title' => 'Website', 'value' => 'www.thebusinessclinic.africa', 'note' => 'Explore our platform', 'href' => '/'],
             ],
             'offices' => [
-                ['name' => 'Pretoria (Head Office)', 'lines' => ["5th Floor, Business's Building,", 'Blue Gum Road, Lynnwood Ridge,', 'Pretoria, 0081, South Africa'], 'phone' => '+27 12 001 0557'],
+                ['name' => 'Pretoria (Head Office)', 'lines' => ["5th Floor, Business's Building,", 'Blue Gum Road, Lynnwood Ridge,', 'Pretoria, 0081, South Africa'], 'phone' => '+27 60 801 1365'],
                 ['name' => 'Johannesburg', 'lines' => ['7th Floor, Sandton Gate,', '25 Minerva Avenue,', 'Glenadrienne, 2196, South Africa'], 'phone' => '+27 11 100 2345'],
             ],
             'subjects' => ['General enquiry', 'Client support', 'Media enquiry', 'Partnership', 'Regulator / formal request', 'Complaint', 'Privacy request', 'Careers'],

@@ -108,6 +108,7 @@ Route::middleware(['auth', EnsurePortalAccess::class])->prefix('portal')->group(
     Route::get('/usage', [FinanceExtraController::class, 'usage']);
     Route::post('/usage/top-up', [FinanceExtraController::class, 'topUp']);
     Route::get('/arrears', [FinanceExtraController::class, 'arrears']);
+    Route::get('/payment-methods', [FinanceExtraController::class, 'paymentMethods']);
     Route::post('/arrears/help', [FinanceExtraController::class, 'arrearsHelp']);
     Route::get('/obligations', [FinanceExtraController::class, 'obligations']);
     Route::get('/forward-exposure', [FinanceExtraController::class, 'forwardExposure']);

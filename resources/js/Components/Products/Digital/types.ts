@@ -16,6 +16,10 @@ export interface DpProductCard {
     licences: string[];
     audience: string;
     jurisdiction: string;
+    /** Jurisdiction names ("Pan-African" or countries). */
+    jurisdictions: string[];
+    /** Currencies the product is offered in (ZAR, USD, XOF, EUR, RMB). */
+    currencies: string[];
     verifiedAt: string | null;
     maintenance: string;
     updates: string;
@@ -163,6 +167,8 @@ export interface DpFacet {
     key: string;
     label: string;
     count: number;
+    /** Optional group heading (jurisdictions: AU region). */
+    group?: string;
 }
 
 export interface DpPagination {

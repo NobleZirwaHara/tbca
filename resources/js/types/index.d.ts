@@ -33,19 +33,34 @@ export interface Contact {
     phone: string;
     email: string;
     whatsapp: string;
+    whatsapp_url: string;
 }
 
 export interface LanguageOption {
     code: string;
     label: string;
-    status: string;
+    native: string;
+    html: string;
+    dir: 'ltr' | 'rtl';
+    status: 'live' | 'coming_soon' | string;
 }
 
 export interface CurrencyOption {
     code: string;
+    display: string;
     symbol: string;
     label: string;
+    fallback_rate: number;
+    decimals: number;
     status: string;
+}
+
+/** Daily ZAR-based display FX (units of each currency per 1 ZAR). */
+export interface FxSnapshot {
+    base: 'ZAR' | string;
+    rates: Record<string, number>;
+    source: 'live' | 'fallback' | string;
+    updated_at: string | null;
 }
 
 export interface PlatformContext {
@@ -181,6 +196,8 @@ export interface SharedProps {
     trustBadges: TrustBadge[];
     auth: { user: AuthUser | null };
     basketCount: number;
+    unreadNotifications: number;
+    fx: FxSnapshot;
     flash: { message: string | null; success: string | null; error: string | null; reference: string | null };
     url: { path: string };
     [key: string]: unknown;

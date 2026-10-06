@@ -132,7 +132,7 @@ class WorkspaceController extends AiimController
 
     public function clearSelection(Request $request): RedirectResponse
     {
-        $request->session()->put('aiim.selection', ['country' => 'South Africa']);
+        $request->session()->put('aiim.selection', ['country' => 'Africa (all 54 countries)']);
 
         return back();
     }

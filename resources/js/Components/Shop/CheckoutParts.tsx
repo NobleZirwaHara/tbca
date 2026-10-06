@@ -3,6 +3,7 @@ import { ButtonLink } from '@/Components/ui/Button';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { ReferenceChip } from '@/Components/ui/Kit';
 import { SideCard, zar, zar2 } from '@/Components/Shop/Bits';
+import ChargedInZar from '@/Components/ChargedInZar';
 import type { Order, Totals } from '@/types';
 
 /** Order summary card shared by Payment, Processing and Confirmation. */
@@ -42,6 +43,7 @@ export function OrderSummaryCard({ order, totals, title = 'Order Summary', editH
                 <span className="font-semibold text-ink-900">Total (Incl. VAT)</span>
                 <span className="text-xl font-bold text-verified-700">{zar(t.total)}</span>
             </div>
+            <ChargedInZar zar={t.total} className="mt-1 text-right" />
         </SideCard>
     );
 }
@@ -85,6 +87,7 @@ export function PaymentSummaryCard({ order, totals }: { order: Order; totals: To
                 <span className="font-semibold text-gold-400">Total Due Today</span>
                 <span className="text-2xl font-bold text-gold-400">{zar(totals.total)}</span>
             </p>
+            <ChargedInZar zar={totals.total} tone="dark" className="mt-1.5" />
             <dl className="mt-3 space-y-1.5 text-xs">
                 {rows.map(([k, v]) => (
                     <div key={k} className="flex justify-between gap-3"><dt className="text-ink-300">{k}</dt><dd className="text-right">{v}</dd></div>

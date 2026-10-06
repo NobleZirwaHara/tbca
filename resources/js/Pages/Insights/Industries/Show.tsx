@@ -1,6 +1,7 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { Activity, AlertTriangle, ArrowRight, Bookmark, Calendar, CheckCircle2, ClipboardList, Clock, FileSearch, Gauge, Layers, Mail, Scale, ShieldCheck, Users, XCircle } from 'lucide-react';
 import { openAskQuestion } from '@/Components/AskQuestion';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import { AdvisorCard, ContextCard, IndustryFrame, NextSteps, StatusChips } from '@/Components/Insights/Industries';
 import { Box, Chip, DarkKpis, DynIcon, Notice, SmallLink, zar } from '@/Components/Insights/Shared';
 import type { SharedProps } from '@/types';
@@ -10,9 +11,10 @@ interface Props {
     industry: IndustryPage;
     context: IndustryContextValue;
     industries: IndustryOption[];
+    embedded?: EmbeddedSection;
 }
 
-export default function IndustryShow({ industry: ind, context, industries }: Props) {
+export default function IndustryShow({ industry: ind, context, industries, embedded }: Props) {
     const { auth } = usePage<SharedProps>().props;
     const p = ind.profile;
     const below = ind.catalogueState === 'below_threshold';
@@ -290,6 +292,7 @@ export default function IndustryShow({ industry: ind, context, industries }: Pro
                     )}
                 </>
             )}
+            <EmbeddedServices section={embedded} contained={false} className="mt-6" pageSize={4} />
         </IndustryFrame>
     );
 }

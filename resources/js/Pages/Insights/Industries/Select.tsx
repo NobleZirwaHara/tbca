@@ -52,7 +52,7 @@ export default function IndustrySelect({ industries, context, selected }: Props)
                         </div>
                         <h3 className="mt-4 text-[0.8125rem] font-semibold text-gold-400">Selection Context</h3>
                         <dl className="mt-2 space-y-1.5 text-xs">
-                            {[['Country', context.countryName], ['Phase', 'Phase 1'], ['Industry Status', current ? (current.catalogueState === 'below_threshold' ? 'Below Threshold' : 'Proposed') : 'Proposed'], ['Classification', 'To be verified'], ['Complexity', current?.complexityLabel ?? 'To be determined'], ['Human Gate', current?.professionalGate === 'mandatory' ? 'Mandatory' : 'Advisory'], ['Visible Fees', 'T / P / X / S']].map(([k, v]) => (
+                            {[['Country', context.countryName], ['Market', 'Africa (Active)'], ['Industry Status', current ? (current.catalogueState === 'below_threshold' ? 'Below Threshold' : 'Proposed') : 'Proposed'], ['Classification', 'To be verified'], ['Complexity', current?.complexityLabel ?? 'To be determined'], ['Human Gate', current?.professionalGate === 'mandatory' ? 'Mandatory' : 'Advisory'], ['Visible Fees', 'T / P / X / S']].map(([k, v]) => (
                                 <div key={k} className="flex justify-between"><dt className="text-ink-300">{k}</dt><dd>{v}</dd></div>
                             ))}
                         </dl>

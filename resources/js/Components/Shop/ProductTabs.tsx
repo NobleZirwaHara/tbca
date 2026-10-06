@@ -3,10 +3,10 @@ import { Link } from '@inertiajs/react';
 import { FileText, Info, Lock, Sparkles, Star, Users } from 'lucide-react';
 import ShopIcon, { iconFor } from '@/Components/Shop/ShopIcon';
 import { CheckList } from '@/Components/Shop/ProductParts';
-import { zar } from '@/Components/Shop/Bits';
 import { cn } from '@/lib/cn';
 import type { ProductDetail, RelatedOffer } from '@/types/shop';
 
+import { usePrice } from '@/lib/money';
 export type TabKey = 'overview' | 'included' | 'delivery' | 'who' | 'why' | 'related' | 'reviews' | 'how' | 'requirements' | 'support' | 'plans' | 'tiers' | 'overage' | 'faqs';
 
 export function tabsFor(p: ProductDetail): { key: TabKey; label: string }[] {
@@ -133,6 +133,7 @@ function Why({ p }: { p: ProductDetail }) {
 }
 
 function OfferCard({ r }: { r: RelatedOffer }) {
+    const zar = usePrice();
     return (
         <div className="flex flex-col rounded-[8px] border border-parchment-400 p-4">
             <ShopIcon name={r.icon} size="sm" />
@@ -148,6 +149,7 @@ function OfferCard({ r }: { r: RelatedOffer }) {
 }
 
 function Related({ p }: { p: ProductDetail }) {
+    const zar = usePrice();
     const [sub, setSub] = useState<'offers' | 'tools' | 'learning'>('offers');
     const next = p.related[0];
     const rest = p.related.slice(next ? 1 : 0);
@@ -195,6 +197,7 @@ function Related({ p }: { p: ProductDetail }) {
 }
 
 export function TabBody({ p, tab }: { p: ProductDetail; tab: TabKey }) {
+    const zar = usePrice();
     const c = p.content;
     switch (tab) {
         case 'overview': return <Overview p={p} />;

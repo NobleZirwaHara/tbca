@@ -32,9 +32,9 @@ export default function Sprint({ data, vat }: { data: { packages: Pkg[] }; vat: 
                 <Tabs tabs={[{ key: 'overview', label: 'Overview' }, { key: 'deliverables', label: 'Deliverables' }, { key: 'method', label: 'Methodology' }, { key: 'cases', label: 'Use Cases' }, { key: 'faq', label: 'FAQs' }]} value={tab} onChange={setTab} />
                 <div className="mt-5 grid gap-5 lg:grid-cols-12">
                     <aside className="space-y-4 lg:col-span-3">
-                        <Card title="Why This Sprint?"><CheckList items={['Solve real business challenges with AI', 'Improve efficiency and reduce manual tasks', 'Unlock data-driven decision making', 'Deploy secure, compliant solutions', 'Local support in South Africa']} /></Card>
+                        <Card title="Why This Sprint?"><CheckList items={['Solve real business challenges with AI', 'Improve efficiency and reduce manual tasks', 'Unlock data-driven decision making', 'Deploy secure, compliant solutions', 'Africa-wide support across 54 countries']} /></Card>
                         <Card title="Regulatory & Security"><CheckList items={['POPIA & ISO 27001 aligned', 'Bank-grade data security', 'Human oversight at every stage', 'IP protection & NDAs included', 'Africa data residency options']} /></Card>
-                        <Card title="Need Help?" tone="gold"><p className="text-xs">Speak to a technology specialist to choose the right sprint for your goals.</p><a href="https://wa.me/27120010567" className="mt-2 flex items-center gap-1 text-xs text-verified-700"><MessageCircle className="size-3.5" />Chat on WhatsApp</a></Card>
+                        <Card title="Need Help?" tone="gold"><p className="text-xs">Speak to a technology specialist to choose the right sprint for your goals.</p><a href="https://wa.me/27608011365" className="mt-2 flex items-center gap-1 text-xs text-verified-700"><MessageCircle className="size-3.5" />Chat on WhatsApp</a></Card>
                     </aside>
                     <section className="space-y-4 lg:col-span-6">
                         {tab === 'overview' && (

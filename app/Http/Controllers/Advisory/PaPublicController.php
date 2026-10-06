@@ -8,6 +8,9 @@ use App\Models\Advisory\StopRule;
 use App\Models\Submission;
 use App\Support\Advisory\MandateWorkflow;
 use App\Support\Advisory\PaContent;
+use App\Support\Advisory\PaSectors;
+use App\Support\CorePages\AfricaCountries;
+use App\Support\Platform\EmbeddedServices;
 use App\Support\Platform\Reference;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,12 +25,21 @@ class PaPublicController extends Controller
 
     public static function defaultContext(): array
     {
-        return ['country' => 'South Africa', 'sector' => 'infrastructure-transport', 'sponsor' => 'Corporate', 'stage' => 'Structuring', 'size_band' => '50m-250m', 'project_name' => 'Solar PV Manufacturing Plant', 'capital' => 350000000, 'route' => 'fixed-scope'];
+        return ['country' => 'South Africa', 'sector' => PaSectors::DEFAULT, 'sponsor' => 'Corporate', 'stage' => 'Structuring', 'size_band' => '50m-250m', 'project_name' => 'Solar PV Manufacturing Plant', 'capital' => 350000000, 'route' => 'fixed-scope'];
     }
 
     private function ctx(Request $request): array
     {
-        return array_merge(self::defaultContext(), $request->session()->get(self::CTX, []));
+        $c = array_merge(self::defaultContext(), $request->session()->get(self::CTX, []));
+        $c['sector'] = PaSectors::key($c['sector']);
+
+        return $c;
+    }
+
+    /** All 54 African country names, alphabetical. */
+    private static function countryNames(): array
+    {
+        return collect(AfricaCountries::all())->pluck('name')->sort()->values()->all();
     }
 
     /** What the context resolves (P02 right panel). */
@@ -61,7 +73,8 @@ class PaPublicController extends Controller
     private function vocab(): array
     {
         return [
-            'sectors' => collect(PaContent::SECTORS)->map(fn ($s, $k) => ['key' => $k, 'label' => $s[0], 'icon' => $s[1]])->values(),
+            'sectors' => PaSectors::vocab(),
+            'countries' => self::countryNames(),
             'sponsors' => PaContent::SPONSORS,
             'stages' => PaContent::STAGES,
             'bands' => collect(PaContent::SIZE_BANDS)->map(fn ($b, $k) => ['key' => $k, 'label' => $b[0]])->values(),
@@ -74,7 +87,8 @@ class PaPublicController extends Controller
             'services' => array_values(PaContent::services()),
             'method' => PaContent::METHOD,
             'ledgers' => PaContent::LEDGERS,
-            'sectors' => collect(PaContent::SECTORS)->map(fn ($s, $k) => ['key' => $k, 'label' => $s[0], 'icon' => $s[1]])->values(),
+            'sectors' => PaSectors::vocab(),
+            'embedded' => EmbeddedServices::forModule('project-advisory'),
         ]);
     }
 
@@ -88,13 +102,13 @@ class PaPublicController extends Controller
     public function contextStore(Request $request): RedirectResponse
     {
         $d = $request->validate([
-            'country' => ['required', Rule::in(['South Africa'])],
-            'sector' => ['required', Rule::in(array_keys(PaContent::SECTORS))],
+            'country' => ['required', Rule::in(self::countryNames())],
+            'sector' => ['required', Rule::in(array_keys(PaSectors::all()))],
             'sponsor' => ['required', Rule::in(PaContent::SPONSORS)],
             'stage' => ['required', Rule::in(PaContent::STAGES)],
             'size_band' => ['required', Rule::in(array_keys(PaContent::SIZE_BANDS))],
             'next' => ['nullable', Rule::in(['save', 'build'])],
-        ], ['country.in' => 'Phase 1: South Africa only. Other countries coming soon.']);
+        ], ['country.in' => 'Please choose one of the 54 African countries.']);
         $next = $d['next'] ?? 'build';
         unset($d['next']);
         $request->session()->put(self::CTX, array_merge($request->session()->get(self::CTX, []), $d));
@@ -126,7 +140,7 @@ class PaPublicController extends Controller
 
         return Inertia::render('Advisory/ProjectAdvisory/Readiness', [
             'ctx' => $c,
-            'sectorLabel' => PaContent::SECTORS[$c['sector']][0] ?? '',
+            'sectorLabel' => PaSectors::label($c['sector']),
             'dimensions' => array_map(fn ($d) => ['key' => $d[0], 'name' => $d[1], 'sub' => $d[2], 'available' => $d[3]['available'], 'gap' => $d[3]['gap']], PaContent::readinessDimensions()),
             'answers' => $answers,
             'points' => PaContent::EVIDENCE_POINTS,
@@ -158,7 +172,7 @@ class PaPublicController extends Controller
         $stageIdx = array_search($c['stage'], PaContent::STAGES, true) ?: 0;
 
         return Inertia::render('Advisory/ProjectAdvisory/CostExposure', [
-            'ctx' => $c, 'sectorLabel' => PaContent::SECTORS[$c['sector']][0] ?? '', 'bandLabel' => PaContent::SIZE_BANDS[$c['size_band']][0] ?? '',
+            'ctx' => $c, 'sectorLabel' => PaSectors::label($c['sector']), 'bandLabel' => PaContent::SIZE_BANDS[$c['size_band']][0] ?? '',
             'reuse' => $reuse, 'estimate' => PaContent::costExposure($c, $reuse), 'method' => PaContent::METHOD,
             'throughClose' => min(5, $stageIdx + 3), 'savedAt' => $request->session()->get('adv_pa_exposure_at'),
         ]);
@@ -188,13 +202,13 @@ class PaPublicController extends Controller
     public function studies(Request $request): Response
     {
         $c = $this->ctx($request);
-        $sector = $request->query('sector', $c['sector']);
-        $sector = array_key_exists($sector, PaContent::SECTORS) ? $sector : 'energy-resources';
+        $sector = PaSectors::key($request->query('sector', $c['sector']));
         $rows = PaContent::studies($sector);
         $path = $request->session()->get('adv_pa_studies', []);
 
         return Inertia::render('Advisory/ProjectAdvisory/Studies', [
-            'ctx' => $c, 'sector' => $sector, 'sectorLabel' => PaContent::SECTORS[$sector][0], 'studies' => $rows, 'path' => $path,
+            'ctx' => $c, 'sector' => $sector, 'sectorLabel' => PaSectors::label($sector), 'studies' => $rows, 'path' => $path, 'plan' => PaSectors::plan($sector),
+            'embedded' => EmbeddedServices::forModule('project-advisory'),
             'snapshot' => ['active' => count($rows), 'reusable' => count(array_filter($rows, fn ($r) => $r['reuse'] === 'Reusable' && $r['evidence'] !== 'missing')), 'pending' => count(array_filter($rows, fn ($r) => str_contains($r['quote'], 'Pending'))), 'review' => count(array_filter($rows, fn ($r) => $r['evidence'] === 'human_review'))],
             ...$this->vocab(),
         ]);
@@ -236,16 +250,16 @@ class PaPublicController extends Controller
         return Inertia::render('Advisory/ProjectAdvisory/Discovery', [
             'prefill' => [
                 'organisation' => $u?->company ?? '', 'contact' => $u ? "{$u->name}, {$u->job_title}" : '', 'email' => $u?->email ?? '',
-                'country' => $c['country'], 'sector' => PaContent::SECTORS[$c['sector']][0], 'project_stage' => $c['stage'],
+                'country' => $c['country'], 'sector' => PaSectors::label($c['sector']), 'project_stage' => $c['stage'],
                 'capital' => PaContent::SIZE_BANDS[$c['size_band']][0], 'route' => $c['route'], 'project_name' => $c['project_name'],
             ],
             'options' => [
-                'sectors' => array_column(PaContent::SECTORS, 0), 'stages' => PaContent::STAGES, 'bands' => array_column(PaContent::SIZE_BANDS, 0),
+                'sectors' => array_column(PaSectors::all(), 'label'), 'stages' => PaContent::STAGES, 'bands' => array_column(PaContent::SIZE_BANDS, 0),
                 'studies' => ['None yet', 'Pre-feasibility or concept note', 'Feasibility study completed', 'Full investor pack'],
                 'decisions' => ['Go / no-go on feasibility', 'Choose project structure', 'Approach funders', 'Board investment approval', 'Select implementation partner'],
                 'timelines' => ['Within 1 month', '1–3 months', '3–6 months', '6–12 months'],
                 'routes' => ['fixed-scope' => 'Fixed Scope', 'recurring-advisory' => 'Recurring Advisory', 'contingent' => 'Contingent', 'co-advisory' => 'Co-Advisory / Partner-Supported'],
-                'countries' => ['South Africa', 'Other African country'],
+                'countries' => self::countryNames(),
             ],
             'p03' => PaContent::FEE_REGISTER['P03'][2],
         ]);
@@ -256,7 +270,7 @@ class PaPublicController extends Controller
         $d = $request->validate([
             'entry' => ['required', Rule::in(['intake', 'discovery'])],
             'organisation' => ['required', 'string', 'max:160'], 'contact' => ['required', 'string', 'max:160'], 'email' => ['required', 'email'],
-            'country' => ['required', 'string'], 'sector' => ['required', Rule::in(array_column(PaContent::SECTORS, 0))],
+            'country' => ['required', 'string'], 'sector' => ['required', Rule::in(array_column(PaSectors::all(), 'label'))],
             'project_stage' => ['required', Rule::in(PaContent::STAGES)], 'project_name' => ['nullable', 'string', 'max:120'],
             'description' => ['nullable', 'string', 'max:1000'], 'capital' => ['required', Rule::in(array_column(PaContent::SIZE_BANDS, 0))],
             'existing_studies' => ['nullable', 'string'], 'funding_status' => ['required', Rule::in(['Not Started', 'Seeking', 'Part-Funded', 'Fully Funded'])],
@@ -268,11 +282,11 @@ class PaPublicController extends Controller
             return redirect()->route('login')->with('error', 'Please sign in to purchase Structured Discovery (P03).');
         }
         $mandate = MandateWorkflow::createFromIntake($d, $request->user());
-        if ($mandate->country !== 'South Africa') {
+        if (! in_array($mandate->country, self::countryNames(), true)) {
             $mandate->update(['status' => 'declined']);
-            $mandate->log('System', 'Stop-Now SN-04: jurisdiction not active in Phase 1');
+            $mandate->log('System', 'Stop-Now SN-04: jurisdiction outside Africa (Active)');
 
-            return back()->with('error', 'Stop-Now (SN-04): Phase 1 Project Advisory is only available in South Africa. We have recorded your enquiry for when your country opens.')->with('reference', $mandate->reference);
+            return back()->with('error', 'Stop-Now (SN-04): Project Advisory is available across all 54 African countries. We have recorded your enquiry.')->with('reference', $mandate->reference);
         }
         if ($d['entry'] === 'discovery') {
             return redirect()->route('checkout.show', MandateWorkflow::discoveryOrder($mandate, $request->user()));

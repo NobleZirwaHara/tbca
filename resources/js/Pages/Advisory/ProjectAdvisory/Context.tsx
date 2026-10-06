@@ -10,7 +10,8 @@ import { cn } from '@/lib/cn';
 interface Props {
     ctx: { country: string; sector: string; sponsor: string; stage: string; size_band: string };
     resolved: { next_stage: string; evidence_available: string; evidence_required: string; study_categories: string; permission: string; capacity: string; path: { slug: string; name: string; code: string }[]; gate: string };
-    sectors: { key: string; label: string; icon: string }[];
+    sectors: { key: string; code: string; label: string; icon: string; blurb: string }[];
+    countries: string[];
     sponsors: string[];
     stages: string[];
     bands: { key: string; label: string }[];
@@ -26,7 +27,7 @@ function Tile({ active, onClick, children }: { active: boolean; onClick: () => v
     );
 }
 
-export default function Context({ ctx, resolved, sectors, sponsors, stages, bands }: Props) {
+export default function Context({ ctx, resolved, sectors, countries, sponsors, stages, bands }: Props) {
     const form = useForm({ ...ctx, next: 'build' });
     const submit = (next: 'save' | 'build') => (e?: FormEvent) => {
         e?.preventDefault();
@@ -43,25 +44,28 @@ export default function Context({ ctx, resolved, sectors, sponsors, stages, band
             <form onSubmit={submit('build')} className="grid gap-5 lg:grid-cols-12">
                 <div className="space-y-4 lg:col-span-8">
                     <div className="grid gap-4 md:grid-cols-12">
-                        <fieldset className="rounded-[8px] border border-parchment-400 bg-white p-4 md:col-span-3">
-                            <legend className="px-1 text-sm font-semibold">1 Country</legend>
-                            <Select aria-label="Country" value={form.data.country} onChange={(e) => form.setData('country', e.target.value)} options={['South Africa', 'Kenya', 'Nigeria', 'Ghana']} />
-                            {form.errors.country && <p className="mt-1 text-xs text-risk-500" role="alert">{form.errors.country}</p>}
-                            <p className="mt-1 text-[0.6875rem] text-ink-500">Phase 1: South Africa only.</p>
-                        </fieldset>
-                        <fieldset className="rounded-[8px] border border-parchment-400 bg-white p-4 md:col-span-5">
-                            <legend className="px-1 text-sm font-semibold">2 Sector</legend>
-                            <div className="grid grid-cols-2 gap-2 xl:grid-cols-4" role="radiogroup">
-                                {sectors.map((s) => <Tile key={s.key} active={form.data.sector === s.key} onClick={() => form.setData('sector', s.key)}><AdvIcon name={s.icon} className="size-4 text-gold-600" />{s.label}</Tile>)}
-                            </div>
-                        </fieldset>
                         <fieldset className="rounded-[8px] border border-parchment-400 bg-white p-4 md:col-span-4">
-                            <legend className="px-1 text-sm font-semibold">3 Sponsor Type</legend>
-                            <div className="grid grid-cols-2 gap-2" role="radiogroup">
+                            <legend className="px-1 text-sm font-semibold">1 Country</legend>
+                            <Select aria-label="Country" value={form.data.country} onChange={(e) => form.setData('country', e.target.value)} options={countries} />
+                            {form.errors.country && <p className="mt-1 text-xs text-risk-500" role="alert">{form.errors.country}</p>}
+                            <p className="mt-1 text-[0.6875rem] text-ink-500">Africa (Active): all 54 African countries.</p>
+                        </fieldset>
+                        <fieldset className="rounded-[8px] border border-parchment-400 bg-white p-4 md:col-span-8">
+                            <legend className="px-1 text-sm font-semibold">2 Sponsor Type</legend>
+                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3" role="radiogroup">
                                 {sponsors.map((s) => <Tile key={s} active={form.data.sponsor === s} onClick={() => form.setData('sponsor', s)}>{s}</Tile>)}
                             </div>
                         </fieldset>
                     </div>
+                    <fieldset className="rounded-[8px] border border-parchment-400 bg-white p-4">
+                        <legend className="px-1 text-sm font-semibold">3 Sector <span className="font-normal text-ink-500">(17 TBCA industries)</span></legend>
+                        <Select aria-label="Sector" value={form.data.sector} onChange={(e) => form.setData('sector', e.target.value)} options={sectors.map((s) => ({ value: s.key, label: `${s.code} · ${s.label}` }))} />
+                        {form.errors.sector && <p className="mt-1 text-xs text-risk-500" role="alert">{form.errors.sector}</p>}
+                        <div className="mt-3 grid max-h-64 grid-cols-1 gap-2 overflow-y-auto pr-1 sm:grid-cols-2 xl:grid-cols-3" role="radiogroup" aria-label="Sector">
+                            {sectors.map((s) => <Tile key={s.key} active={form.data.sector === s.key} onClick={() => form.setData('sector', s.key)}><AdvIcon name={s.icon} className="size-4 shrink-0 text-gold-600" /><span><span className="block text-[0.625rem] text-ink-500">{s.code}</span>{s.label}</span></Tile>)}
+                        </div>
+                        <p className="mt-1 text-[0.6875rem] text-ink-500">Scroll to see all 17 sectors, or pick from the dropdown.</p>
+                    </fieldset>
                     <fieldset className="rounded-[8px] border border-parchment-400 bg-white p-4">
                         <legend className="px-1 text-sm font-semibold">4 Current Project Stage</legend>
                         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6" role="radiogroup">

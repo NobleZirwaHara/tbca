@@ -5,7 +5,7 @@ import Breadcrumbs from '@/Components/ui/Breadcrumbs';
 import { Button } from '@/Components/ui/Button';
 import { Modal, StatusPill } from '@/Components/ui/Kit';
 import { Field, Textarea } from '@/Components/ui/Form';
-import { Card, CheckList, FactStrip, InfoRows, Notice } from '@/Components/Marketplace/ui';
+import { Card, CheckList, FactStrip, InfoRows, Notice, zarCode } from '@/Components/Marketplace/ui';
 import { LedgerEnvelope } from '@/Components/Marketplace/Brief';
 import type { MkBrief } from '@/types/marketplace';
 
@@ -40,7 +40,7 @@ export default function BriefReview({ brief, proposalCount }: { brief: MkBrief; 
                             ]} />
                             <div className="grid gap-5 md:grid-cols-2">
                                 <Card number={1} title="Methodology Brief" className="md:row-span-2">
-                                    <InfoRows dense rows={[['Brief Title', brief.title], ['Objective Summary', s.objective], ['Scope Summary', s.summary], ['Approved Methodology', s.methodology], ['Intended Use', brief.data.intended_use]]} />
+                                    <InfoRows dense rows={[['Brief Title', brief.title], ...(s.package ? [['Selected Package', `${s.package.service_title} – ${s.package.name} (${zarCode(s.package.price_zar)}${s.package.delivery ? ` · ${s.package.delivery}` : ''})`] as [string, string]] : []), ['Objective Summary', s.objective], ['Scope Summary', s.summary], ['Approved Methodology', s.methodology], ['Intended Use', brief.data.intended_use]]} />
                                     <InfoRows dense className="mt-3 border-t border-parchment-300" rows={[['Country', brief.data.country], ['Industry', brief.data.industry], ['Delivery Class', s.delivery_class], ['QA Class', s.qa_class]]} />
                                 </Card>
                                 <Card number={2} title="Scope of Work"><CheckList items={s.scope_items ?? []} /></Card>

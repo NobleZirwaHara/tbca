@@ -4,17 +4,21 @@ import type { FormEvent } from 'react';
 import AfricaMark from '@/Components/AfricaMark';
 import { Field, Input, Select, Textarea } from '@/Components/ui/Form';
 import type { SharedProps } from '@/types';
-import type { Office } from '@/types/core-pages';
+import type { Office, RoleMailbox } from '@/types/core-pages';
+import { LeadsSection, OfficesSection, PhoneLink } from '@/Components/CorePages/ContactParts';
 
 interface Props {
+    headOffice: Office;
     offices: Office[];
+    leads: RoleMailbox[];
+    generalEmail: string;
     serviceAreas: string[];
     hours: { day: string; hours: string }[];
 }
 
 const darkInput = 'border-ink-700 bg-ink-900 text-parchment-100 placeholder:text-ink-400';
 
-export default function Contact({ offices, serviceAreas, hours }: Props) {
+export default function Contact({ headOffice, offices, leads, generalEmail, serviceAreas, hours }: Props) {
     const { auth } = usePage<SharedProps>().props;
     const form = useForm({
         name: auth.user?.name ?? '',
@@ -103,36 +107,33 @@ export default function Contact({ offices, serviceAreas, hours }: Props) {
                     </form>
 
                     <aside className="lg:col-span-2">
-                        <h2 className="text-[1.0625rem] font-semibold text-gold-400">Our Offices</h2>
-                        <ul className="mt-3 divide-y divide-ink-800">
-                            {offices.map((o) => (
-                                <li key={o.title} className="flex gap-2.5 py-3">
-                                    <MapPin className="mt-0.5 size-4 shrink-0 text-gold-500" aria-hidden="true" />
-                                    <div className="text-[0.8125rem] leading-snug">
-                                        <p className="font-semibold text-parchment-100">{o.title}</p>
-                                        {o.lines.map((l) => (
-                                            <p key={l} className="text-ink-200">{l}</p>
-                                        ))}
-                                        <a href={`tel:${o.phone.replace(/\s/g, '')}`} className="mt-1 inline-flex items-center gap-1.5 text-parchment-100 hover:text-gold-300">
-                                            <Phone className="size-3.5 text-gold-500" aria-hidden="true" /> {o.phone}
-                                        </a>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                        <Link href="/about" className="inline-flex items-center gap-1 text-[0.8125rem] font-semibold text-gold-400 hover:text-gold-300">
-                            View All Locations <ArrowRight className="size-3.5" aria-hidden="true" />
-                        </Link>
+                        <h2 className="text-[1.0625rem] font-semibold text-gold-400">Head Office</h2>
+                        <div className="mt-3 flex gap-2.5 border-b border-ink-800 pb-4">
+                            <MapPin className="mt-0.5 size-4 shrink-0 text-gold-500" aria-hidden="true" />
+                            <div className="text-[0.8125rem] leading-snug">
+                                <p className="font-semibold text-parchment-100">{headOffice.city}, {headOffice.country}</p>
+                                <p className="text-ink-200">{headOffice.address}</p>
+                                {headOffice.phone && <PhoneLink phone={headOffice.phone} />}
+                            </div>
+                        </div>
+                        <p className="mt-4 text-[0.8125rem] text-ink-200">Plus {offices.length} country offices across Africa.</p>
+                        <a href="#offices" className="mt-2 inline-flex items-center gap-1 text-[0.8125rem] font-semibold text-gold-400 hover:text-gold-300">
+                            View Country Offices <ArrowRight className="size-3.5" aria-hidden="true" />
+                        </a>
                     </aside>
                 </div>
             </section>
 
+            <OfficesSection headOffice={headOffice} offices={offices} />
+
+            <LeadsSection leads={leads} generalEmail={generalEmail} />
+
             <section className="container-tbca grid gap-4 pb-12 sm:grid-cols-2 lg:grid-cols-5">
                 <Card title="Get in Touch">
                     <ul className="space-y-3 text-[0.8125rem]">
-                        <ContactRow icon={<Mail className="size-5" />} label="Email" value="info@thebusinessclinic.africa" href="mailto:info@thebusinessclinic.africa" />
-                        <ContactRow icon={<Phone className="size-5" />} label="Call Us" value="+27 12 001 0567" href="tel:+27120010567" />
-                        <ContactRow icon={<MessageCircle className="size-5" />} label="WhatsApp" value="+27 60 891 6365" href="https://wa.me/27608916365" />
+                        <ContactRow icon={<Mail className="size-5" />} label="Email" value="Consult@thebusinessclinic.africa" href="mailto:Consult@thebusinessclinic.africa" />
+                        <ContactRow icon={<Phone className="size-5" />} label="Call Us" value="+27 60 801 1365" href="tel:+27608011365" />
+                        <ContactRow icon={<MessageCircle className="size-5" />} label="WhatsApp" value="+27 60 891 6365" href="https://wa.me/27608011365" />
                         <ContactRow icon={<Globe className="size-5" />} label="Website" value="www.thebusinessclinic.africa" href="/" />
                     </ul>
                 </Card>

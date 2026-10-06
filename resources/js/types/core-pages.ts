@@ -1,9 +1,27 @@
 /* Types for the Core pages and customer journeys (CorePages section). */
 
+/** Mirrors App\Support\Platform\Offices. */
 export interface Office {
-    title: string;
-    lines: string[];
-    phone: string;
+    slug: string;
+    kind: 'head' | 'country';
+    country: string;
+    iso2: string;
+    city: string;
+    address: string;
+    phone: string | null;
+    map_embed: string;
+    map_link: string;
+}
+
+/** Mirrors App\Support\Platform\Directory (role mailboxes, proposed — not yet active). */
+export interface RoleMailbox {
+    hc_code: string;
+    position: string;
+    email: string;
+    additional_seat: boolean;
+    client_facing: boolean;
+    topic: string | null;
+    status: string;
 }
 
 export interface Webinar {
@@ -283,6 +301,13 @@ export interface CountryObject {
     rcs: number;
     evidence: string;
     updated: string;
+    capital?: string;
+    currency?: string;
+    currency_name?: string;
+    languages?: string;
+    legal_system?: string;
+    office?: string;
+    confirmed?: boolean;
 }
 
 export interface Paginated<T> {

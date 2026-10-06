@@ -59,7 +59,7 @@ export default function Dashboard({ engagement: e, ledgers, gate, openGate, task
                 <Card title="6 Support & Cases" className="xl:col-span-4">
                     <p className="text-xs">Open Cases: <b>{tickets.length}</b> · SLA Status: Within SLA</p>
                     <ul className="mt-2 space-y-1 text-xs">{tickets.map((t) => <li key={t.reference} className="flex justify-between gap-2"><span>#{t.reference} {t.subject}</span><StatusPill status={t.status} /></li>)}</ul>
-                    <div className="mt-3 flex flex-wrap gap-2"><Link href={`/technology-solutions/workspace/${e.reference}/support`} className="rounded border border-parchment-500 px-2 py-1 text-xs">Raise Issue</Link><a href="https://wa.me/27120010567" className="inline-flex items-center gap-1 rounded border border-verified-500 px-2 py-1 text-xs text-verified-700"><MessageCircle className="size-3" />WhatsApp Support</a></div>
+                    <div className="mt-3 flex flex-wrap gap-2"><Link href={`/technology-solutions/workspace/${e.reference}/support`} className="rounded border border-parchment-500 px-2 py-1 text-xs">Raise Issue</Link><a href="https://wa.me/27608011365" className="inline-flex items-center gap-1 rounded border border-verified-500 px-2 py-1 text-xs text-verified-700"><MessageCircle className="size-3" />WhatsApp Support</a></div>
                 </Card>
                 <Card title="7 Activity Timeline" className="xl:col-span-4">
                     <ul className="space-y-1.5 text-xs">{timeline.map((t, i) => <li key={i}><span className="text-ink-500">{t.at}</span> — {t.event} <span className="text-ink-400">({t.by})</span></li>)}</ul>

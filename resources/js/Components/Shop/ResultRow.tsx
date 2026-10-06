@@ -1,5 +1,6 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { Bookmark, Clock, ShoppingCart, UserCheck } from 'lucide-react';
+import CoverArt from '@/Components/Art/CoverArt';
 import ShopIcon from '@/Components/Shop/ShopIcon';
 import { ActTag, Chip } from '@/Components/Shop/Bits';
 import { usePrice } from '@/lib/money';
@@ -67,11 +68,11 @@ export function AddButton({ r, size = 'md' }: { r: SearchResult; size?: 'sm' | '
 /** Search / listing row (P5): icon, title, description, chips, price, actions. */
 export default function ResultRow({ r }: { r: SearchResult }) {
     return (
-        <article className="flex flex-col gap-4 rounded-[8px] border border-parchment-400 bg-white p-4 sm:flex-row sm:items-start">
-            <ShopIcon name={r.icon} size="md" />
+        <article className="relative flex flex-col gap-4 rounded-[8px] border border-parchment-400 bg-white p-4 sm:flex-row sm:items-start">
+            <CoverArt seed={r.slug} category={r.aisle ?? r.subcategory} label={r.name} className="aspect-[16/10] w-full shrink-0 rounded-[6px] sm:w-32" />
             <div className="min-w-0 flex-1">
                 <h3 className="text-[0.9375rem] font-semibold text-ink-900">
-                    <Link href={r.url} className="hover:text-gold-700">{r.name}</Link>
+                    <Link href={r.url} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">{r.name}</Link>
                 </h3>
                 {r.summary && <p className="mt-1 line-clamp-2 text-[0.8125rem] text-ink-600">{r.summary}</p>}
                 <div className="mt-2 flex flex-wrap gap-1.5">
@@ -81,7 +82,7 @@ export default function ResultRow({ r }: { r: SearchResult }) {
                     {r.source === 'sprint' && <Chip tone="gold">Sprint catalogue</Chip>}
                 </div>
             </div>
-            <div className="flex shrink-0 flex-row items-center justify-between gap-3 sm:w-56 sm:flex-col sm:items-end">
+            <div className="relative z-10 flex shrink-0 flex-row items-center justify-between gap-3 sm:w-56 sm:flex-col sm:items-end">
                 <div className="text-sm sm:text-right">
                     <PriceLabel r={r} />
                     {r.price_zar !== null && r.price_zar > 0 && <p className="text-[0.6875rem] text-ink-400">Excl. VAT</p>}
@@ -110,17 +111,18 @@ export default function ResultRow({ r }: { r: SearchResult }) {
 /** Compact grid card variant of a result. */
 export function ResultCard({ r }: { r: SearchResult }) {
     return (
-        <article className="flex h-full flex-col rounded-[8px] border border-parchment-400 bg-white p-4">
+        <article className="relative flex h-full flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-4">
+            <CoverArt seed={r.slug} category={r.aisle ?? r.subcategory} label={r.name} className="-mx-4 -mt-4 mb-3 aspect-[16/8] w-[calc(100%+2rem)] max-w-none" />
             <div className="flex items-start gap-3">
                 <ShopIcon name={r.icon} size="sm" />
-                <h3 className="text-sm font-semibold text-ink-900"><Link href={r.url} className="hover:text-gold-700">{r.name}</Link></h3>
+                <h3 className="text-sm font-semibold text-ink-900"><Link href={r.url} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">{r.name}</Link></h3>
             </div>
             {r.summary && <p className="mt-2 line-clamp-3 flex-1 text-xs text-ink-600">{r.summary}</p>}
             <div className="mt-2 flex flex-wrap gap-1.5">
                 <ActTag act={r.act} label={r.act_label} />
                 {r.delivery && <Chip>{r.delivery}</Chip>}
             </div>
-            <div className="mt-3 flex items-center justify-between gap-2 border-t border-parchment-300 pt-3">
+            <div className="relative z-10 mt-3 flex items-center justify-between gap-2 border-t border-parchment-300 pt-3">
                 <PriceLabel r={r} className="text-sm" />
                 {directBuy(r) ? <AddButton r={r} size="sm" /> : <Link href={r.url} className="text-xs font-semibold text-gold-700">View Details →</Link>}
             </div>

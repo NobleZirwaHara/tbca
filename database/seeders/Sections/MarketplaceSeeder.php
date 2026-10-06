@@ -142,13 +142,42 @@ class MarketplaceSeeder extends Seeder
             ['legal-contract-pack', 'fixed', 'legal-shield-advisors', 'Commercial Contract Template Pack', 'legal-contracts', 'Contracts & Agreements', 'Customised supply, services and NDA templates for SMEs (non-regulated drafting support).', 8500, null, 4.2, 6, 20, null, $fixed()],
         ];
 
+        $content = require __DIR__.'/data/marketplace/services.php';
+
         $out = [];
         foreach ($rows as [$slug, $kind, $provider, $title, $cat, $sub, $summary, $price, $period, $rating, $reviews, $pop, $badge, $details]) {
+            if ($c = $content[$slug] ?? null) {
+                $details = [...$details, 'inputs' => $c['inputs'], 'requirements' => $c['inputs'], 'process' => $c['process'], 'packages' => $this->packages($c, $price)];
+            }
             $out[$slug] = Listing::updateOrCreate(['slug' => $slug], [
                 'kind' => $kind, 'provider_id' => $p[$provider]->id, 'title' => $title, 'category' => $cat, 'subcategory' => $sub, 'summary' => $summary,
                 'price_zar' => $price, 'period' => $period, 'rating' => $rating, 'reviews_count' => $reviews, 'popularity' => $pop, 'badge' => $badge,
                 'status' => $slug === 'legal-contract-pack' ? 'pending' : 'published', 'details' => $details,
             ]);
+        }
+
+        return $out;
+    }
+
+    /** Basic / Standard / Premium ladder: Standard is the list price; features accumulate upwards. */
+    private function packages(array $c, int $price): array
+    {
+        $factor = ['basic' => 0.6, 'standard' => 1.0, 'premium' => 1.75];
+        $meta = [
+            'basic' => ['revisions' => '1 round', 'support' => 'Email support'],
+            'standard' => ['revisions' => '2 rounds', 'support' => 'Email & call support', 'recommended' => true],
+            'premium' => ['revisions' => 'Unlimited within 30 days', 'support' => 'Dedicated contact'],
+        ];
+        $features = [];
+        $out = [];
+        foreach (['basic', 'standard', 'premium'] as $i => $key) {
+            [$scope, $added] = $c['tiers'][$key];
+            $features = [...$features, ...$added];
+            $days = $c['days'][$i];
+            $out[] = [
+                'key' => $key, 'name' => ucfirst($key), 'price_zar' => (int) (round($price * $factor[$key] / 500) * 500),
+                'delivery' => $days === null ? 'Monthly (Ongoing)' : "{$days} Business Days", 'scope' => $scope, 'features' => $features, ...$meta[$key],
+            ];
         }
 
         return $out;
@@ -402,16 +431,18 @@ class MarketplaceSeeder extends Seeder
             ['audit-assurance', ['Statutory Audit Coordination', 'Coordinate statutory audits with a registered auditor.'], ['Independent Review (Compilation)', 'Independent review engagements for qualifying companies.'], ['Agreed-Upon Procedures', 'Factual findings reports on specified procedures.']],
             ['tax-advisory', ['Tax Compliance & Returns', 'Corporate and provisional tax compliance by a registered practitioner.'], ['Tax Structuring Review', 'Review of group and transaction structures for tax efficiency.'], ['Transfer Pricing Documentation', 'Master file and local file documentation.']],
             ['esg-advisory', ['ESG Reporting Readiness', 'Gap assessment against ISSB / GRI and a reporting roadmap.'], ['Sustainability Assurance Support', 'Prepare for limited assurance on sustainability metrics.']],
-            ['environmental-services', ['Environmental Impact Assessment (EIA)', 'Full NEMA EIA process with registered EAP sign-off.'], ['Basic Assessment Report', 'Basic Assessment for listed activities with lower impact.'], ['Environmental Compliance Audit', 'Audit against EMPr and authorisation conditions.'], ['Water Use Licence Support', 'WULA preparation and submission to DWS.']],
-            ['engineering-technical', ['Engineering Design Review', 'Independent review of designs by a registered professional engineer.'], ['Technical Due Diligence', 'Asset condition and technical risk assessment.']],
+            ['environmental-services', ['Environmental Impact Assessment (EIA)', 'Full NEMA EIA process with registered EAP sign-off.'], ['Basic Assessment Report', 'Basic Assessment for listed activities with lower impact.'], ['Environmental Compliance Audit', 'Audit against EMPr and authorisation conditions.'], ['Water Use Licence Support', 'WULA preparation and submission to DWS.'], ['Heritage Impact Assessment', 'Heritage impact assessment by an accredited heritage practitioner.'], ['Waste Management Licence Support', 'Waste management licence applications and waste management plans.']],
+            ['engineering-technical', ['Engineering Design Review', 'Independent review of designs by a registered professional engineer.'], ['Technical Due Diligence', 'Asset condition and technical risk assessment.'], ['Structural Engineering Sign-off', 'Structural design check and sign-off by a registered professional engineer.'], ['Geotechnical Investigation Coordination', 'Scoping and coordination of geotechnical investigations with professional reporting.']],
+            ['project-construction', ['Professional Construction Project Management', 'Construction project management by a registered professional construction project manager.'], ['Principal Agent Services', 'Principal agent appointment for building contracts (JBCC / NEC).'], ['Quantity Surveying & Cost Review', 'Cost plans, bills of quantities and cost-to-complete reviews by a registered quantity surveyor.'], ['Construction Health & Safety Agent', 'Construction regulations health and safety agent services.']],
             ['financial-advisory', ['Financial Model Review (Expert Review)', 'Independent expert review of your financial model with professional sign-off and recommendations.'], ['Independent Valuation Opinion', 'Registered valuer opinion for transactions and reporting.']],
+            ['corporate-finance', ['Transaction Advisory (Corporate Finance)', 'Licensed corporate finance support for acquisitions, disposals and mergers.'], ['Capital Raising Readiness Review', 'Readiness review for debt or equity raising by an authorised adviser.'], ['Fairness Opinion Coordination', 'Coordination of an independent fairness opinion by a qualifying expert.']],
             ['specialist-compliance', ['AML / KYC Programme Review', 'Review of FICA risk management and compliance programme.'], ['POPIA Information Officer Support', 'Outsourced information officer support.']],
-            ['business-rescue', ['Business Rescue Feasibility', 'Assessment by a licensed business rescue practitioner.']],
-            ['valuation', ['Property Valuation', 'Registered valuer property valuation report.']],
+            ['business-rescue', ['Business Rescue Feasibility', 'Assessment by a licensed business rescue practitioner.'], ['Business Rescue Plan Support', 'Support to a licensed practitioner in preparing and implementing the rescue plan.'], ['Turnaround & Restructuring Review', 'Independent turnaround and debt restructuring review.']],
+            ['valuation', ['Property Valuation', 'Registered valuer property valuation report.'], ['Business Valuation (Registered Valuer)', 'Formal business valuation report signed by a qualifying valuer.'], ['Plant & Equipment Valuation', 'Movable asset valuation for finance, insurance or disposal.']],
             ['labour-employment', ['Labour Relations Advisory', 'Disciplinary, retrenchment and CCMA support.']],
             ['corporate-governance', ['Board Effectiveness Review', 'King IV aligned board evaluation.']],
         ];
-        $profession = ['legal-services' => 'Attorney', 'audit-assurance' => 'Chartered Accountant (SA)', 'tax-advisory' => 'Tax Practitioner', 'esg-advisory' => 'ESG Specialist', 'environmental-services' => 'Environmental Assessment Practitioner (EAP)', 'engineering-technical' => 'Professional Engineer', 'financial-advisory' => 'Chartered Accountant (SA)', 'specialist-compliance' => 'Compliance Officer', 'business-rescue' => 'Business Rescue Practitioner', 'valuation' => 'Registered Valuer', 'labour-employment' => 'Attorney', 'corporate-governance' => 'Chartered Accountant (SA)'];
+        $profession = ['legal-services' => 'Attorney', 'audit-assurance' => 'Chartered Accountant (SA)', 'tax-advisory' => 'Tax Practitioner', 'esg-advisory' => 'ESG Specialist', 'environmental-services' => 'Environmental Assessment Practitioner (EAP)', 'engineering-technical' => 'Professional Engineer', 'project-construction' => 'Construction Project Manager', 'corporate-finance' => 'Corporate Finance Adviser', 'financial-advisory' => 'Chartered Accountant (SA)', 'specialist-compliance' => 'Compliance Officer', 'business-rescue' => 'Business Rescue Practitioner', 'valuation' => 'Registered Valuer', 'labour-employment' => 'Attorney', 'corporate-governance' => 'Chartered Accountant (SA)'];
         foreach ($rows as $row) {
             $cat = array_shift($row);
             foreach ($row as $i => [$title, $summary]) {

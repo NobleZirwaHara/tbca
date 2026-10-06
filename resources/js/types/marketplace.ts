@@ -33,6 +33,25 @@ export interface MkProvider {
     profile: Record<string, any>;
 }
 
+export interface MkPackage {
+    key: 'basic' | 'standard' | 'premium';
+    name: string;
+    priceZar: number;
+    delivery: string;
+    scope: string;
+    features: string[];
+    revisions?: string;
+    support?: string;
+    recommended?: boolean;
+}
+
+export interface MkPackageRow {
+    label: string;
+    basic: boolean;
+    standard: boolean;
+    premium: boolean;
+}
+
 export interface MkListing {
     id: number;
     slug: string;
@@ -50,6 +69,7 @@ export interface MkListing {
     status: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     details: Record<string, any>;
+    packages: MkPackage[];
     provider: { name: string; slug: string; status: string } | null;
 }
 
@@ -61,6 +81,7 @@ export interface Ledgers {
 }
 
 export interface BriefScope {
+    package?: { service: string | null; service_title: string | null; key: string; name: string; price_zar: number | null; delivery: string | null; scope: string | null } | null;
     price_version?: string;
     gate?: string;
     methodology?: string;

@@ -21,6 +21,7 @@ import { ToolkitBoxArt, ToolkitIconTile, ToolkitPackages, ToolkitPreviewScreen, 
 import { cn } from '@/lib/cn';
 import type { SprintPackage, SprintRecord } from '@/types';
 import type { DigitalToolkitAttributes, ToolkitSection } from '@/types/sprint-types-b';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 
 type TabCat = 'all' | 'included' | 'benefits' | 'process' | 'requirements' | 'specs' | 'use' | 'faq';
 
@@ -47,7 +48,8 @@ export default function DigitalToolkitSprint({ sprint, related }: { sprint: Spri
     const pkgs = packages as Pkg[];
     const layout = a.layout ?? 'standard';
     const tabs = (list(a.tabs).length ? list(a.tabs) : DEFAULT_TABS).map((t) => ({ key: t, label: t }));
-    const [tab, setTab] = useState(tabs[0].key);
+    const urlTab = useUrlTab();
+    const [tab, setTab] = useState(() => tabs[urlTabIndex(tabs.map((t) => t.label), urlTab)].key);
     const cat = tabCategory(tab);
     const purchase = a.purchase ?? { heading: 'Choose Your Toolkit Package', style: 'dark', primary_cta: 'Buy Toolkit', secondary_cta: 'Book Discovery Call', trust_icons: [], scope_prompt: null, scope_link: null, code_tag: null, price_note: null };
     const sections = (a.sections ?? []) as ToolkitSection[];

@@ -12,8 +12,8 @@ interface Props {
 }
 
 const badges = [
-    { title: 'South Africa', body: 'Active Market', icon: Globe2 },
-    { title: 'English & Afrikaans', body: 'Languages', icon: Languages },
+    { title: 'Africa', body: 'Active Market', icon: Globe2 },
+    { title: '7 Languages', body: 'Languages', icon: Languages },
     { title: 'ZAR (Source)', body: '& USD Currencies', icon: Coins },
     { title: 'Human-Reviewed', body: 'Every Case', icon: UserCheck },
     { title: 'Secure & Compliant', body: 'POPIA Ready', icon: ShieldCheck },

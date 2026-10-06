@@ -46,7 +46,7 @@ class DemoGlobal
             self::rec('natasha_policy', $ref, $title, $status, ['type' => $type, 'tier' => $tier, 'by' => $by, 'last_review' => now()->subDays(20 + $i)->toDateString(), 'next_review' => now()->addDays(70 + $i)->toDateString()], null, null, $i);
         }
         if (! Record::whereNull('user_id')->where('register', 'setting')->where('reference', 'natasha_kill_switch')->exists()) {
-            self::rec('setting', 'natasha_kill_switch', 'NATASHA kill switch', 'off');
+            self::rec('setting', 'natasha_kill_switch', 'KAREN kill switch', 'off');
         }
 
         $als = [

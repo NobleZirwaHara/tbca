@@ -102,7 +102,7 @@ export default function Decline({ reference, result, needs, outcomes, sizes, tim
                     </ul>
                 </aside>
             </div>
-            <TrustBand items={[['Our commitment to you', 'We recommend by fit, not margin.'], ['No obligation', 'This is free and comes with no commitment.'], ['Honest always', 'We’ll tell you the truth, even if it’s no.'], ['Human review', 'Real experts review every response.'], ['Return anytime', 'We’re here when you’re ready.'], ['Phase 1 – South Africa', 'ZAR source pricing.']]} />
+            <TrustBand items={[['Our commitment to you', 'We recommend by fit, not margin.'], ['No obligation', 'This is free and comes with no commitment.'], ['Honest always', 'We’ll tell you the truth, even if it’s no.'], ['Human review', 'Real experts review every response.'], ['Return anytime', 'We’re here when you’re ready.'], ['Africa (Active)', 'ZAR source pricing.']]} />
         </>
     );
 }

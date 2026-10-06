@@ -48,7 +48,7 @@ export default function MediaContact() {
                                 <div className="text-[0.875rem]">
                                     <p className="font-serif text-xl font-semibold text-ink-900">Lerato Mokoena</p>
                                     <p className="font-semibold text-violet-700">Head: Communications</p>
-                                    <p className="mt-2 flex items-center gap-2"><Phone className="size-4 text-violet-700" aria-hidden="true" /> +27 12 001 0557</p>
+                                    <p className="mt-2 flex items-center gap-2"><Phone className="size-4 text-violet-700" aria-hidden="true" /> +27 60 801 1365</p>
                                     <p className="mt-1 flex items-center gap-2"><Mail className="size-4 text-violet-700" aria-hidden="true" /> media@thebusinessclinic.africa</p>
                                     <p className="mt-1 flex items-center gap-2"><MapPin className="size-4 text-violet-700" aria-hidden="true" /> Pretoria, South Africa</p>
                                 </div>
@@ -108,7 +108,7 @@ export default function MediaContact() {
                             <h2 className="flex items-center gap-2 font-semibold text-ink-900"><Clock className="size-5 text-attested-700" aria-hidden="true" /> Response Commitment</h2>
                             <p className="mt-1 text-[0.8125rem] text-ink-700">We aim to respond to all media enquiries within one business day.</p>
                             <p className="mt-3 border-t border-attested-500/20 pt-3 text-[0.8125rem] text-ink-700">For urgent media enquiries outside of business hours, please call:</p>
-                            <a href="tel:+27821234567" className="mt-1 flex items-center gap-2 font-semibold text-attested-700"><Phone className="size-4" aria-hidden="true" /> +27 82 123 4567</a>
+                            <a href="tel:+27608011365" className="mt-1 flex items-center gap-2 font-semibold text-attested-700"><Phone className="size-4" aria-hidden="true" /> +27 60 801 1365</a>
                         </div>
                         <Link href="/complaints/track" className="block rounded-[8px] border border-parchment-400 bg-white p-4 text-[0.8125rem] text-ink-700 hover:border-violet-300">Already sent an enquiry? <span className="font-semibold text-violet-700">Track it with your reference →</span></Link>
                     </aside>

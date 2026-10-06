@@ -8,7 +8,7 @@ import type { AiimPageProps } from '@/types/aiim';
 import { SyntheticNotice } from './Chips';
 
 export const AIIM_NAV: [string, string][] = [
-    ['Map View', '/aiim/country/south-africa'], ['Opportunities', '/aiim/opportunities'], ['Projects', '/aiim/projects'],
+    ['Map View', '/aiim#explore-africa'], ['Opportunities', '/aiim/opportunities'], ['Projects', '/aiim/projects'],
     ['Investors', '/aiim/investors'], ['Funders', '/aiim/funders'], ['Trade Corridors', '/aiim/corridors'],
     ['Risk & Outlook', '/aiim/risk'], ['Sources & Evidence', '/aiim/sources/IMF-WEO-2025-04'], ['Premium Briefs', '/aiim/store'], ['My Workspace', '/aiim/workspace'],
 ];
@@ -17,7 +17,7 @@ export function SubNav() {
     const { url } = usePage<SharedProps>().props;
     const path = url.path;
     const active = (href: string) => {
-        if (href === '/aiim/country/south-africa') return path.startsWith('/aiim/country') || path.startsWith('/aiim/province') || path.startsWith('/aiim/sector');
+        if (href === '/aiim#explore-africa') return path.startsWith('/aiim/country') || path.startsWith('/aiim/province') || path.startsWith('/aiim/sector');
         if (href.startsWith('/aiim/sources')) return path.startsWith('/aiim/sources');
         if (href === '/aiim/workspace') return path.startsWith('/aiim/workspace') || path.startsWith('/aiim/wallet') || path.startsWith('/aiim/fees') || path.startsWith('/aiim/checkout');
         return path.startsWith(href);
@@ -37,8 +37,8 @@ export function SubNav() {
 
 export function Ribbon() {
     const chips: [ReactNode, string][] = [
-        [<span key="za" className="text-xs">🇿🇦</span>, 'Phase 1 Active Market: South Africa'],
-        [<Globe2 key="g" className="size-3.5" />, '54 African Countries (Coming Soon)'],
+        [<span key="za" className="text-xs">🌍</span>, 'Africa Market (Active)'],
+        [<Globe2 key="g" className="size-3.5" />, '54 African Country Cockpits'],
         [<Sparkles key="s" className="size-3.5" />, 'AI & Human Reviewed Intelligence'],
         [<BadgeCheck key="b" className="size-3.5" />, 'Source Verified & Confidence Rated'],
         [<Coins key="c" className="size-3.5" />, 'ZAR (USD) Pricing'],

@@ -1,7 +1,8 @@
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import * as L from 'lucide-react';
-import AfricaMap from '@/Components/AfricaMap';
+import AfricaCountryMap from '@/Components/Map/AfricaCountryMap';
+import { bucketFill, regionId } from '@/Components/Map/countryMapHelpers';
 import { CountrySelector, Frame } from '@/Components/Countries/Shell';
 import { BUCKETS, bucketDot, Card, FilterSelect, Flag, Kpi, Note, Pager, StateBadge, Table } from '@/Components/Countries/ui';
 import { openAskQuestion } from '@/Components/AskQuestion';
@@ -19,8 +20,6 @@ interface Props {
     categories: { value: string; label: string }[];
     countries: CountryBrief[];
 }
-
-const REGION_IDS: Record<string, string> = { 'North Africa': 'north', 'West Africa': 'west', 'Middle Africa': 'central', 'East Africa': 'east', 'Southern Africa': 'southern' };
 
 export default function Explorer({ counts, rows, total, page, perPage, filters, regions, categories, countries }: Props) {
     const [q, setQ] = useState(filters.q ?? '');
@@ -74,11 +73,16 @@ export default function Explorer({ counts, rows, total, page, perPage, filters, 
 
             <div className="grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)]">
                 <Card title="African Country Objects Map">
-                    <div className="aspect-square rounded-[6px] bg-ink-900 p-3">
-                        <AfricaMap activeRegion={filters.region ? REGION_IDS[filters.region] : 'southern'} onSelect={(id) => {
-                            const name = Object.entries(REGION_IDS).find(([, v]) => v === id)?.[0];
-                            router.get(path, { ...filters, region: name, page: undefined });
-                        }} />
+                    <div className="rounded-[6px] bg-ink-900 p-3">
+                        <AfricaCountryMap
+                            activeRegion={regionId(filters.region)}
+                            colorFor={(c) => bucketFill(countries.find((x) => x.iso2 === c.iso2)?.bucket)}
+                            hrefFor={(_, c) => {
+                                const match = countries.find((x) => x.iso2 === c.iso2);
+                                return match ? `/countries/${match.slug}` : null;
+                            }}
+                            label="Map of Africa: select a country to open its country object"
+                        />
                     </div>
                     <ul className="mt-3 space-y-2">
                         {BUCKETS.map((b) => (
@@ -88,7 +92,7 @@ export default function Explorer({ counts, rows, total, page, perPage, filters, 
                             </li>
                         ))}
                     </ul>
-                    <p className="mt-2 text-[0.6875rem] text-ink-400">Click a region or a row to view details. Schematic map.</p>
+                    <p className="mt-2 text-[0.6875rem] text-ink-400">Click a country or a row to view details. Use the Region filter to highlight a region.</p>
                 </Card>
 
                 <Card title={`All African Country Objects (${counts.total})`} action={<span className="text-xs text-ink-500">{total} match</span>}>

@@ -54,7 +54,7 @@ export function ToolsTrustStrip() {
         { icon: 'user-check', label: 'Human-Reviewed Quality' },
         { icon: 'badge-check', label: 'Version Controlled' },
         { icon: 'lock', label: 'Secure Downloads' },
-        { icon: 'languages', label: 'English & Afrikaans' },
+        { icon: 'languages', label: '7 Languages' },
         { icon: 'coins', label: 'ZAR Source | USD Available' },
     ];
     return (
@@ -117,7 +117,7 @@ export function NeedHelpChoosing() {
                 </li>
             </ul>
             <p className="mt-4 text-[0.75rem] font-semibold text-ink-700">Need immediate help?</p>
-            <a href="https://wa.me/27608916365" target="_blank" rel="noreferrer" className="mt-1.5 flex items-center gap-2 text-[0.8125rem] font-semibold text-verified-700 hover:underline">
+            <a href="https://wa.me/27608011365" target="_blank" rel="noreferrer" className="mt-1.5 flex items-center gap-2 text-[0.8125rem] font-semibold text-verified-700 hover:underline">
                 <MessageCircle className="size-4" aria-hidden="true" /> Chat on WhatsApp
             </a>
         </aside>

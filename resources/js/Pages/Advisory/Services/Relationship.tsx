@@ -81,7 +81,7 @@ export default function Relationship({ client, vehicles, since, upcoming, counts
                     <h2 className="text-sm font-semibold">Your Account Team</h2>
                     <ul className="mt-2 space-y-2 text-xs">
                         {[['Lerato M.', 'Relationship Manager'], ['Johan S.', 'Project Lead'], ['Nomsa K.', 'Client Support']].map(([n, r]) => (
-                            <li key={n} className="flex items-center justify-between gap-2"><span><b className="block">{n}</b>{r}</span><a href="https://wa.me/27120010567" className="rounded border border-parchment-500 px-2 py-1">Send Message</a></li>
+                            <li key={n} className="flex items-center justify-between gap-2"><span><b className="block">{n}</b>{r}</span><a href="https://wa.me/27608011365" className="rounded border border-parchment-500 px-2 py-1">Send Message</a></li>
                         ))}
                     </ul>
                 </section>

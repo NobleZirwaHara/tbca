@@ -25,5 +25,14 @@ class PortalSeeder extends Seeder
 
         DemoClient::seed($user);
         DemoClientRecords::seed($user);
+
+        // Re-seeding restores a usable demo: undo any restriction, pause or exit
+        // left behind by trying the continuity journeys on the demo account.
+        \App\Models\Portal\Account::where('user_id', $user->id)->update([
+            'account_state' => 'active',
+            'state_reason' => null,
+            'state_case' => null,
+            'state_since' => null,
+        ]);
     }
 }

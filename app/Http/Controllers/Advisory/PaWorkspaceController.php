@@ -21,7 +21,7 @@ class PaWorkspaceController extends Controller
 {
     private function authorizeMandate(Request $request, Mandate $mandate): void
     {
-        abort_unless($mandate->user_id === $request->user()->id || $request->user()->role === 'admin', 403);
+        abort_unless((int) $mandate->user_id === (int) $request->user()->id || $request->user()->role === 'admin', 403);
         MandateWorkflow::reconcile($mandate);
         $mandate->refresh();
     }
@@ -34,7 +34,7 @@ class PaWorkspaceController extends Controller
 
         return [
             'reference' => $m->reference, 'project' => $m->project_name, 'organisation' => $m->organisation, 'country' => $m->country,
-            'sector' => PaContent::SECTORS[$m->sector][0] ?? $m->sector, 'stage_index' => $m->stage, 'stage' => "{$stage[0]} {$stage[1]}", 'stage_name' => $stage[2],
+            'sector' => \App\Support\Advisory\PaSectors::label($m->sector), 'stage_index' => $m->stage, 'stage' => "{$stage[0]} {$stage[1]}", 'stage_name' => $stage[2],
             'status' => $m->status, 'gate' => $m->current_gate, 'route' => $m->engagement_route, 'entry' => $m->entry_route,
             'service' => $svc ? ['slug' => $svc['slug'], 'name' => $svc['name'], 'code' => $svc['code'], 'price' => $svc['price'], 'duration' => $svc['duration']] : null,
             'method_card_ref' => $svc ? 'MC-'.substr($stage[0], 0).'-'.strtoupper(substr($svc['slug'], 0, 4)).'-02' : null,

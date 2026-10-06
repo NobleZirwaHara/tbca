@@ -11,29 +11,28 @@ use App\Support\Platform\Money;
  */
 class SprintOffer
 {
-    /** @return list<array<string, mixed>> */
+    /**
+     * Always exactly Basic / Standard / Premium (normalised by the seeders; re-normalised
+     * here so rows written before the normalisation still render three packages).
+     *
+     * @return list<array<string, mixed>>
+     */
     public static function packages(Sprint $sprint): array
     {
-        $packages = $sprint->packages ?? [];
-
-        if (! $packages && $sprint->price_zar !== null) {
-            // A sprint with a single price behaves like one "Standard" package.
-            $packages = [['key' => 'standard', 'name' => 'Standard', 'zar' => $sprint->price_zar, 'delivery' => $sprint->delivery, 'features' => []]];
-        }
-
-        if (! $packages && $sprint->commercial_act === 'free') {
-            $packages = [['key' => 'free', 'name' => 'Free access', 'zar' => 0, 'delivery' => $sprint->delivery, 'features' => []]];
-        }
-
-        return array_values($packages);
+        return Packages::normalise($sprint->packages, [
+            'price' => $sprint->price_zar,
+            'delivery' => $sprint->delivery,
+            'act' => $sprint->commercial_act,
+            'title' => $sprint->title,
+        ]);
     }
 
-    /** The requested package, else the "popular" one, else the first. */
+    /** The requested package (tier key or legacy alias), else Standard. */
     public static function package(Sprint $sprint, ?string $key): ?array
     {
         $packages = collect(self::packages($sprint));
 
-        return $packages->firstWhere('key', $key)
+        return $packages->firstWhere('key', Packages::resolveKey($key))
             ?? $packages->firstWhere('popular', true)
             ?? $packages->first();
     }

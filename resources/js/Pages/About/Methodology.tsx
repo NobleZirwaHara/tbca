@@ -1,6 +1,6 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
-import PageHeader from '@/Components/PageHeader';
+import HeroArt from '@/Components/Art/HeroArt';
 import CtaBand from '@/Components/CtaBand';
 import { DataTable } from '@/Components/Blocks';
 import Card from '@/Components/ui/Card';
@@ -27,28 +27,65 @@ export default function Methodology({ methodology, sequence, decisions }: Props)
         <>
             <Head title="How TBCA Works" />
 
-            <PageHeader
-                title="How TBCA Works"
-                lead="Our Canonical Enterprise Methodology"
-                intro="We combine intelligent advisory, AI-powered systems, robotic automation and human authority in one disciplined method that turns complexity into clarity, strategy into action and potential into measurable impact."
-                crumbs={[
-                    { label: 'Home', href: '/' },
-                    { label: 'About TBCA', href: '/about' },
-                    { label: 'Our Methodology' },
-                ]}
-                aside={{
-                    title: 'Governed. Human-led. Measurable.',
-                    body: 'Every engagement is governed by our policies, professional boundaries, evidence-controlled claims and human authority.',
-                    items: [
-                        'Material decisions made by qualified people',
-                        'AI assists within defined boundaries',
-                        'Auditable approvals and correction protocols',
-                        'Measurable outcomes at every phase gate',
-                    ],
-                    icon: 'shield-check',
-                    link: { label: 'View Governance', href: '/about/governance' },
-                }}
-            />
+            {/* "How TBCA Works" hero over generated constellation artwork */}
+            <header className="relative overflow-hidden bg-ink-950 text-parchment-100">
+                <HeroArt tone="dark" focus="right" fade="left" seed={11} />
+                <div className="container-tbca relative pt-6 pb-12 md:pt-8 md:pb-20">
+                    <nav aria-label="Breadcrumb" className="mb-8">
+                        <ol className="flex flex-wrap items-center gap-1.5 text-[0.8125rem] text-ink-300">
+                            <li><Link href="/" className="hover:text-parchment-50">Home</Link></li>
+                            <li aria-hidden="true">/</li>
+                            <li><Link href="/about" className="hover:text-parchment-50">About TBCA</Link></li>
+                            <li aria-hidden="true">/</li>
+                            <li aria-current="page" className="text-gold-400">Our Methodology</li>
+                        </ol>
+                    </nav>
+                    <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+                        <div className="lg:col-span-7">
+                            <p className="mb-3 text-[0.6875rem] font-semibold tracking-[0.16em] text-gold-400 uppercase">About TBCA</p>
+                            <h1 className="font-serif text-[2.25rem] leading-[1.05] font-semibold tracking-[-0.02em] text-parchment-50 md:text-[3.5rem]">How TBCA Works</h1>
+                            <p className="mt-3 font-serif text-[1.25rem] leading-snug text-gold-400 md:text-[1.625rem]">Our Canonical Enterprise Methodology</p>
+                            <p className="mt-5 max-w-2xl text-[0.9375rem] leading-relaxed text-ink-200 [text-shadow:0_1px_12px_rgb(0_0_0/0.6)] md:text-[1.0625rem]">
+                                We combine intelligent advisory, AI-powered systems, robotic automation and human authority in one disciplined method that turns complexity into clarity, strategy into action and potential into measurable impact.
+                            </p>
+                            <ol className="mt-7 flex flex-wrap gap-2" aria-label="The five phases">
+                                {methodology.map((phase) => (
+                                    <li key={phase.number} className="inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-ink-950/60 px-3 py-1.5 text-[0.75rem] text-parchment-100 backdrop-blur-sm">
+                                        <span className="font-serif font-semibold text-gold-400">{phase.number}</span>
+                                        {phase.name}
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
+                        <aside className="lg:col-span-5">
+                            <div className="rounded-[8px] border border-gold-500/40 bg-ink-950/70 p-6 shadow-2xl shadow-black/40 backdrop-blur-md">
+                                <div className="flex items-start gap-3">
+                                    <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-[5px] border border-gold-500/50 text-gold-400">
+                                        <Icon name="shield-check" className="size-[18px]" />
+                                    </span>
+                                    <div className="min-w-0">
+                                        <h2 className="text-[0.9375rem] font-semibold text-parchment-50">Governed. Human-led. Measurable.</h2>
+                                        <p className="mt-1.5 text-[0.875rem] leading-relaxed text-ink-200">
+                                            Every engagement is governed by our policies, professional boundaries, evidence-controlled claims and human authority.
+                                        </p>
+                                    </div>
+                                </div>
+                                <ul className="mt-4 space-y-2 border-t border-gold-500/25 pt-4">
+                                    {['Material decisions made by qualified people', 'AI assists within defined boundaries', 'Auditable approvals and correction protocols', 'Measurable outcomes at every phase gate'].map((item) => (
+                                        <li key={item} className="flex gap-2.5 text-[0.8125rem] leading-relaxed text-parchment-200">
+                                            <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-gold-500" aria-hidden="true" />
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Link href="/about/governance" className="mt-4 inline-flex items-center gap-1.5 text-[0.8125rem] font-semibold text-gold-400 hover:text-gold-300">
+                                    View Governance <ArrowRight className="size-3.5" aria-hidden="true" />
+                                </Link>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </header>
 
             <Section tone="parchment">
                 <ol className="grid gap-5 lg:grid-cols-5">

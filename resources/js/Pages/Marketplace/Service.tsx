@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import { BadgeCheck, Bookmark, CheckCircle2, Lock, MessageCircle, Repeat, ShieldCheck, ShoppingCart, Truck, User } from 'lucide-react';
+import { BadgeCheck, Bookmark, CheckCircle2, ClipboardList, Lock, MessageCircle, Repeat, ShieldCheck, ShoppingCart, Truck } from 'lucide-react';
+import CoverArt from '@/Components/Art/CoverArt';
 import Breadcrumbs from '@/Components/ui/Breadcrumbs';
 import { Button } from '@/Components/ui/Button';
 import { Tabs, Tag } from '@/Components/ui/Kit';
 import { Field, Select, Textarea } from '@/Components/ui/Form';
 import { openAskQuestion } from '@/Components/AskQuestion';
-import { Stars } from '@/Components/Marketplace/ui';
+import { Stars, artCategory } from '@/Components/Marketplace/ui';
+import { PackageCards, PackageComparison } from '@/Components/Marketplace/Packages';
 import { usePrice } from '@/lib/money';
 import type { SharedProps } from '@/types';
-import type { MkListing, MkProvider } from '@/types/marketplace';
+import type { MkListing, MkPackage, MkPackageRow, MkProvider } from '@/types/marketplace';
 
 interface Props {
     listing: MkListing;
@@ -18,19 +20,30 @@ interface Props {
     canReview: boolean;
     saved: boolean;
     related: MkListing[];
+    comparison: MkPackageRow[];
+    selectedPackage: MkPackage['key'];
+    initialTab: string;
 }
 
-export default function Service({ listing, provider, reviews, canReview, saved, related }: Props) {
+export default function Service({ listing, provider, reviews, canReview, saved, related, comparison, selectedPackage, initialTab }: Props) {
     const { auth, contact } = usePage<SharedProps>().props;
     const price = usePrice();
     const d = listing.details;
     const recurring = listing.kind === 'recurring';
-    const [tab, setTab] = useState('overview');
+    const [tab, setTab] = useState(initialTab);
+    const [pkgKey, setPkgKey] = useState<MkPackage['key']>(selectedPackage);
+    const pkg = listing.packages.find((p) => p.key === pkgKey) ?? listing.packages[1] ?? listing.packages[0];
+    const pkgPrice = pkg?.priceZar ?? listing.priceZar ?? 0;
     const [plan, setPlan] = useState<'full' | 'instalments'>('full');
     const review = useForm({ rating: 5, body: '' });
-    const whatsapp = `https://wa.me/${(contact?.whatsapp ?? '27120010567').toString().replace(/\D/g, '')}?text=${encodeURIComponent(`Hi TBCA, I'm interested in ${listing.title}`)}`;
+    const whatsapp = `https://wa.me/${(contact?.whatsapp ?? '27608011365').toString().replace(/\D/g, '')}?text=${encodeURIComponent(`Hi TBCA, I'm interested in ${listing.title}`)}`;
 
-    const order = () => router.post(`/marketplace/services/${listing.slug}/order`, { plan });
+    const order = () => router.post(`/marketplace/services/${listing.slug}/order`, { plan, package: pkgKey });
+    const briefHref = `/marketplace/brief?service=${listing.slug}&package=${pkgKey}`;
+    const choosePackage = (key: MkPackage['key']) => {
+        setPkgKey(key);
+        window.history.replaceState(window.history.state, '', `?package=${key}`);
+    };
     const toggleSave = () =>
         auth.user
             ? router.post('/saved', { item_type: 'marketplace-service', item_key: listing.slug, label: listing.title, url: `/marketplace/services/${listing.slug}` }, { preserveScroll: true })
@@ -38,10 +51,11 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
 
     const tabs = [
         { key: 'overview', label: 'Overview' },
+        { key: 'packages', label: 'Packages' },
+        { key: 'inputs', label: 'Inputs Required' },
+        { key: 'process', label: 'Process' },
         { key: 'included', label: "What's Included" },
         { key: 'deliverables', label: 'Deliverables' },
-        { key: 'process', label: 'Process' },
-        { key: 'requirements', label: 'Requirements' },
         { key: 'reviews', label: `Reviews (${listing.reviewsCount})` },
         { key: 'faqs', label: 'FAQs' },
     ];
@@ -58,8 +72,8 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                     <div className="grid gap-8 lg:grid-cols-12">
                         <div className="lg:col-span-8">
                             <div className="grid gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-                                <div className="relative min-h-56 overflow-hidden rounded-[8px] bg-gradient-to-br from-controlled-700 via-ink-900 to-ink-950">
-                                    <div className="absolute inset-0 motif-grid opacity-30" aria-hidden="true" />
+                                <div className="relative min-h-56 overflow-hidden rounded-[8px] bg-ink-950">
+                                    <CoverArt seed={listing.slug} category={artCategory(listing.category)} label={listing.title} src={d.image ?? null} className="absolute inset-0 h-full w-full" />
                                     {listing.badge && <span className="absolute top-0 left-4 bg-controlled-700 px-2.5 pt-3 pb-2 text-[0.625rem] font-bold tracking-wide text-white uppercase shadow">{listing.badge}</span>}
                                     <div className="absolute inset-x-0 bottom-0 flex flex-wrap gap-3 bg-ink-950/80 px-3 py-2 text-[0.6875rem] text-parchment-100">
                                         {(recurring ? ['Confidential & Secure', 'Bank-Grade Quality', 'Expert Support'] : ['Expert Review', 'Data Accuracy', 'Bankable Outputs', 'QA Assured']).map((t) => (
@@ -82,7 +96,7 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                             </div>
                             <dl className="mt-6 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
                                 {[
-                                    ['Service Category', listing.categoryLabel], ['Delivery Time', d.delivery], ['Provider Type', d.provider_type], ['Ideal For', d.ideal_for],
+                                    ['Service Category', listing.categoryLabel], ['Delivery Time', pkg ? `${pkg.delivery} (${pkg.name})` : d.delivery], ['Provider Type', d.provider_type], ['Ideal For', d.ideal_for],
                                     [recurring ? 'Engagement Model' : 'Difficulty / Complexity', recurring ? d.engagement : d.difficulty], [recurring ? 'Cancellation' : 'Engagement Model', recurring ? d.cancellation : d.engagement],
                                 ].map(([k, v]) => (
                                     <div key={k} className="flex justify-between gap-3 border-b border-parchment-300 py-1.5"><dt className="font-semibold text-ink-800">{k}:</dt><dd className="text-right text-ink-600">{v ?? '—'}</dd></div>
@@ -102,8 +116,35 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                                 )}
                                 {tab === 'included' && list(d.included)}
                                 {tab === 'deliverables' && list(d.deliverables)}
-                                {tab === 'process' && <ol className="list-decimal space-y-1 pl-5 text-sm text-ink-700">{(d.process ?? []).map((s: string) => <li key={s}>{s}</li>)}</ol>}
-                                {tab === 'requirements' && list(d.requirements)}
+                                {tab === 'packages' && (
+                                    <div className="space-y-6">
+                                        <div>
+                                            <h3 className="font-semibold text-ink-900">Choose your package</h3>
+                                            <p className="mb-4 text-xs text-ink-500">Every Marketplace service comes in three packages. Your choice carries through to checkout or to a customised brief.</p>
+                                            <PackageCards packages={listing.packages} value={pkgKey} onChange={choosePackage} recurring={recurring} />
+                                        </div>
+                                        <PackageComparison packages={listing.packages} rows={comparison} value={pkgKey} onChange={choosePackage} />
+                                    </div>
+                                )}
+                                {tab === 'inputs' && (
+                                    <div>
+                                        <h3 className="mb-1 font-semibold text-ink-900">Inputs Required</h3>
+                                        <p className="mb-3 text-xs text-ink-500">What we need from you before work starts. Delivery time runs from receipt of these inputs.</p>
+                                        <ul className="space-y-2 text-sm text-ink-700">
+                                            {((d.inputs ?? d.requirements ?? []) as string[]).map((i) => <li key={i} className="flex gap-2"><ClipboardList className="size-4 shrink-0 text-gold-600" aria-hidden="true" />{i}</li>)}
+                                        </ul>
+                                    </div>
+                                )}
+                                {tab === 'process' && (
+                                    <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                                        {((d.process ?? []) as string[]).map((step, i) => (
+                                            <li key={step} className="flex gap-3 rounded-[6px] border border-parchment-300 p-3">
+                                                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gold-500 text-xs font-bold text-ink-900">{i + 1}</span>
+                                                <span className="text-sm text-ink-700">{step}</span>
+                                            </li>
+                                        ))}
+                                    </ol>
+                                )}
                                 {tab === 'faqs' && <dl className="space-y-3">{(d.faqs ?? []).map(([q, a]: [string, string]) => <div key={q}><dt className="font-semibold text-ink-900">{q}</dt><dd className="text-sm text-ink-600">{a}</dd></div>)}</dl>}
                                 {tab === 'reviews' && (
                                     <div className="space-y-4">
@@ -133,8 +174,8 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                             <div className="rounded-[8px] border border-parchment-400 p-5">
                                 <div className="flex justify-between gap-4">
                                     <div>
-                                        <p className="text-xs font-semibold text-gold-700">{recurring ? 'Subscription Plan' : 'Price (All inclusive)'}</p>
-                                        <p className="mt-1 text-3xl font-bold text-ink-900">{price(listing.priceZar ?? 0)}{recurring && <span className="text-sm font-normal text-ink-500"> / month</span>}</p>
+                                        <p className="text-xs font-semibold text-gold-700">{pkg ? `${pkg.name} Package` : recurring ? 'Subscription Plan' : 'Price (All inclusive)'}</p>
+                                        <p className="mt-1 text-3xl font-bold text-ink-900">{price(pkgPrice)}{recurring && <span className="text-sm font-normal text-ink-500"> / month</span>}</p>
                                         <p className="text-xs text-ink-500">{recurring ? 'Excl. VAT' : 'Excl. VAT & platform fee – shown at checkout'}</p>
                                         {recurring && d.allowance && <p className="mt-2 text-xs text-ink-600">{d.allowance}</p>}
                                     </div>
@@ -144,16 +185,36 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                                         <button type="button" className="mt-1 text-xs text-controlled-600 underline" onClick={() => openAskQuestion({ subject: 'What is Certainty Class C2?', section: 'marketplace' })}>What is this?</button>
                                     </div>
                                 </div>
+                                {listing.packages.length > 0 && (
+                                    <div className="mt-4">
+                                        <div role="radiogroup" aria-label="Package" className="grid grid-cols-3 gap-1 rounded-[6px] bg-parchment-200 p-1">
+                                            {listing.packages.map((p) => (
+                                                <button
+                                                    key={p.key}
+                                                    type="button"
+                                                    role="radio"
+                                                    aria-checked={p.key === pkgKey}
+                                                    onClick={() => choosePackage(p.key)}
+                                                    className={p.key === pkgKey ? 'rounded-[4px] bg-white px-2 py-1.5 text-xs font-semibold text-ink-900 shadow-sm' : 'rounded-[4px] px-2 py-1.5 text-xs text-ink-600 hover:text-ink-900'}
+                                                >
+                                                    {p.name}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        {pkg && <p className="mt-2 text-xs text-ink-600">{pkg.scope} <span className="text-ink-400">· {pkg.delivery}</span></p>}
+                                        <button type="button" onClick={() => setTab('packages')} className="mt-1 text-xs font-semibold text-controlled-600 underline">Compare packages</button>
+                                    </div>
+                                )}
                                 {!recurring && (
                                     <fieldset className="mt-4 space-y-1.5 text-sm">
                                         <legend className="sr-only">Payment plan</legend>
                                         <label className="flex items-center gap-2"><input type="radio" className="accent-gold-600" checked={plan === 'full'} onChange={() => setPlan('full')} /> Pay in full</label>
-                                        <label className="flex items-center gap-2"><input type="radio" className="accent-gold-600" checked={plan === 'instalments'} onChange={() => setPlan('instalments')} /> or 3 payments of {price(Math.round((listing.priceZar ?? 0) / 3))}</label>
+                                        <label className="flex items-center gap-2"><input type="radio" className="accent-gold-600" checked={plan === 'instalments'} onChange={() => setPlan('instalments')} /> or 3 payments of {price(Math.round(pkgPrice / 3))}</label>
                                     </fieldset>
                                 )}
                                 <div className="mt-4 space-y-2">
                                     <Button type="button" className="w-full" onClick={order} disabled={provider ? !provider.routable : false}>
-                                        {recurring ? <Repeat className="size-4" aria-hidden="true" /> : <ShoppingCart className="size-4" aria-hidden="true" />} {recurring ? 'Subscribe Now' : 'Order Now'}
+                                        {recurring ? <Repeat className="size-4" aria-hidden="true" /> : <ShoppingCart className="size-4" aria-hidden="true" />} {recurring ? 'Subscribe' : 'Order'} {pkg ? pkg.name : 'Now'}
                                     </Button>
                                     <Button type="button" variant="outline" className="w-full" onClick={toggleSave}><Bookmark className={saved ? 'size-4 fill-gold-500 text-gold-600' : 'size-4'} aria-hidden="true" /> {saved ? 'Saved' : 'Save for Later'}</Button>
                                     <a href={whatsapp} target="_blank" rel="noreferrer" className="flex h-11 w-full items-center justify-center gap-2 rounded-[4px] border border-verified-500 text-sm font-medium text-verified-700 hover:bg-verified-50">
@@ -168,7 +229,7 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                             {provider && (
                                 <div className="rounded-[8px] border border-parchment-400 p-5">
                                     <div className="flex items-start gap-3">
-                                        <User className="size-9 rounded-full border border-parchment-400 p-1.5 text-ink-500" aria-hidden="true" />
+                                        <CoverArt seed={provider.slug} category={artCategory(provider.category)} label={provider.name} src={provider.profile.logo ?? null} className="size-11 shrink-0 rounded-full" />
                                         <div className="min-w-0 flex-1">
                                             <p className="text-xs font-semibold text-ink-900">{recurring ? 'Service Provider' : 'Provider'}</p>
                                             <p className="text-sm text-ink-600">{provider.name}</p>
@@ -190,7 +251,7 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                                 <p className="text-xs text-ink-500">Talk to our team for guidance on the right solution.</p>
                                 <div className="mt-3 grid grid-cols-2 gap-2">
                                     <Button size="sm" variant="outline" type="button" onClick={() => openAskQuestion({ subject: listing.title, section: 'marketplace' })}>Ask a Question</Button>
-                                    <Link href="/marketplace/brief" className="flex h-9 items-center justify-center rounded-[4px] border border-ink-300 text-[0.8125rem] font-medium hover:border-ink-900">Submit a Brief</Link>
+                                    <Link href={briefHref} className="flex h-9 items-center justify-center rounded-[4px] border border-ink-300 text-[0.8125rem] font-medium hover:border-ink-900">Customise via Brief</Link>
                                 </div>
                             </div>
                         </aside>
@@ -210,7 +271,12 @@ export default function Service({ listing, provider, reviews, canReview, saved, 
                             <h2 className="font-serif text-xl font-bold text-ink-900">Related services</h2>
                             <ul className="mt-4 grid gap-4 sm:grid-cols-3">
                                 {related.map((r) => (
-                                    <li key={r.slug}><Link href={`/marketplace/services/${r.slug}`} className="block rounded-[8px] border border-parchment-400 bg-white p-4 hover:border-gold-400"><p className="font-semibold text-ink-900">{r.title}</p><p className="mt-1 text-sm font-bold">{price(r.priceZar ?? 0)}</p></Link></li>
+                                    <li key={r.slug}>
+                                        <Link href={`/marketplace/services/${r.slug}`} className="block overflow-hidden rounded-[8px] border border-parchment-400 bg-white hover:border-gold-400">
+                                            <CoverArt seed={r.slug} category={artCategory(r.category)} label={r.title} src={r.details.image ?? null} className="aspect-[16/9]" />
+                                            <div className="p-4"><p className="font-semibold text-ink-900">{r.title}</p><p className="mt-1 text-sm font-bold">From {price(r.packages[0]?.priceZar ?? r.priceZar ?? 0)}</p></div>
+                                        </Link>
+                                    </li>
                                 ))}
                             </ul>
                         </div>

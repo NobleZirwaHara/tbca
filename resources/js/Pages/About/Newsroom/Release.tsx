@@ -98,7 +98,7 @@ export default function PressRelease({ release, related }: { release: Release; r
                                 <p className="mt-1 text-xs text-ink-600">For media enquiries, interviews or additional information, please contact:</p>
                                 <p className="mt-3 text-[0.875rem] font-semibold text-ink-900">Lerato Mokoena</p>
                                 <p className="text-xs text-violet-700">Head: Communications</p>
-                                <p className="mt-2 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4" aria-hidden="true" /> +27 12 001 0557</p>
+                                <p className="mt-2 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4" aria-hidden="true" /> +27 60 801 1365</p>
                                 <p className="mt-1 flex items-center gap-2 text-[0.8125rem]"><Mail className="size-4" aria-hidden="true" /> media@thebusinessclinic.africa</p>
                                 <Link href="/newsroom/media-contact" className="mt-3 flex items-center justify-center gap-1 rounded-[4px] border border-violet-400 py-2 text-[0.8125rem] font-semibold text-violet-700">View All Contacts <ArrowRight className="size-3.5" aria-hidden="true" /></Link>
                             </div>

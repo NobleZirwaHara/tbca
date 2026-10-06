@@ -1,3 +1,4 @@
+import CoverArt from '@/Components/Art/CoverArt';
 import { useState, type ReactNode } from 'react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, Bookmark, ChevronRight, MessageCircleQuestion } from 'lucide-react';
@@ -9,6 +10,7 @@ import type { SprintTypeAAttributes, SprintTypeASlug } from '@/types/sprint-type
 import HeroVisual from './HeroVisual';
 import { Chip } from './Blocks';
 import { heroIcon, itemIcon } from './icons';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 
 export const TYPE_LABELS: Record<SprintTypeASlug, string> = {
     'technology-setup': 'Technology Setup Sprint',
@@ -104,7 +106,8 @@ export default function SprintShell({
     bottomLead?: string | null;
     wideCard?: boolean;
 }) {
-    const [active, setActive] = useState(0);
+    const urlTab = useUrlTab();
+    const [active, setActive] = useState(() => urlTabIndex(tabs.map((t) => t.label), urlTab));
     const { context } = usePage<SharedProps>().props;
     const Icon = heroIcon(attrs.icon);
     const visual = attrs.visual && ((attrs.visual.kpis?.length ?? 0) > 0 || attrs.visual.bars || attrs.visual.donut || (attrs.visual.lists?.length ?? 0) > 0 || attrs.visual.table) ? attrs.visual : null;
@@ -122,8 +125,11 @@ export default function SprintShell({
                         <Crumbs sprint={sprint} attrs={attrs} />
                         <div className={cn('grid gap-6', visual && 'xl:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]')}>
                             <div className="flex flex-col gap-5 sm:flex-row">
-                                <span className="flex size-24 shrink-0 items-center justify-center rounded-[10px] border-2 border-gold-500/80 bg-ink-950/60 text-gold-500 sm:size-36">
-                                    <Icon className="size-12 sm:size-16" strokeWidth={1.25} aria-hidden="true" />
+                                <span className="relative block h-24 w-36 shrink-0 overflow-hidden rounded-[10px] border-2 border-gold-500/80 sm:h-36 sm:w-48">
+                                    <CoverArt seed={sprint.slug} category={sprint.category} label={sprint.title} className="absolute inset-0 h-full w-full" />
+                                    <span className="absolute bottom-1.5 left-1.5 flex size-10 items-center justify-center rounded-[6px] bg-ink-950/75 text-gold-500">
+                                        <Icon className="size-6" strokeWidth={1.25} aria-hidden="true" />
+                                    </span>
                                 </span>
                                 <div className="min-w-0">
                                     {(attrs.badge || codes.length > 0) && (
@@ -233,8 +239,9 @@ export default function SprintShell({
                                     <li key={r.id}>
                                         <Link
                                             href={`/sprints/${r.slug}`}
-                                            className="group flex h-full flex-col rounded-[8px] border border-parchment-400 bg-white p-4 transition-colors hover:border-gold-400"
+                                            className="group flex h-full flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-4 transition-colors hover:border-gold-400"
                                         >
+                                            <CoverArt seed={r.slug} category={r.category} label={r.title} className="-mx-4 -mt-4 mb-3 aspect-[16/7] w-[calc(100%+2rem)] max-w-none" />
                                             <span className="text-[0.625rem] font-bold tracking-wider text-gold-700 uppercase">
                                                 {TYPE_LABELS[r.type as SprintTypeASlug] ?? r.type.replace(/-/g, ' ')}
                                             </span>

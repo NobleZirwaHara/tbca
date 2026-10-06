@@ -12,6 +12,7 @@ use App\Support\Platform\Checkout;
 use App\Support\Platform\Reference;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -62,6 +63,7 @@ class ServicesClientController extends Controller
             'outcomes' => ServicesContent::outcomes(),
             'budgets' => ServicesContent::budgets(),
             'industries' => ServicesContent::industries(),
+            'countries' => array_values(array_diff(ServicesContent::countries(), ['Outside Africa'])),
         ]);
     }
 
@@ -85,7 +87,7 @@ class ServicesClientController extends Controller
             'company' => ['required', 'string', 'max:160'],
             'role' => ['nullable', 'string', 'max:120'],
             'phone' => ['required', 'string', 'max:40'],
-            'country' => ['required', 'string'],
+            'country' => ['required', Rule::in(ServicesContent::countries())],
             'industry' => ['nullable', 'string'],
             'heard' => ['nullable', 'string'],
         ]);
@@ -228,7 +230,7 @@ class ServicesClientController extends Controller
         return Inertia::render('Advisory/Services/Relationship', [
             'client' => $request->user()->company ?: $request->user()->name,
             'vehicles' => $vehicles,
-            'since' => $first ? \Illuminate\Support\Carbon::parse($first)->format('d M Y') : null,
+            'since' => $first ? Carbon::parse($first)->format('d M Y') : null,
             'upcoming' => $vehicles->filter(fn ($v) => $v['outstanding'] > 0 && $v['next_due_raw'] && $v['next_due_raw'] <= $soon)->values(),
             'counts' => ['total' => $vehicles->count(), 'active' => $vehicles->where('status', 'active')->count(), 'on_hold' => $vehicles->where('status', 'on_hold')->count(), 'completed' => $vehicles->where('status', 'completed')->count(), 'cancelled' => $vehicles->where('status', 'archived')->count()],
             'activity' => VehicleChange::query()->where('user_id', $request->user()->id)->latest()->limit(4)->get(['reference', 'type', 'status', 'to_vehicle', 'created_at']),
@@ -257,9 +259,31 @@ class ServicesClientController extends Controller
         return ['subtotal' => round($subtotal, 2), 'vat' => round($vat, 2), 'discounts' => round($discounts, 2), 'total' => round($subtotal + $vat, 2)];
     }
 
-    public function fees(Request $request, Vehicle $vehicle): Response
+    /** Ownership check that tolerates drivers returning integer keys as strings (e.g. Postgres via PDO). */
+    private static function owns(Request $request, Vehicle $vehicle): bool
     {
-        abort_unless($vehicle->user_id === $request->user()->id || $request->user()->role === 'admin', 403);
+        return $vehicle->user_id !== null && (int) $vehicle->user_id === (int) $request->user()->id;
+    }
+
+    /** "Vehicle Fee Panel" entry point: opens the signed-in client's own vehicle with fees due. */
+    public function myFees(Request $request): RedirectResponse
+    {
+        $mine = Vehicle::query()->where('user_id', $request->user()->id)->orderBy('start_date')->get();
+        $vehicle = $mine->first(fn (Vehicle $v) => ! empty($v->fees) && $v->outstanding() > 0) ?? $mine->first(fn (Vehicle $v) => ! empty($v->fees)) ?? $mine->first();
+        if (! $vehicle && $request->user()->role === 'admin') {
+            $vehicle = Vehicle::query()->whereNotNull('fees')->orderBy('code')->first();
+        }
+
+        return $vehicle
+            ? redirect()->route('adv.services.fees', $vehicle)
+            : redirect()->route('adv.services.relationship')->with('error', 'You do not have any active vehicles yet, so there is no fee panel to show.');
+    }
+
+    public function fees(Request $request, Vehicle $vehicle): Response|RedirectResponse
+    {
+        if (! self::owns($request, $vehicle) && $request->user()->role !== 'admin') {
+            return redirect()->route('adv.services.relationship')->with('error', "Vehicle {$vehicle->code} belongs to another client. Showing your own vehicles instead.");
+        }
         $this->reconcileFees($vehicle);
         $fees = collect($vehicle->fees ?? [])->map(fn ($f) => [...$f, 'amount' => $f['type'] === 'Tax' ? null : $f['qty'] * $f['unit'], 'vat' => in_array($f['type'], ['Disbursement', 'Tax'], true) ? 0 : round($f['qty'] * $f['unit'] * ServicesContent::VAT, 2)])->all();
 
@@ -285,7 +309,7 @@ class ServicesClientController extends Controller
 
     public function pay(Request $request, Vehicle $vehicle): RedirectResponse
     {
-        abort_unless($vehicle->user_id === $request->user()->id, 403);
+        abort_unless(self::owns($request, $vehicle), 403);
         $totals = self::feeTotals($vehicle->fees ?? []);
         $taxable = 0;
         $disb = 0;

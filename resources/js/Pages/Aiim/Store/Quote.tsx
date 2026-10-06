@@ -19,7 +19,7 @@ export interface ReportProps {
 export function ReportCard({ r, badge }: { r: ReportProps; badge: string }) {
     return (
         <div className="grid gap-4 sm:grid-cols-[9rem_minmax(0,1fr)]">
-            <BriefArt image="coast" className="h-36 rounded-[8px]" />
+            <BriefArt seed={r.reference} category="Custom Report" label={r.title} className="h-36 rounded-[8px]" />
             <div>
                 <Chip tone="good">{badge}</Chip>
                 <h2 className="mt-1 text-lg font-semibold">{r.title}</h2>

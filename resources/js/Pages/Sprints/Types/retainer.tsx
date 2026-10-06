@@ -23,6 +23,7 @@ import {
     X,
 } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
+import ThreePackages from '@/Components/Sprints/ThreePackages';
 import { Modal } from '@/Components/ui/Kit';
 import { askAbout, attrsOf, Crumbs, list, pairs, quoteHref, RelatedSprints } from '@/Components/SprintTypes/B/common';
 import { cn } from '@/lib/cn';
@@ -158,6 +159,8 @@ export default function RetainerSprint({ sprint, related }: { sprint: SprintReco
                                 <p className="leading-relaxed">{a.utilisation}</p>
                             </Card>
                         </div>
+
+                        <ThreePackages sprint={sprint} title="Retainer Packages" per={a.per ?? '/month'} />
 
                         {a.compare && (
                             <section className="grid items-center gap-4 rounded-[8px] border border-gold-200 bg-gold-50/60 p-4 md:grid-cols-[1fr_1.2fr_auto_1.2fr]">

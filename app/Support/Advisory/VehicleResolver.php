@@ -129,7 +129,7 @@ class VehicleResolver
         $declineReasons = [];
         if ($country === 'Outside Africa') {
             $outcomeType = 'decline';
-            $declineReasons[] = 'Phase 1 delivery is limited to South Africa (54-country architecture is not yet active for your jurisdiction).';
+            $declineReasons[] = 'Delivery is currently limited to Africa (all 54 African countries are active); your jurisdiction is outside Africa.';
         }
         if ($budget['key'] === 'under-2k' && ! in_array($outcome, ['tools'], true)) {
             $declineReasons[] = 'Your budget is below the floor price of any expert-delivered option.';

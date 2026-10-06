@@ -51,7 +51,7 @@ export default function Transition({ vehicles, targets, changes }: { vehicles: V
                     <ChangeForm type="transition" vehicles={vehicles} targets={targets} allowedTargets={['project', 'mandate']} defaultVehicleType="Sprint" submitLabel="Approve Transition & Proceed" changes={changes} />
                 </Card>
             </div>
-            <TrustBand items={[['No obligation', 'You decide what’s best.'], ['Transparent pricing', 'Clear, itemised and upfront.'], ['Human review included', 'Real experts review every step.'], ['Secure & private', 'Your data is protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.'], ['Credit carried forward', 'Investment to date counts']]} />
+            <TrustBand items={[['No obligation', 'You decide what’s best.'], ['Transparent pricing', 'Clear, itemised and upfront.'], ['Human review included', 'Real experts review every step.'], ['Secure & private', 'Your data is protected.'], ['Africa (Active)', 'ZAR source pricing.'], ['Credit carried forward', 'Investment to date counts']]} />
         </>
     );
 }

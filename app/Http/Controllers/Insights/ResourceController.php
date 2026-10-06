@@ -14,6 +14,7 @@ use App\Models\Insights\WebinarRegistration;
 use App\Support\Insights\Documents;
 use App\Support\Insights\ResourceAccess;
 use App\Support\Platform\Checkout;
+use App\Support\Platform\EmbeddedServices;
 use App\Support\Platform\Reference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -70,6 +71,7 @@ class ResourceController extends Controller
                 'webinars' => Webinar::count(),
                 'reports' => Resource::published()->where('type', 'report')->count(),
             ],
+            'embedded' => EmbeddedServices::forModule('resources'),
         ]);
     }
 

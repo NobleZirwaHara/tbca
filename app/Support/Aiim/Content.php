@@ -19,14 +19,15 @@ class Content
                 ['Risk & Opportunity Outlook', 'Make informed decisions', 'shield-check'],
                 ['Secure & Compliant', 'POPIA & ISO 27001 aligned', 'lock'],
             ],
-            'regions' => [['North Africa', 7], ['West Africa', 16], ['Central Africa', 9], ['East Africa', 10], ['Southern Africa', 12]],
             'platform' => ['Countries & Market Profiles', 'Investment Opportunities', 'Projects & Infrastructure', 'Investors & Funders', 'Sectors & Value Chains', 'Trade Corridors & Hubs', 'Market Intelligence & Risk', 'Regulatory & Policy Insights'],
             'countries' => [
-                ['name' => 'South Africa', 'code' => 'ZA', 'status' => 'High Opportunity', 'active' => true],
-                ['name' => 'Kenya', 'code' => 'KE', 'status' => 'High Opportunity', 'active' => false],
-                ['name' => 'Ghana', 'code' => 'GH', 'status' => 'High Opportunity', 'active' => false],
-                ['name' => 'Rwanda', 'code' => 'RW', 'status' => 'Stable Growth', 'active' => false],
-                ['name' => 'Nigeria', 'code' => 'NG', 'status' => 'High Potential', 'active' => false],
+                ['name' => 'South Africa', 'slug' => 'south-africa', 'code' => 'ZA', 'status' => 'High Opportunity'],
+                ['name' => 'Nigeria', 'slug' => 'nigeria', 'code' => 'NG', 'status' => 'High Potential'],
+                ['name' => 'Kenya', 'slug' => 'kenya', 'code' => 'KE', 'status' => 'High Opportunity'],
+                ['name' => 'Egypt', 'slug' => 'egypt', 'code' => 'EG', 'status' => 'High Potential'],
+                ['name' => 'Ghana', 'slug' => 'ghana', 'code' => 'GH', 'status' => 'High Opportunity'],
+                ['name' => 'Morocco', 'slug' => 'morocco', 'code' => 'MA', 'status' => 'Stable Growth'],
+                ['name' => 'Rwanda', 'slug' => 'rwanda', 'code' => 'RW', 'status' => 'Stable Growth'],
             ],
             'actions' => [
                 ['Country Profile Report', '/aiim/store?category=Investment+Climate'],
@@ -38,7 +39,7 @@ class Content
                 ['Custom Country Intelligence', '/aiim/custom-intelligence'],
             ],
             'snapshot' => [['Priority Opportunities', '1,248'], ['Active Investment Projects', '562'], ['Verified Investors & Funds', '312'], ['Strategic Sectors', '12'], ['Trade Corridors Tracked', '8'], ['AI Confidence (Avg.)', 'High']],
-            'verifiedSources' => ['Stats SA', 'the dtic', 'DBSA', 'SARS'],
+            'verifiedSources' => ['AfDB', 'World Bank', 'IMF', 'UNCTAD', 'national statistics offices'],
         ];
     }
 
@@ -83,7 +84,7 @@ class Content
     public static function nav(): array
     {
         return [
-            ['Map View', '/aiim/country/south-africa'], ['Opportunities', '/aiim/opportunities'], ['Projects', '/aiim/projects'],
+            ['Map View', '/aiim#explore-africa'], ['Opportunities', '/aiim/opportunities'], ['Projects', '/aiim/projects'],
             ['Investors', '/aiim/investors'], ['Funders', '/aiim/funders'], ['Trade Corridors', '/aiim/corridors'],
             ['Risk & Outlook', '/aiim/risk'], ['Sources & Evidence', '/aiim/sources/IMF-WEO-2025-04'], ['My Workspace', '/aiim/workspace'],
         ];

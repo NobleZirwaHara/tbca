@@ -86,3 +86,13 @@ export function SyntheticNotice({ className }: { className?: string }) {
         </div>
     );
 }
+
+/** Visible confidence label for figures that are layout placeholders until live API / Test Data arrives. */
+export function PlaceholderTag({ className, short = false }: { className?: string; short?: boolean }) {
+    return (
+        <span title="Placeholder — to be replaced by API data" className={cn('inline-flex items-center gap-1 rounded-full border border-dashed border-attested-500/60 bg-attested-50 px-2 py-0.5 text-[0.625rem] font-semibold whitespace-nowrap text-attested-700', className)}>
+            <AlertTriangle className="size-3" />
+            {short ? 'Placeholder' : 'Placeholder — to be replaced by API data'}
+        </span>
+    );
+}

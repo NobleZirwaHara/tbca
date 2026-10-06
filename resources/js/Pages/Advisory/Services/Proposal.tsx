@@ -12,9 +12,10 @@ interface Props {
     outcomes: { key: string; title: string }[];
     budgets: { key: string; label: string }[];
     industries: string[];
+    countries: string[];
 }
 
-export default function Proposal({ draft, families, outcomes, budgets, industries }: Props) {
+export default function Proposal({ draft, families, outcomes, budgets, industries, countries }: Props) {
     const { auth, flash } = usePage<SharedProps>().props;
     const u = auth.user;
     const form = useForm({
@@ -60,7 +61,7 @@ export default function Proposal({ draft, families, outcomes, budgets, industrie
                         <Field label="Company / Organisation" required error={e.company}>{(id) => <Input id={id} value={form.data.company} onChange={(x) => form.setData('company', x.target.value)} placeholder="Enter company name" />}</Field>
                         <Field label="Role / Position">{(id) => <Input id={id} value={form.data.role} onChange={(x) => form.setData('role', x.target.value)} placeholder="Enter your role" />}</Field>
                         <Field label="Phone number" required error={e.phone}>{(id) => <Input id={id} value={form.data.phone} onChange={(x) => form.setData('phone', x.target.value)} placeholder="+27 Enter phone number" />}</Field>
-                        <Field label="Country" required error={e.country}>{(id) => <Select id={id} value={form.data.country} onChange={(x) => form.setData('country', x.target.value)} options={['South Africa', 'Other African country']} />}</Field>
+                        <Field label="Country" required error={e.country}>{(id) => <Select id={id} value={form.data.country} onChange={(x) => form.setData('country', x.target.value)} options={countries} />}</Field>
                         <Field label="Industry (optional)">{(id) => <Select id={id} value={form.data.industry} onChange={(x) => form.setData('industry', x.target.value)} placeholder="Select industry" options={industries} />}</Field>
                         <Field label="How did you hear about us?">{(id) => <Select id={id} value={form.data.heard} onChange={(x) => form.setData('heard', x.target.value)} placeholder="Select an option" options={['Search', 'Referral', 'LinkedIn', 'Event', 'WhatsApp', 'Other']} />}</Field>
                     </div>
@@ -78,11 +79,11 @@ export default function Proposal({ draft, families, outcomes, budgets, industrie
                         <p className="font-semibold">What we need to create a great proposal</p>
                         <dl className="mt-2 space-y-2 text-xs"><div><dt className="font-semibold">Clear context</dt><dd className="text-ink-500">Help us understand your situation and goals.</dd></div><div><dt className="font-semibold">Scope</dt><dd className="text-ink-500">What needs to be done (and what&rsquo;s in/out).</dd></div><div><dt className="font-semibold">Constraints</dt><dd className="text-ink-500">Budget, timeline, resources or other factors.</dd></div><div><dt className="font-semibold">Success</dt><dd className="text-ink-500">How will we know we&rsquo;ve delivered value?</dd></div></dl>
                     </div>
-                    <div className="rounded-[8px] border border-parchment-400 bg-parchment-100 p-4 text-sm"><p className="font-semibold">Prefer to talk?</p><p className="text-xs text-ink-500">Speak to a human expert who can help you define your needs.</p><a href="https://wa.me/27120010567" className="mt-2 inline-flex items-center gap-1.5 rounded border border-gold-500 px-3 py-1.5 text-xs font-semibold"><MessageSquare className="size-3.5" />Talk to a Human</a></div>
+                    <div className="rounded-[8px] border border-parchment-400 bg-parchment-100 p-4 text-sm"><p className="font-semibold">Prefer to talk?</p><p className="text-xs text-ink-500">Speak to a human expert who can help you define your needs.</p><a href="https://wa.me/27608011365" className="mt-2 inline-flex items-center gap-1.5 rounded border border-gold-500 px-3 py-1.5 text-xs font-semibold"><MessageSquare className="size-3.5" />Talk to a Human</a></div>
                     <div className="rounded-[8px] border border-parchment-400 bg-parchment-100 p-4 text-sm"><p className="font-semibold">Need inspiration?</p><p className="text-xs text-ink-500">Explore our capability families to see what&rsquo;s possible.</p><ButtonLink href="/services/business-consultancy" size="sm" variant="outline" className="mt-2">Explore Services</ButtonLink></div>
                 </aside>
             </div>
-            <TrustBand items={[['We recommend by fit, not margin', 'Your success is our priority.'], ['Human review available', 'Real experts, real judgement.'], ['Professional boundaries', 'We act with independence.'], ['Secure & private', 'Your data is protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.'], ['No obligation', 'Proposals are free']]} />
+            <TrustBand items={[['We recommend by fit, not margin', 'Your success is our priority.'], ['Human review available', 'Real experts, real judgement.'], ['Professional boundaries', 'We act with independence.'], ['Secure & private', 'Your data is protected.'], ['Africa (Active)', 'ZAR source pricing.'], ['No obligation', 'Proposals are free']]} />
         </>
     );
 }

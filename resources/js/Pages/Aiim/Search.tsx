@@ -27,8 +27,8 @@ export default function Search({ kind, filters, results, options, saved }: Props
     return (
         <AiimPage
             title={isProject ? 'Project Search' : 'Opportunity Search'}
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, ...(provinceName ? [{ label: provinceName, href: `/aiim/province/${filters.province}` }] : []), ...(sectorName ? [{ label: sectorName, href: `/aiim/sector/${filters.sector}` }] : []), { label: noun }]}
-            subtitle={isProject ? `Discover high-potential projects${scope ? ` in ${scope}` : ' across South Africa'}` : `Find and filter high-potential investment opportunities${scope ? ` in ${scope}` : ' across South Africa'}`}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, ...(provinceName ? [{ label: provinceName, href: `/aiim/province/${filters.province}` }] : []), ...(sectorName ? [{ label: sectorName, href: `/aiim/sector/${filters.sector}` }] : []), { label: noun }]}
+            subtitle={isProject ? `Discover high-potential projects${scope ? ` in ${scope}` : ' across Africa'}` : `Find and filter high-potential investment opportunities${scope ? ` in ${scope}` : ' across Africa'}`}
             description={isProject ? 'Filter, compare and explore investment-ready projects with verified insights.' : `Use filters to narrow results or explore all ${results.total} active opportunities.`}
             rail={<SearchRail compareLabel={`Compare ${noun}`} />}
         >

@@ -46,6 +46,7 @@ Route::prefix('services')->name('adv.services.')->group(function () {
         Route::post('/vehicle-changes', [ServicesClientController::class, 'changeStore'])->name('changes.store');
         Route::get('/statement', [ServicesClientController::class, 'statement'])->name('statement');
         Route::get('/relationship', [ServicesClientController::class, 'relationship'])->name('relationship');
+        Route::get('/fee-panel', [ServicesClientController::class, 'myFees'])->name('fees.mine');
         Route::get('/vehicles/{vehicle}/fees', [ServicesClientController::class, 'fees'])->name('fees');
         Route::post('/vehicles/{vehicle}/pay', [ServicesClientController::class, 'pay'])->name('pay');
     });

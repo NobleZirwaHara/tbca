@@ -52,7 +52,7 @@ class LandingController extends Controller
                 $existing ? null : Ui::field('password_confirmation', 'Confirm password', 'password', ['required' => true]),
                 Ui::field('terms', 'I accept the Terms of Use and acknowledge the Privacy Notice.', 'checkbox', ['required' => true]),
             ])), 'Verify & Activate', 'post', $existing ? 'You already have a TBCA account with this email — activation links it to the organisation.' : null),
-            'aside' => ['This link is unique to you and expires automatically.', 'TBCA will never ask for your password via email, WhatsApp or NATASHA.', 'Email possession is not authority — your role is confirmed by your organisation administrator.'],
+            'aside' => ['This link is unique to you and expires automatically.', 'TBCA will never ask for your password via email, WhatsApp or KAREN.', 'Email possession is not authority — your role is confirmed by your organisation administrator.'],
         ]);
     }
 

@@ -41,7 +41,7 @@ export default function Letter({ journey, totals, summary, context, plan, ready,
                                     <p><b>5. Entitlement</b> — Entitlement activates only after server-side payment verification, never from browser success alone.</p>
                                     <p><b>6. Renewal</b> — There is no silent renewal. Go-live does not enrol recurring support; any support or subscription requires explicit activation and renewal approval.</p>
                                 </div>
-                                <KV className="mt-3" rows={[['Client', context?.legal_name || '—'], ['Solution', summary.tower], ['Engagement Type', 'Advisory + Implementation'], ['Deployment Model', summary.deployment], ['Region', 'South Africa'], ['Payment plan', plan.replace('_', ' + ')], ['Auto-Renewal', 'No']]} />
+                                <KV className="mt-3" rows={[['Client', context?.legal_name || '—'], ['Solution', summary.tower], ['Engagement Type', 'Advisory + Implementation'], ['Deployment Model', summary.deployment], ['Region', 'Africa (Active)'], ['Payment plan', plan.replace('_', ' + ')], ['Auto-Renewal', 'No']]} />
                                 <p className="mt-3 text-xs font-semibold">Included Schedules</p>
                                 <ul className="text-xs text-ink-600">{['Schedule A – Scope of Work (SOW)', 'Schedule B – Fees & Payment Terms', 'Schedule C – Service Level Agreement (SLA)', 'Schedule D – Data Processing Agreement (DPA)', 'Schedule E – Commercial Guardrails'].map((s) => <li key={s}>• {s}</li>)}</ul>
                             </Card>

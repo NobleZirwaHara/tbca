@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Aiim;
 
 use App\Models\Aiim\Advisor;
+use App\Models\Aiim\Country;
 use App\Models\Aiim\Engagement;
 use App\Models\Aiim\Province;
 use App\Models\Aiim\Sector;
@@ -32,33 +33,41 @@ class EngagementController extends AiimController
 
     /* ------------------------------------------------------ request wizards */
 
-    public function customRequest(Request $request): Response
+    public function customRequest(Request $request): Response|RedirectResponse
     {
         return $this->wizard($request, 'custom-intelligence');
     }
 
-    public function advisorRequest(Request $request): Response
+    public function advisorRequest(Request $request): Response|RedirectResponse
     {
         return $this->wizard($request, 'advisory');
     }
 
-    private function wizard(Request $request, string $type): Response
+    private function wizard(Request $request, string $type): Response|RedirectResponse
     {
         $e = $request->query('ref') ? $this->find($request, $request->query('ref')) : null;
         abort_if($e && $e->type !== $type, 404);
+        if ($e && $e->status !== 'draft') {
+            // Already submitted: the wizard is read-only from here, continue in the engagement.
+            return redirect(EngagementFlow::nextAction($e)['url'] ?? "/aiim/workspace/engagements/{$e->reference}");
+        }
+        $prefill = Country::query()->where('slug', (string) $request->query('country'))->value('slug');
 
         return $this->render($request, 'Aiim/Engagement/RequestWizard', [
             'type' => $type,
             'engagement' => $e ? ['reference' => $e->reference, 'status' => $e->status, 'step' => $e->step, 'request' => $e->request ?? []] : null,
-            'step' => max(1, min(5, (int) $request->query('step', $e?->step ?? 1))),
+            // Never skip ahead of the last saved step; a fresh request always starts at step 1.
+            'step' => max(1, min(5, (int) $request->query('step', $e?->step ?? 1), $e?->step ?? 1)),
+            'prefill' => ['countries' => $prefill ? [$prefill] : []],
             'options' => [
                 'categories' => self::CATEGORIES, 'areas' => self::AREAS,
                 'depths' => collect(self::DEPTHS)->map(fn ($d, $k) => ['value' => $k, 'label' => $d[0], 'description' => $d[1], 'time' => $d[2]])->values(),
+                'countries' => Country::options(),
                 'provinces' => Province::query()->orderBy('rank')->get(['slug', 'name']),
                 'sectors' => Sector::query()->orderBy('sort')->get(['slug', 'name']),
                 'seniority' => ['Partner', 'Director', 'Senior Manager', 'Any'],
                 'timelines' => ['Less than 1 month', '1–3 months', '3–6 months', '6+ months'],
-                'engagementTypes' => ['Virtual advisory (online)', 'In-person meeting (South Africa)', 'Ongoing advisory retainer'],
+                'engagementTypes' => ['Virtual advisory (online)', 'In-person meeting (in-country)', 'Ongoing advisory retainer'],
                 'formats' => ['PDF report', 'PDF report plus advisory call', 'Dataset (Excel / CSV)', 'Interactive dashboard'],
             ],
         ], $type === 'advisory' ? 'Advisor Request' : 'Custom Intelligence Request');
@@ -104,7 +113,7 @@ class EngagementController extends AiimController
         $sectors = ['sectors' => ['required', 'array', 'min:1'], 'sectors.*' => ['exists:aiim_sectors,slug']];
         if ($type === 'custom-intelligence') {
             return match ($step) {
-                1 => ['title' => ['required', 'string', 'max:160'], 'detail' => ['required', 'string', 'min:20', 'max:2000'], 'category' => ['required', Rule::in(self::CATEGORIES)], 'subcategory' => ['nullable', 'string', 'max:80'], 'provinces' => ['array'], 'provinces.*' => ['exists:aiim_provinces,slug'], 'depth' => ['required', Rule::in(array_keys(self::DEPTHS))]] + $sectors,
+                1 => ['title' => ['required', 'string', 'max:160'], 'detail' => ['required', 'string', 'min:20', 'max:2000'], 'category' => ['required', Rule::in(self::CATEGORIES)], 'subcategory' => ['nullable', 'string', 'max:80'], 'countries' => ['required', 'array', 'min:1'], 'countries.*' => ['exists:aiim_countries,slug'], 'provinces' => ['array'], 'provinces.*' => ['exists:aiim_provinces,slug'], 'depth' => ['required', Rule::in(array_keys(self::DEPTHS))]] + $sectors,
                 2 => ['questions' => ['required', 'string', 'max:1000'], 'outputs' => ['required', 'array', 'min:1']],
                 3 => ['background' => ['required', 'string', 'min:20', 'max:2000'], 'decision' => ['required', 'string', 'max:200']],
                 4 => ['format' => ['required', 'string', 'max:80'], 'required_by' => ['nullable', 'date', 'after:today'], 'channel' => ['required', 'string', 'max:80']],
@@ -377,6 +386,7 @@ class EngagementController extends AiimController
             'request' => $e->request ?? [],
             'sectorNames' => Sector::query()->whereIn('slug', $e->request['sectors'] ?? [])->pluck('name'),
             'provinceNames' => Province::query()->whereIn('slug', $e->request['provinces'] ?? [])->pluck('name'),
+            'countryNames' => Country::query()->whereIn('slug', $e->request['countries'] ?? [])->orderBy('name')->pluck('name'),
             'booking' => $e->booking_reference, 'discoveryAt' => $e->discovery_at?->format('D, j M Y, H:i'),
             'outcome' => $e->outcome, 'quote' => $e->quote,
             'quoteAcceptedAt' => $e->quote_accepted_at?->format('j M Y, H:i'), 'letterAcceptedAt' => $e->letter_accepted_at?->format('j M Y, H:i'),

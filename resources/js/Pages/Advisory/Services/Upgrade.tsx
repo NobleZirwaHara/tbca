@@ -51,7 +51,7 @@ export default function Upgrade({ vehicles, targets, changes }: { vehicles: Vehi
                     <Card title="Prefer to start a new mandate?" tone="gold"><p className="text-xs text-ink-600">If your objectives have changed significantly.</p><Link href="/project-advisory/discovery" className="mt-2 inline-block rounded border border-gold-500 bg-white px-3 py-1.5 text-xs font-semibold">Request a New Mandate →</Link></Card>
                 </aside>
             </div>
-            <TrustBand items={[['We recommend by fit, not margin', 'Your success comes first.'], ['No obligation', 'You decide what’s best.'], ['Human review included', 'Real experts review every step.'], ['Transparent pricing', 'Clear, itemised and upfront.'], ['Secure & private', 'Your data is protected.'], ['Phase 1 – South Africa', 'ZAR source pricing.']]} />
+            <TrustBand items={[['We recommend by fit, not margin', 'Your success comes first.'], ['No obligation', 'You decide what’s best.'], ['Human review included', 'Real experts review every step.'], ['Transparent pricing', 'Clear, itemised and upfront.'], ['Secure & private', 'Your data is protected.'], ['Africa (Active)', 'ZAR source pricing.']]} />
         </>
     );
 }

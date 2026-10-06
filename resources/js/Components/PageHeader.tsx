@@ -47,7 +47,7 @@ export default function PageHeader({
                 }}
             />
 
-            <div className="container-tbca relative py-10 md:py-14">
+            <div className="container-tbca relative pt-6 pb-10 md:pt-8 md:pb-14">
                 {crumbs && <Breadcrumbs items={crumbs} />}
 
                 <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">

@@ -27,6 +27,7 @@ import { DocPage, TemplateCover } from '@/Components/SprintTypes/B/TemplateCover
 import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 import type { TemplateAttributes } from '@/types/sprint-types-b';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 
 const stripIcons: LucideIcon[] = [Zap, PenLine, FileText, ShieldCheck, RefreshCw, Sparkles, Users];
 const deliveryIcons: LucideIcon[] = [Rocket, Route, FileText, RefreshCw, CalendarClock];
@@ -55,7 +56,8 @@ export default function TemplateSprint({ sprint, related }: { sprint: SprintReco
     const [selected, setSelected] = useState(packages.find((p) => p.popular)?.key ?? packages[0]?.key ?? null);
     const current = packages.find((p) => p.key === selected) ?? packages[0];
     const tabs = (list(a.tabs).length ? list(a.tabs) : ['Overview', "What's Included", 'Preview', 'How It Works', 'Inputs', 'Licence & Support', 'FAQs']).map((t) => ({ key: tabKey(t), label: t }));
-    const [tab, setTab] = useState(tabs[0].key);
+    const urlTab = useUrlTab();
+    const [tab, setTab] = useState(() => tabs[urlTabIndex(tabs.map((t) => t.label), urlTab)].key);
     const [preview, setPreview] = useState(false);
     const cover = a.cover ?? { lines: sprint.title.toUpperCase().split(' ').slice(0, 3), icon: '', format_tag: null };
     const format = (a.format_badge ?? '').split(' ')[0] || (a.sticky_bar?.file_format ?? 'DOCX');

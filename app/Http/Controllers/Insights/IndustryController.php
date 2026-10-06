@@ -19,6 +19,7 @@ use App\Support\Insights\IndustryContext;
 use App\Support\Insights\IndustryRegister;
 use App\Support\Insights\SectorDiagnostic;
 use App\Support\Platform\Checkout;
+use App\Support\Platform\EmbeddedServices;
 use App\Support\Platform\Reference;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -47,6 +48,7 @@ class IndustryController extends Controller
                 'capital' => 'R80B+',
                 'humanReviewed' => '100%',
             ],
+            'embedded' => EmbeddedServices::forModule('industries'),
         ]);
     }
 
@@ -152,6 +154,7 @@ class IndustryController extends Controller
             'industry' => IndustryCatalog::page($industry),
             'context' => $context,
             'industries' => IndustryCatalog::selectorList(),
+            'embedded' => EmbeddedServices::forModule('industries'),
         ]);
     }
 

@@ -33,7 +33,8 @@ class PartnerServicesController extends Controller
 
         $query = Listing::where('kind', 'partner')->where('status', 'published')->where('category', $category);
         if ($q = trim((string) ($filters['q'] ?? ''))) {
-            $query->where(fn ($w) => $w->where('title', 'like', "%{$q}%")->orWhere('summary', 'like', "%{$q}%"));
+            $like = '%'.mb_strtolower($q).'%';
+            $query->where(fn ($w) => $w->whereRaw('lower(title) like ?', [$like])->orWhereRaw('lower(summary) like ?', [$like]));
         }
         ($filters['sort'] ?? 'popularity') === 'name' ? $query->orderBy('title') : $query->orderByDesc('popularity');
 
@@ -43,6 +44,7 @@ class PartnerServicesController extends Controller
             'categories' => collect(Content::PS_CATEGORIES)->map(fn ($label, $key) => ['value' => $key, 'label' => $label, 'count' => (int) ($counts[$key] ?? 0)])->values(),
             'services' => $query->get()->map(fn ($l) => Presenter::listing($l)),
             'filters' => [...$filters, 'category' => $category],
+            'total' => (int) $counts->sum(),
         ]);
     }
 
@@ -109,7 +111,8 @@ class PartnerServicesController extends Controller
         $filters = $request->only(['q', 'profession', 'jurisdiction']);
         $query = Provider::where('kind', 'partner')->whereIn('status', ['active', 'active_with_conditions']);
         if ($q = trim((string) ($filters['q'] ?? ''))) {
-            $query->where(fn ($w) => $w->where('name', 'like', "%{$q}%")->orWhere('profession', 'like', "%{$q}%"));
+            $like = '%'.mb_strtolower($q).'%';
+            $query->where(fn ($w) => $w->whereRaw('lower(name) like ?', [$like])->orWhereRaw('lower(profession) like ?', [$like]));
         }
         if (! empty($filters['profession'])) {
             $query->where('profession', $filters['profession']);

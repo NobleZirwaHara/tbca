@@ -150,6 +150,8 @@ class Content
         'esg-advisory' => 'ESG Advisory',
         'environmental-services' => 'Environmental Services',
         'engineering-technical' => 'Engineering and Technical',
+        'project-construction' => 'Project & Construction Management',
+        'corporate-finance' => 'Corporate Finance & Transactions',
         'financial-advisory' => 'Financial Advisory',
         'specialist-compliance' => 'Specialist Compliance',
         'business-rescue' => 'Business Rescue Advisory',

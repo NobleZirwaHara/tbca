@@ -73,7 +73,7 @@ export default function Legal({ country: c, legal: l }: Props) {
                 }
             >
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                    <div className="flex items-center gap-3 rounded-[8px] border border-parchment-400 p-3"><span className="text-[2.5rem]" aria-hidden="true"><Flag iso={c.iso} /></span><div><p className="text-[1.125rem] font-bold text-ink-900">{c.name}</p><p className="text-[0.6875rem] text-ink-500">Phase 1 controlled environment</p><StatePill state={c.state} /></div></div>
+                    <div className="flex items-center gap-3 rounded-[8px] border border-parchment-400 p-3"><span className="text-[2.5rem]" aria-hidden="true"><Flag iso={c.iso} /></span><div><p className="text-[1.125rem] font-bold text-ink-900">{c.name}</p><p className="text-[0.6875rem] text-ink-500">{`Africa (Active) · ${c.region}`}</p><StatePill state={c.state} /></div></div>
                     {l.kpis.map((k) => <Kpi key={k.label} label={k.label} value={k.value} sub={k.sub} icon={<Icon name={k.icon} className="size-6" />} />)}
                 </div>
                 <Tabs className="mt-5" value={tab} onChange={setTab} tabs={TABS.map(([key, label]) => ({ key, label }))} />

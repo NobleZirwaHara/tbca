@@ -2,19 +2,20 @@ import { Link } from '@inertiajs/react';
 import { ArrowRight, CircleCheck, Clock, UserCheck } from 'lucide-react';
 import Icon from '@/Components/ui/Icon';
 import { cn } from '@/lib/cn';
+import { usePrice } from '@/lib/money';
 import type { Sprint } from '@/types';
 
 export default function SprintCard({
     sprint,
-    currency = 'ZAR',
     className,
 }: {
     sprint: Sprint;
+    /** @deprecated The visitor's selected display currency is used automatically. */
     currency?: string;
     className?: string;
 }) {
-    const price = currency === 'USD' ? `USD ${sprint.usd.toLocaleString()}` : `ZAR ${sprint.zar.toLocaleString()}`;
-    const alternate = currency === 'USD' ? 'ZAR Available' : 'USD Available';
+    const price = usePrice()(sprint.zar);
+    const alternate = '5 Currencies';
 
     return (
         <Link

@@ -9,7 +9,7 @@ import { Card, CheckList, KV } from '@/Components/Advisory/ui';
 interface Props {
     journey: JourneyState;
     context: Record<string, string | number>;
-    options: Record<string, string[]>;
+    options: Record<string, string[]> & { currencies: Record<string, string> };
 }
 
 export default function Context({ journey, context, options }: Props) {
@@ -35,9 +35,9 @@ export default function Context({ journey, context, options }: Props) {
                         <div className="space-y-4 xl:col-span-8">
                             <Card num={1} title="Country & Language">
                                 <div className="grid gap-3 sm:grid-cols-2">
-                                    <Field label="Country (Phase 1)" required hint="Phase 1: South Africa only. Other countries coming soon." error={e.country}>{(id) => <Select id={id} value={String(d.country)} onChange={set('country')} options={['South Africa', 'Kenya', 'Nigeria']} />}</Field>
-                                    <Field label="Language" required hint="Controlled translation available: Afrikaans">{(id) => <Select id={id} value={String(d.language)} onChange={set('language')} options={[{ value: 'English', label: 'English (Source)' }, { value: 'Afrikaans', label: 'Afrikaans' }]} />}</Field>
-                                    <Field label="Currency (Source Pricing)">{(id) => <Select id={id} value={String(d.currency)} onChange={set('currency')} options={[{ value: 'ZAR', label: 'ZAR – South African Rand' }]} />}</Field>
+                                    <Field label="Country" required hint="Delivered across Africa (Active): all 54 African countries." error={e.country}>{(id) => <Select id={id} value={String(d.country)} onChange={set('country')} options={options.countries} />}</Field>
+                                    <Field label="Language" required hint="7 platform languages; English is the source language." error={e.language}>{(id) => <Select id={id} value={String(d.language)} onChange={set('language')} options={options.languages.map((l) => ({ value: l, label: l === 'English' ? 'English (Source)' : l }))} />}</Field>
+                                    <Field label="Display Currency" hint="Prices are set in ZAR and shown in 5 currencies." error={e.currency}>{(id) => <Select id={id} value={String(d.currency)} onChange={set('currency')} options={Object.entries(options.currencies).map(([value, label]) => ({ value, label }))} />}</Field>
                                     <Field label="USD treatment" hint="USD shown only where supported by product.">{(id) => <Select id={id} value={String(d.usd)} onChange={set('usd')} options={['By Product', 'Hidden']} />}</Field>
                                 </div>
                             </Card>

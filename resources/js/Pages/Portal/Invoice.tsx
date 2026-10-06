@@ -48,7 +48,7 @@ export default function Invoice({ invoice: i }: Props) {
                     <div>
                         <p className="font-serif text-xl font-bold text-ink-900">The Business Clinic.Africa™</p>
                         <p className="text-xs text-ink-500">5th Floor, Blocktrax Building, Blue Gate Road, Lynnwood Ridge, Pretoria, 0081</p>
-                        <p className="text-xs text-ink-500">info@thebusinessclinic.africa · +27 12 001 0567</p>
+                        <p className="text-xs text-ink-500">Consult@thebusinessclinic.africa · +27 60 801 1365</p>
                     </div>
                     <div className="text-right">
                         <h1 className="font-serif text-2xl font-bold text-ink-900">TAX INVOICE</h1>

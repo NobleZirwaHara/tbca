@@ -1,25 +1,27 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { ArrowRight, BarChart3, Bell, Bookmark, Bot, CheckCircle2, ChevronRight, Download, Eye, FileText, Scale, Search } from 'lucide-react';
 import { useState } from 'react';
-import AfricaMap from '@/Components/AfricaMap';
+import AfricaCountryMap from '@/Components/Map/AfricaCountryMap';
 import AiimIcon from '@/Components/Aiim/AiimIcon';
 import { Chip, levelTone } from '@/Components/Aiim/Chips';
 import { Gauge } from '@/Components/Aiim/Charts';
+import CountryPicker from '@/Components/Aiim/CountryPicker';
 import { Ribbon, SubNav } from '@/Components/Aiim/Shell';
 import { ButtonLink } from '@/Components/ui/Button';
-import type { AiimPageProps, ProjectItem } from '@/types/aiim';
+import type { AiimPageProps, CountryOption, ProjectItem } from '@/types/aiim';
 
 interface Props extends AiimPageProps {
     content: {
         numbers: [string, string, string][];
         pillars: [string, string, string][];
-        regions: [string, number][];
         platform: string[];
-        countries: { name: string; code: string; status: string; active: boolean }[];
+        countries: { name: string; slug: string; code: string; status: string }[];
         actions: [string, string][];
         snapshot: [string, string][];
         verifiedSources: string[];
     };
+    countries: CountryOption[];
+    regions: [string, number][];
     sectors: { slug: string; name: string; icon: string }[];
     top: ProjectItem[];
     provinces: { slug: string; name: string; score: number }[];
@@ -27,7 +29,8 @@ interface Props extends AiimPageProps {
 
 const panel = 'rounded-[10px] border border-gold-700/40 bg-ink-900/80 p-5';
 
-export default function Landing({ content, sectors, top, provinces }: Props) {
+export default function Landing({ content, countries, regions, sectors, top, provinces }: Props) {
+    const [country, setCountry] = useState('');
     const [province, setProvince] = useState('');
     const [sector, setSector] = useState('');
     const [q, setQ] = useState('');
@@ -50,8 +53,12 @@ export default function Landing({ content, sectors, top, provinces }: Props) {
                                 AIIM is your pan-African intelligence platform for opportunities, projects, investors, sectors, trade corridors, market intelligence, and risk outlook — powered by verified data and human insight.
                             </p>
                             <div className="mt-6 flex flex-wrap gap-3">
-                                <ButtonLink href="/aiim/country/south-africa" size="lg" trailingIcon="arrow-right">Explore South Africa</ButtonLink>
+                                <a href="#explore-africa" className="inline-flex h-12 items-center justify-center gap-2 rounded-[4px] border border-gold-500 bg-gold-500 px-6 text-[0.9375rem] font-semibold text-ink-900 transition-colors hover:border-gold-400 hover:bg-gold-400">Explore Africa <ArrowRight className="size-4" /></a>
                                 <ButtonLink href="/aiim/store" size="lg" variant="outline-light" icon="file-text">Buy Premium Briefs</ButtonLink>
+                            </div>
+                            <div className="mt-4 max-w-md">
+                                <p className="mb-1.5 text-xs font-semibold text-gold-400">Explore Africa — open any of the 54 country cockpits</p>
+                                <CountryPicker countries={countries} label="Explore Africa: choose a country" />
                             </div>
                             <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-ink-200">
                                 {['54 Countries Covered', '100+ Local Data Sources', '24/7 AI & Human Insights', 'Verified & Human-Reviewed', 'Secure & Compliant'].map((t) => (
@@ -59,8 +66,9 @@ export default function Landing({ content, sectors, top, provinces }: Props) {
                                 ))}
                             </ul>
                         </div>
-                        <div className="relative lg:col-span-3">
-                            <AfricaMap className="mx-auto max-w-xs opacity-90" />
+                        <div id="explore-africa" className="relative scroll-mt-24 lg:col-span-3">
+                            <AfricaCountryMap className="mx-auto max-w-sm" />
+                            <p className="mt-1 text-center text-[0.65rem] text-ink-400">Hover a country for its name · click to open its Investor Cockpit</p>
                         </div>
                         <aside className={`${panel} lg:col-span-3`} aria-label="Africa by the numbers">
                             <h2 className="mb-3 text-sm font-semibold text-gold-400">Africa by the Numbers</h2>
@@ -92,8 +100,14 @@ export default function Landing({ content, sectors, top, provinces }: Props) {
                 {/* Cockpit search + snapshot */}
                 <section className="container-tbca grid gap-5 py-8 lg:grid-cols-12">
                     <div className={`${panel} lg:col-span-4`}>
-                        <h2 className="mb-3 text-lg font-semibold">South Africa Investor Cockpit</h2>
+                        <h2 className="mb-3 text-lg font-semibold">Africa Investor Cockpit</h2>
                         <div className="space-y-3 text-sm">
+                            <div>
+                                <span className="text-xs text-ink-300">Select Country</span>
+                                <CountryPicker countries={countries} value={country || null} onSelect={(slug) => { setCountry(slug); setProvince(''); }} className="mt-1" label="Select country" />
+                                {country && <Link href={`/aiim/country/${country}`} className="mt-1 inline-flex text-xs text-gold-400 hover:underline">Open {countries.find((c) => c.slug === country)?.name} Investor Cockpit →</Link>}
+                            </div>
+                            {country === 'south-africa' && (
                             <label className="block">
                                 <span className="text-xs text-ink-300">Select Province</span>
                                 <select value={province} onChange={(e) => setProvince(e.target.value)} className="mt-1 h-10 w-full rounded border border-ink-600 bg-ink-950 px-2 text-parchment-100">
@@ -101,6 +115,7 @@ export default function Landing({ content, sectors, top, provinces }: Props) {
                                     {provinces.map((p) => <option key={p.slug} value={p.slug}>{p.name}</option>)}
                                 </select>
                             </label>
+                            )}
                             <label className="block">
                                 <span className="text-xs text-ink-300">Select Sector</span>
                                 <select value={sector} onChange={(e) => setSector(e.target.value)} className="mt-1 h-10 w-full rounded border border-ink-600 bg-ink-950 px-2 text-parchment-100">
@@ -124,8 +139,8 @@ export default function Landing({ content, sectors, top, provinces }: Props) {
                     </div>
                     <div className={`${panel} lg:col-span-4`}>
                         <div className="mb-3 flex items-center justify-between">
-                            <h2 className="text-sm font-semibold text-gold-400">Market Snapshot — South Africa</h2>
-                            <span className="text-xs text-gold-500">Phase 1 Focus</span>
+                            <h2 className="text-sm font-semibold text-gold-400">Market Snapshot — Africa</h2>
+                            <span className="text-xs text-gold-500">Africa Market (Active)</span>
                         </div>
                         <ul className="divide-y divide-ink-800 text-sm">
                             {content.snapshot.map(([l, v]) => (
@@ -187,9 +202,9 @@ export default function Landing({ content, sectors, top, provinces }: Props) {
                         <h2 className="text-sm font-semibold">Regional Coverage</h2>
                         <p className="mb-3 text-xs text-ink-400">Explore Africa by region</p>
                         <ul className="space-y-1.5 text-sm">
-                            {content.regions.map(([r, n]) => <li key={r} className="flex items-center gap-2"><CheckCircle2 className="size-4 text-gold-500" />{r} ({n})</li>)}
+                            {regions.map(([r, n]) => <li key={r} className="flex items-center gap-2"><CheckCircle2 className="size-4 text-gold-500" />{r} ({n})</li>)}
                         </ul>
-                        <Link href="/aiim/country/south-africa" className="mt-4 inline-flex text-xs text-gold-400 hover:underline">View All Countries →</Link>
+                        <a href="#explore-africa" className="mt-4 inline-flex text-xs text-gold-400 hover:underline">View All 54 Countries →</a>
                     </div>
                     <div className={panel}>
                         <h2 className="mb-3 text-sm font-semibold">Platform Overview</h2>
@@ -204,7 +219,7 @@ export default function Landing({ content, sectors, top, provinces }: Props) {
                         <ul className="space-y-2 text-sm">
                             {content.countries.map((c) => (
                                 <li key={c.code} className="flex items-center justify-between gap-2">
-                                    {c.active ? <Link href="/aiim/country/south-africa" className="hover:text-gold-400">{c.name}</Link> : <span>{c.name} <span className="text-[0.6rem] text-ink-500">(coming soon)</span></span>}
+                                    <Link href={`/aiim/country/${c.slug}`} className="hover:text-gold-400">{c.name}</Link>
                                     <Chip tone={levelTone(c.status)}>{c.status}</Chip>
                                 </li>
                             ))}

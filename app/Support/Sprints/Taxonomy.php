@@ -90,7 +90,7 @@ class Taxonomy
                     ['label' => 'Human-reviewed quality', 'icon' => 'user-check'],
                     ['label' => 'Version controlled', 'icon' => 'history'],
                     ['label' => 'Secure downloads', 'icon' => 'download'],
-                    ['label' => 'English & Afrikaans available', 'icon' => 'languages'],
+                    ['label' => '7 languages available', 'icon' => 'languages'],
                 ],
                 'search' => 'Search digital products, reports, templates and tools',
             ],
@@ -169,7 +169,7 @@ class Taxonomy
             ['title' => 'Start Business Health Score', 'body' => 'Understand your strengths and improvement areas.', 'icon' => 'activity', 'href' => '/sprints/category/diagnostics'],
             ['title' => 'Book Discovery Call', 'body' => 'Speak with a TBCA expert about your priorities.', 'icon' => 'calendar-days', 'href' => '/sprints/request-a-quote'],
             ['title' => 'Request a Custom Sprint', 'body' => "Tell us what you need and we'll structure the right Sprint.", 'icon' => 'rocket', 'href' => '/sprints/request-a-quote'],
-            ['title' => 'Continue on WhatsApp', 'body' => 'Chat with our team on WhatsApp.', 'icon' => 'message-circle', 'href' => 'https://wa.me/27105941044'],
+            ['title' => 'Continue on WhatsApp', 'body' => 'Chat with our team on WhatsApp.', 'icon' => 'message-circle', 'href' => 'https://wa.me/27608011365'],
         ];
 
         return [
@@ -400,6 +400,7 @@ class Taxonomy
     {
         return [
             'core-service' => 'Core Service Sprint',
+            'embedded' => 'Embedded Service',
             'fixed-scope' => 'Fixed Scope Service',
             'client-service' => 'Client Service Sprint',
             'diagnostic' => 'Diagnostic',

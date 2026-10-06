@@ -3,6 +3,7 @@ import { ArrowRight, Award, CalendarDays, ChevronRight, Clock, Mail, MessageSqua
 import { useState } from 'react';
 import Icon from '@/Components/ui/Icon';
 import { Modal } from '@/Components/ui/Kit';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import { Field, Input } from '@/Components/ui/Form';
 import { cn } from '@/lib/cn';
 import type { Webinar } from '@/types/core-pages';
@@ -13,12 +14,13 @@ interface Props {
     topics: string[];
     upcoming: { slug: string; title: string; date: string; time: string; speaker: string; channel: string };
     filters: { category: string; topic: string; date: string; q: string };
+    embedded?: EmbeddedSection;
 }
 
 const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 const darkSelect = 'h-9 w-full rounded-[4px] border border-ink-700 bg-ink-900 px-2 text-[0.8125rem] text-parchment-100';
 
-export default function Webinars({ webinars, categories, topics, upcoming, filters }: Props) {
+export default function Webinars({ webinars, categories, topics, upcoming, filters, embedded }: Props) {
     const [finder, setFinder] = useState({ category: filters.category, topic: filters.topic, date: filters.date });
     const [watching, setWatching] = useState<Webinar | null>(null);
     const [registerOpen, setRegisterOpen] = useState(false);
@@ -198,6 +200,8 @@ export default function Webinars({ webinars, categories, topics, upcoming, filte
                     })}
                 </ul>
             </section>
+
+            <EmbeddedServices section={embedded} tone="dark" intro="Fixed-price services linked to webinars and events: advisor sessions, coaching toolkits, trade missions and investor roadshows." />
 
             <Modal open={watching !== null} onClose={() => setWatching(null)} title={watching?.title ?? ''} size="lg">
                 {watching && (

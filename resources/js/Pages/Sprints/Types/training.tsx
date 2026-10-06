@@ -109,7 +109,7 @@ export default function TrainingSprint({ sprint, related }: { sprint: SprintReco
     const a = attrsOf<TrainingAttributes>(sprint);
     const packages = sprint.packages ?? [];
     const [selected, setSelected] = useState(packages.find((p) => p.popular)?.key ?? packages[0]?.key ?? null);
-    const badges = list(a.badges).length ? list(a.badges) : ['South Africa', 'Phase 1', 'Training Product', 'Human Reviewed', 'Fixed Price'];
+    const badges = list(a.badges).length ? list(a.badges) : ['Africa (Active)', 'Training Product', 'Human Reviewed', 'Fixed Price'];
     const HeroIcon = iconFor(a.hero_icon, GraduationCap);
     const review = pairs(a.review_quality);
 

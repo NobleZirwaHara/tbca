@@ -34,7 +34,7 @@ class ServicesContent
             ['title' => 'Business Health Diagnostic', 'body' => 'Start a comprehensive assessment', 'href' => '/diagnostics'],
             ['title' => 'Funding Readiness Sprint', 'body' => 'Prepare to attract capital', 'href' => '/project-advisory/services/funding-investor-readiness'],
             ['title' => 'Due Diligence – Company Check', 'body' => 'Verify with confidence', 'href' => '/due-diligence/company'],
-            ['title' => 'AIIM – South Africa Intelligence', 'body' => 'Explore opportunities', 'href' => '/aiim'],
+            ['title' => 'AIIM – Africa Intelligence', 'body' => 'Explore opportunities', 'href' => '/aiim'],
         ];
     }
 
@@ -141,7 +141,8 @@ class ServicesContent
 
     public static function countries(): array
     {
-        return ['South Africa', 'Other African country', 'Outside Africa'];
+        // Africa (Active): all 54 African countries, plus an explicit out-of-scope option.
+        return [...collect(\App\Support\CorePages\AfricaCountries::all())->pluck('name')->sort()->values()->all(), 'Outside Africa'];
     }
 
     /** "Not sure which" challenge cards, each mapped to a resolver need + outcome. */

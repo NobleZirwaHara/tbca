@@ -40,6 +40,7 @@ export default function Browse({
         ['Language', (c) => c.languagesLabel],
         ['File Format', (c) => c.formats.join(', ')],
         ['Jurisdiction', (c) => c.jurisdiction],
+        ['Currencies', (c) => c.currencies.join(', ')],
         ['Version', (c) => c.versionLabel],
         ['Verified as at', (c) => c.verifiedAt],
         ['Currentness', () => (
@@ -179,6 +180,9 @@ export default function Browse({
                                     </div>
                                     <Chip>{p.typeLabel}</Chip>
                                     <Chip>{p.licences.join(', ')}</Chip>
+                                    <Chip tone="info">{p.languages.join(' · ')}</Chip>
+                                    <Chip>{p.jurisdiction}</Chip>
+                                    <Chip>{p.currencies.join(' · ')}</Chip>
                                     <span className="w-28 text-right text-[0.8125rem] font-semibold">From {price(p.fromPrice)}</span>
                                 </li>
                             ))}

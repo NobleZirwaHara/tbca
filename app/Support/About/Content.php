@@ -31,7 +31,7 @@ class Content
     public static function storyFacts(): array
     {
         return [
-            ['label' => 'Phase 1', 'value' => 'South Africa', 'icon' => 'map-pin'],
+            ['label' => 'Active Market', 'value' => 'Africa', 'icon' => 'map-pin'],
             ['label' => 'Our Ambition', 'value' => 'Pan-African Impact', 'icon' => 'target'],
             ['label' => 'Who We Serve', 'value' => 'Entrepreneurs, Businesses, Investors & Institutions', 'icon' => 'users'],
             ['label' => 'Our Commitment', 'value' => 'Quality, Integrity, Security & Accountability', 'icon' => 'shield-check'],

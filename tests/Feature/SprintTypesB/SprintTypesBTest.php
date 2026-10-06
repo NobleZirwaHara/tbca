@@ -62,7 +62,8 @@ class SprintTypesBTest extends TestCase
             $this->assertContains($sprint->commercial_act, ['purchase', 'quote', 'subscription', 'retainer', 'free']);
             foreach ($sprint->packages ?? [] as $package) {
                 $this->assertArrayHasKey('key', $package);
-                $this->assertIsInt($package['zar']);
+                // Tiers priced "On request" carry no amount.
+                $this->assertTrue($package['zar'] === null || is_int($package['zar']));
             }
         });
     }
@@ -75,7 +76,8 @@ class SprintTypesBTest extends TestCase
 
         $retainer = Sprint::where('slug', 'risk-governance-retainer-sprint')->firstOrFail();
         $this->assertSame('retainer', $retainer->commercial_act);
-        $this->assertSame(58000, $retainer->price_zar);
+        // The mockup's single R58 000 price is the Standard package; Basic/Premium are derived.
+        $this->assertSame(58000, collect($retainer->packages)->firstWhere('key', 'standard')['zar']);
 
         $sub = Sprint::where('code', 'SUB-PG-003')->firstOrFail();
         $this->assertSame('subscription', $sub->commercial_act);

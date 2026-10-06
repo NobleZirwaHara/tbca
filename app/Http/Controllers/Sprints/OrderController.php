@@ -32,11 +32,17 @@ class OrderController extends Controller
     {
         $sprint = SprintController::find($slug);
 
-        if ($sprint->commercial_act === 'quote' || ! SprintOffer::packages($sprint)) {
-            return redirect("/sprints/{$sprint->slug}/quote".($request->query('package') ? '?package='.urlencode($request->query('package')) : ''));
+        $package = SprintOffer::package($sprint, $request->query('package'));
+
+        // Quote-only sprints and packages without a fixed price go to the quote form.
+        if ($sprint->commercial_act === 'quote' || $package === null || $package['zar'] === null) {
+            return redirect("/sprints/{$sprint->slug}/quote".($package ? '?package='.$package['key'] : ''));
         }
 
-        $package = SprintOffer::package($sprint, $request->query('package'));
+        // Legacy package keys (?package=starter / growth / executive ...) redirect to the tier key.
+        if ($request->query('package') !== null && $request->query('package') !== $package['key']) {
+            return redirect()->to("/sprints/{$sprint->slug}/order?".http_build_query([...$request->query(), 'package' => $package['key']]), 301);
+        }
         $user = $request->user();
 
         return Inertia::render('Sprints/Order', [
@@ -63,7 +69,7 @@ class OrderController extends Controller
         $sprint = SprintController::find($slug);
         abort_if($sprint->commercial_act === 'quote', 422, 'This Sprint is priced on request.');
 
-        $packageKeys = collect(SprintOffer::packages($sprint))->pluck('key')->all();
+        $packageKeys = collect(SprintOffer::packages($sprint))->whereNotNull('zar')->pluck('key')->all();
         $addonKeys = collect(SprintOffer::addons($sprint))->pluck('key')->all();
         $user = $request->user();
         $guest = $user === null;

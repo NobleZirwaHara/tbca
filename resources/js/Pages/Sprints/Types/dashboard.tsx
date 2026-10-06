@@ -25,6 +25,7 @@ import ZoomPreview from '@/Components/SprintTypes/B/ZoomPreview';
 import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 import type { DashboardAttributes } from '@/types/sprint-types-b';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 
 const highlightIcons = [BoxIcon, BadgeCheck, ShieldCheck, Crown, Award];
 const factIcons = [Clock, RefreshCw, Layers, Globe, TagIcon, CalendarDays, Percent];
@@ -35,7 +36,8 @@ export default function DashboardSprint({ sprint, related }: { sprint: SprintRec
     const a = attrsOf<DashboardAttributes>(sprint);
     const { packages, selected, setSelected, current } = usePackage(sprint);
     const tabs = (list(a.tabs).length ? list(a.tabs) : ['Overview', 'What You Receive', 'Inputs Required', 'Dashboard Build', 'Data & KPI Logic', 'Refresh & Maintenance', 'Support', 'Related Sprint', 'Disclosure']).map((t) => ({ key: slug(t), label: t }));
-    const [tab, setTab] = useState(tabs[0].key);
+    const urlTab = useUrlTab();
+    const [tab, setTab] = useState(() => tabs[urlTabIndex(tabs.map((t) => t.label), urlTab)].key);
     const badges = list(a.badges).length ? list(a.badges) : ['DASHBOARD SPRINT', 'VERSION CONTROLLED'];
     const preview = a.preview ?? { title: sprint.title };
     const build = pairs(a.build_strip);

@@ -36,7 +36,7 @@ export default function OrgShow({ org, related, saved }: Props) {
     return (
         <AiimPage
             title={investor ? 'Investor Preview' : 'Funder Preview'}
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, { label: investor ? 'Investors' : 'Funders', href: base }, { label: org.name }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: investor ? 'Investors' : 'Funders', href: base }, { label: org.name }]}
             heading={<>{investor ? 'Investor Preview' : 'Funder Preview'}<ListToggle list="saved" type={org.kind} itemKey={org.slug} saved={saved} variant="icon" /></>}
             subtitle={investor ? 'Detailed profile and investment intelligence.' : 'Comprehensive funder profile and funding intelligence.'}
             description={investor ? 'Comprehensive intelligence, focus areas, investment criteria, portfolio, and engagement information.' : 'Detailed mandate, focus areas, ticket sizes, portfolio and engagement information.'}

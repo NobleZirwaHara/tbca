@@ -54,9 +54,9 @@ export default function LimitationNotice({ columns }: { columns: { title: string
                             <p className="font-semibold text-ink-900">Questions about this notice?</p>
                             <p className="text-sm text-ink-600">Our Client Care team is here to help.</p>
                         </div>
-                        <a href="tel:+27120010557" className="flex items-center gap-2 text-sm text-ink-800"><Phone className="size-4" aria-hidden="true" /> +27 12 001 0557</a>
-                        <a href="mailto:info@thebusinessclinic.africa" className="flex items-center gap-2 text-sm text-ink-800"><Mail className="size-4" aria-hidden="true" /> info@thebusinessclinic.africa</a>
-                        <a href="https://wa.me/27821234567" className="flex items-center gap-2 text-sm text-ink-800"><MessageCircle className="size-4" aria-hidden="true" /> WhatsApp / Talk to us</a>
+                        <a href="tel:+27608011365" className="flex items-center gap-2 text-sm text-ink-800"><Phone className="size-4" aria-hidden="true" /> +27 60 801 1365</a>
+                        <a href="mailto:Consult@thebusinessclinic.africa" className="flex items-center gap-2 text-sm text-ink-800"><Mail className="size-4" aria-hidden="true" /> Consult@thebusinessclinic.africa</a>
+                        <a href="https://wa.me/27608011365" className="flex items-center gap-2 text-sm text-ink-800"><MessageCircle className="size-4" aria-hidden="true" /> WhatsApp / Talk to us</a>
                         <ButtonLink href="/about/contact" variant="outline" trailingIcon="arrow-right">Contact Client Care</ButtonLink>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-/** CP-SCR-070..079, 130, 131: messages, WhatsApp, tickets, NATASHA, handoff, help, status, escalations, feedback. */
+/** CP-SCR-070..079, 130, 131: messages, WhatsApp, tickets, KAREN, handoff, help, status, escalations, feedback. */
 class SupportController extends PortalController
 {
     use SupportExtras;
@@ -195,7 +195,7 @@ class SupportController extends PortalController
     {
         $q = $request->validate(['question' => 'required|string|max:500'])['question'];
         if (Natasha::killSwitchOn()) {
-            return back()->with('error', 'NATASHA is temporarily unavailable. Please contact support.');
+            return back()->with('error', 'KAREN is temporarily unavailable. Please contact support.');
         }
         if (str_contains(mb_strtolower($q), 'human')) {
             return redirect('/portal/natasha/handoff');
@@ -216,10 +216,10 @@ class SupportController extends PortalController
             'search' => 'Search articles, guides, and topics…',
             'main' => [
                 Ui::cards('Browse by Category', $cats->map(fn ($g, $k) => Ui::card($k, $g->count().' articles', null, '/portal/help?q='.urlencode($k), 'book-open'))->values()->all(), 4),
-                Ui::table($q ? 'Search results' : 'Featured Articles', ['Article', 'Category', 'Read time', ''], $articles->map(fn ($a) => [Ui::stack($a[0], $a[1]), Ui::pill($a[2], 'gold'), $a[3].' min read', Ui::actions([Ui::action('Open', $a[4])])])->values()->all(), ['empty' => 'No articles match — try NATASHA or contact support.']),
-                Ui::info('Guided Help', 'Get step-by-step assistance for common tasks with NATASHA, your client journey assistant.', 'gold', Ui::action('Start Guided Help', '/portal/natasha', 'get', ['variant' => 'gold'])),
+                Ui::table($q ? 'Search results' : 'Featured Articles', ['Article', 'Category', 'Read time', ''], $articles->map(fn ($a) => [Ui::stack($a[0], $a[1]), Ui::pill($a[2], 'gold'), $a[3].' min read', Ui::actions([Ui::action('Open', $a[4])])])->values()->all(), ['empty' => 'No articles match — try KAREN or contact support.']),
+                Ui::info('Guided Help', 'Get step-by-step assistance for common tasks with KAREN, your client journey assistant.', 'gold', Ui::action('Start Guided Help', '/portal/natasha', 'get', ['variant' => 'gold'])),
             ],
-            'side' => [Ui::quick('Need More Help?', [Ui::action('Contact Support', '/portal/support?new=1'), Ui::action('Live Chat (NATASHA)', '/portal/natasha'), Ui::action('Book a Guided Session', '/portal/meetings'), Ui::action('Call Us: +27 12 001 0567', 'tel:+27120010567', 'get', ['external' => true])]), Ui::checklist('Quick Tips', [Ui::check('Use the search bar to quickly find what you need.'), Ui::check('Guided Help walks you through tasks step-by-step.'), Ui::check("Can't find an answer? Our support team is ready to help.")])],
+            'side' => [Ui::quick('Need More Help?', [Ui::action('Contact Support', '/portal/support?new=1'), Ui::action('Live Chat (KAREN)', '/portal/natasha'), Ui::action('Book a Guided Session', '/portal/meetings'), Ui::action('Call Us: +27 60 801 1365', 'tel:+27608011365', 'get', ['external' => true])]), Ui::checklist('Quick Tips', [Ui::check('Use the search bar to quickly find what you need.'), Ui::check('Guided Help walks you through tasks step-by-step.'), Ui::check("Can't find an answer? Our support team is ready to help.")])],
         ]);
     }
 }

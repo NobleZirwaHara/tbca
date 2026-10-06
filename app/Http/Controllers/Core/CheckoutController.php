@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Core;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Support\Platform\Africa;
 use App\Support\Platform\Checkout;
 use App\Support\Platform\Money;
+use App\Support\Platform\PaymentOptions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -30,6 +32,8 @@ class CheckoutController extends Controller
             'feeOptions' => collect(['card', 'eft', 'wallet'])
                 ->mapWithKeys(fn ($m) => [$m => Money::totals($order->subtotal_zar, $m)]),
             'lastPayment' => $order->payments()->latest('id')->first(),
+            'paymentOptions' => PaymentOptions::register(),
+            'countries' => [...Africa::names(), 'Other'],
         ]);
     }
 

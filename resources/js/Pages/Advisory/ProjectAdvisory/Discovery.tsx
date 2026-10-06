@@ -19,7 +19,7 @@ function signals(d: Record<string, string>) {
     const stage = ['Feasibility', 'Structuring', 'Funding Readiness', 'Implementation'].includes(d.project_stage) ? 'High' : d.project_stage ? 'Medium' : 'Low';
     const evidence = ['Feasibility study completed', 'Full investor pack'].includes(d.existing_studies) ? 'High' : d.existing_studies === 'Pre-feasibility or concept note' ? 'Medium' : 'Low';
     const funding = ['Fully Funded', 'Part-Funded'].includes(d.funding_status) ? 'High' : d.funding_status === 'Seeking' ? 'Medium' : 'Low';
-    const attention = evidence === 'Low' || d.capital === 'Over R1bn' || d.country !== 'South Africa' ? 'High' : 'Medium';
+    const attention = evidence === 'Low' || d.capital === 'Over R1bn' ? 'High' : 'Medium';
     return { 'Stage Clarity': stage, 'Evidence Status': evidence, 'Funding Clarity': funding, 'Reviewer Attention': attention };
 }
 const sigTone = (v: string, inverse = false) => ((v === 'High') !== inverse ? 'bg-verified-50 text-verified-700' : v === 'Medium' ? 'bg-attested-50 text-attested-700' : 'bg-risk-50 text-risk-700');

@@ -367,7 +367,7 @@ class Engine
                 'owner_model' => $p->owner_model,
                 'named_person_material' => $p->owner_model === 'NAMED_PERSON',
                 'adviser' => ['name' => $service->owner['name'] ?? 'To be confirmed', 'title' => $service->owner['title'] ?? 'Senior Partner', 'since' => Carbon::parse($start)->toDateString()],
-                'account_owner' => ['name' => $service->owner['name'] ?? 'TBCA Account Director', 'role' => 'Account Director', 'email' => 'accounts@thebusinessclinic.africa', 'phone' => '+27 12 001 0567', 'since' => Carbon::parse($start)->toDateString(), 'delegation' => ['scope' => 'Full', 'overage' => true, 'scope_change' => true, 'substitution' => true]],
+                'account_owner' => ['name' => $service->owner['name'] ?? 'TBCA Account Director', 'role' => 'Account Director', 'email' => 'accounts@thebusinessclinic.africa', 'phone' => '+27 60 801 1365', 'since' => Carbon::parse($start)->toDateString(), 'delegation' => ['scope' => 'Full', 'overage' => true, 'scope_change' => true, 'substitution' => true]],
                 'min_term_months' => $service->min_term_months,
                 'notice_days' => $service->notice_days,
                 'start_date' => $start,

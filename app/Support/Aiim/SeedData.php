@@ -452,6 +452,11 @@ class SeedData
             $b('SA-RISK-Q2', 'South Africa Risk & Outlook Q2 2025', 'Risk & Outlook', 'PDF', '24 pages', 'May 2025', 2450, null, 70, 'Sovereign, currency, regulatory and infrastructure risk outlook with early-warning signals.', 'data'),
             $b('SA-PROJ-DP-2025', 'Infrastructure Projects Pipeline Data Pack', 'Projects', 'Excel', '500 rows', 'May 2025', 3450, 'Data Pack', 55, 'Unlocked CSV/Excel extract of priority projects with source, date and confidence.', 'data'),
             $b('SA-NC-GH2-2025', 'Northern Cape Green Hydrogen Brief', 'Infrastructure', 'PDF', '34 pages', 'Apr 2025', 2950, null, 66, 'Green hydrogen value chain, Boegoebaai port plans, offtake and financing structures.', 'solar', 'northern-cape'),
+            // Africa-wide and other-country briefs (placeholder content until the client's Test Data lands).
+            $b('AF-IC-2026', 'Africa Investment Climate Outlook 2026', 'Investment Climate', 'PDF', '40 pages', 'Sep 2026', 3450, 'New', 95, 'Pan-African outlook across all 54 markets: growth, reforms, FDI trends, AfCFTA progress and regional risk.', 'city', null, ['coverage' => 'Africa (54 countries)', 'sources' => 'AfDB, IMF, World Bank, UNCTAD']),
+            $b('AF-AFCFTA-2026', 'AfCFTA Trade Corridors Brief 2026', 'Markets & Trade', 'PDF', '30 pages', 'Aug 2026', 2950, null, 74, 'Priority trade corridors, tariff schedules, rules of origin and logistics hubs under the AfCFTA.', 'port', null, ['coverage' => 'Africa (54 countries)', 'sources' => 'AfCFTA Secretariat, UNECA, AfDB']),
+            $b('NG-ME-2026', 'Nigeria Market Entry Brief 2026', 'Countries', 'PDF', '32 pages', 'Aug 2026', 2950, null, 68, "Market structure, FX regime, regulation and sector opportunities for entering Africa's most populous market.", 'city', null, ['coverage' => 'Nigeria', 'sources' => 'NBS, CBN, NIPC, World Bank']),
+            $b('KE-DIG-2026', 'Kenya Digital Economy Brief 2026', 'Countries', 'PDF', '28 pages', 'Jul 2026', 2750, null, 63, 'Fintech, data-centre and digital-services opportunities in East Africa\'s leading tech hub.', 'data', null, ['coverage' => 'Kenya', 'sources' => 'KNBS, CBK, Communications Authority of Kenya']),
         ];
     }
 

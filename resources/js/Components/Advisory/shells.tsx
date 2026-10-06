@@ -133,7 +133,7 @@ export const SERVICES_PORTAL_NAV: ConsoleNavGroup[] = [
         items: [
             { label: 'Cross-Vehicle Dashboard', href: '/services/relationship', icon: LayoutDashboard },
             { label: 'Multi-Vehicle Statement', href: '/services/statement', icon: Wallet },
-            { label: 'Vehicle Fee Panel', href: '/services/vehicles/VEH-2025-0003/fees', icon: Receipt },
+            { label: 'Vehicle Fee Panel', href: '/services/fee-panel', icon: Receipt },
             { label: 'Upgrade to Mandate', href: '/services/sprint-to-mandate-upgrade', icon: Users },
             { label: 'Vehicle Transition', href: '/services/vehicle-transition-proposal', icon: GitCompare },
             { label: 'Recurrence Conversion', href: '/services/recurrence-conversion', icon: CalendarClock },

@@ -4,9 +4,9 @@ import { Gift, Headphones, Info, Minus, Plus, ShoppingCart } from 'lucide-react'
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { Select } from '@/Components/ui/Form';
 import { SecureCheckout, CheckList } from '@/Components/Shop/ProductParts';
-import { zar } from '@/Components/Shop/Bits';
 import type { ProductDetail } from '@/types/shop';
 
+import { usePrice } from '@/lib/money';
 const btnPrimary = 'flex w-full items-center justify-center gap-2 rounded-[4px] bg-gold-500 px-4 py-3 text-[0.9375rem] font-semibold text-ink-900 hover:bg-gold-400 disabled:opacity-50';
 const btnSecondary = 'flex w-full items-center justify-center gap-2 rounded-[4px] border border-gold-500 bg-white px-4 py-2.5 text-sm font-semibold text-gold-800 hover:bg-gold-50';
 
@@ -31,6 +31,7 @@ function Help({ text }: { text: string }) {
 }
 
 export default function PriceCard({ product }: { product: ProductDetail }) {
+    const zar = usePrice();
     const v = product.variants;
     const [qty, setQty] = useState(1);
     const [licence, setLicence] = useState(v.licences?.[0]?.key ?? '');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Aiim;
 
 use App\Models\Aiim\Brief;
 use App\Models\Aiim\Corridor;
+use App\Models\Aiim\Country;
 use App\Models\Aiim\Organisation;
 use App\Models\Aiim\Project;
 use App\Models\Aiim\Province;
@@ -12,41 +13,53 @@ use App\Models\Aiim\Source;
 use App\Support\Aiim\Catalogue;
 use App\Support\Aiim\Content;
 use App\Support\Aiim\Grades;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
 /**
- * Free exploration layer (stages A and 0): landing, South Africa cockpit,
+ * Free exploration layer (stages A and 0): landing, the 54 country cockpits,
  * province and sector selectors and profiles, risk outlook and source evidence.
  */
 class ExploreController extends AiimController
 {
     public function landing(Request $request): Response
     {
+        $regions = Country::query()->selectRaw('region, count(*) as total')->groupBy('region')->pluck('total', 'region');
+
         return $this->render($request, 'Aiim/Landing', [
             'content' => Content::landing(),
+            'countries' => Country::options(),
+            'regions' => collect(Country::REGIONS)->map(fn ($label, $key) => [$label, (int) ($regions[$key] ?? 0)])->values(),
             'sectors' => Sector::query()->orderBy('sort')->get(['slug', 'name', 'icon']),
             'top' => Project::query()->whereIn('code', ['OPP-NC-GH2-013', 'OPP-KZN-AGH-014', 'OPP-GA-LTP-012'])->get()->map(fn ($p) => Catalogue::project($p)),
             'provinces' => Province::query()->orderBy('rank')->get(['slug', 'name', 'score']),
         ], 'Landing');
     }
 
+    /** Investor Cockpit for any of the 54 countries (slug = kebab-case name). */
     public function country(Request $request, string $slug): Response
     {
-        if ($slug !== 'south-africa') {
-            return $this->render($request, 'Aiim/CountryInactive', ['country' => ucwords(str_replace('-', ' ', $slug))], 'Country');
-        }
-        $this->select($request, ['country' => 'South Africa']);
+        $country = Country::query()->where('slug', $slug)->firstOrFail();
+        $this->select($request, ['country' => $country->name]);
 
         return $this->render($request, 'Aiim/Cockpit', [
-            'content' => Content::cockpit(),
-            'provinces' => Province::query()->orderByDesc('score')->get(['slug', 'name', 'score']),
+            'country' => $country->profile(),
+            'countries' => Country::options(),
+            'peers' => Country::query()->where('region', $country->region)->where('id', '!=', $country->id)->orderBy('name')->get()->map(fn ($c) => $c->summary()),
+            // South Africa carries the full province-level pack; the other 53 show headline indicators.
+            'content' => $country->has_province_pack ? Content::cockpit() : null,
+            'provinces' => $country->has_province_pack ? Province::query()->orderByDesc('score')->get(['slug', 'name', 'score']) : [],
+            'sectors' => Sector::query()->orderBy('sort')->get(['slug', 'name', 'icon']),
         ], 'Investor Cockpit');
     }
 
-    public function provinces(Request $request, string $slug): Response
+    public function provinces(Request $request, string $slug): Response|RedirectResponse
     {
-        abort_unless($slug === 'south-africa', 404);
+        $country = Country::query()->where('slug', $slug)->firstOrFail();
+        if (! $country->has_province_pack) {
+            return redirect("/aiim/country/{$country->slug}#regions");
+        }
         $sort = $request->query('sort', 'score');
         $query = Province::query();
         $sort === 'name' ? $query->orderBy('name') : $query->orderByDesc('score');
@@ -112,6 +125,11 @@ class ExploreController extends AiimController
             'province' => $province?->only(['slug', 'name']),
             'grade' => Grades::grade($evidence['confidence'] ?? 80),
             'opportunities' => Project::query()->where('sector_slug', $sector->slug)->when($province, fn ($q) => $q->where('province_slug', $province->slug))->orderByDesc('score')->take(6)->get()->map(fn ($p) => Catalogue::project($p)),
+            // Drives the "View Opportunities" target: scoped to the province when it has matches, else sector-wide.
+            'opportunityCounts' => [
+                'province' => $province ? Project::query()->whereIn('kind', ['opportunity', 'both'])->where('sector_slug', $sector->slug)->where('province_slug', $province->slug)->count() : null,
+                'sector' => Project::query()->whereIn('kind', ['opportunity', 'both'])->where('sector_slug', $sector->slug)->count(),
+            ],
             'saved' => $this->savedKeys($request->user()),
         ], 'Sector Profile');
     }

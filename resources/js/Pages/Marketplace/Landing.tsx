@@ -3,6 +3,8 @@ import { ArrowRight, BadgeCheck, CheckCircle2, Clock, FileText, Lock, MapPin, Pl
 import { StatBand } from '@/Components/Blocks';
 import { Button, ButtonLink } from '@/Components/ui/Button';
 import Icon from '@/Components/Marketplace/MkIcon';
+import { artCategory } from '@/Components/Marketplace/ui';
+import CoverArt from '@/Components/Art/CoverArt';
 import { Checkbox, Field, Input, Select, Textarea } from '@/Components/ui/Form';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import { usePrice } from '@/lib/money';
@@ -84,9 +86,7 @@ export default function Landing({ content, featured, matched, options, spotlight
                         <div className="relative mx-auto max-w-md">
                             {spotlight && (
                                 <Link href={`/marketplace/providers/${spotlight.slug}`} className="flex gap-4 rounded-[10px] border border-parchment-400 bg-white p-5 shadow-raised">
-                                    <span className="flex size-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-ink-800 to-ink-950 font-serif text-2xl font-bold text-gold-400" aria-hidden="true">
-                                        {spotlight.name.slice(0, 1)}
-                                    </span>
+                                    <CoverArt seed={spotlight.slug} category={artCategory(spotlight.category)} label={spotlight.name} src={spotlight.profile.logo ?? null} className="size-20 shrink-0 rounded-full" />
                                     <span className="min-w-0">
                                         <span className="flex items-center gap-1.5 font-semibold text-ink-900">
                                             Verified Specialist <BadgeCheck className="size-4 text-gold-600" aria-hidden="true" />
@@ -311,13 +311,16 @@ export default function Landing({ content, featured, matched, options, spotlight
                         <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                             {featured.map((l) => (
                                 <li key={l.slug}>
-                                    <Link href={`/marketplace/services/${l.slug}`} className="flex h-full flex-col rounded-[8px] border border-parchment-400 p-4 hover:border-gold-400">
+                                    <Link href={`/marketplace/services/${l.slug}`} className="flex h-full flex-col overflow-hidden rounded-[8px] border border-parchment-400 hover:border-gold-400">
+                                        <CoverArt seed={l.slug} category={artCategory(l.category)} label={l.title} src={l.details.image ?? null} className="aspect-[16/9]" />
+                                        <span className="flex flex-1 flex-col p-4">
                                         <span className="text-[0.6875rem] font-semibold tracking-wide text-gold-700 uppercase">{l.categoryLabel}</span>
                                         <span className="mt-1 font-semibold text-ink-900">{l.title}</span>
                                         <span className="mt-1 line-clamp-2 flex-1 text-xs text-ink-500">{l.summary}</span>
                                         <span className="mt-3 flex items-center justify-between text-sm">
-                                            <span className="font-bold text-ink-900">{price(l.priceZar ?? 0)}{l.period ? ' / month' : ''}</span>
+                                            <span className="font-bold text-ink-900"><span className="text-xs font-normal text-ink-500">From </span>{price(l.packages[0]?.priceZar ?? l.priceZar ?? 0)}{l.period ? ' / month' : ''}</span>
                                             <span className="flex items-center gap-1 text-xs text-ink-500"><Star className="size-3.5 fill-gold-500 text-gold-500" aria-hidden="true" /> {l.rating}</span>
+                                        </span>
                                         </span>
                                     </Link>
                                 </li>

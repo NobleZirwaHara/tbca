@@ -3,6 +3,7 @@ import { ArrowRight, BriefcaseBusiness, CalendarDays, Mic, PlayCircle, Presentat
 import { useState } from 'react';
 import Icon from '@/Components/ui/Icon';
 import { Modal } from '@/Components/ui/Kit';
+import EmbeddedServices, { type EmbeddedSection } from '@/Components/Embedded/EmbeddedServices';
 import { Field, Input, Select, Textarea } from '@/Components/ui/Form';
 import { cn } from '@/lib/cn';
 import type { KpInsight } from '@/types/core-pages';
@@ -13,11 +14,12 @@ interface Props {
     formats: { key: string; label: string }[];
     topics: string[];
     filters: { format: string; topic: string | null };
+    embedded?: EmbeddedSection;
 }
 
 const engagements = ['Book KP to Speak', 'Advisory Session', 'Boardroom Briefing', 'Media & Interviews'];
 
-export default function KpThoughtLeadership({ insights, numbers, formats, topics, filters }: Props) {
+export default function KpThoughtLeadership({ insights, numbers, formats, topics, filters, embedded }: Props) {
     const [reading, setReading] = useState<KpInsight | null>(null);
     const [engageOpen, setEngageOpen] = useState(false);
     const form = useForm({ name: '', email: '', organisation: '', engagement: engagements[0], details: '', subject: 'KP engagement request', section: 'core' });
@@ -161,6 +163,8 @@ export default function KpThoughtLeadership({ insights, numbers, formats, topics
                     </button>
                 </div>
             </section>
+
+            <EmbeddedServices section={embedded} tone="dark" intro="Fixed-price intelligence briefs, boardroom packs and reports behind KP's thought leadership." />
 
             <Modal open={reading !== null} onClose={() => setReading(null)} title={reading?.title ?? ''} size="lg">
                 {reading && (

@@ -43,6 +43,16 @@ export default function ProductCard({ product: p }: { product: DpProductCard }) 
                     {p.format}
                 </span>
             </div>
+            <dl className="mt-2 space-y-0.5 text-[0.6875rem] text-ink-500">
+                <div className="flex gap-1">
+                    <dt className="font-semibold text-ink-700">Jurisdiction:</dt>
+                    <dd>{p.jurisdiction}</dd>
+                </div>
+                <div className="flex gap-1">
+                    <dt className="font-semibold text-ink-700">Currencies:</dt>
+                    <dd>{p.currencies.join(' · ')}</dd>
+                </div>
+            </dl>
             <DpPrice zar={p.fromPrice} className="mt-3 text-right" />
             <div className="mt-auto pt-3">
                 <button

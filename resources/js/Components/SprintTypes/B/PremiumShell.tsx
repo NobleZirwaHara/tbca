@@ -1,3 +1,4 @@
+import CoverArt from '@/Components/Art/CoverArt';
 import { Link } from '@inertiajs/react';
 import {
     Archive,
@@ -30,6 +31,8 @@ import { AskButton, Crumbs, RelatedSprints, SaveButton, orderHref, quoteHref, us
 import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 
+import { usePrice } from '@/lib/money';
+import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
 /* ==========================================================================
    Shared shell for the Premium and Premium Advisory Feeder sprint pages:
    dark hero with a gold line icon, floating "Choose Your Sprint Package"
@@ -95,10 +98,12 @@ const tabKey = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const trustIconMap: Record<string, LucideIcon> = { 'Secure Payment': CreditCard, 'Satisfaction Guaranteed': ShieldCheck, 'Defined Scope': Target, 'Confidential & Secure': Lock };
 
 export default function PremiumShell(p: PremiumShellProps) {
+    const price = usePrice();
     const { sprint } = p;
     const { packages, selected, setSelected } = usePackage(sprint);
     const tabs = (p.tabs.length ? p.tabs : ['Overview']).map((t) => ({ key: tabKey(t), label: t }));
-    const [tab, setTab] = useState(tabs[0].key);
+    const urlTab = useUrlTab();
+    const [tab, setTab] = useState(() => tabs[urlTabIndex(tabs.map((t) => t.label), urlTab)].key);
     const Icon = heroIconFor(p.heroIcon, sprint.title);
     const activeLabel = tabs.find((t) => t.key === tab)?.label ?? 'Overview';
 
@@ -131,7 +136,7 @@ export default function PremiumShell(p: PremiumShellProps) {
                 <legend className="sr-only">Package</legend>
                 {packages.map((pk) => {
                     const active = pk.key === selected;
-                    const display = (pk as { price_display?: string }).price_display ?? rand(pk.zar);
+                    const display = (pk as { price_display?: string }).price_display ?? price(pk.zar);
                     return (
                         <label
                             key={pk.key}
@@ -208,14 +213,11 @@ export default function PremiumShell(p: PremiumShellProps) {
                 <div className="relative container-tbca pt-4 pb-10 lg:pr-[25rem]">
                     <Crumbs tone="dark" items={[{ label: 'Home', href: '/' }, { label: 'Sprints', href: '/sprints' }, { label: sprint.title }]} />
                     <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start">
-                        <span
-                            className={cn(
-                                'flex shrink-0 items-center justify-center text-gold-400',
-                                p.iconBoxed ? 'size-28 rounded-[18px] border-2 border-gold-500 bg-ink-900' : 'size-28 sm:size-36',
-                            )}
-                            aria-hidden="true"
-                        >
-                            <Icon className={p.iconBoxed ? 'size-14' : 'size-24 sm:size-32'} strokeWidth={1} />
+                        <span className="relative block h-28 w-40 shrink-0 overflow-hidden rounded-[14px] border-2 border-gold-500 sm:h-36 sm:w-52" aria-hidden="true">
+                            <CoverArt seed={sprint.slug} category={sprint.category} className="absolute inset-0 h-full w-full" />
+                            <span className="absolute bottom-2 left-2 flex size-11 items-center justify-center rounded-[8px] bg-ink-950/75 text-gold-400">
+                                <Icon className="size-7" strokeWidth={1.25} />
+                            </span>
                         </span>
                         <div className="min-w-0">
                             {p.badgeAbove && <div className="mb-2">{badge}</div>}

@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Portal\Notice;
 use App\Support\Content\Navigation;
 use App\Support\Platform\Basket;
+use App\Support\Platform\Fx;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -43,6 +45,9 @@ class HandleInertiaRequests extends Middleware
                 'currencies' => config('tbca.currencies'),
             ],
 
+            // Daily ZAR-based display rates (live feed, cached 24h, config fallback).
+            'fx' => fn () => Fx::snapshot(),
+
             'trustBadges' => config('tbca.trust_badges'),
 
             'auth' => fn () => [
@@ -50,6 +55,10 @@ class HandleInertiaRequests extends Middleware
             ],
 
             'basketCount' => fn () => app(Basket::class)->count(),
+
+            'unreadNotifications' => fn () => $request->user()
+                ? Notice::where('user_id', $request->user()->id)->whereNull('read_at')->count()
+                : 0,
 
             'flash' => fn () => [
                 'message' => $request->session()->get('message'),

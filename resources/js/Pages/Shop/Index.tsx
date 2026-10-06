@@ -53,8 +53,8 @@ const LANGUAGE: Option[] = [
 ];
 
 const chips = [
-    { icon: MapPin, title: 'South Africa', sub: 'Active Market' },
-    { icon: Languages, title: 'English & Afrikaans', sub: 'Languages' },
+    { icon: MapPin, title: 'Africa', sub: 'Active Market' },
+    { icon: Languages, title: '7 Languages', sub: 'Languages' },
     { icon: Coins, title: 'ZAR (Source)', sub: 'USD Available' },
     { icon: BadgeCheck, title: 'Human-Reviewed', sub: 'Outputs' },
     { icon: ShieldCheck, title: 'Verified Information', sub: '' },

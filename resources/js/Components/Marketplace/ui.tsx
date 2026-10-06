@@ -362,3 +362,30 @@ export function priorityTone(p: string | null | undefined): 'bad' | 'warn' | 'go
     if (s === 'low') return 'good';
     return 'neutral';
 }
+
+/** Maps Marketplace / Partner Services categories onto CoverArt colour families so each category reads as one set. */
+const ART_FAMILY: Record<string, string> = {
+    'financial-advisory': 'business-management',
+    'due-diligence': 'due-diligence',
+    'market-research': 'research-reports',
+    'project-management': 'project-advisory',
+    'compliance-risk': 'diagnostics',
+    'tech-digital': 'technology',
+    'automation-ai': 'ai-automation',
+    'legal-contracts': 'templates-toolkits',
+    'legal-services': 'templates-toolkits',
+    'audit-assurance': 'data-dashboards',
+    'tax-advisory': 'business-management',
+    'esg-advisory': 'data-dashboards',
+    'environmental-services': 'templates-toolkits',
+    'engineering-technical': 'technology',
+    'project-construction': 'project-advisory',
+    'corporate-finance': 'digital-products',
+    'specialist-compliance': 'diagnostics',
+    'business-rescue': 'due-diligence',
+    valuation: 'digital-products',
+    'labour-employment': 'courses-learning',
+    'corporate-governance': 'subscriptions-retainers',
+};
+
+export const artCategory = (category?: string | null) => ART_FAMILY[category ?? ''] ?? category ?? undefined;

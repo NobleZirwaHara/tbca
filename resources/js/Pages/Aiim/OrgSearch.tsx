@@ -25,7 +25,7 @@ export default function OrgSearch({ kind, filters, results, options, saved }: Pr
     return (
         <AiimPage
             title={investor ? 'Investor Search' : 'Funder Search'}
-            crumbs={[{ label: 'South Africa', href: '/aiim/country/south-africa' }, ...(sectorName ? [{ label: sectorName, href: `/aiim/sector/${filters.sector}` }] : []), { label: `${investor ? 'Investor' : 'Funder'} Search` }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, ...(sectorName ? [{ label: sectorName, href: `/aiim/sector/${filters.sector}` }] : []), { label: `${investor ? 'Investor' : 'Funder'} Search` }]}
             subtitle={investor ? `Find and connect with active investors${sectorName ? ` in the ${sectorName} sector` : ''}` : 'Find and connect with active funders and development finance institutions.'}
             description={investor ? 'Filter, compare and explore investor profiles, investment focus, ticket sizes and recent activity.' : 'Filter, compare and explore funding opportunities, eligibility and mandates.'}
             actions={<ButtonLink href={sectorName ? `/aiim/sector/${filters.sector}` : '/aiim/sectors'} size="sm" variant="outline">Back to Sector</ButtonLink>}

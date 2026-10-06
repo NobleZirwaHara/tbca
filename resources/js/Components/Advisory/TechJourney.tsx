@@ -53,7 +53,7 @@ export default function TechJourney({ step, journey, title, sub, crumbs, badge, 
                         <p className="font-semibold">Need Help?</p>
                         <p className="text-xs text-ink-500">Book a free discovery call with a TBCA expert. We&rsquo;ll guide you through the right next steps.</p>
                         <ButtonLink href="/contact" size="sm" className="mt-2 w-full" icon="calendar-days">Book Discovery Call</ButtonLink>
-                        <a href="https://wa.me/27120010567" className="mt-2 flex items-center justify-center gap-1 text-xs text-verified-700"><MessageCircle className="size-3.5" />Chat with us on WhatsApp</a>
+                        <a href="https://wa.me/27608011365" className="mt-2 flex items-center justify-center gap-1 text-xs text-verified-700"><MessageCircle className="size-3.5" />Chat with us on WhatsApp</a>
                     </div>
                     {aside}
                 </aside>

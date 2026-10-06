@@ -134,7 +134,7 @@ export default function Newsroom({ featured, news, announcements, categories, to
                         <div className="rounded-[8px] border border-parchment-400 bg-white p-5">
                             <h2 className="font-semibold text-ink-900">Media Contacts</h2>
                             <p className="mt-2 flex items-center gap-2 text-[0.8125rem]"><User className="size-4 text-controlled-700" aria-hidden="true" /> media@thebusinessclinic.africa</p>
-                            <p className="mt-1 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4 text-controlled-700" aria-hidden="true" /> +27 12 001 0557</p>
+                            <p className="mt-1 flex items-center gap-2 text-[0.8125rem]"><Phone className="size-4 text-controlled-700" aria-hidden="true" /> +27 60 801 1365</p>
                             <Link href="/newsroom/media-contact" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-gold-700">View All Contacts <ArrowRight className="size-3" aria-hidden="true" /></Link>
                         </div>
                     </aside>
