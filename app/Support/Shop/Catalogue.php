@@ -239,31 +239,54 @@ class Catalogue
         return Register::liveCount();
     }
 
-    /** Listed shop products plus the published Sprints shelved in the aisle. */
+    /** Listed shop products plus the published Sprints in the aisle (shelved there or cross-listed). */
     public static function productCountForAisle(string $aisle): int
     {
         return Product::query()->listed()->where('aisle', $aisle)->count() + self::sprintCountForAisle($aisle);
     }
 
+    /** Published Sprints in the aisle: those shelved there plus those cross-listed there (each counted once). */
     public static function sprintCountForAisle(string $aisle): int
     {
         return self::sprintAisleCounts()[$aisle] ?? 0;
     }
 
-    /** @return array<string, int> published sprints per shop aisle (cached until the sprints table changes; read once per request) */
-    public static function sprintAisleCounts(): array
+    /** Published Sprints shelved in the aisle (home aisle only). */
+    public static function homeSprintCountForAisle(string $aisle): int
     {
-        return once(fn () => self::loadSprintAisleCounts());
+        return self::sprintAisleCounts(true)[$aisle] ?? 0;
     }
 
-    /** @return array<string, int> */
+    /**
+     * Published sprints per shop aisle, cached until the sprints table or the aisle listings change;
+     * read once per request.
+     *
+     * @return array<string, int>
+     */
+    public static function sprintAisleCounts(bool $homeOnly = false): array
+    {
+        $counts = once(fn () => self::loadSprintAisleCounts());
+
+        return $homeOnly ? $counts['home'] : $counts['all'];
+    }
+
+    /** @return array{home: array<string, int>, all: array<string, int>} */
     private static function loadSprintAisleCounts(): array
     {
-        $version = Sprint::query()->count().'-'.Sprint::query()->max('updated_at');
+        $version = Sprint::query()->count().'-'.Sprint::query()->max('updated_at').'|'.IndustryListings::version();
 
-        return Cache::remember('shop.sprint-aisle-counts.'.md5($version), now()->addDay(), fn () => Sprint::query()
-            ->where('status', 'published')->whereNotNull('shop_aisle')
-            ->groupBy('shop_aisle')->selectRaw('shop_aisle, count(*) as n')->pluck('n', 'shop_aisle')
-            ->map(fn ($n) => (int) $n)->all());
+        return Cache::remember('shop.sprint-aisle-counts.v2.'.md5($version), now()->addDay(), function () {
+            $home = Sprint::query()
+                ->where('status', 'published')->whereNotNull('shop_aisle')
+                ->groupBy('shop_aisle')->selectRaw('shop_aisle, count(*) as n')->pluck('n', 'shop_aisle')
+                ->map(fn ($n) => (int) $n)->all();
+
+            $all = $home;
+            foreach (IndustryListings::countsByAisle() as $aisle => $n) {
+                $all[$aisle] = ($all[$aisle] ?? 0) + $n;
+            }
+
+            return ['home' => $home, 'all' => $all];
+        });
     }
 }

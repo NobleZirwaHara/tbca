@@ -177,6 +177,18 @@ export interface SearchResult {
     key_benefit: string | null;
     featured: boolean;
     rating: number | null;
+    /** Set when the result is shown in an aisle it is cross-listed in (not its home aisle). */
+    listing?: 'named' | 'relevant' | 'manual' | null;
+    /** Name of the Sprint's home aisle when it is shown in another aisle. */
+    also_in?: string | null;
+}
+
+/** An Online Shop aisle a Sprint appears in (Sprint page "Listed in" chips). */
+export interface AisleListing {
+    slug: string;
+    name: string;
+    home: boolean;
+    reason: 'named' | 'relevant' | 'manual' | null;
 }
 
 export interface Aisle {

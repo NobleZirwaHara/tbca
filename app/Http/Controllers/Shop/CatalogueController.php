@@ -8,6 +8,7 @@ use App\Models\Shop\Product;
 use App\Support\Platform\Basket;
 use App\Support\Shop\Acts;
 use App\Support\Shop\Catalogue;
+use App\Support\Shop\IndustryListings;
 use App\Support\Shop\ProductPresenter;
 use App\Support\Shop\Search;
 use Illuminate\Http\Request;
@@ -144,6 +145,9 @@ class CatalogueController extends Controller
             'actCounts' => collect(Acts::ACTS)->map(fn ($a, $k) => ['value' => $k, 'label' => $a['label'], 'count' => $products->where('act', $k)->count()])->values(),
             'deliveryCounts' => collect(Catalogue::DELIVERY_BANDS)->map(fn ($label, $k) => ['value' => $k, 'label' => $label, 'count' => $products->filter(fn ($p) => Catalogue::deliveryBand($p->delivery) === $k)->count()])->values(),
             'sprintCount' => Catalogue::sprintCountForAisle($aisle),
+            'homeSprintCount' => Catalogue::homeSprintCountForAisle($aisle),
+            // Sprints shelved here, then cross-listed ones (named, then relevant); 12 per page.
+            'sprints' => IndustryListings::aislePage($aisle, max(1, (int) $request->query('page', 1))),
             'stats' => [
                 'subcategories' => $all->count(),
                 'acts' => $actsAvailable->take(3)->implode(', '),

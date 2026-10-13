@@ -1,6 +1,9 @@
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from 'react';
+import { Link } from '@inertiajs/react';
 import GenericSprint, { type GenericSprintProps } from '@/Components/Sprints/GenericSprint';
+import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
+import type { AisleListing } from '@/types/shop';
 
 /**
  * Sprint detail dispatcher.
@@ -35,16 +38,46 @@ function Loading() {
     );
 }
 
-export default function Show(props: GenericSprintProps) {
+/** Online Shop aisles the Sprint appears in: its home aisle first, then the aisles it is also listed in. */
+function ListedIn({ aisles }: { aisles: AisleListing[] }) {
+    if (aisles.length === 0) return null;
+
+    return (
+        <nav aria-label="Online Shop aisles" className="border-b border-white/10 bg-ink-950 text-parchment-100">
+            <div className="container-tbca flex flex-wrap items-center gap-x-2 gap-y-1.5 py-2 text-xs">
+                <span className="font-semibold text-ink-300">Listed in:</span>
+                {aisles.map((a) => (
+                    <Link
+                        key={a.slug}
+                        href={`/shop/aisle/${a.slug}`}
+                        title={a.home ? 'Home aisle' : undefined}
+                        className={cn(
+                            'rounded-full border px-2.5 py-0.5 font-medium hover:border-gold-400 hover:text-gold-300',
+                            a.home ? 'border-gold-500 text-gold-400' : 'border-white/25 text-parchment-100',
+                        )}
+                    >
+                        {a.name}
+                    </Link>
+                ))}
+            </div>
+        </nav>
+    );
+}
+
+export default function Show(props: GenericSprintProps & { listedIn?: AisleListing[] }) {
+    const { listedIn = [], ...rest } = props;
     const TypeComponent = props.sprint.attributes?.template === 'generic' ? null : templateFor(props.sprint.type);
 
-    if (TypeComponent) {
-        return (
-            <Suspense fallback={<Loading />}>
-                <TypeComponent sprint={props.sprint} related={props.related} />
-            </Suspense>
-        );
-    }
-
-    return <GenericSprint key={props.sprint.slug} {...props} />;
+    return (
+        <>
+            <ListedIn aisles={listedIn} />
+            {TypeComponent ? (
+                <Suspense fallback={<Loading />}>
+                    <TypeComponent sprint={props.sprint} related={props.related} />
+                </Suspense>
+            ) : (
+                <GenericSprint key={props.sprint.slug} {...rest} />
+            )}
+        </>
+    );
 }

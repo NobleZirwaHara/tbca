@@ -161,7 +161,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                         <button
                             type="button"
                             onClick={() => setDrawerOpen(true)}
-                            className="inline-flex size-9 items-center justify-center rounded-[4px] border border-ink-700 text-parchment-100 lg:hidden"
+                            className="inline-flex size-9 items-center justify-center rounded-[4px] border border-ink-700 text-parchment-100 xl:hidden"
                             aria-label={t('Open navigation')}
                             aria-expanded={drawerOpen}
                         >
@@ -172,7 +172,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
             </div>
 
             {/* ---------------- Primary navigation ---------------- */}
-            <div className="hidden bg-ink-900 lg:block">
+            <div className="hidden bg-ink-900 xl:block">
                 <div className="container-tbca">
                     <ul className="flex items-stretch justify-between">
                         {nav.primary.map((tab, i) => (
@@ -198,7 +198,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
             {/* ---------------- Secondary navigation ---------------- */}
             <div
                 className={cn(
-                    'hidden border-b lg:block',
+                    'hidden border-b xl:block',
                     secondaryOnDark
                         ? 'border-ink-800 bg-ink-900/95'
                         : 'border-parchment-400 bg-white',
@@ -261,7 +261,7 @@ function NavItem({
             <Link
                 href={tab.href}
                 className={cn(
-                    'relative flex h-11 items-center gap-1 px-2 text-[0.8125rem] font-medium whitespace-nowrap transition-colors xl:px-2.5',
+                    'relative flex h-11 items-center gap-0.5 px-1.5 text-[0.75rem] font-medium whitespace-nowrap transition-colors xl:gap-1 xl:text-[0.78rem] 2xl:px-2.5 2xl:text-[0.8125rem]',
                     onDark
                         ? active
                             ? 'text-gold-400'
@@ -570,7 +570,7 @@ function MobileDrawer({
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 xl:hidden">
             <button
                 type="button"
                 className="absolute inset-0 bg-ink-950/70"

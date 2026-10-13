@@ -261,7 +261,8 @@ These are available on every page or across all modules.
 - **What it does:** one shop front for sprints, products, subscriptions and retainers, plus search across the whole site.
 - **Features:**
   - Browse by aisle or A–Z, compare products (with export), and use a resolver to find the right product.
-  - All 7,008 register Sprints are searchable from the shop and `/search`, and each is shelved in one of the 26 aisles. The "Governed TBCA Sprints" total and the product count on each aisle come from the data. Each aisle page links to all Sprints shelved in it (`/search?category={aisle}&all=1`).
+  - All 7,008 register Sprints are searchable from the shop and `/search`, and each is shelved in one of the 26 aisles. The "Governed TBCA Sprints" total and the product count on each aisle come from the data. Each aisle page lists its Sprints, 12 per page, and links to them in search (`/search?category={aisle}&all=1`).
+  - Sprints are also listed in the six industry aisles and Risk & Cybersecurity (see "Industry aisle listings" below). Their cards show "Also in {home aisle}" and each Sprint page shows "Listed in" chips that link to its aisles.
   - Product pages with configuration and licence details.
   - Free products and saved baskets.
   - Routes that don't use the basket: quote request → issued quote, marketplace brief, retainer proposal, and subscription mandate.
@@ -274,6 +275,17 @@ These are available on every page or across all modules.
 - **URLs:** `/shop`, `/shop/a-z`, `/shop/aisle/{aisle}`, `/shop/product/{product}`, `/shop/compare`, `/shop/resolver`, `/shop/saved-baskets`, `/shop/quote-request/{product}`, `/shop/marketplace-brief`, `/shop/retainer-proposal`, `/search`
 - **Demo data:** the client's quote requests `TBCA-SUB-2026-QT0047` and `TBCA-SUB-2026-QT0052`, and issued quote `TBCA-QTE-2026-000047` (Cybersecurity Risk Assessment).
 - **Admin (Shop Control Tower):** `/admin/shop` plus `orders`, `quotes`, `pricing`, `product-master`, `variants`, `versions`, `releases`, `listing-gate`, `listing-state`, `licences`, `entitlements`, `subscriptions`, `retainers`, `marketplace`, `handoffs`, `reconciliation`, `duplication`, `routes`, `audit`
+
+#### Industry aisle listings
+
+The client's register is organised by service, so every Sprint's home aisle is a service aisle and the industry aisles were empty. A Sprint keeps its home aisle (`sprints.shop_aisle`) and can also be listed in Agriculture & Agri-Business, Energy & Utilities, Health & Life Sciences, Manufacturing & Industry, Mining & Natural Resources, Tourism & Hospitality and Risk & Cybersecurity (table `shop_aisle_listings`). The rules are in `app/Support/Shop/IndustryListings.php` and give the same result on every run.
+
+- **Named:** the Sprint names the industry. Whole words or phrases are matched in the title, summary, description and the register's problem, promise, deliverable and subcategory. The register's category names and an exclusion list per aisle are removed first, so "Power BI", "power AI", "Business Health Score", "Founder Clinic", "Service Delivery Factory", "content factory", "data mining", "lodge a complaint" and "Portal Scoping Sprint, Technology, Digital Transformation, Cybersecurity and Cloud" do not count. All named matches are listed.
+- **Relevant:** a general Sprint every sector buys (feasibility, bankable plans, funding and investment readiness, project finance and PPP, ESG and impact, licensing and permits, market entry, export, value and supply chain, financial models, due diligence), plus each aisle's own signals (for example lean, inventory and quality for manufacturing). Each Sprint is scored on its register subcategory, keywords in its base title and summary, the Industries module's Sprint category for that industry and the featured flag. Each aisle takes the top 150, with at most 25 from one subcategory.
+- **Manual:** TBCA edits `database/seeders/Sections/data/shop/aisle-overrides.csv` (columns `code`, `aisle`, `action`, `note`). `add` lists a Sprint in an aisle; `remove` takes it out whatever the rules say. The file is applied last. It ships with the header row only.
+- **Order in an aisle:** Sprints shelved there, then manual and named listings, then relevant ones by score.
+- **Rebuild:** `php artisan shop:industry-listings` rebuilds the listings, prints the counts per aisle and writes the review list `docs/knowledge-base/kruger-2026-10/industry-aisle-listings.csv`. `--dry-run` prints the counts and changes nothing. `php artisan db:seed` runs the same rebuild after the Sprint register (`ShopAisleListingsSeeder`).
+- **Counts:** aisle counts, aisle pages, search and the shop category filter include cross-listed Sprints. Each Sprint counts once per aisle.
 
 ### Digital Products
 

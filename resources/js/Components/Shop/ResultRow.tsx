@@ -80,6 +80,7 @@ export default function ResultRow({ r }: { r: SearchResult }) {
                     {r.delivery && <Chip icon={<Clock className="size-3" />}>{r.delivery}</Chip>}
                     {r.act !== 'A2' && r.act !== 'A7' ? <Chip tone="green" icon={<UserCheck className="size-3" />}>Human-Reviewed</Chip> : <Chip>{r.output_format ?? 'Instant Access'}</Chip>}
                     {r.source === 'sprint' && <Chip tone="gold">Sprint catalogue</Chip>}
+                    {r.also_in && <Chip>Also in {r.also_in}</Chip>}
                 </div>
             </div>
             <div className="relative z-10 flex shrink-0 flex-row items-center justify-between gap-3 sm:w-56 sm:flex-col sm:items-end">
@@ -121,6 +122,7 @@ export function ResultCard({ r }: { r: SearchResult }) {
             <div className="mt-2 flex flex-wrap gap-1.5">
                 <ActTag act={r.act} label={r.act_label} />
                 {r.delivery && <Chip>{r.delivery}</Chip>}
+                {r.also_in && <Chip>Also in {r.also_in}</Chip>}
             </div>
             <div className="relative z-10 mt-3 flex items-center justify-between gap-2 border-t border-parchment-300 pt-3">
                 <PriceLabel r={r} className="text-sm" />

@@ -4,9 +4,12 @@ import { ArrowRight, BadgeCheck, ChevronRight, Clock, HelpCircle, Layers, Layout
 import { HeroStats, ShopCrumbs, ShopHero, TrustStrip } from '@/Components/Shop/Bits';
 import ShopIcon from '@/Components/Shop/ShopIcon';
 import FilterCheckboxes from '@/Components/Shop/FilterCheckboxes';
+import { ResultCard } from '@/Components/Shop/ResultRow';
+import { Pagination } from '@/Components/Sprints/CatalogueParts';
 import { usePrice } from '@/lib/money';
 import { cn } from '@/lib/cn';
-import type { Aisle as AisleRecord, CountOption, Subcategory } from '@/types/shop';
+import type { Aisle as AisleRecord, CountOption, SearchResult, Subcategory } from '@/types/shop';
+import type { Paginated } from '@/types/sprints';
 
 interface Props {
     aisle: AisleRecord;
@@ -15,11 +18,23 @@ interface Props {
     actCounts: CountOption[];
     deliveryCounts: CountOption[];
     stats: { subcategories: number; acts: string; delivery: string };
-    /** Sprints from the client's register shelved in this aisle. */
+    /** Published Sprints in this aisle: shelved here plus cross-listed here. */
     sprintCount: number;
+    /** Published Sprints whose home aisle is this one. */
+    homeSprintCount: number;
+    /** One page of the Sprints in this aisle (shelved here first, then cross-listed). */
+    sprints: Paginated<SearchResult>;
 }
 
-export default function Aisle({ aisle, subcategories, filters, actCounts, deliveryCounts, stats, sprintCount }: Props) {
+export default function Aisle({ aisle, subcategories, filters, actCounts, deliveryCounts, stats, sprintCount, homeSprintCount, sprints }: Props) {
+    const crossCount = sprintCount - homeSprintCount;
+    const hasSubcategories = stats.subcategories > 0;
+    const showPage = (p: number) =>
+        router.get(
+            `/shop/aisle/${aisle.slug}`,
+            { q: filters.q || undefined, acts: filters.acts.length ? filters.acts : undefined, delivery: filters.delivery.length ? filters.delivery : undefined, sort: filters.sort !== 'az' ? filters.sort : undefined, view: filters.view !== 'grid' ? filters.view : undefined, page: p > 1 ? p : undefined },
+            { only: ['sprints'], preserveState: true, preserveScroll: true, onSuccess: () => document.getElementById('aisle-sprints')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) },
+        );
     const price = usePrice();
     const [q, setQ] = useState(filters.q);
     const go = (patch: Partial<Props['filters']>) => {
@@ -40,7 +55,7 @@ export default function Aisle({ aisle, subcategories, filters, actCounts, delive
                 title={
                     <span className="flex flex-wrap items-center gap-3">
                         {aisle.name}
-                        <span className="rounded-full border border-gold-500 px-2.5 py-0.5 font-sans text-xs font-semibold text-gold-400">{stats.subcategories} Subcategories</span>
+                        {hasSubcategories && <span className="rounded-full border border-gold-500 px-2.5 py-0.5 font-sans text-xs font-semibold text-gold-400">{stats.subcategories} Subcategories</span>}
                     </span>
                 }
                 intro={aisle.description}
@@ -58,7 +73,8 @@ export default function Aisle({ aisle, subcategories, filters, actCounts, delive
 
             <div className="container-tbca py-6">
                 <div className="grid gap-6 lg:grid-cols-12">
-                    <aside className="lg:col-span-3">
+                    {/* The filters refine the subcategory grid, so aisles without subcategories show the Sprint list at full width. */}
+                    <aside className={cn('lg:col-span-3', !hasSubcategories && 'hidden')}>
                         <div className="space-y-3 rounded-[8px] border border-parchment-400 bg-white p-4">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-sm font-semibold text-ink-900">Refine Your Browse</h2>
@@ -69,43 +85,48 @@ export default function Aisle({ aisle, subcategories, filters, actCounts, delive
                         </div>
                     </aside>
 
-                    <section className="min-w-0 lg:col-span-9" aria-label="Subcategories">
-                        <div className="mb-4 flex flex-wrap items-center gap-3">
-                            <form
-                                role="search"
-                                className="relative w-full sm:w-64"
-                                onSubmit={(e) => {
-                                    e.preventDefault();
-                                    go({ q });
-                                }}
-                            >
-                                <label htmlFor="sub-q" className="sr-only">Search subcategories</label>
-                                <input id="sub-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search subcategories..." className="h-9 w-full rounded-[4px] border border-parchment-500 bg-white pr-9 pl-3 text-sm" />
-                                <button type="submit" aria-label="Search subcategories" className="absolute top-0 right-0 flex size-9 items-center justify-center text-gold-700"><Search className="size-4" /></button>
-                            </form>
-                            <p className="text-sm font-semibold text-ink-800">Showing {subcategories.length} subcategories</p>
-                            <div className="ml-auto flex flex-wrap items-center gap-2">
-                                {(['grid', 'list'] as const).map((v) => (
-                                    <button key={v} type="button" aria-pressed={filters.view === v} onClick={() => go({ view: v })} className={cn('inline-flex h-9 items-center gap-1.5 rounded-[4px] border px-3 text-xs font-medium', filters.view === v ? 'border-gold-500 bg-gold-50 text-gold-800' : 'border-parchment-500 bg-white text-ink-700')}>
-                                        {v === 'grid' ? <LayoutGrid className="size-4" /> : <List className="size-4" />} {v === 'grid' ? 'Grid View' : 'List View'}
-                                    </button>
-                                ))}
-                                <label className="flex items-center gap-2 text-xs font-medium text-ink-600">
-                                    Sort by:
-                                    <select value={filters.sort} onChange={(e) => go({ sort: e.target.value })} className="h-9 rounded-[4px] border border-gold-400 bg-white px-2 text-sm">
-                                        <option value="az">A to Z</option>
-                                        <option value="za">Z to A</option>
-                                        <option value="price">Lowest price</option>
-                                        <option value="largest">Most Sprints</option>
-                                    </select>
-                                </label>
+                    <section className={cn('min-w-0', hasSubcategories ? 'lg:col-span-9' : 'lg:col-span-12')} aria-label={hasSubcategories ? 'Subcategories' : 'Sprints'}>
+                        {hasSubcategories && (
+                            <div className="mb-4 flex flex-wrap items-center gap-3">
+                                <form
+                                    role="search"
+                                    className="relative w-full sm:w-64"
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        go({ q });
+                                    }}
+                                >
+                                    <label htmlFor="sub-q" className="sr-only">Search subcategories</label>
+                                    <input id="sub-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search subcategories..." className="h-9 w-full rounded-[4px] border border-parchment-500 bg-white pr-9 pl-3 text-sm" />
+                                    <button type="submit" aria-label="Search subcategories" className="absolute top-0 right-0 flex size-9 items-center justify-center text-gold-700"><Search className="size-4" /></button>
+                                </form>
+                                <p className="text-sm font-semibold text-ink-800">Showing {subcategories.length} subcategories</p>
+                                <div className="ml-auto flex flex-wrap items-center gap-2">
+                                    {(['grid', 'list'] as const).map((v) => (
+                                        <button key={v} type="button" aria-pressed={filters.view === v} onClick={() => go({ view: v })} className={cn('inline-flex h-9 items-center gap-1.5 rounded-[4px] border px-3 text-xs font-medium', filters.view === v ? 'border-gold-500 bg-gold-50 text-gold-800' : 'border-parchment-500 bg-white text-ink-700')}>
+                                            {v === 'grid' ? <LayoutGrid className="size-4" /> : <List className="size-4" />} {v === 'grid' ? 'Grid View' : 'List View'}
+                                        </button>
+                                    ))}
+                                    <label className="flex items-center gap-2 text-xs font-medium text-ink-600">
+                                        Sort by:
+                                        <select value={filters.sort} onChange={(e) => go({ sort: e.target.value })} className="h-9 rounded-[4px] border border-gold-400 bg-white px-2 text-sm">
+                                            <option value="az">A to Z</option>
+                                            <option value="za">Z to A</option>
+                                            <option value="price">Lowest price</option>
+                                            <option value="largest">Most Sprints</option>
+                                        </select>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         {sprintCount > 0 && (
                             <div className="mb-4 flex flex-col gap-2 rounded-[8px] border border-gold-300 bg-gold-50 p-4 sm:flex-row sm:items-center sm:justify-between">
                                 <p className="text-sm text-ink-800">
-                                    <strong>{sprintCount.toLocaleString('en-ZA')} Sprints</strong> are shelved in {aisle.name}.
+                                    <strong>{sprintCount.toLocaleString('en-ZA')} Sprints</strong> are in {aisle.name}
+                                    {crossCount > 0 && homeSprintCount > 0 && <>: {homeSprintCount.toLocaleString('en-ZA')} shelved here and {crossCount.toLocaleString('en-ZA')} also listed here from other aisles</>}
+                                    {crossCount > 0 && homeSprintCount === 0 && <>. They are shelved in other aisles and also listed here because they name this topic or are relevant to it</>}
+                                    .
                                 </p>
                                 <Link href={`/search?category=${aisle.slug}&all=1`} className="inline-flex h-9 items-center gap-1.5 self-start rounded-[4px] bg-gold-500 px-4 text-[0.8125rem] font-semibold text-ink-950 hover:bg-gold-400 sm:self-auto">
                                     Browse all Sprints in this aisle <ArrowRight className="size-4" aria-hidden="true" />
@@ -113,7 +134,7 @@ export default function Aisle({ aisle, subcategories, filters, actCounts, delive
                             </div>
                         )}
 
-                        {subcategories.length === 0 ? (
+                        {!hasSubcategories ? null : subcategories.length === 0 ? (
                             <p className="rounded-[8px] border border-dashed border-parchment-500 bg-white p-8 text-center text-sm text-ink-600">No subcategories match these filters.</p>
                         ) : (
                             <ul className={cn('grid gap-3', list ? 'grid-cols-1' : 'sm:grid-cols-2 xl:grid-cols-4')}>
@@ -136,6 +157,25 @@ export default function Aisle({ aisle, subcategories, filters, actCounts, delive
                                     </li>
                                 ))}
                             </ul>
+                        )}
+
+                        {sprints.total > 0 && (
+                            <div id="aisle-sprints" className={cn('scroll-mt-24', hasSubcategories && 'mt-6')}>
+                                <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+                                    <h2 className="text-base font-semibold text-ink-900">Sprints in this aisle</h2>
+                                    <p className="text-xs text-ink-600">
+                                        Showing {sprints.from ?? 0}-{sprints.to ?? 0} of {sprints.total.toLocaleString('en-ZA')}
+                                    </p>
+                                </div>
+                                <ul className={cn('grid gap-3 sm:grid-cols-2', hasSubcategories ? 'xl:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4')}>
+                                    {sprints.data.map((r) => (
+                                        <li key={r.key}>
+                                            <ResultCard r={r} />
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Pagination results={sprints} onPage={showPage} />
+                            </div>
                         )}
 
                         <div className="mt-5 flex flex-wrap items-center gap-3 rounded-[8px] border border-parchment-400 bg-white p-4">

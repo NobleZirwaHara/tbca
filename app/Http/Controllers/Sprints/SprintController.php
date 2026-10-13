@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Sprint;
 use App\Models\Submission;
 use App\Support\Platform\Reference;
+use App\Support\Shop\IndustryListings;
 use App\Support\Sprints\Catalogue;
 use App\Support\Sprints\Packages;
 use App\Support\Sprints\SprintOffer;
@@ -61,6 +62,8 @@ class SprintController extends Controller
             'selectedPackage' => $package['key'] ?? null,
             'selectedAddons' => Catalogue::list($request->query('addons', '')),
             'pricing' => SprintOffer::pricing(),
+            // Online Shop aisles the Sprint appears in: its home aisle, then industry cross-listings.
+            'listedIn' => IndustryListings::listedIn($sprint),
             'meta' => [
                 'category_label' => $sprint->subcategory ?: ($category['label'] ?? null),
                 'category_href' => $sprint->category ? "/sprints/category/{$sprint->category}" : '/sprints',

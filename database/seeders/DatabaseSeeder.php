@@ -53,6 +53,9 @@ class DatabaseSeeder extends Seeder
         // The 7,008-row Sprint register links to and extends what every other seeder created, so it runs last.
         usort($sections, fn ($a, $b) => (basename($a) === 'SprintsRegisterSeeder.php') <=> (basename($b) === 'SprintsRegisterSeeder.php'));
 
+        // The industry aisle cross-listings read every Sprint, so they are built after the register.
+        usort($sections, fn ($a, $b) => (basename($a) === 'ShopAisleListingsSeeder.php') <=> (basename($b) === 'ShopAisleListingsSeeder.php'));
+
         foreach ($sections as $file) {
             $this->call('Database\\Seeders\\Sections\\'.basename($file, '.php'));
         }

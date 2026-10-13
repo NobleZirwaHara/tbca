@@ -37,16 +37,18 @@ class Search
      * Every eligible record (listed shop masters + published sprints), normalised.
      *
      * Building it means reading ~7,800 rows, so the normalised index is cached and keyed on
-     * each table's row count and latest update: any seeder or admin edit rebuilds it.
+     * each table's row count and latest update (and the industry aisle listings): any seeder,
+     * admin edit or listings rebuild rebuilds it.
      */
     public static function corpus(): Collection
     {
         $version = implode('|', [
             Product::query()->count(), Product::query()->max('updated_at'),
             Sprint::query()->count(), Sprint::query()->max('updated_at'),
+            IndustryListings::version(),
         ]);
 
-        return collect(Cache::remember('shop.search-corpus.v2.'.md5($version), now()->addDay(), fn () => self::buildCorpus()));
+        return collect(Cache::remember('shop.search-corpus.v3.'.md5($version), now()->addDay(), fn () => self::buildCorpus()));
     }
 
     /** @return list<array<string, mixed>> */
@@ -55,9 +57,10 @@ class Search
         $shop = Product::query()->listed()->get()->map(fn (Product $p) => self::fromProduct($p));
 
         $shopCodes = array_flip($shop->pluck('code')->all());
+        $listings = IndustryListings::bySprint();
         $sprints = Sprint::query()->where('status', 'published')->get(self::SPRINT_COLUMNS)
             ->reject(fn (Sprint $s) => isset($shopCodes[$s->code]))
-            ->map(fn (Sprint $s) => self::fromSprint($s));
+            ->map(fn (Sprint $s) => [...self::fromSprint($s), 'listed_in' => $listings[$s->id] ?? []]);
 
         return $shop->concat($sprints)->values()->all();
     }
@@ -87,6 +90,7 @@ class Search
             'icon' => $p->icon,
             'image_url' => null,
             'aisle' => $p->aisle,
+            'listed_in' => [],
             'subcategory' => $p->subcategory,
             'subcategory_name' => $subs->firstWhere('slug', $p->subcategory)['name'] ?? Str::headline((string) $p->subcategory),
             'output_format' => $p->output_format,
@@ -129,6 +133,8 @@ class Search
             'image_url' => $s->image_url,
             // Register Sprints are shelved in an Online Shop aisle (see the register build rules).
             'aisle' => $s->shop_aisle,
+            // Other aisles the Sprint is cross-listed in: aisle => [reason, position] (see IndustryListings).
+            'listed_in' => [],
             'subcategory' => $s->subcategory ?? $s->category,
             'subcategory_name' => Str::headline((string) ($s->subcategory ?? $s->category ?? 'Sprints')),
             'output_format' => $s->type ? Str::headline($s->type) : null,
@@ -246,14 +252,14 @@ class Search
             'acts' => $matches->countBy('act')->all(),
             'delivery' => $matches->countBy('delivery_band')->all(),
             'subcategories' => $matches->groupBy('subcategory')->map(fn ($g) => ['name' => $g->first()['subcategory_name'], 'count' => $g->count()])->all(),
-            'aisles' => $matches->countBy('aisle')->all(),
+            'aisles' => self::aisleFacet($matches),
         ];
 
         $filtered = $matches
             ->when(! empty($f['acts']), fn ($c) => $c->whereIn('act', $f['acts']))
             ->when(! empty($f['delivery']), fn ($c) => $c->whereIn('delivery_band', $f['delivery']))
             ->when(! empty($f['subcategories']), fn ($c) => $c->whereIn('subcategory', $f['subcategories']))
-            ->when(! empty($f['aisle']), fn ($c) => $c->where('aisle', $f['aisle']))
+            ->when(! empty($f['aisle']), fn ($c) => $c->filter(fn ($r) => self::inAisle($r, $f['aisle'])))
             ->when(! empty($f['buyer']), fn ($c) => $c->filter(fn ($r) => in_array($f['buyer'], $r['buyer_types'], true)))
             ->when(! empty($f['automation']), fn ($c) => $c->where('automation', $f['automation']))
             ->when(! empty($f['review']), fn ($c) => $c->where('review', $f['review']))
@@ -265,7 +271,10 @@ class Search
             'price_asc' => $filtered->sortBy(fn ($r) => $r['price_zar'] ?? PHP_INT_MAX),
             'price_desc' => $filtered->sortByDesc(fn ($r) => $r['price_zar'] ?? -1),
             'name' => $filtered->sortBy('name'),
-            default => $filtered->sortByDesc(fn ($r) => sprintf('%05d-%s', $r['score'], $r['source'] === 'shop' ? '1' : '0')),
+            // In one aisle: Sprints shelved there first, then named and manual cross-listings, then relevant ones.
+            default => ! empty($f['aisle'])
+                ? $filtered->sortBy(fn ($r) => [$tokens === [] ? 0 : -$r['score'], ...self::aisleRank($r, $f['aisle']), -$r['score'], $r['source'] === 'shop' ? 0 : 1])
+                : $filtered->sortByDesc(fn ($r) => sprintf('%05d-%s', $r['score'], $r['source'] === 'shop' ? '1' : '0')),
         };
 
         $total = $sorted->count();
@@ -282,7 +291,7 @@ class Search
 
         $page = max(1, (int) ($f['page'] ?? 1));
         $results = $sorted->values()->slice(($page - 1) * self::PER_PAGE, self::PER_PAGE)->values()
-            ->map(fn ($r) => collect($r)->except('haystack')->all());
+            ->map(fn ($r) => [...collect($r)->except(['haystack', 'listed_in'])->all(), ...self::crossListing($r, $f['aisle'] ?? null)]);
 
         return [
             'query' => $q,
@@ -300,8 +309,53 @@ class Search
             'suggestions' => $mode === 'zero' ? self::suggestions($q, $corpus) : [],
             'nearest' => $mode === 'zero' || $mode === 'too_many' ? Catalogue::nearestAisles($q)->all() : [],
             'refinements' => $mode === 'too_many' ? collect($facets['subcategories'])->sortByDesc('count')->take(5)->map(fn ($s, $k) => ['slug' => $k, ...$s])->values()->all() : [],
-            'top' => $mode === 'zero' ? $corpus->where('featured', true)->take(4)->map(fn ($r) => collect($r)->except('haystack')->all())->values()->all() : [],
+            'top' => $mode === 'zero' ? $corpus->where('featured', true)->take(4)->map(fn ($r) => collect($r)->except(['haystack', 'listed_in'])->all())->values()->all() : [],
         ];
+    }
+
+    /** True when the record is shelved in the aisle or cross-listed there. */
+    public static function inAisle(array $r, string $aisle): bool
+    {
+        return $r['aisle'] === $aisle || isset($r['listed_in'][$aisle]);
+    }
+
+    /** @return array{0: int, 1: int} tier (0 shelved here, 1 named or manual, 2 relevant) and position in the aisle */
+    private static function aisleRank(array $r, string $aisle): array
+    {
+        if ($r['aisle'] === $aisle || ! isset($r['listed_in'][$aisle])) {
+            return [0, 0];
+        }
+        [$reason, $position] = $r['listed_in'][$aisle];
+
+        return [$reason === 'relevant' ? 2 : 1, $position];
+    }
+
+    /** Records per aisle, counting cross-listings in each aisle they are listed in. */
+    private static function aisleFacet(Collection $matches): array
+    {
+        $counts = [];
+        foreach ($matches as $r) {
+            foreach (array_unique(array_filter([$r['aisle'], ...array_keys($r['listed_in'] ?? [])])) as $a) {
+                $counts[$a] = ($counts[$a] ?? 0) + 1;
+            }
+        }
+
+        return $counts;
+    }
+
+    /**
+     * Cross-listing label for a result shown in one aisle: "Also in {home aisle}" for a Sprint
+     * whose home aisle is elsewhere.
+     *
+     * @return array{listing: ?string, also_in: ?string}
+     */
+    public static function crossListing(array $r, ?string $aisle): array
+    {
+        if (! $aisle || $r['aisle'] === $aisle || ! isset($r['listed_in'][$aisle])) {
+            return ['listing' => null, 'also_in' => null];
+        }
+
+        return ['listing' => $r['listed_in'][$aisle][0], 'also_in' => $r['aisle'] ? (Catalogue::aisle($r['aisle'])['name'] ?? null) : null];
     }
 
     /** Synonym and spelling suggestions for a zero-result query. */
