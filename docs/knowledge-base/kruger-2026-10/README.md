@@ -13,6 +13,8 @@ Kruger Phiri (KP) sent ten emails between 8 and 12 October 2026. This folder hol
 | sources/aiim-deep-information-catalogue-2.0.md | AIIM Deep Information Catalogue 2.0 |
 | sources/decision-and-information-tree-booklet.txt | Decision and Information Tree Booklet: AIIM vs Countries |
 | sources/zoho-one-implementation-guide.txt | TBCA Zoho One Implementation Guide, 11 Oct 2026 |
+| sources/kp-teb-v2.0-consolidated-blueprint.txt | KP Thought Leadership TEB v2.0 Consolidated Blueprint (Drive folder "KP Thought Leadership", shared 13 Oct 2026) |
+| public/pages/KP Thought Leadership/ | KP's 48 page mockups from the same folder (47 numbered screens plus the landing page) |
 
 Structured data from the Deep Registers 2.1 workbook, the project briefs and the Botswana prototype is in `database/seeders/Sections/data/aiim/`.
 
@@ -24,7 +26,7 @@ Structured data from the Deep Registers 2.1 workbook, the project briefs and the
 | Languages not working, Arabic right to left | Done for the site shell, navigation, home, contact and offices pages in Afrikaans, Portuguese, Chinese, French, Swahili and Arabic. Arabic switches the whole layout to right to left. Other page bodies fall back to English until their text is translated. | `lang/*.json`, `resources/js/lib/i18n.ts` |
 | KP Thought Leadership and Webinars tabs need dropdown menus | Done | `app/Support/Content/Navigation.php` |
 | Find Webinars not working; build the webinar mockups | Done. Search and filters work; all 29 mockup screens are built, including the staff consoles. | `/webinars`, `/admin/webinars` |
-| KP Thought Leadership: all 72 pages | 13 working pages built on a content register. The rest waits for KP's mockups and articles. The article link in KP's email pointed back to the site, so the articles still need to be sent. | `/kp-thought-leadership`, `app/Support/Content/KpThoughtLeadership.php` |
+| KP Thought Leadership: all 72 pages | Done. KP's folder held the TEB v2.0 blueprint and 48 page mockups (47 numbered screens plus the landing page; there is no mockup for screens 021, 049, 050 or the 22 staff consoles). All 72 blueprint screens are built: 50 public screens, including Future Builders, and 22 governance consoles for staff. Screens without a mockup follow the blueprint. The folder had no article texts, so 28 insights show their title and summary only and one shows the excerpt visible in KP's design. The design's Founder statistics (20+ years, 1,000+ projects, 54 countries, 10,000+ entrepreneurs) stay hidden until evidence is approved (blueprint 12.5). | `/kp-thought-leadership`, `/admin/kp`, `app/Support/Content/KpThoughtLeadership.php`, `app/Support/Content/KpTools.php` |
 | Contact: two more country offices, then "View all other Country Offices" | Done. Botswana and Mauritius are shown under Head Office, with a link to the new offices page. | `/contact`, `/contact/offices` |
 | VDR enquiry: transaction types | Done. The five groups and 19 types are in the form. | `/virtual-deal-room/enquiry` |
 | VDR enquiry: Indicative Raise bands that follow the currency | Done. The bands are set in rand and shown in the selected currency. | `resources/js/lib/moneyBands.ts` |
@@ -39,9 +41,12 @@ Structured data from the Deep Registers 2.1 workbook, the project briefs and the
 
 ## What KP Still Needs to Send
 
-1. The Drive link to the KP Thought Leadership articles.
-2. The mockups for the 72 KP Thought Leadership pages.
-3. The link to TEST DATA 3.
-4. Country packs for the other countries (Malawi, Ghana, Nigeria, Egypt, Morocco, South Africa, Algeria) and boundary data below district level.
-5. Confirmed sites for the 9 project briefs that have placeholder coordinates.
-6. The full 7008 Sprint register.
+1. The KP Thought Leadership article texts. The shared folder had none. For each of the 29 insights in his designs: the full text, publication date and sources.
+2. Evidence for the Founder statistics in the designs (years of experience, projects advised, countries engaged, entrepreneurs empowered), so they can be approved and shown.
+3. Approved session fees for Work With Kruger and Book Kruger (the design figures are shown as indicative).
+4. Approved Founder photographs as separate image files, and verified links for the speaking and media appearances.
+5. Mockups for screens 021 (Boardroom Challenger), 049 (Freshness Badge), 050 (Correction Notice) and the 22 governance consoles, if they should differ from the blueprint build.
+6. The link to TEST DATA 3.
+7. Country packs for the other countries (Malawi, Ghana, Nigeria, Egypt, Morocco, South Africa, Algeria) and boundary data below district level.
+8. Confirmed sites for the 9 project briefs that have placeholder coordinates.
+9. The full 7008 Sprint register.

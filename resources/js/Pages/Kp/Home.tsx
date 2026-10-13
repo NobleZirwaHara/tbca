@@ -1,120 +1,121 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import * as L from 'lucide-react';
-import KpFrame, { KpItemCard, SectionHeading, type KpCard, type KpShared } from '@/Components/Kp/KpFrame';
-import { BtnLink, EventCover, Ico, StateChip } from '@/Components/Webinars/kit';
-import type { WebinarEvent } from '@/types/webinars';
+import { BtnLink, Crumbs, Ico, PillTabs } from '@/Components/Webinars/kit';
+import { BASE, InsightCard, KpMonogram, type KpCard, type KpShared, type KpTheme } from '@/Components/Kp/kit';
 
 interface Props extends KpShared {
-    featured: KpCard[];
-    latest: KpCard[];
-    numbers: { value: string; label: string; icon: string }[];
-    counts: { items: number; published: number; series: number };
-    events: WebinarEvent[];
+    tab: string;
+    items: KpCard[];
+    themes: KpTheme[];
+    focusAreas: [string, string, string][];
+    engage: [string, string, string, string][];
 }
 
-export default function Home({ sections, themes, featured, latest, numbers, counts, events }: Props) {
+const TABS = [
+    { key: 'featured', label: 'Featured Insights' },
+    { key: 'articles', label: 'Articles' },
+    { key: 'interviews', label: 'Interviews & Media' },
+    { key: 'notes', label: "Founder's Notes" },
+    { key: 'frameworks', label: 'Frameworks' },
+];
+
+/** KP Thought Leadership landing page (Page 1 of KP's designs). */
+export default function Home({ tab, items, themes, focusAreas, engage, kpNav }: Props) {
     return (
-        <KpFrame
-            sections={sections}
-            crumbs={[['Home', '/'], ['KP Thought Leadership']]}
-            title="KP Thought Leadership."
-            gold="Ideas. Insights. Impact."
-            lead="Strategic perspectives from Kruger Phiri, Founder and Managing Partner of The Business Clinic.Africa, on business, investment, leadership, innovation and Africa's transformation."
-            actions={
-                <>
-                    <BtnLink href="/kp-thought-leadership/articles" size="lg" icon="file-text">Explore the Article Library</BtnLink>
-                    <BtnLink href="/kp-thought-leadership/book" tone="ghostDark" size="lg" icon="calendar-days">Book KP to Speak</BtnLink>
-                </>
-            }
-            aside={
-                <div className="rounded-[12px] border border-gold-600/60 bg-ink-950/80 p-6 text-center">
-                    <p className="font-serif text-[4rem] leading-none font-bold text-gold-500">KP</p>
-                    <p className="mt-2 font-serif tracking-[0.3em] text-gold-400">KRUGER PHIRI</p>
-                    <p className="mt-1 text-[0.75rem] text-parchment-300">FCCA | Founder & Managing Partner</p>
-                    <Link href="/kp-thought-leadership/about-kruger-phiri" className="mt-4 inline-flex items-center gap-1 text-[0.8125rem] font-semibold text-gold-400">About Kruger Phiri <L.ArrowRight className="size-4" aria-hidden="true" /></Link>
-                </div>
-            }
-        >
+        <div className="bg-ink-950 pb-10 text-parchment-200">
             <Head title="KP Thought Leadership" />
-
-            <ul className="grid gap-3 rounded-[12px] border border-gold-300 bg-ink-950 p-5 sm:grid-cols-3 lg:grid-cols-5">
-                {numbers.map((n) => (
-                    <li key={n.label} className="flex items-center gap-3">
-                        <Ico name={n.icon} className="size-7 text-gold-500" />
-                        <span><span className="block font-serif text-2xl font-bold text-parchment-50">{n.value}</span><span className="text-[0.75rem] text-parchment-300">{n.label}</span></span>
-                    </li>
-                ))}
-            </ul>
-
-            <section>
-                <SectionHeading title="Explore the Section" sub="Everything Kruger Phiri publishes, says and teaches, in one place." />
-                <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                    {sections.slice(1).map((s) => (
-                        <li key={s.href}>
-                            <Link href={s.href} className="flex h-full flex-col rounded-[10px] border border-parchment-400 bg-white p-4 hover:border-gold-500">
-                                <span className="flex size-10 items-center justify-center rounded-full bg-gold-100 text-gold-700"><Ico name={s.icon} className="size-5" /></span>
-                                <span className="mt-2 font-semibold text-ink-900">{s.label}</span>
-                                <span className="text-[0.75rem] text-ink-500">{s.body}</span>
-                            </Link>
-                        </li>
+            <div className="container-tbca pt-5">
+                <Crumbs items={[['Home', '/'], ['KP Thought Leadership']]} dark />
+                <nav aria-label="KP Thought Leadership sections" className="mt-3 flex gap-1.5 overflow-x-auto pb-1">
+                    {kpNav.map(([label, href]) => (
+                        <Link key={href} href={href} className="shrink-0 rounded-full border border-ink-700 px-3 py-1 text-[0.75rem] font-semibold whitespace-nowrap text-parchment-200 hover:border-gold-500 hover:text-gold-300">
+                            {label}
+                        </Link>
                     ))}
-                </ul>
-            </section>
+                </nav>
 
-            <section>
-                <SectionHeading title="Featured Insights" more={['View all articles', '/kp-thought-leadership/articles']} />
-                <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{featured.map((i) => <KpItemCard key={i.slug} item={i} />)}</ul>
-            </section>
-
-            <section>
-                <SectionHeading title="Browse by Theme" />
-                <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                    {themes.map((t) => (
-                        <li key={t.slug}>
-                            <Link href={`/kp-thought-leadership/themes/${t.slug}`} className="flex h-full gap-3 rounded-[10px] border border-parchment-400 bg-white p-4 hover:border-gold-500">
-                                <Ico name={t.icon} className="size-6 shrink-0 text-gold-600" />
-                                <span><span className="block font-semibold text-ink-900">{t.label}</span><span className="text-[0.75rem] text-ink-500">{t.blurb}</span></span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            {events.length > 0 && (
-                <section>
-                    <SectionHeading title="Hear KP Live" more={['All events', '/kp-thought-leadership/events']} />
-                    <ul className="grid gap-4 md:grid-cols-3">
-                        {events.map((e) => (
-                            <li key={e.slug} className="overflow-hidden rounded-[10px] border border-parchment-400 bg-white">
-                                <EventCover event={e} className="aspect-[16/7]" />
-                                <div className="p-4">
-                                    <StateChip event={e} />
-                                    <Link href={`/webinars/${e.slug}`} className="mt-2 block font-serif font-bold text-ink-900 hover:text-gold-700">{e.title}</Link>
-                                    <p className="text-[0.75rem] text-ink-500">{e.dateLong} | {e.timeRange}</p>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                <section className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem_17rem]">
+                    <div>
+                        <h1 className="font-serif text-[2.25rem] leading-tight font-bold text-parchment-50 md:text-[2.75rem]">
+                            KP Thought Leadership.
+                            <br />
+                            <span className="text-gold-400">Ideas. Insights. Impact.</span>
+                        </h1>
+                        <p className="mt-3 max-w-xl text-[0.9375rem] leading-relaxed">
+                            Strategic perspectives from Kruger Phiri on business, investment, leadership, innovation and Africa's transformation. Practical thinking you can test, with sources you can check.
+                        </p>
+                        <div className="mt-5 flex flex-wrap gap-3">
+                            <BtnLink href={`${BASE}/insights`} size="lg" icon="arrow-right">Explore All Insights</BtnLink>
+                            <BtnLink href={`${BASE}/speaking-media`} size="lg" tone="ghostDark" icon="play">Watch KP in Action</BtnLink>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-center rounded-[12px] border border-gold-700/40 bg-gradient-to-b from-ink-900 to-ink-950 p-6">
+                        <KpMonogram dark />
+                    </div>
+                    <aside className="rounded-[12px] border border-gold-700/50 bg-ink-900 p-4" aria-label="Focus areas">
+                        <h2 className="font-serif text-[1.0625rem] font-bold text-gold-400">Where KP Focuses</h2>
+                        <ul className="mt-3 space-y-2.5">
+                            {focusAreas.map(([t, b, i]) => (
+                                <li key={t} className="flex gap-2.5">
+                                    <Ico name={i} className="mt-0.5 size-5 shrink-0 text-gold-500" />
+                                    <span>
+                                        <span className="block text-[0.8125rem] font-semibold text-parchment-50">{t}</span>
+                                        <span className="block text-[0.6875rem] text-parchment-300">{b}</span>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </aside>
                 </section>
-            )}
 
-            <section>
-                <SectionHeading title="Latest Additions" more={['Open the library', '/kp-thought-leadership/articles']} />
-                <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{latest.map((i) => <KpItemCard key={i.slug} item={i} compact />)}</ul>
-                <p className="mt-3 text-[0.75rem] text-ink-500">{counts.items} entries in {counts.series} series. Entries marked &ldquo;Article pending from KP&rdquo; are published as Kruger Phiri releases each article.</p>
-            </section>
+                <section className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_17rem]">
+                    <div className="rounded-[12px] border border-gold-700/40 bg-ink-900 p-4">
+                        <PillTabs dark tabs={TABS} value={tab} onChange={(k) => router.get(BASE, k === 'featured' ? {} : { tab: k }, { preserveScroll: true, preserveState: true })} />
+                        {items.length === 0 ? (
+                            <p className="mt-4 rounded-[8px] border border-ink-700 p-6 text-center text-[0.875rem]">No items in this group yet.</p>
+                        ) : (
+                            <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                                {items.slice(0, 4).map((i) => <InsightCard key={i.slug} item={i} />)}
+                            </div>
+                        )}
+                    </div>
+                    <aside className="rounded-[12px] border border-gold-700/40 bg-ink-900 p-4">
+                        <h2 className="font-serif text-[1.0625rem] font-bold text-parchment-50">Popular Topics</h2>
+                        <ul className="mt-2 divide-y divide-ink-800">
+                            {themes.map((t) => (
+                                <li key={t.slug}>
+                                    <Link href={t.href} className="flex items-center gap-2.5 py-2 text-[0.8125rem] hover:text-gold-300">
+                                        <Ico name={t.icon} className="size-4 text-gold-500" />
+                                        <span className="flex-1">{t.label}</span>
+                                        <span className="text-[0.6875rem] text-parchment-400">{t.articles}</span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                        <BtnLink href={`${BASE}/topics`} className="mt-3 w-full" icon="arrow-right">View All Topics</BtnLink>
+                    </aside>
+                </section>
 
-            <section className="grid gap-4 rounded-[12px] bg-ink-950 p-6 text-parchment-100 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
-                <div>
-                    <h2 className="font-serif text-[1.5rem] font-bold text-parchment-50">Receive New Insight When It Publishes</h2>
-                    <p className="text-[0.875rem] text-parchment-300">Subscribe to the KP newsletter or invite Kruger Phiri to speak to your board, conference or team.</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                    <BtnLink href="/kp-thought-leadership/newsletter" icon="mail">Subscribe</BtnLink>
-                    <BtnLink href="/kp-thought-leadership/book" tone="ghostDark" icon="calendar-days">Book KP</BtnLink>
-                </div>
-            </section>
-            <p className="text-[0.75rem] text-ink-500">Published insight reflects the author&rsquo;s professional view. It is not advice for a specific business, transaction or jurisdiction.</p>
-        </KpFrame>
+                <section className="mt-6 grid gap-4 rounded-[12px] border border-gold-700/40 bg-ink-900 p-4 md:grid-cols-[14rem_repeat(4,minmax(0,1fr))_auto] md:items-center">
+                    <div className="flex items-center gap-3">
+                        <L.Presentation className="size-8 text-gold-500" aria-hidden="true" />
+                        <div>
+                            <h2 className="font-serif text-[1.0625rem] font-bold text-parchment-50">Engage With KP</h2>
+                            <p className="text-[0.6875rem]">Speaking, advisory sessions, boardroom strategy and media.</p>
+                        </div>
+                    </div>
+                    {engage.map(([t, s, i, h]) => (
+                        <Link key={t} href={h} className="flex items-center gap-2.5 rounded-[8px] p-2 hover:bg-ink-800">
+                            <Ico name={i} className="size-6 text-gold-400" />
+                            <span>
+                                <span className="block text-[0.8125rem] font-semibold text-parchment-50">{t}</span>
+                                <span className="block text-[0.6875rem] text-parchment-300">{s}</span>
+                            </span>
+                        </Link>
+                    ))}
+                    <BtnLink href={`${BASE}/book`} tone="ghostDark" icon="calendar-days">Contact KP Team</BtnLink>
+                </section>
+            </div>
+        </div>
     );
 }

@@ -8,7 +8,7 @@ The plan for connecting external services (payment gateways, email and WhatsApp,
 
 ## Mockup coverage
 
-**1,218 of the 1,303 original screens (93%) are implemented.** The screens are the PNGs in `public/pages/`.
+**1,266 of the 1,351 original screens (94%) are implemented.** The screens are the PNGs in `public/pages/`.
 
 The only screens not yet implemented are the 82 Countries screens and the `Countries_page` landing mockup in Front End Pages.
 
@@ -29,6 +29,7 @@ All 79 AIIM screens are built. AIIM mandate stages 7–15, the desks and the sta
 | Find Right Service | 16 | 16 |
 | Front End Pages | 29 | 28 |
 | Industries | 35 | 35 |
+| KP Thought Leadership | 48 | 48 (plus 25 blueprint screens with no mockup) |
 | Market Place | 34 | 34 |
 | Navigating Sprints page | 24 | 24 |
 | Navigating Through Due Diligence Tabs | 9 | 9 |
@@ -664,6 +665,29 @@ These are available on every page or across all modules.
 - **Display-only:** mandate stages 7–15, the enterprise, government, API and white-label desks, and staff actions in the admin consoles.
 - **Admin:** `/admin/aiim`, `/admin/aiim/advisor`, `/admin/aiim/finance`, `/admin/aiim/pricing`, `/admin/aiim/sources`
 
+### KP Thought Leadership
+
+- **What it does:** Kruger Phiri's thought leadership section, built to the KP TEB v2.0 Consolidated Blueprint and KP's 48 page mockups. All 72 blueprint screens (KP-SCR-001 to 072) are built; each page shows its Screen ID.
+- **Features (working):**
+  - Landing, navigation handoff, legacy bridge, authority landing and Founder profile. The design's Founder statistics are hidden until evidence is approved; focus areas are shown instead (blueprint 12.5).
+  - Insights, Founder's Notes, African Business Clinic, Topic Hub and Search, with filters by type, theme, voice, region and freshness. Every item carries a voice class (P, F, I, S, E, A), a freshness state and a geographic scope (AFR-G0 to G5).
+  - Article texts: none were supplied. 28 insights show title and summary from KP's designs; "The Real Problem Isn't Capital" shows the excerpt visible in the design. Nothing is written on KP's behalf.
+  - Work With Kruger and Book Kruger: five offers with indicative fees in the selected currency. A booking form creates a request (not a booking); staff confirm the delivery mode (K1 to K4) and fee first.
+  - Project Development Desk (brief form, and the demo client's projects), Speaking & Media (enquiry form), KP Resources (summary-sheet downloads), Country Lens (AIIM indicators, labelled as placeholders) and Sector Lens (Industries register).
+  - KP Knowledge Assistant: grounded answers from the KP register with numbered sources and a confidence score, a Source & Confidence panel, export, feedback and reporting. It abstains without evidence, routes regulated questions to a professional and refuses to speak as Kruger. No generative model is used.
+  - Explain It at My Level (five levels), Boardroom Challenger, Funder Readiness Interviewer (20 questions, saved), Project Fatal-Flaw Explorer, Decision Sheet (save and export), corrections timeline with a report form, Insight Action Pack, Diagnostic Questions (10 topics), Capital Readiness Scorecard (versions and trend), Investment Case Calculator (NPV, ROI, payback, IRR) and Decision Checklist.
+  - Free-to-Paid Disclosure, Related TBCA Route and the eight content standards pages (voice badge, synthetic disclosure, Founder attribution, evidence popover, professional limitation, geographic scope, freshness, correction notice).
+  - Future Builders: home, learner topic hub, Business Basics (12 lessons) and AI Literacy (10 lessons) with progress, Local Problem Challenge (reviewed before sharing; guardian email for ages 8 to 12), printable SMART goals worksheet, Educator Portal (teaching packs and access requests), Guardian page and Low-Bandwidth Mode. No commercial calls to action and no learner surnames.
+  - 22 governance consoles for staff (topics, lifecycle, voice, independent review, AI output approval, synthetic register, claim evidence, UTM, D023 funnel, customer value, Founder capacity, session pipeline, contested topics, duplication, knowledge graph, source freshness, Africa coverage, translation QA, Future Builders safety, AI agent control, corrections, experiments). Records move between the blueprint states with an audit trail. Hard rules are enforced: unevidenced claims cannot be approved, a hard review block cannot be overridden, and a booked or routed session needs a delivery mode.
+- **How to use:**
+  1. Open `/kp-thought-leadership`, then Insights, an article, or Ask KP Assistant. Try "What are the 5 pillars of execution?" and open its sources.
+  2. Request a session at `/kp-thought-leadership/book`; the request appears in `/admin/kp/sessions`.
+  3. Try the tools from `/kp-thought-leadership/african-business-clinic` and the learner pages at `/kp-thought-leadership/future-builders`.
+  4. Sign in as the admin and open `/admin/kp` for the 72-screen register, work queues and consoles.
+- **URLs:** `/kp-thought-leadership` (+ `handoff`, `legacy-bridge`, `authority`, `about`, `insights`, `founders-notes`, `african-business-clinic`, `topics`, `search`, `work-with-kruger`, `book`, `project-development`, `speaking-media`, `resources`, `africa/{country}`, `sectors/{sector}`, `ask`, `explain`, `boardroom-challenger`, `funder-readiness`, `project-fatal-flaw`, `decision-sheet`, `corrections`, `action-pack/{slug}`, `diagnostic-questions`, `tools/scorecards/capital-readiness`, `tools/calculators/investment-case`, `tools/checklists/go-no-go`, `free-and-paid`, `related-route`, `standards/{component}`, `future-builders/...`, `events`, `newsletter`)
+- **Demo data:** `KpSeeder`: 126 records for the consoles, five session requests, eight public corrections and three projects for the demo client (`amahle@agritechsa.co.za`).
+- **Admin:** `/admin/kp`, `/admin/kp/{console}`
+
 ### Assistants: NATASHA, KAREN, MICHAELA, NIKIWE
 
 - **What it does:** a chat assistant for each area of the site, each with its own persona. The table under Platform-wide features says where each one appears.
@@ -697,6 +721,7 @@ These are available on every page or across all modules.
   - Marketplace menu: Home, How It Works, Browse Services, Submit a Brief, Verified Providers, Become a Provider, My Marketplace, Provider Portal.
   - Partner Services menu: Home, Choose a Partner Service, How Partner Engagements Work, Profession & Jurisdiction Coverage, Request Partner Review, My Partner Requests, Partner Network, Professional Limitation Notice, Apply to Become a Partner, Partner Workspace.
   - Client Portal menu: Dashboard, Action Centre, Orders & Invoices, Projects & Deliverables, Document Vault, Support, My Meetings, DD Cases, Deal Rooms, Subscriptions, Retainers, Privacy.
+  - KP Thought Leadership menu: Home, Authority Landing, About the Founder, Insights, Founder's Notes, African Business Clinic, Topic Hub, KP Knowledge Assistant, Africa Lens, Work With Kruger, Book Kruger, Project Development Desk, Speaking & Media, KP Resources, Future Builders, KP Governance Consoles (staff).
   - AIIM menu: Home, South Africa Investor Cockpit, Sectors, Opportunities, Projects, Investors & Funders, Corridors, Risk & Outlook, Brief Store, Custom Intelligence, Methodology, Workspace, Wallet.
 - **Links:** the menus and footer are built from `app/Support/Content/Navigation.php`. They hold 169 unique links (22 tabs, 160 menu links and 41 footer links). Every link opens for the signed-in client except Provider Portal and Partner Workspace, which correctly need the provider or partner login.
 - **Logo:** the header uses `public/brand/tbca-logo-header.png` (with an `@2x` version), 46px tall in the 68px header bar. The footer uses its own logo size.

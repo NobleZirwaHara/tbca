@@ -260,3 +260,14 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='240' viewBox='0 0 480 240'%3E%3Cg fill='none' stroke='%237c561a' stroke-opacity='0.08' stroke-width='1'%3E%3Cpath d='M0 30C80 0 160 70 240 30S400 0 480 30'/%3E%3Cpath d='M0 70C90 40 150 110 240 70S390 40 480 70'/%3E%3Cpath d='M0 110C70 80 170 150 240 110S410 80 480 110'/%3E%3Cpath d='M0 150C90 120 150 190 240 150S390 120 480 150'/%3E%3Cpath d='M0 190C80 160 160 230 240 190S400 160 480 190'/%3E%3Cpath d='M0 230C90 200 150 270 240 230S390 200 480 230'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 480px 240px;
 }
+
+/* KP Future Builders low-bandwidth mode (KP-SCR-042): no generated art, no motion. */
+.kp-lite .kp-art {
+  display: none;
+}
+.kp-lite *,
+.kp-lite *::before,
+.kp-lite *::after {
+  animation: none !important;
+  transition: none !important;
+}

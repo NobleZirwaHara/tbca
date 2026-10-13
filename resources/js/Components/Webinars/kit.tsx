@@ -30,6 +30,8 @@ const ICONS: Record<string, LucideIcon> = {
     'wrench': L.Wrench, 'x': L.X, 'zap': L.Zap, 'languages': L.Languages, 'wifi': L.Wifi,
     'mic': L.Mic, 'presentation': L.Presentation, 'layout-dashboard': L.LayoutDashboard, 'user': L.User, 'calendar-check': L.CalendarCheck,
     'crown': L.Crown, 'mountain': L.Mountain, 'heart-pulse': L.HeartPulse, 'share': L.Share2, 'help-circle': L.CircleHelp,
+    'pen': L.PenLine, 'graduation-cap': L.GraduationCap, 'smile': L.Smile, 'sprout': L.Sprout, 'heart-handshake': L.HeartHandshake, 'list': L.List, 'book': L.Book,
+    'printer': L.Printer, 'calculator': L.Calculator, 'compass': L.Compass, 'flag': L.Flag, 'gauge': L.Gauge, 'list-checks': L.ListChecks, 'school': L.School, 'wifi-off': L.WifiOff, 'quote': L.Quote, 'info': L.Info, 'circle-alert': L.CircleAlert, 'thumbs-up': L.ThumbsUp, 'map-pin': L.MapPin, 'landmark': L.Landmark, 'printer-check': L.Printer,
 };
 
 export function ico(name?: string | null): LucideIcon {
