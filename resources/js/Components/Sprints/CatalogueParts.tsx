@@ -243,7 +243,7 @@ export function Spotlight({ item, label, whyLabel, compared, onCompare }: { item
             <span className="absolute -top-2.5 left-4 rounded-[3px] bg-gold-500 px-2 py-0.5 text-[0.625rem] font-bold tracking-wide text-ink-900 uppercase">{label}</span>
             <div className="flex gap-4">
                 <Link href={`/sprints/${item.slug}`} tabIndex={-1} aria-hidden="true" className="relative z-10 hidden w-36 shrink-0 overflow-hidden rounded-[6px] sm:block">
-                    <CoverArt seed={item.slug} category={item.category} label={item.title} className="aspect-[4/3]" />
+                    <CoverArt seed={item.slug} category={item.category} src={item.image_url} label={item.title} className="aspect-[4/3]" />
                 </Link>
                 <div className="min-w-0">
                     <div className="flex flex-wrap gap-1.5">

@@ -66,7 +66,7 @@ class CatalogueController extends Controller
             'results' => $results,
             'cart' => ['count' => $basket->count(), 'subtotal' => $basket->subtotal()],
             'savedCount' => $user ? SavedItem::query()->where('user_id', $user->id)->count() : 0,
-            'governedTotal' => Catalogue::GOVERNED_TOTAL,
+            'governedTotal' => Catalogue::governedTotal(),
         ]);
     }
 
@@ -77,7 +77,8 @@ class CatalogueController extends Controller
         $acts = array_values(array_filter((array) $request->query('acts', [])));
         $sort = $request->query('sort', 'az');
 
-        $all = collect(Catalogue::aisles());
+        // Product counts come from the data: listed shop products plus the Sprints shelved in each aisle.
+        $all = collect(Catalogue::aisles())->map(fn ($a) => [...$a, 'products' => Catalogue::productCountForAisle($a['slug'])]);
         $aisles = $all
             ->when($q !== '', fn ($c) => $c->filter(fn ($a) => str_contains(Str::lower($a['name'].' '.$a['description']), $q)))
             ->when($buyer, fn ($c) => $c->filter(fn ($a) => in_array($buyer, $a['buyers'], true)))
@@ -89,11 +90,11 @@ class CatalogueController extends Controller
         };
 
         return Inertia::render('Shop/AtoZ', [
-            'aisles' => $aisles->values()->map(fn ($a) => [...$a, 'listed' => Catalogue::productCountForAisle($a['slug'])]),
+            'aisles' => $aisles->values(),
             'filters' => ['q' => $request->query('q', ''), 'buyer' => $buyer, 'acts' => $acts, 'sort' => $sort, 'view' => $request->query('view', 'grid')],
             'buyerCounts' => collect(Catalogue::BUYER_TYPES)->map(fn ($label, $key) => ['value' => $key, 'label' => $label, 'count' => $all->filter(fn ($a) => in_array($key, $a['buyers'], true))->count()])->values(),
             'actCounts' => collect(Acts::ACTS)->map(fn ($a, $key) => ['value' => $key, 'label' => $a['label'], 'count' => $all->filter(fn ($x) => in_array($key, $x['acts'], true))->count()])->values(),
-            'totals' => ['aisles' => $all->count(), 'products' => Catalogue::GOVERNED_TOTAL],
+            'totals' => ['aisles' => $all->count(), 'products' => Catalogue::governedTotal()],
         ]);
     }
 
@@ -101,6 +102,7 @@ class CatalogueController extends Controller
     {
         $meta = Catalogue::aisle($aisle);
         abort_if($meta === null, 404);
+        $meta['products'] = Catalogue::productCountForAisle($aisle);
 
         $q = Str::lower(trim((string) $request->query('q', '')));
         $acts = array_values(array_filter((array) $request->query('acts', [])));
@@ -141,6 +143,7 @@ class CatalogueController extends Controller
             'filters' => ['q' => $request->query('q', ''), 'acts' => $acts, 'delivery' => $delivery, 'sort' => $sort, 'view' => $request->query('view', 'grid')],
             'actCounts' => collect(Acts::ACTS)->map(fn ($a, $k) => ['value' => $k, 'label' => $a['label'], 'count' => $products->where('act', $k)->count()])->values(),
             'deliveryCounts' => collect(Catalogue::DELIVERY_BANDS)->map(fn ($label, $k) => ['value' => $k, 'label' => $label, 'count' => $products->filter(fn ($p) => Catalogue::deliveryBand($p->delivery) === $k)->count()])->values(),
+            'sprintCount' => Catalogue::sprintCountForAisle($aisle),
             'stats' => [
                 'subcategories' => $all->count(),
                 'acts' => $actsAvailable->take(3)->implode(', '),

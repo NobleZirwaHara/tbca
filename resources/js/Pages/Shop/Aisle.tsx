@@ -15,9 +15,11 @@ interface Props {
     actCounts: CountOption[];
     deliveryCounts: CountOption[];
     stats: { subcategories: number; acts: string; delivery: string };
+    /** Sprints from the client's register shelved in this aisle. */
+    sprintCount: number;
 }
 
-export default function Aisle({ aisle, subcategories, filters, actCounts, deliveryCounts, stats }: Props) {
+export default function Aisle({ aisle, subcategories, filters, actCounts, deliveryCounts, stats, sprintCount }: Props) {
     const price = usePrice();
     const [q, setQ] = useState(filters.q);
     const go = (patch: Partial<Props['filters']>) => {
@@ -99,6 +101,17 @@ export default function Aisle({ aisle, subcategories, filters, actCounts, delive
                                 </label>
                             </div>
                         </div>
+
+                        {sprintCount > 0 && (
+                            <div className="mb-4 flex flex-col gap-2 rounded-[8px] border border-gold-300 bg-gold-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+                                <p className="text-sm text-ink-800">
+                                    <strong>{sprintCount.toLocaleString('en-ZA')} Sprints</strong> are shelved in {aisle.name}.
+                                </p>
+                                <Link href={`/search?category=${aisle.slug}&all=1`} className="inline-flex h-9 items-center gap-1.5 self-start rounded-[4px] bg-gold-500 px-4 text-[0.8125rem] font-semibold text-ink-950 hover:bg-gold-400 sm:self-auto">
+                                    Browse all Sprints in this aisle <ArrowRight className="size-4" aria-hidden="true" />
+                                </Link>
+                            </div>
+                        )}
 
                         {subcategories.length === 0 ? (
                             <p className="rounded-[8px] border border-dashed border-parchment-500 bg-white p-8 text-center text-sm text-ink-600">No subcategories match these filters.</p>

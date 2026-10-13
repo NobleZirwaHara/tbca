@@ -69,7 +69,7 @@ export function AddButton({ r, size = 'md' }: { r: SearchResult; size?: 'sm' | '
 export default function ResultRow({ r }: { r: SearchResult }) {
     return (
         <article className="relative flex flex-col gap-4 rounded-[8px] border border-parchment-400 bg-white p-4 sm:flex-row sm:items-start">
-            <CoverArt seed={r.slug} category={r.aisle ?? r.subcategory} label={r.name} className="aspect-[16/10] w-full shrink-0 rounded-[6px] sm:w-32" />
+            <CoverArt seed={r.slug} category={r.aisle ?? r.subcategory} src={r.image_url} label={r.name} className="aspect-[16/10] w-full shrink-0 rounded-[6px] sm:w-32" />
             <div className="min-w-0 flex-1">
                 <h3 className="text-[0.9375rem] font-semibold text-ink-900">
                     <Link href={r.url} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">{r.name}</Link>
@@ -112,7 +112,7 @@ export default function ResultRow({ r }: { r: SearchResult }) {
 export function ResultCard({ r }: { r: SearchResult }) {
     return (
         <article className="relative flex h-full flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-4">
-            <CoverArt seed={r.slug} category={r.aisle ?? r.subcategory} label={r.name} className="-mx-4 -mt-4 mb-3 aspect-[16/8] w-[calc(100%+2rem)] max-w-none" />
+            <CoverArt seed={r.slug} category={r.aisle ?? r.subcategory} src={r.image_url} label={r.name} className="-mx-4 -mt-4 mb-3 aspect-[16/8] w-[calc(100%+2rem)] max-w-none" />
             <div className="flex items-start gap-3">
                 <ShopIcon name={r.icon} size="sm" />
                 <h3 className="text-sm font-semibold text-ink-900"><Link href={r.url} className="hover:text-gold-700 after:absolute after:inset-0 after:content-['']">{r.name}</Link></h3>

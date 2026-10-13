@@ -7,7 +7,9 @@ import type { SprintRecord } from '@/types';
  *
  * Type templates live in ./Types/{type}.tsx (built by the type-template sections).
  * When one exists for sprint.type it renders the whole page body; otherwise the
- * generic sprint template from the Explore Sprints journey is used.
+ * generic sprint template from the Explore Sprints journey is used. Sprints loaded
+ * from the 7,008-row register without bespoke page content carry
+ * attributes.template = "generic" and always use the generic template.
  *
  * Templates are loaded on demand: importing all 18 eagerly made the first sprint
  * visit download ~95 chunks before anything rendered.
@@ -34,7 +36,7 @@ function Loading() {
 }
 
 export default function Show(props: GenericSprintProps) {
-    const TypeComponent = templateFor(props.sprint.type);
+    const TypeComponent = props.sprint.attributes?.template === 'generic' ? null : templateFor(props.sprint.type);
 
     if (TypeComponent) {
         return (

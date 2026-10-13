@@ -3,7 +3,10 @@
 namespace App\Support\Shop;
 
 use App\Models\Shop\Product;
+use App\Models\Sprint;
+use App\Support\Sprints\Register;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 /**
@@ -14,8 +17,6 @@ use Illuminate\Support\Str;
  */
 class Catalogue
 {
-    public const GOVERNED_TOTAL = 7008;
-
     public const BUYER_TYPES = [
         'investors' => 'Investors',
         'businesses' => 'Businesses',
@@ -232,8 +233,37 @@ class Catalogue
         };
     }
 
+    /** Governed Sprints on the site: the distinct Sprints of the client's register (7,008 when fully loaded). */
+    public static function governedTotal(): int
+    {
+        return Register::liveCount();
+    }
+
+    /** Listed shop products plus the published Sprints shelved in the aisle. */
     public static function productCountForAisle(string $aisle): int
     {
-        return Product::query()->listed()->where('aisle', $aisle)->count();
+        return Product::query()->listed()->where('aisle', $aisle)->count() + self::sprintCountForAisle($aisle);
+    }
+
+    public static function sprintCountForAisle(string $aisle): int
+    {
+        return self::sprintAisleCounts()[$aisle] ?? 0;
+    }
+
+    /** @return array<string, int> published sprints per shop aisle (cached until the sprints table changes; read once per request) */
+    public static function sprintAisleCounts(): array
+    {
+        return once(fn () => self::loadSprintAisleCounts());
+    }
+
+    /** @return array<string, int> */
+    private static function loadSprintAisleCounts(): array
+    {
+        $version = Sprint::query()->count().'-'.Sprint::query()->max('updated_at');
+
+        return Cache::remember('shop.sprint-aisle-counts.'.md5($version), now()->addDay(), fn () => Sprint::query()
+            ->where('status', 'published')->whereNotNull('shop_aisle')
+            ->groupBy('shop_aisle')->selectRaw('shop_aisle, count(*) as n')->pluck('n', 'shop_aisle')
+            ->map(fn ($n) => (int) $n)->all());
     }
 }

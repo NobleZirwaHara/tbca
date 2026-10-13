@@ -98,6 +98,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 - **Uploads (Marketplace and Partner Services):** only the file name is stored, not the file itself.
 - **Provisional prices:**
   - Sprints that had a single price use it as Standard. Basic (60%) and Premium (150%) are derived until the Batch 4A–4C price lists are loaded.
+  - The 5,356 Sprints added from the Volume 11 register (June 2026) carry that register's Basic / Standard / Premium prices, which the register marks "confirm price". The repriced Batch 4A, 4B and 4C v3 workbooks (September 2026) are newer but are larger than the 10 MB Drive download limit, so they are not loaded yet. Existing Sprint records keep their own prices; 1,612 of them differ from the register (listed in `docs/knowledge-base/kruger-2026-10/sprint-register-reconciliation.csv`).
   - Country service prices in Find the Right Service are indicative, to be confirmed.
   - AIIM country indicators are labelled placeholders.
 - **Documents awaiting the client:**
@@ -206,7 +207,14 @@ These are available on every page or across all modules.
 
 ### Sprints
 
-- **What it does:** a catalogue of 1,850 fixed-scope "sprints", plus the 569 embedded services (see Platform-wide features). Each sprint type has its own product page template.
+- **What it does:** a catalogue of 7,775 Sprints. All 7,008 Sprints of the client's Sprint Design Register (Volume 11) are on the site, plus the 569 embedded services (see Platform-wide features) and other mockup Sprints. Each sprint type has its own product page template; register Sprints without bespoke page content use the generic Sprint page.
+- **The 7,008-Sprint register:**
+  - Source: `TBCA_Online_Shop_Sprint_Page_Design_Master_Booklet_Volume_11_Full_7008_Design_Register.xlsx` in the client's "Sprints Information & Designs" Drive folder (Batch 4A 2,000 + 4B 3,000 + 4C 2,008).
+  - Data file: `database/seeders/Sections/data/sprint-register/register.json`, built by `build_register.py` in the same folder. Loaded by `SprintsRegisterSeeder`, which runs after every other seeder and is safe to re-run.
+  - 1,652 register Sprints matched existing records (1,525 by code, 55 by the code printed on a mockup page, 72 by a unique name). Those records keep their content and prices and gain `register_id`, `page_family`, `shop_aisle` and the register facts (`attributes.design_register`). The other 5,356 were added.
+  - Each Sprint has `register_id`, `page_family`, `shop_aisle` and `image_url` columns. Cover pictures are generated until real images are set (plan in `docs/INTEGRATIONS_PLAN.md` section 19).
+  - Content for added Sprints comes only from the register: name, client problem, outcome promise, main deliverable, client segment, intake data, documents, prices and delivery per tier, risk tier, human review and automation level. Fields the register does not have (process steps, FAQs, priced add-ons, reviews) are left out and the page skips those sections.
+  - The full list loads fast: the catalogue index is cached with precomputed filter values, filter counts are worked out in one pass, and the A to Z list is paginated (60 a page) once a letter or search is chosen.
 - **Features:**
   - Browse the catalogue: A–Z, category, audience and the featured, new, popular, recommended and marketplace views.
   - Fast search; the whole card is clickable; generated cover art on each card.
@@ -246,12 +254,14 @@ These are available on every page or across all modules.
 | Training | 12 | `/sprints/webinar-sales-funnel-sprint` |
 | Retainer | 10 | `/sprints/ai-operations-retainer-dashboard-sprint` |
 | Subscription | 9 | `/sprints/tech-support-subscription-dashboard-sprint` |
+| Register Sprints on the generic page | 5,356 | `/sprints/esg-data-room-portal-programme-team` |
 
 ### Online Shop & site search
 
 - **What it does:** one shop front for sprints, products, subscriptions and retainers, plus search across the whole site.
 - **Features:**
   - Browse by aisle or A–Z, compare products (with export), and use a resolver to find the right product.
+  - All 7,008 register Sprints are searchable from the shop and `/search`, and each is shelved in one of the 26 aisles. The "Governed TBCA Sprints" total and the product count on each aisle come from the data. Each aisle page links to all Sprints shelved in it (`/search?category={aisle}&all=1`).
   - Product pages with configuration and licence details.
   - Free products and saved baskets.
   - Routes that don't use the basket: quote request → issued quote, marketplace brief, retainer proposal, and subscription mandate.

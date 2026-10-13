@@ -36,7 +36,7 @@ Structured data from the Deep Registers 2.1 workbook, the project briefs and the
 | Intelligent, multi-layered, multi-lingual maps (windy.com, finviz.com/map) | Done. The map has a layer switcher, a detail slider and labels in English or Setswana. The heat map tab shows projects by sector. | Country page, Map and Heat map tabs |
 | Zoho One configured for 90 percent automation | The Laravel side is built and switched off until credentials are added: event ledger, sync to CRM, Books, Desk, Projects, WorkDrive and Creator, signed webhooks, and an automation coverage report. The setup inside the Zoho tenant still has to be done by an administrator. | `docs/INTEGRATIONS_PLAN.md` section 18, `/admin/integrations` |
 | Due Diligence: explore VOVE ID | Done. A VOVE ID provider for identity, AML and KYB checks, with a simulated default. | `docs/INTEGRATIONS_PLAN.md` section 8 |
-| Online Shop: upload all 7008 Sprints and generate pictures | Not started. The 7008 Sprint records and the image budget are needed first. | |
+| Online Shop: upload all 7008 Sprints and generate pictures | Sprints done. All 7,008 Sprints from the Volume 11 register are on the site: 1,652 matched existing pages and kept their content, 5,356 were added on the generic Sprint page. They are searchable in the shop and shelved in the 26 aisles, and the shop totals come from the data. Pictures: every Sprint shows a generated cover and has an `image_url` slot; no images were generated. The plan, prompt template and cost formula are ready for Noble's approval. | `docs/INTEGRATIONS_PLAN.md` section 19, `sprint-register-reconciliation.csv`, `database/seeders/Sections/data/sprint-register/` |
 | TEST DATA 3 in Google Drive | Not found in the shared Drive. KP needs to send the link. | |
 
 ## What KP Still Needs to Send
@@ -49,4 +49,5 @@ Structured data from the Deep Registers 2.1 workbook, the project briefs and the
 6. The link to TEST DATA 3.
 7. Country packs for the other countries (Malawi, Ghana, Nigeria, Egypt, Morocco, South Africa, Algeria) and boundary data below district level.
 8. Confirmed sites for the 9 project briefs that have placeholder coordinates.
-9. The full 7008 Sprint register.
+9. Final prices for the 7,008 Sprints. The Volume 11 register marks its prices "confirm price", and 1,612 existing Sprint pages show prices that differ from it (see `sprint-register-reconciliation.csv`). The repriced Batch 4A, 4B and 4C v3 workbooks are in the Drive folder but are too large to download through the Drive connector; a direct download link or copies under 10 MB would let them be loaded.
+10. Approval and budget for the Sprint cover images (`docs/INTEGRATIONS_PLAN.md` section 19).

@@ -29,6 +29,7 @@
 17. [Prioritised roadmap](#16-prioritised-roadmap)
 18. [What the client must provide (checklist)](#17-client-checklist)
 19. [Zoho One integration](#18-zoho-one-integration)
+20. [Cover images for all 7,008 Sprints](#19-cover-images-for-all-7008-sprints)
 
 ---
 
@@ -1047,3 +1048,53 @@ The guide (section 12) treats 90% as a target to validate, not a promise, and ke
 - **Human minutes**, logged when staff mark an event "resolved by staff". The guide's human-time share also needs a four-week labour baseline, which TBCA must measure first.
 
 An event counts as automated when the dispatcher or an inbound rule completed it; as human when staff resolved it, when it is an expert decision (`review.decided`), or when an identity result needs an analyst. Held events are excluded. The table is on `/admin/integrations`; processes with no events yet show "Not yet measured". Follow the guide's sequence: weeks 1-4 baseline and drafts, 5-8 routine core, 9-12 bounded agents, 13-16 decide whether 90% is justified. If quality or access checks fail, reduce automation even if the percentage falls.
+
+---
+
+## 19. Cover images for all 7,008 Sprints
+
+Kruger asked on 8 October 2026 for pictures for all 7,008 Sprints, made with "ChatGPT Image 2.5". No image service has been called yet. This section is the plan for when Noble approves the budget.
+
+### What the site does now
+
+- Every Sprint has a cover picture. `resources/js/Components/Art/CoverArt.tsx` draws it in the browser from the Sprint slug, so the same Sprint always gets the same picture. Sprints in the same catalogue category share a colour family.
+- The `sprints.image_url` column (nullable) holds a real image. When it is set, that image replaces the generated cover on catalogue cards, related Sprint cards, Online Shop search results and the Sprint page header. Adding images is a data change only.
+- The five "ChatGPT Image" files in the client's Sprints folder are page design mockups of the Sprint page, not cover pictures. The generic Sprint page already follows that design.
+
+### Prompt template per category
+
+One template, with a style line per catalogue category. Fill `{title}` and `{register_category}` from the Sprint record. Every image: 16:9 (1600 x 900), no text, no logos, no real people's faces, TBCA palette (black, deep charcoal, gold accents), editorial lighting, African business setting where people appear.
+
+> Editorial cover image for a business service called "{title}" ({register_category}). {category style}. Black and charcoal background with warm gold accents, clean composition with space on the right for a title, no text, no logos, photographic quality.
+
+| Catalogue category | Category style |
+|---|---|
+| Business and Management | African business team at a boardroom table reviewing a plan, modern office |
+| AI and Automation | Abstract network of glowing gold nodes and data flows over a dark workspace |
+| Data and Dashboards | Close view of a large analytics dashboard on a screen, charts in gold and white |
+| Courses and Learning | Small workshop or training session with a facilitator and laptops |
+| Diagnostics | Checklist and gauge motif on a desk, a magnifier over documents |
+| Digital Products | Neat flat lay of a laptop, templates and printed reports |
+| Project Advisory | Infrastructure or construction site at golden hour with a project team reviewing drawings |
+| Research and Reports | Printed report pages, maps of Africa and charts on a desk |
+| Templates and Toolkits | Organised folders, forms and a tablet showing a template |
+| Technology | Server room or cloud network motif with gold light trails |
+| Due Diligence | Document review with a magnifier, a padlock and a verified seal motif |
+| Subscriptions and Retainers | Calendar and recurring cycle motif, adviser on a video call |
+
+### Batch approach
+
+1. Export the Sprint list (code, slug, title, catalogue category, register category) from the `sprints` table where `register_id` is set and `image_url` is empty.
+2. Group by catalogue category and generate one test batch of 20 per category. Kruger approves the look before the full run.
+3. Run the full set through the provider's batch interface in chunks of about 500, with retries for failures. Record prompt, model, seed and cost per image.
+4. Spot-check at least 5 percent per category for text artefacts, faces or off-brand colours, and regenerate the rejects.
+5. Convert to WebP (about 150 KB each, about 1 GB for 7,008), store, then set `image_url` with a small import that matches files to Sprint codes.
+
+### Storage path
+
+`storage/app/public/sprints/{code}.webp`, served at `/storage/sprints/{code}.webp` after `php artisan storage:link`. For production, move the same paths to object storage or a CDN and put the full URL in `image_url`.
+
+### Cost
+
+To confirm by Noble: the exact model name and price per image for "ChatGPT Image 2.5" at 1600 x 900, and the expected regeneration rate. Total = 7,008 x price per image x (1 + regeneration rate), plus the test batches (240 images).
+

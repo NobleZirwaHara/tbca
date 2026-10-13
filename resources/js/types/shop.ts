@@ -167,6 +167,7 @@ export interface SearchResult {
     listing_state: string | null;
     url: string;
     icon: string;
+    image_url?: string | null;
     aisle: string | null;
     subcategory: string | null;
     subcategory_name: string;

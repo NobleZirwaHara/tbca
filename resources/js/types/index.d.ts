@@ -181,6 +181,11 @@ export interface SprintRecord {
     popular: boolean;
     is_new: boolean;
     rating: number | null;
+    /** Real cover image; when empty the generated CoverArt is shown. */
+    image_url?: string | null;
+    register_id?: string | null;
+    page_family?: string | null;
+    shop_aisle?: string | null;
 }
 
 export interface SharedProps {

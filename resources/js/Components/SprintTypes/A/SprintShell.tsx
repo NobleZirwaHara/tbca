@@ -126,7 +126,7 @@ export default function SprintShell({
                         <div className={cn('grid gap-6', visual && 'xl:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)]')}>
                             <div className="flex flex-col gap-5 sm:flex-row">
                                 <span className="relative block h-24 w-36 shrink-0 overflow-hidden rounded-[10px] border-2 border-gold-500/80 sm:h-36 sm:w-48">
-                                    <CoverArt seed={sprint.slug} category={sprint.category} label={sprint.title} className="absolute inset-0 h-full w-full" />
+                                    <CoverArt seed={sprint.slug} category={sprint.category} src={sprint.image_url} label={sprint.title} className="absolute inset-0 h-full w-full" />
                                     <span className="absolute bottom-1.5 left-1.5 flex size-10 items-center justify-center rounded-[6px] bg-ink-950/75 text-gold-500">
                                         <Icon className="size-6" strokeWidth={1.25} aria-hidden="true" />
                                     </span>
@@ -241,7 +241,7 @@ export default function SprintShell({
                                             href={`/sprints/${r.slug}`}
                                             className="group flex h-full flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-4 transition-colors hover:border-gold-400"
                                         >
-                                            <CoverArt seed={r.slug} category={r.category} label={r.title} className="-mx-4 -mt-4 mb-3 aspect-[16/7] w-[calc(100%+2rem)] max-w-none" />
+                                            <CoverArt seed={r.slug} category={r.category} src={r.image_url} label={r.title} className="-mx-4 -mt-4 mb-3 aspect-[16/7] w-[calc(100%+2rem)] max-w-none" />
                                             <span className="text-[0.625rem] font-bold tracking-wider text-gold-700 uppercase">
                                                 {TYPE_LABELS[r.type as SprintTypeASlug] ?? r.type.replace(/-/g, ' ')}
                                             </span>

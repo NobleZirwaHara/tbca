@@ -82,7 +82,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
     if (variant === 'list') {
         return (
             <article className="relative flex flex-col gap-4 rounded-[8px] border border-parchment-400 bg-white p-4 sm:flex-row sm:items-center">
-                <CoverArt seed={item.slug} category={item.category} label={item.title} className="aspect-[16/10] w-full shrink-0 rounded-[6px] sm:w-28" />
+                <CoverArt seed={item.slug} category={item.category} src={item.image_url} label={item.title} className="aspect-[16/10] w-full shrink-0 rounded-[6px] sm:w-28" />
                 <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                         <h3 className="text-sm font-semibold text-ink-900">
@@ -121,7 +121,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
     if (variant === 'tile') {
         return (
             <article className="relative flex flex-col overflow-hidden rounded-[8px] border border-gold-300/70 bg-white p-4 text-center transition-shadow hover:shadow-card">
-                <CoverArt seed={item.slug} category={item.category} label={item.title} className="-mx-4 -mt-4 mb-3 aspect-[16/7] w-[calc(100%+2rem)] max-w-none" />
+                <CoverArt seed={item.slug} category={item.category} src={item.image_url} label={item.title} className="-mx-4 -mt-4 mb-3 aspect-[16/7] w-[calc(100%+2rem)] max-w-none" />
                 <div className="flex items-start justify-between">
                     <CardBadge label={item.badge ?? (item.is_new ? 'New' : null)} />
                     <Bookmark className="size-4 text-ink-300" aria-hidden="true" />
@@ -165,7 +165,7 @@ export default function CatalogueCard({ item, variant = 'grid', compared = false
 
     return (
         <article className="relative flex flex-col overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-4 transition-shadow hover:border-gold-300 hover:shadow-card">
-            <CoverArt seed={item.slug} category={item.category} label={item.title} className="-mx-4 -mt-4 mb-3 aspect-[16/6] w-[calc(100%+2rem)] max-w-none" />
+            <CoverArt seed={item.slug} category={item.category} src={item.image_url} label={item.title} className="-mx-4 -mt-4 mb-3 aspect-[16/6] w-[calc(100%+2rem)] max-w-none" />
             <div className="flex gap-3.5">
                 <IconTile name={item.icon} />
                 <div className="min-w-0 flex-1">

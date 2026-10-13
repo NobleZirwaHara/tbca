@@ -124,7 +124,6 @@ export default function AtoZ({ aisles, filters, buyerCounts, actCounts, totals }
                                                 <span className="mt-0.5 block text-xs text-ink-500">{a.description}</span>
                                                 <span className="mt-1.5 block text-xs font-semibold text-ink-800">
                                                     {a.products.toLocaleString('en-ZA')} products
-                                                    {a.listed ? <span className="font-normal text-verified-700"> · {a.listed} listed now</span> : null}
                                                 </span>
                                             </span>
                                             <ChevronRight className="mt-4 size-4 shrink-0 text-gold-600" aria-hidden="true" />

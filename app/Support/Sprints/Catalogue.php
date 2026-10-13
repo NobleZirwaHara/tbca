@@ -34,6 +34,7 @@ class Catalogue
     public function __construct(private ?User $user = null)
     {
         self::$attrCache = [];
+        self::$derivedCache = [];
     }
 
     /** Attribute keys the catalogue reads; everything else is dropped from the cached index. */
@@ -54,7 +55,7 @@ class Catalogue
 
         $version = Sprint::query()->count().'-'.Sprint::query()->max('updated_at');
 
-        $rows = Cache::remember('sprints.catalogue-index.'.md5($version), now()->addDay(), function () {
+        $rows = Cache::remember('sprints.catalogue-index.v2.'.md5($version), now()->addDay(), function () {
             return Sprint::query()
                 ->where('status', 'published')
                 ->orderBy('title')
@@ -62,7 +63,15 @@ class Catalogue
                 ->map(function (Sprint $s) {
                     $row = $s->getAttributes();
                     $row['attributes'] = json_encode(array_intersect_key((array) ($s->attributes ?? []), array_flip(self::INDEX_ATTRIBUTES)));
-                    unset($row['description']);
+                    // Listing pages never read the description or packages; filter bands are precomputed.
+                    unset($row['description'], $row['packages']);
+                    $row['band_price'] = self::priceBand($s);
+                    $row['band_delivery'] = self::deliveryBand($s->delivery);
+                    $row['review_count'] = self::reviewCount($s);
+                    $a = (array) ($s->attributes ?? []);
+                    $row['needs_list'] = implode("\n", self::strings($a['needs'] ?? []));
+                    $row['spotlight_flag'] = ! empty($a['spotlight']);
+                    $row['haystack'] = self::haystack($s, $a);
 
                     return $row;
                 })
@@ -103,6 +112,42 @@ class Catalogue
         ];
     }
 
+    /** Rows per page on the A to Z list once a letter or search is chosen. */
+    public const AZ_PER_PAGE = 60;
+
+    /**
+     * A to Z listing. Without a letter or search it previews the first six Sprints per letter;
+     * with one it returns a paginated list (a single letter can hold close to a thousand Sprints).
+     *
+     * @return array{items: list<array<string, mixed>>, matched: array<string, int>, letters: array<string, int>, facets: array<string, mixed>, total: int, pagination: ?LengthAwarePaginator}
+     */
+    public function az(array $filters, string $path = '/sprints/a-z'): array
+    {
+        $base = $this->all();
+        $letter = fn (Sprint $s) => strtoupper(substr($s->title, 0, 1));
+        $sorted = $this->sort($base->filter(fn (Sprint $s) => $this->matches($s, $filters))->values(), 'az');
+        $audience = $this->audienceFor();
+
+        $pagination = null;
+        if (! $filters['letter'] && ! $filters['q']) {
+            $items = $sorted->groupBy($letter)->flatMap(fn ($g) => $g->take(6))->values();
+        } else {
+            $page = max(1, (int) ($filters['page'] ?? 1));
+            $items = $sorted->forPage($page, self::AZ_PER_PAGE)->values();
+            $query = array_filter(collect($filters)->except('page')->all(), fn ($v) => $v !== null && $v !== '');
+            $pagination = new LengthAwarePaginator([], $sorted->count(), self::AZ_PER_PAGE, $page, ['path' => $path, 'query' => $query]);
+        }
+
+        return [
+            'items' => $items->map(fn (Sprint $s) => self::card($s, $audience))->all(),
+            'matched' => $sorted->countBy($letter)->all(),
+            'letters' => $base->countBy($letter)->all(),
+            'facets' => $this->facets($base, $filters),
+            'total' => $base->count(),
+            'pagination' => $pagination,
+        ];
+    }
+
     /** @return array<string, mixed> */
     public static function normalise(array $input): array
     {
@@ -125,13 +170,7 @@ class Catalogue
     private function matches(Sprint $s, array $f): bool
     {
         if ($f['q'] ?? null) {
-            $haystack = Str::lower(implode(' ', [
-                $s->title, $s->summary, $s->subcategory, $s->category,
-                Taxonomy::categories()[$s->category]['label'] ?? '',
-                implode(' ', self::strings(self::attrs($s)['ideal_for'] ?? [])),
-                implode(' ', self::strings(self::attrs($s)['needs'] ?? [])),
-                implode(' ', self::strings(self::attrs($s)['keywords'] ?? [])),
-            ]));
+            $haystack = $s->getAttributes()['haystack'] ?? self::haystack($s, self::attrs($s));
             foreach (preg_split('/\s+/', Str::lower($f['q'])) as $token) {
                 if ($token !== '' && ! str_contains($haystack, $token)) {
                     return false;
@@ -145,23 +184,23 @@ class Catalogue
         if (($f['category'] ?? null) && ! in_array($s->category, self::list($f['category']), true)) {
             return false;
         }
-        if (($f['audience'] ?? null) && ! array_intersect(self::list($f['audience']), self::audiences($s))) {
+        if (($f['audience'] ?? null) && ! array_intersect(self::list($f['audience']), self::derived($s)['audiences'])) {
             return false;
         }
         if (($f['act'] ?? null) && ! in_array($s->commercial_act, self::list($f['act']), true)) {
             return false;
         }
-        if (($f['price'] ?? null) && ! in_array(self::priceBand($s), self::list($f['price']), true)) {
+        if (($f['price'] ?? null) && ! in_array(self::derived($s)['price'], self::list($f['price']), true)) {
             return false;
         }
-        if (($f['delivery'] ?? null) && ! in_array(self::deliveryBand($s->delivery), self::list($f['delivery']), true)) {
+        if (($f['delivery'] ?? null) && ! in_array(self::derived($s)['delivery'], self::list($f['delivery']), true)) {
             return false;
         }
         if (($f['rating'] ?? null) && (float) $s->rating < (float) $f['rating']) {
             return false;
         }
         if ($f['need'] ?? null) {
-            $needs = array_map('strtolower', self::strings(self::attrs($s)['needs'] ?? []));
+            $needs = array_map('strtolower', self::derived($s)['needs']);
             if (! array_intersect(array_map('strtolower', self::list($f['need'])), $needs)) {
                 return false;
             }
@@ -211,44 +250,93 @@ class Catalogue
 
     private function spotlight(Collection $sorted): ?Sprint
     {
-        return $sorted->first(fn (Sprint $s) => ! empty(self::attrs($s)['spotlight'])) ?? $sorted->first();
+        return $sorted->first(fn (Sprint $s) => $s->getAttributes()['spotlight_flag'] ?? ! empty(self::attrs($s)['spotlight'])) ?? $sorted->first();
     }
 
-    /** Counts for each filter option within the current base set. */
+    /** Lower-case search text: title, summary, category and the ideal-for, needs and keyword lists. */
+    private static function haystack(Sprint $s, array $a): string
+    {
+        return Str::lower(implode(' ', [
+            $s->title, $s->summary, $s->subcategory, $s->category,
+            Taxonomy::categories()[$s->category]['label'] ?? '',
+            implode(' ', self::strings($a['ideal_for'] ?? [])),
+            implode(' ', self::strings($a['needs'] ?? [])),
+            implode(' ', self::strings($a['keywords'] ?? [])),
+        ]));
+    }
+
+    /**
+     * Counts for each filter option within the current base set, in one pass over the set
+     * (the catalogue holds the full 7,008-row register, so per-option passes are too slow).
+     */
     private function facets(Collection $base, array $filters): array
     {
-        $count = fn (callable $key) => $base->groupBy($key)->map->count();
+        $tally = ['category' => [], 'audience' => [], 'type' => [], 'price' => [], 'delivery' => [], 'act' => [], 'need' => [], 'rating' => ['4.5' => 0, '4' => 0]];
+        foreach ($base as $s) {
+            $d = self::derived($s);
+            $tally['category'][$s->category] = ($tally['category'][$s->category] ?? 0) + 1;
+            $tally['type'][$s->type] = ($tally['type'][$s->type] ?? 0) + 1;
+            $tally['act'][$s->commercial_act] = ($tally['act'][$s->commercial_act] ?? 0) + 1;
+            $tally['price'][$d['price']] = ($tally['price'][$d['price']] ?? 0) + 1;
+            $tally['delivery'][$d['delivery']] = ($tally['delivery'][$d['delivery']] ?? 0) + 1;
+            foreach ($d['audiences'] as $a) {
+                $tally['audience'][$a] = ($tally['audience'][$a] ?? 0) + 1;
+            }
+            foreach ($d['needs'] as $n) {
+                $tally['need'][$n] = ($tally['need'][$n] ?? 0) + 1;
+            }
+            $rating = (float) $s->rating;
+            $tally['rating']['4.5'] += $rating >= 4.5 ? 1 : 0;
+            $tally['rating']['4'] += $rating >= 4.0 ? 1 : 0;
+        }
 
         $categories = collect(Taxonomy::categories())->map(fn ($c, $slug) => [
-            'value' => $slug, 'label' => $c['label'], 'count' => $base->where('category', $slug)->count(),
+            'value' => $slug, 'label' => $c['label'], 'count' => $tally['category'][$slug] ?? 0,
         ])->values()->filter(fn ($o) => $o['count'] > 0 || $filters['category'] === $o['value'])->values();
 
         $audiences = collect(Taxonomy::audiences())->map(fn ($a, $slug) => [
-            'value' => $slug, 'label' => $a['label'], 'count' => $base->filter(fn ($s) => in_array($slug, self::audiences($s), true))->count(),
+            'value' => $slug, 'label' => $a['label'], 'count' => $tally['audience'][$slug] ?? 0,
         ])->values();
 
-        $types = $count(fn ($s) => $s->type)->map(fn ($n, $type) => ['value' => $type, 'label' => Taxonomy::typeLabel($type), 'count' => $n])->sortByDesc('count')->values();
+        $types = collect($tally['type'])->map(fn ($n, $type) => ['value' => $type, 'label' => Taxonomy::typeLabel($type), 'count' => $n])->sortByDesc('count')->values();
 
         $prices = collect(Taxonomy::priceBands())->map(fn ($b, $key) => [
-            'value' => $key, 'label' => $b['label'], 'count' => $base->filter(fn ($s) => self::priceBand($s) === $key)->count(),
+            'value' => $key, 'label' => $b['label'], 'count' => $tally['price'][$key] ?? 0,
         ])->values();
 
         $delivery = collect(Taxonomy::deliveryBands())->map(fn ($b, $key) => [
-            'value' => $key, 'label' => $b['label'], 'count' => $base->filter(fn ($s) => self::deliveryBand($s->delivery) === $key)->count(),
+            'value' => $key, 'label' => $b['label'], 'count' => $tally['delivery'][$key] ?? 0,
         ])->values();
 
         $acts = collect(Taxonomy::commercialActs())->map(fn ($label, $key) => [
-            'value' => $key, 'label' => $label, 'count' => $base->where('commercial_act', $key)->count(),
+            'value' => $key, 'label' => $label, 'count' => $tally['act'][$key] ?? 0,
         ])->values()->filter(fn ($o) => $o['count'] > 0)->values();
 
-        $needs = $base->flatMap(fn ($s) => self::strings(self::attrs($s)['needs'] ?? []))->countBy()->sortDesc()->take(14)
-            ->map(fn ($n, $label) => ['value' => $label, 'label' => $label, 'count' => $n])->values();
+        arsort($tally['need']);
+        $needs = collect(array_slice($tally['need'], 0, 14, true))
+            ->map(fn ($n, $label) => ['value' => (string) $label, 'label' => (string) $label, 'count' => $n])->values();
 
         $ratings = collect([4.5, 4.0])->map(fn ($r) => [
-            'value' => (string) $r, 'label' => "{$r} stars and above", 'count' => $base->filter(fn ($s) => (float) $s->rating >= $r)->count(),
+            'value' => (string) $r, 'label' => "{$r} stars and above", 'count' => $tally['rating'][(string) $r],
         ]);
 
         return compact('categories', 'audiences', 'types', 'prices', 'delivery', 'acts', 'needs', 'ratings');
+    }
+
+    /** @var array<int, array{price: string, delivery: string, audiences: list<string>, needs: list<string>}> */
+    private static array $derivedCache = [];
+
+    /** Filter keys computed once per sprint per request. */
+    private static function derived(Sprint $s): array
+    {
+        $row = $s->getAttributes();
+
+        return self::$derivedCache[$s->id] ??= [
+            'price' => $row['band_price'] ?? self::priceBand($s),
+            'delivery' => $row['band_delivery'] ?? self::deliveryBand($s->delivery),
+            'audiences' => self::audiences($s),
+            'needs' => isset($row['needs_list']) ? array_values(array_filter(explode("\n", (string) $row['needs_list']), fn ($n) => $n !== '')) : self::strings(self::attrs($s)['needs'] ?? []),
+        ];
     }
 
     private function audienceFor(): ?string
@@ -272,6 +360,9 @@ class Catalogue
 
     public static function reviewCount(Sprint $s): int
     {
+        if (isset($s->getAttributes()['review_count'])) {
+            return (int) $s->getAttributes()['review_count'];
+        }
         $r = self::attrs($s)['reviews'] ?? null;
 
         return is_numeric($r) ? (int) $r : (is_array($r) ? (int) ($r['count'] ?? count($r)) : 0);
@@ -372,6 +463,7 @@ class Catalogue
             'audience' => self::audiences($s),
             'match' => $audience !== null && in_array($audience, self::audiences($s), true),
             'recurring' => in_array($s->commercial_act, ['subscription', 'retainer'], true) ? ($a['billing_period'] ?? 'month') : null,
+            'image_url' => $s->image_url,
         ];
     }
 }

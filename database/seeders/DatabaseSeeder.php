@@ -50,6 +50,9 @@ class DatabaseSeeder extends Seeder
         // The sprint-type seeders give way to slugs that already exist, so it must run first.
         usort($sections, fn ($a, $b) => (basename($b) === 'SprintsCatalogueSeeder.php') <=> (basename($a) === 'SprintsCatalogueSeeder.php'));
 
+        // The 7,008-row Sprint register links to and extends what every other seeder created, so it runs last.
+        usort($sections, fn ($a, $b) => (basename($a) === 'SprintsRegisterSeeder.php') <=> (basename($b) === 'SprintsRegisterSeeder.php'));
+
         foreach ($sections as $file) {
             $this->call('Database\\Seeders\\Sections\\'.basename($file, '.php'));
         }

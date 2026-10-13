@@ -31,12 +31,12 @@ class Search
     }
 
     /** Sprint columns the search index needs (the JSON packages / attributes columns are ~10 MB). */
-    private const SPRINT_COLUMNS = ['id', 'code', 'slug', 'title', 'type', 'category', 'subcategory', 'summary', 'price_zar', 'delivery', 'commercial_act', 'featured', 'rating'];
+    private const SPRINT_COLUMNS = ['id', 'code', 'slug', 'title', 'type', 'category', 'subcategory', 'shop_aisle', 'summary', 'price_zar', 'delivery', 'commercial_act', 'featured', 'rating', 'image_url'];
 
     /**
      * Every eligible record (listed shop masters + published sprints), normalised.
      *
-     * Building it means reading ~1,900 rows, so the normalised index is cached and keyed on
+     * Building it means reading ~7,800 rows, so the normalised index is cached and keyed on
      * each table's row count and latest update: any seeder or admin edit rebuilds it.
      */
     public static function corpus(): Collection
@@ -46,7 +46,7 @@ class Search
             Sprint::query()->count(), Sprint::query()->max('updated_at'),
         ]);
 
-        return collect(Cache::remember('shop.search-corpus.'.md5($version), now()->addDay(), fn () => self::buildCorpus()));
+        return collect(Cache::remember('shop.search-corpus.v2.'.md5($version), now()->addDay(), fn () => self::buildCorpus()));
     }
 
     /** @return list<array<string, mixed>> */
@@ -85,6 +85,7 @@ class Search
             'listing_state' => $p->listing_state,
             'url' => $p->url(),
             'icon' => $p->icon,
+            'image_url' => null,
             'aisle' => $p->aisle,
             'subcategory' => $p->subcategory,
             'subcategory_name' => $subs->firstWhere('slug', $p->subcategory)['name'] ?? Str::headline((string) $p->subcategory),
@@ -125,7 +126,9 @@ class Search
             'listing_state' => null,
             'url' => "/sprints/{$s->slug}",
             'icon' => 'target',
-            'aisle' => null,
+            'image_url' => $s->image_url,
+            // Register Sprints are shelved in an Online Shop aisle (see the register build rules).
+            'aisle' => $s->shop_aisle,
             'subcategory' => $s->subcategory ?? $s->category,
             'subcategory_name' => Str::headline((string) ($s->subcategory ?? $s->category ?? 'Sprints')),
             'output_format' => $s->type ? Str::headline($s->type) : null,

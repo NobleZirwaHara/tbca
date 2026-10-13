@@ -1,13 +1,13 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, Bookmark, BookmarkCheck } from 'lucide-react';
 import { useState } from 'react';
-import { buildGroups, FilterSidebar } from '@/Components/Sprints/CatalogueParts';
+import { buildGroups, FilterSidebar, Pagination } from '@/Components/Sprints/CatalogueParts';
 import { IconTile } from '@/Components/Sprints/CatalogueCard';
 import SprintHero, { SearchBar } from '@/Components/Sprints/SprintHero';
 import { visitCatalogue, withFilter } from '@/Components/Sprints/lib';
 import { cn } from '@/lib/cn';
 import type { SharedProps } from '@/types';
-import type { CatalogueFilters, CatalogueItem, Facets } from '@/types/sprints';
+import type { CatalogueFilters, CatalogueItem, Facets, Paginated } from '@/types/sprints';
 
 interface Props {
     results: CatalogueItem[];
@@ -16,10 +16,12 @@ interface Props {
     filters: CatalogueFilters;
     letters: Record<string, number>;
     matched: Record<string, number>;
+    /** Present when a letter or search is chosen: the list is then paginated server-side. */
+    pagination: Paginated<never> | null;
 }
 
 /** A to Z Services: letter bar, grouped rows, bookmark (saved items for signed-in clients). */
-export default function AToZ({ results, facets, total, filters, letters, matched }: Props) {
+export default function AToZ({ results, facets, total, filters, letters, matched, pagination }: Props) {
     const { auth } = usePage<SharedProps>().props;
     const [layout, setLayout] = useState<'grid' | 'list'>('list');
     const path = '/sprints/a-z';
@@ -151,13 +153,15 @@ export default function AToZ({ results, facets, total, filters, letters, matched
                                             </li>
                                         ))}
                                     </ul>
-                                    {(matched[letter] ?? 0) > items.length && (
+                                    {!pagination && (matched[letter] ?? 0) > items.length && (
                                         <button type="button" onClick={() => set('letter', letter)} className="mt-2 text-[0.8125rem] font-semibold text-gold-700 hover:underline">
                                             View all {matched[letter]} services starting with {letter} →
                                         </button>
                                     )}
                                 </section>
                             ))}
+
+                            {pagination && <Pagination results={pagination} onPage={(page) => set('page', String(page))} />}
                         </div>
                     </div>
                 </div>

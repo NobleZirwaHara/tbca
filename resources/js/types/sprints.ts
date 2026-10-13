@@ -28,6 +28,7 @@ export interface CatalogueItem {
     audience: string[];
     match: boolean;
     recurring: string | null;
+    image_url: string | null;
 }
 
 export interface FacetOption {

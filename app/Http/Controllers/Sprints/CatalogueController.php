@@ -69,7 +69,8 @@ class CatalogueController extends Controller
         $filters['sort'] ??= 'recommended';
         $path = "/sprints/for/{$audience}";
 
-        $data = (new Catalogue($request->user()))->search(
+        $catalogue = new Catalogue($request->user());
+        $data = $catalogue->search(
             $filters,
             fn (Sprint $s) => in_array($audience, Catalogue::audiences($s), true),
             $path,
@@ -82,7 +83,7 @@ class CatalogueController extends Controller
             'audienceKey' => $audience,
             'audience' => collect($config)->except([])->all(),
             'audiences' => collect(Taxonomy::audiences())->map(fn ($a, $k) => ['key' => $k, 'label' => $a['label'], 'icon' => $a['icon']])->values(),
-            'catalogueTotal' => (new Catalogue)->all()->count(),
+            'catalogueTotal' => $catalogue->all()->count(),
         ]);
     }
 
@@ -90,26 +91,17 @@ class CatalogueController extends Controller
     {
         $filters = Catalogue::normalise($request->query());
         $filters['sort'] = 'az';
-        $catalogue = new Catalogue($request->user());
 
-        $data = $catalogue->search($filters, null, '/sprints/a-z', paginate: false);
-
-        $letters = $catalogue->all()->groupBy(fn (Sprint $s) => strtoupper(substr($s->title, 0, 1)))->map->count();
-
-        // Without a letter or search, show a preview of each letter (the full list is one click away).
-        $items = collect($data['results']->items());
-        $matched = $items->groupBy(fn ($i) => strtoupper(substr($i['title'], 0, 1)))->map->count();
-        if (! $filters['letter'] && ! $filters['q']) {
-            $items = $items->groupBy(fn ($i) => strtoupper(substr($i['title'], 0, 1)))->flatMap(fn ($g) => $g->take(6))->values();
-        }
+        $data = (new Catalogue($request->user()))->az($filters);
 
         return Inertia::render('Sprints/AToZ', [
-            'results' => $items,
-            'matched' => $matched,
+            'results' => $data['items'],
+            'matched' => $data['matched'],
             'facets' => $data['facets'],
             'total' => $data['total'],
             'filters' => $filters,
-            'letters' => collect(range('A', 'Z'))->mapWithKeys(fn ($l) => [$l => $letters[$l] ?? 0]),
+            'letters' => collect(range('A', 'Z'))->mapWithKeys(fn ($l) => [$l => $data['letters'][$l] ?? 0]),
+            'pagination' => $data['pagination']?->toArray(),
         ]);
     }
 

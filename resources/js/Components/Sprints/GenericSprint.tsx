@@ -117,7 +117,7 @@ export default function GenericSprint({ sprint, related, tab: initialTab, select
             <DetailHero
                 crumbs={crumbs}
                 icon={a.icon ?? 'briefcase'}
-                art={{ seed: sprint.slug, category: sprint.category }}
+                art={{ seed: sprint.slug, category: sprint.category, src: sprint.image_url }}
                 title={sprint.title}
                 summary={sprint.summary}
                 rating={sprint.rating}
@@ -281,6 +281,7 @@ function relatedCard(r: SprintRecord) {
         audience: [],
         match: false,
         recurring: null,
+        image_url: r.image_url ?? null,
     };
 }
 

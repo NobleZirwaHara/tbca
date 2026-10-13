@@ -215,7 +215,7 @@ export default function PremiumShell(p: PremiumShellProps) {
                     <Crumbs tone="dark" items={[{ label: 'Home', href: '/' }, { label: 'Sprints', href: '/sprints' }, { label: sprint.title }]} />
                     <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start">
                         <span className="relative block h-28 w-40 shrink-0 overflow-hidden rounded-[14px] border-2 border-gold-500 sm:h-36 sm:w-52" aria-hidden="true">
-                            <CoverArt seed={sprint.slug} category={sprint.category} className="absolute inset-0 h-full w-full" />
+                            <CoverArt seed={sprint.slug} category={sprint.category} src={sprint.image_url} className="absolute inset-0 h-full w-full" />
                             <span className="absolute bottom-2 left-2 flex size-11 items-center justify-center rounded-[8px] bg-ink-950/75 text-gold-400">
                                 <Icon className="size-7" strokeWidth={1.25} />
                             </span>
