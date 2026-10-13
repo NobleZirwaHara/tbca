@@ -5,8 +5,9 @@ import Breadcrumbs, { type Crumb } from '@/Components/ui/Breadcrumbs';
 import AdvIcon from '@/Components/Advisory/AdvIcon';
 import { cn } from '@/lib/cn';
 import { formatZar } from '@/lib/money';
+import { displayMoney } from '@/lib/money';
 
-export const zar = (n: number | null | undefined) => (n === null || n === undefined ? '—' : n < 0 ? `-${formatZar(Math.abs(n))}` : formatZar(n));
+export const zar = (n: number | null | undefined) => (n === null || n === undefined ? '—' : n < 0 ? `-${displayMoney(Math.abs(n))}` : displayMoney(n));
 export const zarRange = (r: [number, number] | number[] | null | undefined, suffix = '') =>
     !r ? '—' : r[0] === r[1] ? `${zar(r[0])}${suffix}` : `${zar(r[0])} – ${zar(r[1])}${suffix}`;
 export const zarCents = (n: number) => `ZAR ${n.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, ' ')}`;

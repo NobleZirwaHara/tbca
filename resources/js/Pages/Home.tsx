@@ -9,6 +9,7 @@ import CtaBand from '@/Components/CtaBand';
 import { ButtonLink } from '@/Components/ui/Button';
 import Icon from '@/Components/ui/Icon';
 import LedgerChip from '@/Components/ui/LedgerChip';
+import { useT } from '@/lib/i18n';
 import { usePrice } from '@/lib/money';
 
 interface FeaturedSprint {
@@ -73,12 +74,13 @@ const ecosystemNames: { id: string; name: string }[] = [
 
 export default function Home({ stats, sprints, howItWorks, differentiators }: HomeProps) {
     const price = usePrice();
+    const t = useT();
     const [partner, setPartner] = useState(0);
     const current = partners[partner];
 
     return (
         <>
-            <Head title="Africa's AI-Powered Business Growth Platform" />
+            <Head title={t("Africa's AI-Powered Business Growth Platform")} />
 
             {/* ------------------------------------------------ Hero */}
             <section className="relative overflow-hidden bg-ink-950">
@@ -88,27 +90,27 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                 <div className="container-tbca relative grid gap-10 pt-6 pb-10 lg:grid-cols-12 lg:gap-12 lg:pt-8 lg:pb-14">
                     <div className="lg:col-span-6">
                         <h1 className="text-[2.375rem] leading-[1.04] font-bold tracking-[-0.03em] text-parchment-100 sm:text-[3.25rem] xl:text-[3.6rem]">
-                            Africa&rsquo;s AI-Powered
+                            {t('Africa’s AI-Powered')}
                             <br />
-                            Business <span className="text-gold-500">Growth</span> Platform
+                            <Highlight text={t('Business Growth Platform')} word={t('Growth')} />
                         </h1>
-                        <p className="mt-4 text-[1.0625rem] font-semibold text-parchment-100">Built in Africa. Designed for Africa.</p>
+                        <p className="mt-4 text-[1.0625rem] font-semibold text-parchment-100">{t('Built in Africa. Designed for Africa.')}</p>
                         <p className="mt-1 text-[0.875rem] font-medium text-gold-500">
-                            Pan-African architecture <span className="opacity-50">|</span> 54-country expansion-ready architecture
+                            {t('Pan-African architecture')} <span className="opacity-50">|</span> {t('54-country expansion-ready architecture')}
                         </p>
                         <p className="mt-4 max-w-xl text-[0.9375rem] leading-relaxed text-ink-200">
-                            TBCA helps businesses start, grow, automate, fund and scale through expert-led Sprints, digital tools, business intelligence, Due Diligence and project advisory.
+                            {t('TBCA helps businesses start, grow, automate, fund and scale through expert-led Sprints, digital tools, business intelligence, Due Diligence and project advisory.')}
                         </p>
 
                         <div className="mt-7 flex flex-wrap gap-3">
                             <ButtonLink href="/shop" variant="gold" size="lg" trailingIcon="arrow-right">
-                                Explore Sprints
+                                {t('Explore Sprints')}
                             </ButtonLink>
                             <ButtonLink href="/business-health-score" variant="outline-light" size="lg">
-                                Start Business Health Score
+                                {t('Start Business Health Score')}
                             </ButtonLink>
                             <ButtonLink href="/discovery-call" variant="outline-light" size="lg" icon="calendar-days">
-                                Book Discovery Call
+                                {t('Book Discovery Call')}
                             </ButtonLink>
                         </div>
 
@@ -116,7 +118,7 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                             {heroChips.map((chip) => (
                                 <li key={chip.label} className="flex flex-col items-center gap-2 text-center">
                                     <Icon name={chip.icon} className="size-6 text-gold-500" />
-                                    <span className="text-[0.6875rem] leading-snug font-medium text-parchment-200">{chip.label}</span>
+                                    <span className="text-[0.6875rem] leading-snug font-medium text-parchment-200">{t(chip.label)}</span>
                                 </li>
                             ))}
                         </ul>
@@ -131,9 +133,9 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                                     <Link href={entry.href} className="flex h-full flex-col rounded-[6px] border border-gold-700/40 bg-ink-900/80 p-3.5 transition-colors hover:border-gold-500">
                                         <span className="flex items-center gap-2">
                                             <Icon name={entry.icon} className="size-5 text-gold-500" />
-                                            <span className="text-[0.8125rem] font-semibold text-parchment-100">{entry.title}</span>
+                                            <span className="text-[0.8125rem] font-semibold text-parchment-100">{t(entry.title)}</span>
                                         </span>
-                                        <span className="mt-1.5 text-[0.6875rem] leading-relaxed text-ink-300">{entry.body}</span>
+                                        <span className="mt-1.5 text-[0.6875rem] leading-relaxed text-ink-300">{t(entry.body)}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -148,8 +150,8 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                             <li key={s.label} className="flex items-center gap-3 bg-ink-950 px-4 py-4">
                                 <Icon name={s.icon} className="size-8 shrink-0 text-gold-500" />
                                 <span>
-                                    <span className="block text-[1.0625rem] leading-tight font-bold text-gold-400">{s.value}</span>
-                                    <span className="block text-[0.6875rem] leading-snug text-parchment-200">{s.label}</span>
+                                    <span className="block text-[1.0625rem] leading-tight font-bold text-gold-400">{t(s.value)}</span>
+                                    <span className="block text-[0.6875rem] leading-snug text-parchment-200">{t(s.label)}</span>
                                 </span>
                             </li>
                         ))}
@@ -162,9 +164,9 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                 <div className="container-tbca grid gap-8 xl:grid-cols-12">
                     <div className="xl:col-span-8">
                         <div className="flex items-end justify-between gap-4">
-                            <h2 className="text-[1.0625rem] font-bold text-ink-900">Featured Sprints</h2>
+                            <h2 className="text-[1.0625rem] font-bold text-ink-900">{t('Featured Sprints')}</h2>
                             <Link href="/shop" className="inline-flex items-center gap-1 text-[0.8125rem] font-semibold text-gold-700 hover:text-gold-800">
-                                View All Sprints <ArrowRight className="size-3.5" aria-hidden="true" />
+                                {t('View All Sprints')} <ArrowRight className="size-3.5" aria-hidden="true" />
                             </Link>
                         </div>
                         <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -178,25 +180,25 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                                             <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-[6px] bg-ink-900 text-gold-400">
                                                 <Icon name={s.icon} className="size-5" />
                                             </span>
-                                            <span className="text-[0.875rem] leading-snug font-bold text-ink-900">{s.name}</span>
+                                            <span className="text-[0.875rem] leading-snug font-bold text-ink-900">{t(s.name)}</span>
                                         </span>
-                                        <span className="mt-2.5 text-[0.75rem] leading-relaxed text-ink-500">{s.summary}</span>
+                                        <span className="mt-2.5 text-[0.75rem] leading-relaxed text-ink-500">{t(s.summary)}</span>
                                         <span className="mt-auto flex items-center justify-between gap-2 pt-3 text-[0.75rem]">
                                             <span className="text-ink-500">
-                                                From <strong className="text-[0.875rem] text-ink-900">{price(s.zar)}</strong>
+                                                {t('From')} <strong className="text-[0.875rem] text-ink-900" dir="ltr">{price(s.zar)}</strong>
                                             </span>
                                             <span className="inline-flex items-center gap-1 text-verified-500">
-                                                <CircleCheck className="size-3.5" aria-hidden="true" /> 5 Currencies
+                                                <CircleCheck className="size-3.5" aria-hidden="true" /> {t('5 Currencies')}
                                             </span>
                                         </span>
                                         <span className="mt-2 flex items-center justify-between gap-2 border-t border-parchment-300 pt-2 text-[0.6875rem] text-ink-500">
                                             <span className="inline-flex items-center gap-1">
-                                                <Clock className="size-3.5" aria-hidden="true" /> {s.turnaround}
+                                                <Clock className="size-3.5" aria-hidden="true" /> {t(s.turnaround)}
                                             </span>
                                             <span className="inline-flex items-center gap-1">
-                                                <UserCheck className="size-3.5" aria-hidden="true" /> Human Reviewed
+                                                <UserCheck className="size-3.5" aria-hidden="true" /> {t('Human Reviewed')}
                                             </span>
-                                            <ArrowRight className="size-4 text-ink-900 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                                            <ArrowRight className="size-4 text-ink-900 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" aria-hidden="true" />
                                         </span>
                                     </Link>
                                 </li>
@@ -205,13 +207,13 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                     </div>
 
                     <div className="xl:col-span-4">
-                        <h2 className="text-[1.0625rem] font-bold text-ink-900">Our Platform. One Ecosystem.</h2>
+                        <h2 className="text-[1.0625rem] font-bold text-ink-900">{t('Our Platform. One Ecosystem.')}</h2>
                         <ul className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                             {ecosystem.map((e) => (
                                 <li key={e.name}>
                                     <Link href={e.href} className="flex h-full flex-col items-center justify-center gap-2 rounded-[6px] border border-parchment-400 bg-white px-2 py-3.5 text-center transition-colors hover:border-gold-400">
                                         <Icon name={e.icon} className="size-6 text-gold-600" />
-                                        <span className="text-[0.6875rem] leading-tight font-semibold text-ink-800">{e.name}</span>
+                                        <span className="text-[0.6875rem] leading-tight font-semibold text-ink-800">{t(e.name)}</span>
                                     </Link>
                                 </li>
                             ))}
@@ -226,36 +228,36 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                     <div className="relative overflow-hidden rounded-[8px] border border-parchment-400 bg-white p-5 xl:col-span-4">
                         <HeroArt tone="light" focus="right" fade="left" seed={5} className="opacity-70" />
                         <div className="relative">
-                        <h2 className="text-[0.9375rem] font-bold text-ink-900">How TBCA Works</h2>
+                        <h2 className="text-[0.9375rem] font-bold text-ink-900">{t('How TBCA Works')}</h2>
                         <ol className="mt-5 grid grid-cols-5 gap-2">
                             {howItWorks.map((s, i) => (
                                 <li key={s.step} className="relative flex flex-col items-center text-center">
-                                    {i > 0 && <span className="absolute top-4 right-1/2 h-px w-full border-t border-dashed border-gold-400" aria-hidden="true" />}
+                                    {i > 0 && <span className="absolute top-4 end-1/2 h-px w-full border-t border-dashed border-gold-400" aria-hidden="true" />}
                                     <span className="relative z-10 flex size-8 items-center justify-center rounded-full bg-gold-500 text-sm font-bold text-ink-900">{s.step}</span>
-                                    <span className="mt-2 text-[0.75rem] font-bold text-ink-900">{s.title}</span>
-                                    <span className="mt-1 text-[0.625rem] leading-snug text-ink-500">{s.body}</span>
+                                    <span className="mt-2 text-[0.75rem] font-bold text-ink-900">{t(s.title)}</span>
+                                    <span className="mt-1 text-[0.625rem] leading-snug text-ink-500">{t(s.body)}</span>
                                 </li>
                             ))}
                         </ol>
                         <Link href="/about/methodology" className="mt-5 inline-flex items-center gap-1 text-[0.75rem] font-semibold text-gold-700 hover:text-gold-800">
-                            Learn More <ArrowRight className="size-3.5" aria-hidden="true" />
+                            {t('Learn More')} <ArrowRight className="size-3.5" aria-hidden="true" />
                         </Link>
                         </div>
                     </div>
 
                     <div className="rounded-[8px] border border-parchment-400 bg-white p-5 xl:col-span-3">
-                        <h2 className="text-[0.9375rem] font-bold text-ink-900">Why Choose TBCA</h2>
+                        <h2 className="text-[0.9375rem] font-bold text-ink-900">{t('Why Choose TBCA')}</h2>
                         <ul className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4 xl:grid-cols-2">
                             {differentiators.map((d) => (
                                 <li key={d.title} className="text-center">
                                     <Icon name={d.icon ?? 'circle'} className="mx-auto size-7 text-gold-600" />
-                                    <h3 className="mt-2 text-[0.75rem] font-bold text-ink-900">{d.title}</h3>
-                                    <p className="mt-1 text-[0.6875rem] leading-snug text-ink-500">{d.body}</p>
+                                    <h3 className="mt-2 text-[0.75rem] font-bold text-ink-900">{t(d.title)}</h3>
+                                    <p className="mt-1 text-[0.6875rem] leading-snug text-ink-500">{t(d.body)}</p>
                                 </li>
                             ))}
                         </ul>
                         <Link href="/about" className="mt-5 inline-flex items-center gap-1 text-[0.75rem] font-semibold text-gold-700 hover:text-gold-800">
-                            Learn More <ArrowRight className="size-3.5" aria-hidden="true" />
+                            {t('Learn More')} <ArrowRight className="size-3.5" aria-hidden="true" />
                         </Link>
                     </div>
 
@@ -263,47 +265,47 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                         <div className="grid gap-5 sm:grid-cols-3">
                             <figure>
                                 <div className="flex items-center justify-between gap-2">
-                                    <figcaption className="text-[0.75rem] font-bold text-ink-900">Approved Client Testimonial</figcaption>
+                                    <figcaption className="text-[0.75rem] font-bold text-ink-900">{t('Approved Client Testimonial')}</figcaption>
                                     <LedgerChip code="A" full={false} />
                                 </div>
                                 <Quote className="mt-3 size-5 text-gold-400" aria-hidden="true" />
                                 <blockquote className="mt-1 text-[0.8125rem] leading-snug text-ink-800">
-                                    &ldquo;TBCA delivered a bankable business plan that secured our funding within 45 days.&rdquo;
+                                    &ldquo;{t('TBCA delivered a bankable business plan that secured our funding within 45 days.')}&rdquo;
                                 </blockquote>
-                                <p className="mt-2 text-[0.6875rem] text-ink-500">— Approved Client</p>
+                                <p className="mt-2 text-[0.6875rem] text-ink-500">— {t('Approved Client')}</p>
                             </figure>
                             <figure>
                                 <div className="flex items-center justify-between gap-2">
-                                    <figcaption className="text-[0.75rem] font-bold text-ink-900">Verified Case Study</figcaption>
+                                    <figcaption className="text-[0.75rem] font-bold text-ink-900">{t('Verified Case Study')}</figcaption>
                                     <LedgerChip code="V" full={false} />
                                 </div>
                                 <Quote className="mt-3 size-5 text-gold-400" aria-hidden="true" />
                                 <blockquote className="mt-1 text-[0.8125rem] leading-snug text-ink-800">
-                                    &ldquo;The market research Sprint gave us clarity, confidence and a winning strategy.&rdquo;
+                                    &ldquo;{t('The market research Sprint gave us clarity, confidence and a winning strategy.')}&rdquo;
                                 </blockquote>
-                                <p className="mt-2 text-[0.6875rem] text-ink-500">— Verified Case Study</p>
+                                <p className="mt-2 text-[0.6875rem] text-ink-500">— {t('Verified Case Study')}</p>
                             </figure>
                             <div>
                                 <div className="flex items-center justify-between gap-2">
-                                    <h3 className="text-[0.75rem] font-bold text-ink-900">Approved Institutional Partner</h3>
+                                    <h3 className="text-[0.75rem] font-bold text-ink-900">{t('Approved Institutional Partner')}</h3>
                                     <LedgerChip code="R" full={false} />
                                 </div>
                                 <div className="mt-3 flex items-center gap-2">
-                                    <button type="button" onClick={() => setPartner((partner + partners.length - 1) % partners.length)} className="rounded-full border border-parchment-500 p-1 text-ink-600 hover:border-gold-500" aria-label="Previous partner">
+                                    <button type="button" onClick={() => setPartner((partner + partners.length - 1) % partners.length)} className="rounded-full border border-parchment-500 p-1 text-ink-600 hover:border-gold-500" aria-label={t('Previous partner')}>
                                         <ChevronLeft className="size-3.5" />
                                     </button>
                                     <div className="min-w-0 flex-1 text-center" aria-live="polite">
                                         <p className="font-serif text-[1.125rem] leading-tight font-bold text-ink-900">{current.name}</p>
-                                        <p className="text-[0.625rem] leading-snug text-ink-500 uppercase">{current.full}</p>
-                                        <p className="mt-1 text-[0.625rem] text-gold-700">— {current.note}</p>
+                                        <p className="text-[0.625rem] leading-snug text-ink-500 uppercase">{t(current.full)}</p>
+                                        <p className="mt-1 text-[0.625rem] text-gold-700">— {t(current.note)}</p>
                                     </div>
-                                    <button type="button" onClick={() => setPartner((partner + 1) % partners.length)} className="rounded-full border border-parchment-500 p-1 text-ink-600 hover:border-gold-500" aria-label="Next partner">
+                                    <button type="button" onClick={() => setPartner((partner + 1) % partners.length)} className="rounded-full border border-parchment-500 p-1 text-ink-600 hover:border-gold-500" aria-label={t('Next partner')}>
                                         <ChevronRight className="size-3.5" />
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <ul className="mt-5 grid grid-cols-2 gap-2 border-t border-parchment-300 pt-4 sm:grid-cols-4" aria-label="Ecosystem institutions">
+                        <ul className="mt-5 grid grid-cols-2 gap-2 border-t border-parchment-300 pt-4 sm:grid-cols-4" aria-label={t('Ecosystem institutions')}>
                             {ecosystemNames.map((n) => (
                                 <li
                                     key={n.name}
@@ -316,7 +318,7 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
                             ))}
                         </ul>
                         <p className="mt-2 text-[0.625rem] leading-relaxed text-ink-400">
-                            Institutional relationships vary by mandate, scope and governance. Display is permission- and record-governed.
+                            {t('Institutional relationships vary by mandate, scope and governance. Display is permission- and record-governed.')}
                         </p>
                     </div>
                 </div>
@@ -332,30 +334,45 @@ export default function Home({ stats, sprints, howItWorks, differentiators }: Ho
     );
 }
 
+/** Renders `text` with `word` in gold (the highlighted word moves with the translation's word order). */
+function Highlight({ text, word }: { text: string; word: string }) {
+    const at = word ? text.indexOf(word) : -1;
+    if (at === -1) return <>{text}</>;
+
+    return (
+        <>
+            {text.slice(0, at)}
+            <span className="text-gold-500">{word}</span>
+            {text.slice(at + word.length)}
+        </>
+    );
+}
+
 function HeroVideo() {
     const [playing, setPlaying] = useState(false);
     const [lang, setLang] = useState<'EN' | 'AF'>('EN');
     const [captions, setCaptions] = useState(true);
+    const t = useT();
 
     return (
         <div className="relative overflow-hidden rounded-[10px] border-2 border-gold-600/70 bg-gradient-to-br from-ink-900 via-ink-950 to-ink-800">
             <div className="pointer-events-none absolute inset-0 motif-grid opacity-40" aria-hidden="true" />
-            <AfricaMark className="pointer-events-none absolute top-6 right-6 h-48 w-auto text-gold-600/30" strokeWidth={1.5} />
+            <AfricaMark className="pointer-events-none absolute top-6 end-6 h-48 w-auto text-gold-600/30" strokeWidth={1.5} />
 
             <div className="relative p-5 md:p-6">
                 <h2 className="font-serif text-[1.25rem] leading-snug font-bold text-parchment-100 md:text-[1.5rem]">
-                    See How TBCA Helps You
+                    {t('See How TBCA Helps You')}
                     <br />
-                    Build, Fund, Automate and Scale
+                    {t('Build, Fund, Automate and Scale')}
                 </h2>
-                <p className="mt-1 text-[0.8125rem] font-semibold text-gold-500">Watch the 90-second platform explainer.</p>
+                <p className="mt-1 text-[0.8125rem] font-semibold text-gold-500">{t('Watch the 90-second platform explainer.')}</p>
 
                 <div className="flex h-36 items-center justify-center md:h-40">
                     <button
                         type="button"
                         onClick={() => setPlaying(!playing)}
                         aria-pressed={playing}
-                        aria-label={playing ? 'Pause platform explainer' : 'Play platform explainer'}
+                        aria-label={playing ? t('Pause platform explainer') : t('Play platform explainer')}
                         className="inline-flex size-16 items-center justify-center rounded-full border-4 border-gold-300/60 bg-gold-500 text-ink-900 shadow-raised transition-transform hover:scale-105"
                     >
                         {playing ? <span className="flex gap-1.5"><span className="h-6 w-1.5 bg-ink-900" /><span className="h-6 w-1.5 bg-ink-900" /></span> : <Play className="size-7 translate-x-0.5 fill-current" aria-hidden="true" />}
@@ -364,7 +381,7 @@ function HeroVideo() {
 
                 {captions && playing && (
                     <p className="mb-2 rounded bg-ink-950/80 px-3 py-1.5 text-center text-[0.75rem] text-parchment-100" aria-live="polite">
-                        {lang === 'EN' ? 'TBCA brings Sprints, intelligence and AI automation into one governed platform.' : 'TBCA bring Sprints, intelligensie en KI-outomatisering saam in een beheerde platform.'}
+                        {lang === 'EN' ? t('TBCA brings Sprints, intelligence and AI automation into one governed platform.') : 'TBCA bring Sprints, intelligensie en KI-outomatisering saam in een beheerde platform.'}
                     </p>
                 )}
 
@@ -373,7 +390,7 @@ function HeroVideo() {
                     <span className="h-1 flex-1 overflow-hidden rounded-full bg-ink-700">
                         <span className={playing ? 'block h-full w-1/3 bg-gold-500' : 'block h-full w-0 bg-gold-500'} />
                     </span>
-                    <span>{playing ? '0:30' : '1:30'} / 1:30</span>
+                    <span dir="ltr">{playing ? '0:30' : '1:30'} / 1:30</span>
                     <button type="button" onClick={() => setCaptions(!captions)} aria-pressed={captions} className={`rounded-[3px] border px-1.5 py-0.5 text-[0.625rem] ${captions ? 'border-gold-500 text-gold-400' : 'border-ink-600'}`}>
                         CC
                     </button>
@@ -383,7 +400,7 @@ function HeroVideo() {
                         </button>
                     ))}
                     <span className="hidden items-center gap-1 sm:inline-flex">
-                        <CalendarDays className="size-3.5" aria-hidden="true" /> Africa (Active)
+                        <CalendarDays className="size-3.5" aria-hidden="true" /> {t('Africa (Active)')}
                     </span>
                 </div>
             </div>

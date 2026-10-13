@@ -4,10 +4,13 @@ import { ArrowRight, ChevronDown, Info } from 'lucide-react';
 import Card, { IconTile } from '@/Components/ui/Card';
 import Icon from '@/Components/ui/Icon';
 import { cn } from '@/lib/cn';
+import { useT } from '@/lib/i18n';
 
 /* ---------------------------------------------------------------- Stats */
 
 export function StatBand({ stats }: { stats: { value: string; label: string; icon: string }[] }) {
+    const t = useT();
+
     return (
         <div className="border-y border-ink-800 bg-ink-900">
             <div className="container-tbca">
@@ -17,9 +20,9 @@ export function StatBand({ stats }: { stats: { value: string; label: string; ico
                             <Icon name={stat.icon} className="mt-0.5 size-5 shrink-0 text-gold-500" />
                             <div className="min-w-0">
                                 <p className="font-serif text-[1.0625rem] leading-tight font-semibold text-parchment-100">
-                                    {stat.value}
+                                    {t(stat.value)}
                                 </p>
-                                <p className="mt-1 text-[0.75rem] leading-snug text-ink-300">{stat.label}</p>
+                                <p className="mt-1 text-[0.75rem] leading-snug text-ink-300">{t(stat.label)}</p>
                             </div>
                         </li>
                     ))}
@@ -47,6 +50,7 @@ export function FeatureGrid({
     columns?: 2 | 3 | 4;
     tone?: 'light' | 'dark';
 }) {
+    const t = useT();
     const cols = {
         2: 'sm:grid-cols-2',
         3: 'sm:grid-cols-2 lg:grid-cols-3',
@@ -71,7 +75,7 @@ export function FeatureGrid({
                                 tone === 'dark' ? 'text-parchment-100' : 'text-ink-900',
                             )}
                         >
-                            {item.title}
+                            {t(item.title)}
                         </h3>
                         <p
                             className={cn(
@@ -79,11 +83,11 @@ export function FeatureGrid({
                                 tone === 'dark' ? 'text-ink-300' : 'text-ink-600',
                             )}
                         >
-                            {item.body}
+                            {t(item.body)}
                         </p>
                         {item.href && (
                             <span className="mt-3 inline-flex items-center gap-1.5 text-[0.8125rem] font-semibold text-gold-700">
-                                Learn more
+                                {t('Learn more')}
                                 <ArrowRight className="size-3.5" aria-hidden="true" />
                             </span>
                         )}
@@ -121,20 +125,22 @@ export function ClusterGrid({
 }: {
     clusters: { title: string; body: string; items: string[] }[];
 }) {
+    const t = useT();
+
     return (
         <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {clusters.map((cluster) => (
                 <Card as="li" key={cluster.title} hover className="flex flex-col p-6">
                     <h3 className="font-serif text-[1.1875rem] leading-snug font-semibold text-ink-900">
-                        {cluster.title}
+                        {t(cluster.title)}
                     </h3>
-                    <p className="mt-2 text-[0.875rem] leading-relaxed text-ink-600">{cluster.body}</p>
+                    <p className="mt-2 text-[0.875rem] leading-relaxed text-ink-600">{t(cluster.body)}</p>
 
                     <ul className="mt-4 space-y-2 border-t border-parchment-300 pt-4">
                         {cluster.items.map((item) => (
                             <li key={item} className="flex gap-2.5 text-[0.8125rem] leading-relaxed text-ink-700">
                                 <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-gold-500" aria-hidden="true" />
-                                {item}
+                                {t(item)}
                             </li>
                         ))}
                     </ul>
@@ -151,10 +157,12 @@ export function StepFlow({
 }: {
     steps: { step: number | string; title: string; body: string }[];
 }) {
+    const t = useT();
+
     return (
         <ol className="relative grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
             <span
-                className="absolute top-5 right-6 left-6 hidden h-px bg-parchment-400 lg:block"
+                className="absolute top-5 start-6 end-6 hidden h-px bg-parchment-400 lg:block"
                 aria-hidden="true"
             />
 
@@ -164,9 +172,9 @@ export function StepFlow({
                         {step.step}
                     </span>
                     <h3 className="mt-4 text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink-900">
-                        {step.title}
+                        {t(step.title)}
                     </h3>
-                    <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-600">{step.body}</p>
+                    <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-600">{t(step.body)}</p>
                 </li>
             ))}
         </ol>
@@ -184,10 +192,12 @@ export function DataTable({
     rows: (string | React.ReactNode)[][];
     caption?: string;
 }) {
+    const t = useT();
+
     return (
         <div className="overflow-hidden rounded-[6px] border border-parchment-400 bg-white">
             <div className="overflow-x-auto rail-scroll">
-                <table className="w-full min-w-[42rem] border-collapse text-left">
+                <table className="w-full min-w-[42rem] border-collapse text-start">
                     {caption && <caption className="sr-only">{caption}</caption>}
                     <thead>
                         <tr className="border-b border-parchment-400 bg-parchment-100">
@@ -197,7 +207,7 @@ export function DataTable({
                                     scope="col"
                                     className="px-5 py-3 text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-ink-500"
                                 >
-                                    {column}
+                                    {t(column)}
                                 </th>
                             ))}
                         </tr>
@@ -213,7 +223,7 @@ export function DataTable({
                                             cellIndex === 0 ? 'font-semibold text-ink-900' : 'text-ink-600',
                                         )}
                                     >
-                                        {cell}
+                                        {typeof cell === 'string' ? t(cell) : cell}
                                     </td>
                                 ))}
                             </tr>
@@ -229,6 +239,7 @@ export function DataTable({
 
 export function FaqList({ items }: { items: { q: string; a: string }[] }) {
     const [open, setOpen] = useState<number | null>(0);
+    const t = useT();
 
     return (
         <ul className="overflow-hidden rounded-[6px] border border-parchment-400 bg-white">
@@ -240,11 +251,11 @@ export function FaqList({ items }: { items: { q: string; a: string }[] }) {
                         <button
                             type="button"
                             onClick={() => setOpen(isOpen ? null : index)}
-                            className="flex w-full items-start justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-parchment-100"
+                            className="flex w-full items-start justify-between gap-4 px-5 py-4 text-start transition-colors hover:bg-parchment-100"
                             aria-expanded={isOpen}
                         >
                             <span className="text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink-900">
-                                {item.q}
+                                {t(item.q)}
                             </span>
                             <ChevronDown
                                 className={cn(
@@ -257,7 +268,7 @@ export function FaqList({ items }: { items: { q: string; a: string }[] }) {
 
                         {isOpen && (
                             <div className="px-5 pb-4">
-                                <p className="max-w-3xl text-[0.875rem] leading-relaxed text-ink-600">{item.a}</p>
+                                <p className="max-w-3xl text-[0.875rem] leading-relaxed text-ink-600">{t(item.a)}</p>
                             </div>
                         )}
                     </li>
@@ -270,12 +281,14 @@ export function FaqList({ items }: { items: { q: string; a: string }[] }) {
 /* -------------------------------------------------------- Boundary note */
 
 export function BoundaryNote({ title = 'Professional Boundary', body }: { title?: string; body: string }) {
+    const t = useT();
+
     return (
         <div className="flex gap-4 rounded-[6px] border border-parchment-400 bg-white p-5 md:p-6">
             <IconTile name={<Info className="size-5" aria-hidden="true" />} tone="plain" />
             <div className="min-w-0">
-                <h3 className="text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink-900">{title}</h3>
-                <p className="mt-1.5 max-w-4xl text-[0.875rem] leading-relaxed text-ink-600">{body}</p>
+                <h3 className="text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink-900">{t(title)}</h3>
+                <p className="mt-1.5 max-w-4xl text-[0.875rem] leading-relaxed text-ink-600">{t(body)}</p>
             </div>
         </div>
     );
@@ -290,14 +303,16 @@ export function DefinitionRows({
     rows: { label: string; value: string; icon?: string }[];
     className?: string;
 }) {
+    const t = useT();
+
     return (
         <dl className={cn('space-y-2.5', className)}>
             {rows.map((row) => (
                 <div key={row.label} className="flex gap-2.5">
                     <Icon name={row.icon ?? 'circle-dot'} className="mt-[3px] size-4 shrink-0 text-gold-600" />
                     <div className="min-w-0 text-[0.8125rem] leading-relaxed">
-                        <dt className="inline font-semibold text-ink-900">{row.label}: </dt>
-                        <dd className="inline text-ink-600">{row.value}</dd>
+                        <dt className="inline font-semibold text-ink-900">{t(row.label)}: </dt>
+                        <dd className="inline text-ink-600">{t(row.value)}</dd>
                     </div>
                 </div>
             ))}
@@ -312,6 +327,8 @@ export function PillarGrid({
 }: {
     pillars: { number?: number; title: string; body: string; icon: string }[];
 }) {
+    const t = useT();
+
     return (
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {pillars.map((pillar) => (
@@ -319,9 +336,9 @@ export function PillarGrid({
                     <Icon name={pillar.icon} className="size-6 text-gold-600" />
                     <h3 className="mt-3.5 text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink-900">
                         {pillar.number ? `${pillar.number}. ` : ''}
-                        {pillar.title}
+                        {t(pillar.title)}
                     </h3>
-                    <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-600">{pillar.body}</p>
+                    <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-600">{t(pillar.body)}</p>
                 </Card>
             ))}
         </ul>

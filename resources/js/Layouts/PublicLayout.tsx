@@ -3,6 +3,7 @@ import Header, { type HeaderVariant } from '@/Components/Header';
 import Footer from '@/Components/Footer';
 import Flash from '@/Components/Flash';
 import Backdrop, { type BackdropVariant } from '@/Components/Backdrop';
+import { useT } from '@/lib/i18n';
 
 export default function PublicLayout({
     children,
@@ -14,15 +15,17 @@ export default function PublicLayout({
     /** Faint full-page background picture; pages may vary or disable it. */
     backdrop?: BackdropVariant;
 }) {
+    const t = useT();
+
     return (
         <div className="relative isolate flex min-h-screen flex-col bg-parchment-200">
             <Backdrop variant={backdrop} />
 
             <a
                 href="#main"
-                className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60] focus:rounded-[4px] focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink-900"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:start-3 focus:z-[60] focus:rounded-[4px] focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink-900"
             >
-                Skip to content
+                {t('Skip to content')}
             </a>
 
             <Header variant={headerVariant} />

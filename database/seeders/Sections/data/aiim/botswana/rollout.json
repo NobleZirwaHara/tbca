@@ -1,0 +1,22 @@
+[
+ {
+  "wave": "Wave 0 (done)",
+  "countries": "Malawi, Ghana, Nigeria, Egypt, Morocco, South Africa, Algeria, Botswana",
+  "note": "8 packs; CPDS-1.2"
+ },
+ {
+  "wave": "Wave 1 [PROPOSED]",
+  "countries": "Namibia, Zambia, Zimbabwe, Kenya, Ethiopia, Tanzania, Côte d'Ivoire, Senegal, Mozambique, Angola",
+  "note": "Southern-African cluster first (SACU/SADC reuse)"
+ },
+ {
+  "wave": "Wave 2 [PROPOSED]",
+  "countries": "Rwanda, Uganda, Tunisia, DRC, Cameroon, Madagascar, Mauritius, Benin, Togo, Burkina Faso, Lesotho, Eswatini",
+  "note": "Regional hubs"
+ },
+ {
+  "wave": "Wave 3 [PROPOSED]",
+  "countries": "Remaining 24 countries",
+  "note": "Lighter packs"
+ }
+]

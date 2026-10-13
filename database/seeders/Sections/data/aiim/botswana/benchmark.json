@@ -1,0 +1,101 @@
+[
+ {
+  "Metric": "As-of dates",
+  "Malawi": "Q1–May 2026",
+  "Ghana": "Sep–Oct 2026",
+  "Nigeria": "Jun–Aug 2026",
+  "Egypt": "Aug–Oct 2026",
+  "Morocco": "Aug–Sep 2026",
+  "South Africa": "Aug–Oct 2026",
+  "Algeria": "Jan–Sep 2026",
+  "Botswana": "Aug–Oct 2026"
+ },
+ {
+  "Metric": "Policy rate",
+  "Malawi": "24 %",
+  "Ghana": "14 %",
+  "Nigeria": "see NG-1.0",
+  "Egypt": "19 % / 20 %",
+  "Morocco": "2.25 %",
+  "South Africa": "7.25 %",
+  "Algeria": "2.50 %",
+  "Botswana": "5.5 % (+200 bp Apr 2026)"
+ },
+ {
+  "Metric": "Inflation (latest)",
+  "Malawi": "24.3 %",
+  "Ghana": "5.2 %",
+  "Nigeria": "15.39 %",
+  "Egypt": "14.5 %",
+  "Morocco": "0.3 % avg",
+  "South Africa": "4.4 %",
+  "Algeria": "4.0 % (Mar 2026)",
+  "Botswana": "9.3 % (Aug 2026)"
+ },
+ {
+  "Metric": "Growth",
+  "Malawi": "—",
+  "Ghana": "6.0 % (Q2 2026)",
+  "Nigeria": "—",
+  "Egypt": "5.1 % (FY25/26)",
+  "Morocco": "4.4 % (2026f)",
+  "South Africa": "1.1 % (2025)",
+  "Algeria": "3.9 % (2025)",
+  "Botswana": "−0.7 % (2025); +8.7 % Q2 2026"
+ },
+ {
+  "Metric": "Unemployment",
+  "Malawi": "n/a",
+  "Ghana": "n/a",
+  "Nigeria": "n/a",
+  "Egypt": "n/a",
+  "Morocco": "9.5 %",
+  "South Africa": "33.6 %",
+  "Algeria": "12.7 %",
+  "Botswana": "21.0 % (youth 28.9 %)"
+ },
+ {
+  "Metric": "FX regime",
+  "Malawi": "Official vs parallel",
+  "Ghana": "Market",
+  "Nigeria": "Market",
+  "Egypt": "Flexible",
+  "Morocco": "Basket peg",
+  "South Africa": "Free float",
+  "Algeria": "Managed + parallel",
+  "Botswana": "Crawling peg (50 % ZAR / 50 % SDR)"
+ },
+ {
+  "Metric": "Sweep templates",
+  "Malawi": "176",
+  "Ghana": "220",
+  "Nigeria": "249",
+  "Egypt": "263",
+  "Morocco": "273",
+  "South Africa": "300",
+  "Algeria": "312",
+  "Botswana": "321"
+ },
+ {
+  "Metric": "Tier A share",
+  "Malawi": "n/a",
+  "Ghana": "38 %",
+  "Nigeria": "22 %",
+  "Egypt": "31 %",
+  "Morocco": "29 %",
+  "South Africa": "18 %",
+  "Algeria": "37 %",
+  "Botswana": "26 % after freshness gate (A+ 28, A 58); 43 % before"
+ },
+ {
+  "Metric": "Binding constraint",
+  "Malawi": "Forex",
+  "Ghana": "Fiscal/energy",
+  "Nigeria": "Insecurity",
+  "Egypt": "Shock exposure",
+  "Morocco": "Water + EU demand",
+  "South Africa": "State capacity",
+  "Algeria": "Hydrocarbons + convertibility",
+  "Botswana": "Diamonds + SA dependence + citizen rules"
+ }
+]

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import { CircleCheck, TriangleAlert, X } from 'lucide-react';
+import { useT } from '@/lib/i18n';
 import type { SharedProps } from '@/types';
 
 /**
@@ -12,6 +13,7 @@ export default function Flash() {
     const message = flash.error ?? flash.success ?? flash.message;
     const tone = flash.error ? 'error' : 'success';
     const [dismissed, setDismissed] = useState<string | null>(null);
+    const t = useT();
 
     useEffect(() => {
         if (!message) return;
@@ -30,8 +32,8 @@ export default function Flash() {
                 }
             >
                 {tone === 'error' ? <TriangleAlert className="mt-0.5 size-4 shrink-0" /> : <CircleCheck className="mt-0.5 size-4 shrink-0" />}
-                <p className="flex-1">{message}</p>
-                <button type="button" onClick={() => setDismissed(message)} aria-label="Dismiss">
+                <p className="flex-1">{t(message)}</p>
+                <button type="button" onClick={() => setDismissed(message)} aria-label={t('Dismiss')}>
                     <X className="size-4" />
                 </button>
             </div>

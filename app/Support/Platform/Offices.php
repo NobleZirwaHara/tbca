@@ -11,6 +11,17 @@ namespace App\Support\Platform;
  */
 class Offices
 {
+    /**
+     * Country offices shown under the Head Office on /contact, in display order
+     * (client review of 8 Oct 2026: "2 more Country Offices, then View all").
+     * Botswana and Mauritius are the regional hubs closest to the Pretoria head
+     * office; change the slugs here to feature different offices.
+     */
+    public const FEATURED = ['botswana', 'mauritius'];
+
+    /** Shown on offices without a direct line in the source document. */
+    public const GENERAL_EMAIL = Directory::GENERAL_EMAIL;
+
     /** The Pretoria head office. */
     public static function headOffice(): array
     {
@@ -60,12 +71,34 @@ class Offices
         return [self::headOffice(), ...self::countryOffices()];
     }
 
-    /** Adds Google Maps links (keyless embed + "open in Maps"). */
+    /** The featured country offices, in FEATURED order. */
+    public static function featured(): array
+    {
+        $bySlug = collect(self::countryOffices())->keyBy('slug');
+
+        return collect(self::FEATURED)->map(fn (string $slug) => $bySlug->get($slug))->filter()->values()->all();
+    }
+
+    /** Country offices grouped by African Union region, in region display order. */
+    public static function byRegion(): array
+    {
+        $groups = collect(self::countryOffices())->groupBy('region');
+
+        return collect(Africa::REGIONS_LIST)
+            ->filter(fn (string $region) => $groups->has($region))
+            ->map(fn (string $region) => ['region' => $region, 'offices' => $groups->get($region)->values()->all()])
+            ->values()
+            ->all();
+    }
+
+    /** Adds the region, the contact email and Google Maps links (keyless embed + "open in Maps"). */
     private static function shape(array $office): array
     {
         $q = urlencode($office['address']);
 
         return $office + [
+            'region' => Africa::find($office['iso2'])['region_name'] ?? null,
+            'email' => self::GENERAL_EMAIL,
             'map_embed' => "https://www.google.com/maps?q={$q}&output=embed",
             'map_link' => "https://www.google.com/maps/search/?api=1&query={$q}",
         ];

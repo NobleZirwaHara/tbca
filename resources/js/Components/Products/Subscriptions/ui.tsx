@@ -23,6 +23,7 @@ import {
 import type { ConsoleNavGroup } from '@/Layouts/ConsoleLayout';
 import { cn } from '@/lib/cn';
 import type { SubSubscription } from './types';
+import { displayCurrency, displayMoney } from '@/lib/money';
 
 /* ==========================================================================
    Shared building blocks for the Subscriptions family pages.
@@ -30,11 +31,13 @@ import type { SubSubscription } from './types';
 
 export function zar(n: number | null | undefined, decimals = 0): string {
     if (n === null || n === undefined) return 'Custom';
+    if (decimals === 0 && displayCurrency() !== 'ZAR') return displayMoney(Number(n));
     return `ZAR ${Number(n).toLocaleString('en-ZA', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).replace(/ /g, ',').replace(/ /g, ',')}`;
 }
 
 export function rand(n: number | null | undefined): string {
     if (n === null || n === undefined) return 'Custom';
+    if (displayCurrency() !== 'ZAR') return displayMoney(Number(n));
     return `R${Number(n).toLocaleString('en-ZA').replace(/ /g, ',').replace(/ /g, ',')}`;
 }
 

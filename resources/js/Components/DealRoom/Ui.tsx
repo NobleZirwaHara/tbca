@@ -5,10 +5,12 @@ import { Panel, SimpleTable, StatusPill } from '@/Components/ui/Kit';
 import { cn } from '@/lib/cn';
 import { formatZar } from '@/lib/money';
 import type { ApprovalRow, AuditEntry, Block, Charge } from '@/types/deal-room';
+import { displayCurrency, displayMoney, displayRates } from '@/lib/money';
+import { compactMoney } from '@/lib/moneyBands';
 
-export const zar = (n: number) => `ZAR ${Math.round(n).toLocaleString('en-ZA').replace(/,/g, ' ')}`;
-export const rands = formatZar;
-export const millions = (n: number) => `ZAR ${(n / 1_000_000).toFixed(1)}m`;
+export const zar = (n: number) => displayCurrency() !== 'ZAR' ? displayMoney(n) : `ZAR ${Math.round(n).toLocaleString('en-ZA').replace(/,/g, ' ')}`;
+export const rands = (n: number) => displayMoney(n);
+export const millions = (n: number) => displayCurrency() !== 'ZAR' ? compactMoney(n, displayCurrency(), displayRates()) : `ZAR ${(n / 1_000_000).toFixed(1)}m`;
 
 /** Circular score gauge (0-100). */
 export function Gauge({ value, label, caption, size = 112, tone }: { value: number; label?: string; caption?: string; size?: number; tone?: 'good' | 'warn' | 'bad' }) {

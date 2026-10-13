@@ -21,11 +21,23 @@ class InfoPagesController extends Controller
     {
         return Inertia::render('CorePages/Contact', [
             'headOffice' => Offices::headOffice(),
+            'featuredOffices' => Offices::featured(),
             'offices' => Offices::countryOffices(),
             'leads' => Directory::clientFacing(),
             'generalEmail' => Directory::GENERAL_EMAIL,
             'serviceAreas' => InfoContent::serviceAreas(),
             'hours' => InfoContent::officeHours(),
+        ]);
+    }
+
+    /** Every TBCA office: head office first, then the country offices by region. */
+    public function offices(): Response
+    {
+        return Inertia::render('CorePages/Offices', [
+            'headOffice' => Offices::headOffice(),
+            'regions' => Offices::byRegion(),
+            'offices' => Offices::countryOffices(),
+            'generalEmail' => Directory::GENERAL_EMAIL,
         ]);
     }
 

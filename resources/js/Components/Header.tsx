@@ -4,12 +4,14 @@ import { Bell, Check, ChevronDown, Languages, Menu, MessageCircle, Search, Shopp
 import Logo from './Logo';
 import { openSecureChat } from './AskQuestion';
 import { cn } from '@/lib/cn';
+import { applyDocumentLocale, loadLocale, useT } from '@/lib/i18n';
 import type { NavChild, NavTab, SharedProps } from '@/types';
 
 export type HeaderVariant = 'dark' | 'split';
 
 export default function Header({ variant = 'split' }: { variant?: HeaderVariant }) {
-    const { nav, context, url, auth, basketCount, unreadNotifications } = usePage<SharedProps>().props;
+    const { nav, url, auth, basketCount, unreadNotifications } = usePage<SharedProps>().props;
+    const t = useT();
     const [openMenu, setOpenMenu] = useState<string | null>(null);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -84,7 +86,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                             }}
                         >
                             <label>
-                                <span className="sr-only">Search TBCA</span>
+                                <span className="sr-only">{t('Search TBCA')}</span>
                                 <Search
                                     className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-ink-400"
                                     aria-hidden="true"
@@ -92,7 +94,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                                 <input
                                     type="search"
                                     name="q"
-                                    placeholder="Search everything..."
+                                    placeholder={t('Search everything...')}
                                     className="h-9 w-full rounded-[4px] border border-ink-700 bg-ink-900 pe-3 ps-9 text-[0.8125rem] text-parchment-100 placeholder:text-ink-400 focus:border-gold-500 focus:outline-none xl:h-10"
                                 />
                             </label>
@@ -103,17 +105,17 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                             href="/shop"
                             className="hidden h-9 items-center gap-1.5 rounded-[4px] bg-gold-500 px-3.5 text-[0.8125rem] font-semibold text-ink-900 transition-colors hover:bg-gold-400 sm:inline-flex"
                         >
-                            Start a Sprint
+                            {t('Start a Sprint')}
                         </Link>
 
                         <button
                             type="button"
                             onClick={openSecureChat}
-                            aria-label="WhatsApp / Talk: open secure chat with NIKIWE"
+                            aria-label={t('WhatsApp / Talk: open secure chat with NIKIWE')}
                             className="hidden h-9 items-center gap-1.5 rounded-[4px] border border-ink-700 px-2.5 text-[0.8125rem] font-medium text-parchment-100 transition-colors hover:border-[#25D366]/60 hover:text-[#25D366] md:inline-flex xl:px-3"
                         >
                             <MessageCircle className="size-4 text-[#25D366]" aria-hidden="true" />
-                            <span className="hidden xl:inline">WhatsApp / Talk</span>
+                            <span className="hidden xl:inline">{t('WhatsApp / Talk')}</span>
                         </button>
 
                         <Link
@@ -121,13 +123,15 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                             className="relative hidden size-9 items-center justify-center rounded-[4px] border border-ink-700 text-parchment-200 transition-colors hover:border-gold-600 hover:text-gold-300 lg:inline-flex"
                             aria-label={
                                 auth.user
-                                    ? `Notifications${unread > 0 ? `, ${unread} unread` : ''}`
-                                    : 'Notifications — sign in to view'
+                                    ? unread > 0
+                                        ? t('Notifications: :count unread', { count: unread })
+                                        : t('Notifications')
+                                    : t('Notifications: sign in to view')
                             }
                         >
                             <Bell className="size-4" aria-hidden="true" />
                             {unread > 0 && (
-                                <span className="absolute -top-1.5 -right-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-risk-500 px-1 text-[0.625rem] font-semibold text-white">
+                                <span className="absolute -top-1.5 -end-1.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-risk-500 px-1 text-[0.625rem] font-semibold text-white">
                                     {unread > 99 ? '99+' : unread}
                                 </span>
                             )}
@@ -136,11 +140,11 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                         <Link
                             href="/basket"
                             className="relative hidden size-9 items-center justify-center rounded-[4px] border border-ink-700 text-parchment-200 transition-colors hover:border-gold-600 hover:text-gold-300 lg:inline-flex"
-                            aria-label={`Basket, ${basketCount} item${basketCount === 1 ? '' : 's'}`}
+                            aria-label={t('Basket items: :count', { count: basketCount })}
                         >
                             <ShoppingBag className="size-4" aria-hidden="true" />
                             {basketCount > 0 && (
-                                <span className="absolute -top-1.5 -right-1.5 inline-flex size-4 items-center justify-center rounded-full bg-gold-500 text-[0.625rem] font-semibold text-ink-900">
+                                <span className="absolute -top-1.5 -end-1.5 inline-flex size-4 items-center justify-center rounded-full bg-gold-500 text-[0.625rem] font-semibold text-ink-900">
                                     {basketCount}
                                 </span>
                             )}
@@ -151,14 +155,14 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                             className="hidden h-9 items-center gap-1.5 rounded-[4px] border border-ink-700 px-3 text-[0.8125rem] font-medium text-parchment-100 transition-colors hover:border-gold-600 hover:text-gold-300 md:inline-flex"
                         >
                             <User className="size-4" aria-hidden="true" />
-                            {auth.user ? auth.user.name.split(' ')[0] : 'Client Login'}
+                            {auth.user ? auth.user.name.split(' ')[0] : t('Client Login')}
                         </Link>
 
                         <button
                             type="button"
                             onClick={() => setDrawerOpen(true)}
                             className="inline-flex size-9 items-center justify-center rounded-[4px] border border-ink-700 text-parchment-100 lg:hidden"
-                            aria-label="Open navigation"
+                            aria-label={t('Open navigation')}
                             aria-expanded={drawerOpen}
                         >
                             <Menu className="size-5" aria-hidden="true" />
@@ -176,7 +180,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                                 key={tab.href}
                                 tab={tab}
                                 tone="dark"
-                                align={i >= nav.primary.length / 2 ? 'right' : 'left'}
+                                align={i >= nav.primary.length / 2 ? 'end' : 'start'}
                                 active={isActive(tab.href)}
                                 items={nav.children[tab.href]}
                                 open={openMenu === tab.href}
@@ -207,7 +211,7 @@ export default function Header({ variant = 'split' }: { variant?: HeaderVariant 
                                 key={tab.href}
                                 tab={tab}
                                 tone={secondaryOnDark ? 'dark' : 'light'}
-                                align={i >= nav.secondary.length / 2 ? 'right' : 'left'}
+                                align={i >= nav.secondary.length / 2 ? 'end' : 'start'}
                                 active={isActive(tab.href)}
                                 items={nav.children[tab.href]}
                                 open={openMenu === tab.href}
@@ -237,9 +241,10 @@ function NavItem({
     open,
     onOpen,
     onClose,
-    align = 'left',
+    align = 'start',
 }: {
-    align?: 'left' | 'right';
+    /** Mega menus in the second half of a row open towards the inline end. */
+    align?: 'start' | 'end';
     tab: NavTab;
     tone: 'dark' | 'light';
     active: boolean;
@@ -249,6 +254,7 @@ function NavItem({
     onClose: () => void;
 }) {
     const onDark = tone === 'dark';
+    const t = useT();
 
     return (
         <li className="relative" onMouseEnter={onOpen} onMouseLeave={onClose} onFocus={onOpen} onBlur={onClose}>
@@ -268,7 +274,7 @@ function NavItem({
                 aria-haspopup={items ? 'true' : undefined}
                 aria-expanded={items ? open : undefined}
             >
-                {tab.label}
+                {t(tab.label)}
                 {items && <ChevronDown className="size-3 opacity-60" aria-hidden="true" />}
 
                 {active && (
@@ -287,14 +293,14 @@ function NavItem({
                     className={cn(
                         'absolute top-full z-50 overflow-hidden rounded-b-[6px] border border-t-0 border-parchment-400 bg-white shadow-raised',
                         items.length > 7 ? 'w-[40rem]' : 'w-[22rem]',
-                        align === 'right' ? 'right-0' : 'left-0',
+                        align === 'end' ? 'end-0' : 'start-0',
                     )}
                 >
                     <div className="border-b border-parchment-300 bg-parchment-100 px-4 py-2.5">
                         <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-gold-700">
-                            {tab.label}
+                            {t(tab.label)}
                         </p>
-                        <p className="mt-0.5 text-[0.75rem] leading-snug text-ink-500">{tab.purpose}</p>
+                        <p className="mt-0.5 text-[0.75rem] leading-snug text-ink-500">{t(tab.purpose)}</p>
                     </div>
 
                     <ul className={cn('p-1.5', items.length > 7 && 'grid grid-cols-2 gap-x-1')}>
@@ -305,10 +311,10 @@ function NavItem({
                                     className="block rounded-[4px] px-2.5 py-2 transition-colors hover:bg-parchment-200"
                                 >
                                     <span className="block text-[0.8125rem] font-semibold text-ink-900">
-                                        {child.label}
+                                        {t(child.label)}
                                     </span>
                                     <span className="mt-0.5 block text-[0.75rem] leading-snug text-ink-500">
-                                        {child.note}
+                                        {t(child.note)}
                                     </span>
                                 </Link>
                             </li>
@@ -322,13 +328,16 @@ function NavItem({
 
 /**
  * Persists a language or currency choice in the session (POST /context).
- * Language also updates <html lang/dir> straight away, since Inertia visits
- * do not re-render the root Blade view (Arabic switches to right-to-left).
+ * For a language, the dictionary is loaded first so the page re-renders in the
+ * new language in one step, and <html lang dir> is updated straight away, since
+ * Inertia visits do not re-render the root Blade view (Arabic is right-to-left).
  */
 function useContextSetter() {
     const { context } = usePage<SharedProps>().props;
 
-    return (key: 'language' | 'currency', value: string) => {
+    return async (key: 'language' | 'currency', value: string) => {
+        if (key === 'language') await loadLocale(value);
+
         router.post(
             '/context',
             { [key]: value },
@@ -336,10 +345,7 @@ function useContextSetter() {
                 preserveScroll: true,
                 preserveState: true,
                 onSuccess: () => {
-                    if (key !== 'language') return;
-                    const meta = context.languages.find((l) => l.code === value);
-                    document.documentElement.lang = meta?.html ?? value;
-                    document.documentElement.dir = meta?.dir ?? 'ltr';
+                    if (key === 'language') applyDocumentLocale(context.languages.find((l) => l.code === value));
                 },
             },
         );
@@ -349,6 +355,7 @@ function useContextSetter() {
 function ContextSwitchers({ className }: { className?: string }) {
     const { context } = usePage<SharedProps>().props;
     const setContext = useContextSetter();
+    const t = useT();
     const language = context.languages.find((l) => l.code === context.language) ?? context.languages[0];
     const currency = context.currencies.find((c) => c.code === context.currency) ?? context.currencies[0];
 
@@ -361,9 +368,9 @@ function ContextSwitchers({ className }: { className?: string }) {
                         <span className="uppercase">{language?.code ?? 'en'}</span>
                     </>
                 }
-                ariaLabel={`Language: ${language?.label ?? 'English'}`}
-                title="Language"
-                note="Site content is in English while translations are prepared."
+                ariaLabel={t('Language: :name', { name: language?.native ?? 'English' })}
+                title={t('Language')}
+                note={t('Menus and key pages are translated. Other content shows in English until its translation is published.')}
             >
                 {(close) =>
                     context.languages.map((l) => (
@@ -376,14 +383,11 @@ function ContextSwitchers({ className }: { className?: string }) {
                             }}
                         >
                             <span className="flex-1">
-                                <span className="block">{l.label}</span>
-                                {l.code !== 'en' && (
-                                    <span className="block text-[0.6875rem] text-ink-400">
-                                        <span lang={l.html} dir={l.dir}>
-                                            {l.native}
-                                        </span>{' '}
-                                        · Translation coming soon
-                                    </span>
+                                <span className="block" lang={l.html} dir={l.dir}>
+                                    {l.native}
+                                </span>
+                                {l.native !== l.label && (
+                                    <span className="block text-[0.6875rem] text-ink-400">{t(l.label)}</span>
                                 )}
                             </span>
                         </ContextOption>
@@ -398,9 +402,9 @@ function ContextSwitchers({ className }: { className?: string }) {
                         <span>{currency?.display ?? context.currency}</span>
                     </>
                 }
-                ariaLabel={`Currency: ${currency?.label ?? context.currency}`}
-                title="Display currency"
-                note="Prices convert at daily rates. Checkout is charged in ZAR."
+                ariaLabel={t('Currency: :name', { name: currency?.display ?? context.currency })}
+                title={t('Display currency')}
+                note={t('Prices convert at daily rates. Checkout is charged in ZAR.')}
             >
                 {(close) =>
                     context.currencies.map((c) => (
@@ -413,7 +417,7 @@ function ContextSwitchers({ className }: { className?: string }) {
                             }}
                         >
                             <span className="w-9 shrink-0 font-semibold text-ink-900">{c.display}</span>
-                            <span className="flex-1 text-ink-500">{c.label}</span>
+                            <span className="flex-1 text-ink-500">{t(c.label)}</span>
                         </ContextOption>
                     ))
                 }
@@ -509,14 +513,14 @@ function ContextOption({
 function MobileContextSwitchers() {
     const { context } = usePage<SharedProps>().props;
     const setContext = useContextSetter();
-    const nonEnglish = context.language !== 'en';
+    const t = useT();
 
     return (
         <div className="border-b border-ink-800 px-4 py-3">
             <div className="grid grid-cols-2 gap-2">
                 <label className="block">
                     <span className="mb-1 block text-[0.6875rem] font-semibold tracking-[0.14em] text-ink-400 uppercase">
-                        Language
+                        {t('Language')}
                     </span>
                     <select
                         value={context.language}
@@ -525,14 +529,14 @@ function MobileContextSwitchers() {
                     >
                         {context.languages.map((l) => (
                             <option key={l.code} value={l.code}>
-                                {l.label}
+                                {l.native}
                             </option>
                         ))}
                     </select>
                 </label>
                 <label className="block">
                     <span className="mb-1 block text-[0.6875rem] font-semibold tracking-[0.14em] text-ink-400 uppercase">
-                        Currency
+                        {t('Currency')}
                     </span>
                     <select
                         value={context.currency}
@@ -541,15 +545,12 @@ function MobileContextSwitchers() {
                     >
                         {context.currencies.map((c) => (
                             <option key={c.code} value={c.code}>
-                                {c.display} — {c.label}
+                                {c.display} · {t(c.label)}
                             </option>
                         ))}
                     </select>
                 </label>
             </div>
-            {nonEnglish && (
-                <p className="mt-2 text-[0.6875rem] text-ink-400">Translation coming soon — content shows in English for now.</p>
-            )}
         </div>
     );
 }
@@ -564,6 +565,7 @@ function MobileDrawer({
     isActive: (href: string) => boolean;
 }) {
     const { nav, auth, unreadNotifications } = usePage<SharedProps>().props;
+    const t = useT();
 
     if (!open) return null;
 
@@ -573,17 +575,17 @@ function MobileDrawer({
                 type="button"
                 className="absolute inset-0 bg-ink-950/70"
                 onClick={onClose}
-                aria-label="Close navigation"
+                aria-label={t('Close navigation')}
             />
 
-            <div className="absolute inset-y-0 right-0 flex w-[min(21rem,88vw)] flex-col bg-ink-950">
+            <div className="absolute inset-y-0 end-0 flex w-[min(21rem,88vw)] flex-col bg-ink-950">
                 <div className="flex h-[68px] shrink-0 items-center justify-between border-b border-ink-800 px-5">
                     <Logo variant="mark" />
                     <button
                         type="button"
                         onClick={onClose}
                         className="inline-flex size-9 items-center justify-center rounded-[4px] border border-ink-700 text-parchment-100"
-                        aria-label="Close navigation"
+                        aria-label={t('Close navigation')}
                     >
                         <X className="size-5" aria-hidden="true" />
                     </button>
@@ -604,18 +606,18 @@ function MobileDrawer({
                                             : 'text-parchment-200 hover:bg-ink-900',
                                     )}
                                 >
-                                    {tab.label}
+                                    {t(tab.label)}
                                 </Link>
 
                                 {nav.children[tab.href] && (
-                                    <ul className="mt-0.5 mb-1.5 ml-3 space-y-0.5 border-l border-ink-800 pl-3">
+                                    <ul className="mt-0.5 mb-1.5 ms-3 space-y-0.5 border-s border-ink-800 ps-3">
                                         {nav.children[tab.href].map((child) => (
                                             <li key={child.href}>
                                                 <Link
                                                     href={child.href}
                                                     className="block rounded-[4px] px-2.5 py-1.5 text-[0.8125rem] text-ink-300 hover:text-gold-300"
                                                 >
-                                                    {child.label}
+                                                    {t(child.label)}
                                                 </Link>
                                             </li>
                                         ))}
@@ -631,13 +633,13 @@ function MobileDrawer({
                         href="/shop"
                         className="flex h-11 items-center justify-center rounded-[4px] bg-gold-500 text-sm font-semibold text-ink-900"
                     >
-                        Start a Sprint
+                        {t('Start a Sprint')}
                     </Link>
                     <Link
                         href={auth.user ? (auth.user.role === 'admin' ? '/admin' : '/portal/dashboard') : '/login'}
                         className="flex h-11 items-center justify-center rounded-[4px] border border-ink-700 text-sm font-medium text-parchment-100"
                     >
-                        {auth.user ? 'My Portal' : 'Client Login'}
+                        {auth.user ? t('My Portal') : t('Client Login')}
                     </Link>
                     {auth.user && (
                         <Link
@@ -645,7 +647,7 @@ function MobileDrawer({
                             className="flex h-11 items-center justify-center gap-2 rounded-[4px] border border-ink-700 text-sm font-medium text-parchment-100"
                         >
                             <Bell className="size-4" aria-hidden="true" />
-                            Notifications
+                            {t('Notifications')}
                             {unreadNotifications > 0 && (
                                 <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-risk-500 px-1 text-[0.625rem] font-semibold text-white">
                                     {unreadNotifications}
@@ -657,7 +659,7 @@ function MobileDrawer({
                         href="/basket"
                         className="flex h-11 items-center justify-center rounded-[4px] border border-ink-700 text-sm font-medium text-parchment-100"
                     >
-                        Basket
+                        {t('Basket')}
                     </Link>
                 </div>
             </div>

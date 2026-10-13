@@ -33,6 +33,7 @@ import type { SprintRecord } from '@/types';
 
 import { usePrice } from '@/lib/money';
 import { urlTabIndex, useUrlTab } from '@/Components/Sprints/lib';
+import { displayCurrency, displayMoney } from '@/lib/money';
 /* ==========================================================================
    Shared shell for the Premium and Premium Advisory Feeder sprint pages:
    dark hero with a gold line icon, floating "Choose Your Sprint Package"
@@ -61,7 +62,7 @@ export function heroIconFor(description?: string | null, fallbackText = ''): Luc
     return iconRules.find(([re]) => re.test(text))?.[1] ?? Briefcase;
 }
 
-export const rand = (zar: number) => `R${zar.toLocaleString('en-US')}`;
+export const rand = (zar: number) => (displayCurrency() !== 'ZAR' ? displayMoney(zar) : `R${zar.toLocaleString('en-US')}`);
 
 export interface PremiumShellProps {
     sprint: SprintRecord;

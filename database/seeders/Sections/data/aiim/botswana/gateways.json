@@ -1,0 +1,38 @@
+[
+ {
+  "name": "Kazungula Bridge OSBP (proxy: Kasane)",
+  "lat": -17.802,
+  "lon": 25.16,
+  "places": 3
+ },
+ {
+  "name": "Tlokweng Gate (proxy: Tlokweng)",
+  "lat": -24.669,
+  "lon": 25.971,
+  "places": 21
+ },
+ {
+  "name": "Ramatlabama/Pioneer Gate (proxy: Lobatse)",
+  "lat": -25.217,
+  "lon": 25.667,
+  "places": 10
+ },
+ {
+  "name": "Mamuno / Trans-Kalahari (proxy: Ghanzi)",
+  "lat": -21.698,
+  "lon": 21.646,
+  "places": 10
+ },
+ {
+  "name": "Ramokgwebana (proxy: Francistown)",
+  "lat": -21.174,
+  "lon": 27.512,
+  "places": 20
+ },
+ {
+  "name": "Martin's Drift (proxy: Machaneng)",
+  "lat": -23.186,
+  "lon": 27.489,
+  "places": 19
+ }
+]

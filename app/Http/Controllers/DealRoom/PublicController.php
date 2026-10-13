@@ -7,6 +7,7 @@ use App\Models\DealRoom\Party;
 use App\Models\DealRoom\Room;
 use App\Support\DealRoom\Access;
 use App\Support\DealRoom\Audit;
+use App\Support\DealRoom\EnquiryOptions;
 use App\Support\DealRoom\Rooms;
 use App\Support\DealRoom\Stages;
 use App\Support\DealRoom\Workflow;
@@ -34,7 +35,8 @@ class PublicController extends Controller
     public function enquiry(Request $request): Response
     {
         return Inertia::render('DealRoom/Enquiry', [
-            'transactionTypes' => ['Fundraising / Capital Raise', 'Company Sale / M&A', 'Acquisition / Buy-Side', 'Lending / Credit Review', 'Strategic Partnership / JV', 'Procurement / PPP'],
+            'transactionTypes' => EnquiryOptions::transactionTypeGroups(),
+            'raiseBands' => EnquiryOptions::raiseBands(),
             'sectors' => ['Financial Services / Fintech', 'Agriculture & Agri-Processing', 'Energy & Infrastructure', 'Healthcare', 'Manufacturing', 'Technology & Software', 'Mining & Resources', 'Retail & Consumer', 'Logistics', 'Other'],
             'prefill' => $request->user() ? ['name' => $request->user()->name, 'email' => $request->user()->email, 'phone' => $request->user()->phone, 'company' => $request->user()->company] : null,
         ]);
@@ -47,9 +49,9 @@ class PublicController extends Controller
     public function submitEnquiry(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'transaction_type' => ['required', 'string', 'max:80'],
+            'transaction_type' => ['required', Rule::in(EnquiryOptions::transactionTypes())],
             'objective' => ['required', 'string', 'max:250'],
-            'amount' => ['required', 'integer', 'min:100000'],
+            'raise_band' => ['required', Rule::in(array_keys(EnquiryOptions::RAISE_BANDS))],
             'target_close_date' => ['nullable', 'date', 'after:today'],
             'current_stage' => ['required', Rule::in(['Preparation', 'Early Interest', 'Active Diligence', 'Negotiation', 'Closing'])],
             'company' => ['required', 'string', 'max:160'],
@@ -64,7 +66,16 @@ class PublicController extends Controller
             'role' => ['required', 'string', 'max:60'],
             'room_name' => ['nullable', 'string', 'max:120'],
             'authority' => ['accepted'],
-        ], ['authority.accepted' => 'Please confirm you have the authority to make this enquiry.']);
+        ], [
+            'authority.accepted' => __('Please confirm you have the authority to make this enquiry.'),
+            'transaction_type.in' => __('Please choose a transaction type from the list.'),
+            'raise_band.required' => __('Please choose an indicative raise or deal size.'),
+            'raise_band.in' => __('Please choose an indicative raise or deal size.'),
+        ]);
+
+        // The band code is stored; amount_zar keeps a working ZAR value for fee estimates.
+        $band = EnquiryOptions::band($data['raise_band']);
+        $amount = $band['indicative_zar'];
 
         $checks = [
             ['label' => 'Conflict of Interest Check', 'result' => 'Passed'],
@@ -74,33 +85,30 @@ class PublicController extends Controller
             ['label' => 'Data Privacy Compliance Check', 'result' => 'Passed'],
         ];
         $score = 55
-            + ($data['amount'] >= 10_000_000 ? 10 : 0)
+            + ($amount >= 10_000_000 ? 10 : 0)
             + (! empty($data['website']) ? 5 : 0)
             + (in_array($data['revenue'] ?? '', ['R50m - R200m', 'R200m+'], true) ? 10 : 5)
             + (! empty($data['target_close_date']) ? 5 : 0)
             + (strlen($data['objective']) > 40 ? 5 : 0);
         $score = min(95, $score);
 
-        $dealType = match (true) {
-            str_contains($data['transaction_type'], 'Sale'), str_contains($data['transaction_type'], 'Acquisition') => 'ma',
-            str_contains($data['transaction_type'], 'Lending') => 'lending',
-            str_contains($data['transaction_type'], 'Partnership') => 'partnership',
-            str_contains($data['transaction_type'], 'Procurement') => 'procurement',
-            default => 'fundraising',
-        };
+        $dealType = EnquiryOptions::dealTypeOf($data['transaction_type']);
 
         $room = Rooms::create($request->user(), [
-            'name' => $data['room_name'] ?: ($data['company'].' '.($dealType === 'fundraising' ? 'Capital Raise' : 'Transaction')),
+            'name' => ($data['room_name'] ?? null) ?: ($data['company'].' '.($dealType === 'fundraising' ? 'Capital Raise' : 'Transaction')),
             'company' => $data['company'],
             'country' => $data['jurisdiction'],
             'sector' => $data['sector'],
             'deal_type' => $dealType,
             'transaction_type' => $data['transaction_type'],
             'objective' => $data['objective'],
-            'amount_zar' => $data['amount'],
+            'amount_zar' => $amount,
             'target_close_date' => $data['target_close_date'] ?? null,
             'enquiry' => [
                 ...collect($data)->except(['authority'])->all(),
+                'transaction_group' => EnquiryOptions::groupOf($data['transaction_type']),
+                'raise_band_min_zar' => $band['min'],
+                'raise_band_max_zar' => $band['max'],
                 'checks' => $checks,
                 'score' => $score,
                 'submitted_at' => now()->toIso8601String(),

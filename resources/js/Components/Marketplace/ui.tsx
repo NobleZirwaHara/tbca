@@ -2,13 +2,14 @@ import type { ReactNode } from 'react';
 import { Check, CircleAlert, CircleX, Info, Minus, Star, TriangleAlert } from 'lucide-react';
 import Breadcrumbs, { type Crumb } from '@/Components/ui/Breadcrumbs';
 import { cn } from '@/lib/cn';
+import { displayCurrency, displayMoney } from '@/lib/money';
 
 /* ==========================================================================
    Shared Marketplace / Partner Services building blocks.
    ========================================================================== */
 
 export const zar = (n: number | null | undefined, decimals = 0) =>
-    `R ${Number(n ?? 0).toLocaleString('en-ZA', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).replace(/,/g, ' ')}`;
+    decimals === 0 && displayCurrency() !== 'ZAR' ? displayMoney(Number(n ?? 0)) : `R ${Number(n ?? 0).toLocaleString('en-ZA', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).replace(/,/g, ' ')}`;
 
 export const zarCode = (n: number | null | undefined, decimals = 0) =>
     `ZAR ${Number(n ?? 0).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;

@@ -1,0 +1,738 @@
+[
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Solar GHI/DNI raster",
+  "levels": "L0–L5",
+  "geometry": "Raster",
+  "illumination": "Value at click"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "REDZ and strategic transmission corridors",
+  "levels": "L0–L2",
+  "geometry": "Polygon",
+  "illumination": "Glow on hover"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Transmission lines by voltage and status (existing/TDP)",
+  "levels": "L0–L5",
+  "geometry": "Line",
+  "illumination": "Voltage ramp; dashed planned; selection glow"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Substations with available/curtailed capacity",
+  "levels": "L1–L5",
+  "geometry": "Square (S2 generalised)",
+  "illumination": "Green/amber/red; MW label"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "REIPPPP and private IPP projects",
+  "levels": "L0–L5",
+  "geometry": "Pin",
+  "illumination": "Bid-window label; status colour"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "C&I load centres (mines, data centres, smelters)",
+  "levels": "L0–L4",
+  "geometry": "Bubble",
+  "illumination": "Size by MW"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "SAPP interconnectors and congestion",
+  "levels": "L0",
+  "geometry": "Line",
+  "illumination": "Red pulse when congested"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Opportunity diamonds ENR-W-Oxx",
+  "levels": "L2–L5",
+  "geometry": "Diamond",
+  "illumination": "Gold glow"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "layer": "Ports with liquid-bulk berths and terminals",
+  "levels": "L0–L4",
+  "geometry": "Hexagon/polygon",
+  "illumination": "Capacity chips"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "layer": "Pipelines (crude, products, gas)",
+  "levels": "L0–L4",
+  "geometry": "Line (S2)",
+  "illumination": "Direction arrows; selection glow"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "layer": "Refineries (operating/closed/planned rebuild)",
+  "levels": "L0–L4",
+  "geometry": "Pin",
+  "illumination": "Status colour"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "layer": "Depots and storage",
+  "levels": "L1–L5",
+  "geometry": "Square",
+  "illumination": "Capacity m³"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "layer": "Gas-to-power and industrial gas users",
+  "levels": "L1–L4",
+  "geometry": "Bubble",
+  "illumination": "Demand"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "layer": "LNG terminal and pipeline (ZET)",
+  "levels": "L2–L5",
+  "geometry": "Polygon + line",
+  "illumination": "Phase colours"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "layer": "Fuel retail density",
+  "levels": "L2–L4",
+  "geometry": "Heat",
+  "illumination": null
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "layer": "Mining rights and mines by commodity",
+  "levels": "L0–L5",
+  "geometry": "Polygon/pin",
+  "illumination": "Commodity colour"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "layer": "Ore rail lines and capacity",
+  "levels": "L0–L3",
+  "geometry": "Line",
+  "illumination": "Utilisation colour"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "layer": "Ports and bulk terminals",
+  "levels": "L0–L4",
+  "geometry": "Hexagon",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "layer": "Smelters and beneficiation plants",
+  "levels": "L1–L4",
+  "geometry": "Square",
+  "illumination": "Operating status"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "layer": "Trucking routes and road damage",
+  "levels": "L1–L4",
+  "geometry": "Line",
+  "illumination": "Truck volume"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "layer": "Export flows by destination",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "Volume width"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "layer": "Opportunity diamonds MIN-W-Oxx",
+  "levels": "L2–L5",
+  "geometry": "Diamond",
+  "illumination": "Glow"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "layer": "FMD zones and outbreak points (dated)",
+  "levels": "L0–L5",
+  "geometry": "Polygon + triangle",
+  "illumination": "Colour by status; time slider"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "layer": "Livestock density",
+  "levels": "L1–L3",
+  "geometry": "Heat",
+  "illumination": null
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "layer": "Feedlots and abattoirs (approval tags)",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Approval badges"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "layer": "Auctions and movement-control points",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Open/suspended"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "layer": "Vaccination coverage",
+  "levels": "L1–L3",
+  "geometry": "Choropleth",
+  "illumination": "%"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "layer": "Cold stores and reefer depots",
+  "levels": "L3–L5",
+  "geometry": "Square",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "layer": "Export flows",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "layer": "Plantations by species/age",
+  "levels": "L1–L5",
+  "geometry": "Polygon",
+  "illumination": "Species colour"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "layer": "Fire incidence and risk",
+  "levels": "L1–L5",
+  "geometry": "Raster/triangle",
+  "illumination": "Season slider"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "layer": "Sawmills, chip mills, pulp mills",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "layer": "Forest roads and haul routes",
+  "levels": "L2–L5",
+  "geometry": "Line",
+  "illumination": "Condition"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "layer": "Export ports with chip terminals",
+  "levels": "L0–L3",
+  "geometry": "Hexagon",
+  "illumination": "Throughput"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "layer": "Land claims on plantations",
+  "levels": "L2–L5",
+  "geometry": "Hatch",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "layer": "OEM plants and supplier parks",
+  "levels": "L0–L5",
+  "geometry": "Pin/polygon",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "layer": "SEZs with available plots",
+  "levels": "L1–L5",
+  "geometry": "Polygon",
+  "illumination": "Availability"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "layer": "Ro-Ro and container terminals",
+  "levels": "L0–L4",
+  "geometry": "Hexagon",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "layer": "Rail to ports",
+  "levels": "L0–L3",
+  "geometry": "Line",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "layer": "Export flows by destination",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "Units"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "layer": "Industrial power capacity near SEZs",
+  "levels": "L2–L5",
+  "geometry": "Square (S2)",
+  "illumination": "MW"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "WWTWs by Green Drop risk",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Red/amber/green"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Water treatment works by Blue Drop",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Risk colour"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Rivers with pollution status",
+  "levels": "L1–L4",
+  "geometry": "Line",
+  "illumination": "Colour"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Municipal financial health",
+  "levels": "L2–L3",
+  "geometry": "Choropleth",
+  "illumination": "Score"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Landfills and MRFs",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Airspace"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Scrap yards and mills",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Licence"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "layer": "Data centres (generalised) and cloud regions",
+  "levels": "L0–L4",
+  "geometry": "Pin (S2)",
+  "illumination": "MW"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "layer": "Submarine cables and landings",
+  "levels": "L0–L2",
+  "geometry": "Line/hexagon",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "layer": "Fibre backbone",
+  "levels": "L0–L3",
+  "geometry": "Line (S2)",
+  "illumination": "Owner"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "layer": "Substations with capacity near metros",
+  "levels": "L2–L5",
+  "geometry": "Square (S2)",
+  "illumination": "MW"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "layer": "BPO clusters and talent pools",
+  "levels": "L2–L4",
+  "geometry": "Heat",
+  "illumination": "Jobs"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "layer": "Water stress",
+  "levels": "L1–L4",
+  "geometry": "Raster",
+  "illumination": "Score"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "layer": "Housing backlog by municipality",
+  "levels": "L2–L3",
+  "geometry": "Choropleth",
+  "illumination": "Units"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "layer": "Informal settlements",
+  "levels": "L3–L5",
+  "geometry": "Polygon",
+  "illumination": "Count"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "layer": "Available land parcels",
+  "levels": "L4–L5",
+  "geometry": "Polygon (S1)",
+  "illumination": "Availability"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "layer": "Bulk-services capacity zones",
+  "levels": "L3–L5",
+  "geometry": "Polygon",
+  "illumination": "Spare capacity"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "layer": "Transport (rail/BRT/taxi ranks)",
+  "levels": "L3–L5",
+  "geometry": "Line/pin",
+  "illumination": "Access"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "layer": "Cement plants and import terminals",
+  "levels": "L0–L4",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "layer": "Builders' merchants",
+  "levels": "L3–L5",
+  "geometry": "Pin",
+  "illumination": null
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "layer": "National parks and concession areas",
+  "levels": "L0–L5",
+  "geometry": "Polygon",
+  "illumination": "Tender glow"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "layer": "Lodges/hotels by grade",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Grade"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "layer": "Airports and air routes",
+  "levels": "L0–L3",
+  "geometry": "Hexagon/flow",
+  "illumination": "Frequency"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "layer": "Park gates and roads",
+  "levels": "L3–L5",
+  "geometry": "Pin/line",
+  "illumination": "Condition"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "layer": "Visitor demand by source",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "Volume"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Pharma plants (GMP status)",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Approval tag"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Medical depots and cold chain",
+  "levels": "L1–L4",
+  "geometry": "Square",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Health facilities by level",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Beds"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Disease burden",
+  "levels": "L1–L3",
+  "geometry": "Choropleth",
+  "illumination": "Rate"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Export flows to SADC",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "Value"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Universities and TVET campuses",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Enrolment"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Bed gap per campus",
+  "levels": "L3–L5",
+  "geometry": "Bubble",
+  "illumination": "Beds short"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Accredited private residences",
+  "levels": "L4–L5",
+  "geometry": "Pin",
+  "illumination": "Accredited"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Transport to campus",
+  "levels": "L4–L5",
+  "geometry": "Line/isochrone",
+  "illumination": "Minutes"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Land parcels near campuses",
+  "levels": "L4–L5",
+  "geometry": "Polygon (S1)",
+  "illumination": "Availability"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "layer": "SME density and credit gap",
+  "levels": "L1–L3",
+  "geometry": "Heat/choropleth",
+  "illumination": "Gap"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "layer": "Bank branches/agents",
+  "levels": "L3–L5",
+  "geometry": "Point",
+  "illumination": "Density"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "layer": "Export flows to SADC",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "Value"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "layer": "Country risk",
+  "levels": "L0",
+  "geometry": "Choropleth",
+  "illumination": "Score"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "layer": "Export flows by destination",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "Value"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "layer": "Border posts with wait times",
+  "levels": "L0–L3",
+  "geometry": "Hexagon",
+  "illumination": "Minutes/hours"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "layer": "Corridors",
+  "levels": "L0–L2",
+  "geometry": "Line",
+  "illumination": "Time colour"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "layer": "DCs and bonded warehouses",
+  "levels": "L2–L5",
+  "geometry": "Square",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "layer": "Retail density in destinations",
+  "levels": "L1–L3",
+  "geometry": "Heat",
+  "illumination": "Outlets"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "layer": "Large emitters (generalised)",
+  "levels": "L0–L3",
+  "geometry": "Pin",
+  "illumination": "Emissions"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "layer": "Registered offset projects",
+  "levels": "L1–L5",
+  "geometry": "Pin/polygon",
+  "illumination": "Credits"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "layer": "Methane sources (landfills, WWTWs, mines)",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Potential"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "layer": "Degraded land/rangeland",
+  "levels": "L1–L4",
+  "geometry": "Raster",
+  "illumination": "Carbon potential"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "layer": "Studios and post-production",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "layer": "Filming locations",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Permit office"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "layer": "Venues and stadiums",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "layer": "Creative clusters",
+  "levels": "L3–L4",
+  "geometry": "Heat",
+  "illumination": "Firms"
+ }
+]

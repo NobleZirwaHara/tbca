@@ -4,7 +4,7 @@ import { AlertTriangle, ArrowRight, CheckCircle2, ChevronRight, CircleHelp, File
 import { Button, ButtonLink } from '@/Components/ui/Button';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import DdIcon from '@/Components/DueDiligence/DdIcon';
-import { Card, DdHero, H2, IconCard, IconRow, NextStepBand, Ticks, TRUST, rand, usd } from '@/Components/DueDiligence/Ui';
+import { Card, DdHero, H2, IconCard, IconRow, NextStepBand, Ticks, TRUST, rand, randRange, usd } from '@/Components/DueDiligence/Ui';
 import { cn } from '@/lib/cn';
 import type { DdAddon, DdFamily, DdIconItem, DdJourneyStep, DdSku } from '@/types/due-diligence';
 
@@ -26,7 +26,7 @@ interface Props {
         reviewTriggers: { trigger: string; treatment: string }[];
         releaseControls: { title: string; body: string; tone: string }[];
         addons: DdAddon[];
-        externalCosts: { item: string; range: string; payable: string }[];
+        externalCosts: { item: string; min: number | null; max: number | null; plus: boolean; range: string; payable: string }[];
         faqs: { q: string; a: string }[];
         boundary: string;
     };
@@ -543,7 +543,7 @@ function AddOns({ content }: { content: Props['content'] }) {
             <Card title="Common External Costs (At Cost)" className="xl:col-span-5">
                 <table className="w-full text-left text-xs">
                     <thead className="text-ink-500"><tr><th className="py-2">External Cost Item</th><th>Typical Range (ex VAT)</th><th>Payable To</th></tr></thead>
-                    <tbody className="divide-y divide-parchment-300">{content.externalCosts.map((e) => <tr key={e.item}><td className="py-2 font-medium">{e.item}</td><td>{e.range}</td><td>{e.payable}</td></tr>)}</tbody>
+                    <tbody className="divide-y divide-parchment-300">{content.externalCosts.map((e) => <tr key={e.item}><td className="py-2 font-medium">{e.item}</td><td>{e.min === null ? e.range : randRange(e.min, e.max, e.plus)}</td><td>{e.payable}</td></tr>)}</tbody>
                 </table>
                 <p className="mt-3 rounded bg-gold-50 p-2 text-[0.6875rem] text-ink-600">All external costs are variable and passed through at actual cost. You will approve each item before payment.</p>
             </Card>

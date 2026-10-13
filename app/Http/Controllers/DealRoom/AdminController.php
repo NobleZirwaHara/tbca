@@ -10,6 +10,7 @@ use App\Models\DealRoom\Room;
 use App\Support\DealRoom\Access;
 use App\Support\DealRoom\Audit;
 use App\Support\DealRoom\Billing;
+use App\Support\DealRoom\EnquiryOptions;
 use App\Support\DealRoom\Requests;
 use App\Support\DealRoom\Stages;
 use App\Support\DealRoom\Usage;
@@ -29,6 +30,8 @@ class AdminController extends Controller
             'slug' => $r->slug, 'reference' => $r->reference, 'name' => $r->name, 'company' => $r->company, 'owner' => $r->owner?->name,
             'stage' => (string) $r->current_stage, 'stageName' => Stages::get((string) $r->current_stage)['name'], 'status' => $r->status,
             'documents' => $r->documents_count ?? 0, 'parties' => $r->parties_count ?? 0, 'updated' => $r->updated_at->format('d M Y'),
+            'transactionType' => $r->transaction_type, 'transactionGroup' => EnquiryOptions::groupOf($r->transaction_type),
+            'raiseBand' => EnquiryOptions::band($r->enquiry['raise_band'] ?? null) ? EnquiryOptions::zarLabel($r->enquiry['raise_band']) : null,
         ];
     }
 

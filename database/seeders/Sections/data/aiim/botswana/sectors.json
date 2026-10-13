@@ -1,0 +1,110 @@
+{
+ "ENR": {
+  "number": 1,
+  "name": "Energy & Power",
+  "investor": "solar IPPs, storage and mine power as BPC imports ≈35–43 % of supply",
+  "trader": "PV kit, inverters, batteries"
+ },
+ "OGS": {
+  "number": 2,
+  "name": "Fuels, Strategic Reserves & Coal-bed Methane",
+  "investor": "fuel depots, storage operations and CBM",
+  "trader": "diesel, LPG, lubricants"
+ },
+ "MIN": {
+  "number": 3,
+  "name": "Diamonds, Copper & Mining",
+  "investor": "copper-belt services and construction; diamond-cycle cost services",
+  "trader": "copper concentrate, rough diamonds (ODC)"
+ },
+ "AGR": {
+  "number": 4,
+  "name": "Livestock, Beef & Horticulture",
+  "investor": "FMD control, feedlots, horticulture under import restrictions",
+  "trader": "beef (when re-listed), goats, vegetables"
+ },
+ "BLU": {
+  "number": 5,
+  "name": "Fisheries & Aquaculture",
+  "investor": "aquaculture to replace >90 % fish imports",
+  "trader": "frozen fish imports, feed"
+ },
+ "FOR": {
+  "number": 6,
+  "name": "Forestry & Veld Products",
+  "investor": "veld products (phane, marula), clean cooking, eco-concessions",
+  "trader": "phane exports, timber imports"
+ },
+ "MFG": {
+  "number": 7,
+  "name": "Manufacturing, SEZs & Beneficiation",
+  "investor": "SEZ manufacturing (Lobatse), beneficiation, mining consumables",
+  "trader": "components, packaging, jewellery"
+ },
+ "WSW": {
+  "number": 8,
+  "name": "Water, Sanitation & Waste",
+  "investor": "network rehabilitation, treatment O&M, reuse",
+  "trader": "pipes, meters, tanks"
+ },
+ "TRN": {
+  "number": 9,
+  "name": "Transport, Corridors & Logistics",
+  "investor": "Kazungula corridor logistics, rail and border services",
+  "trader": "forwarding, bonded transit"
+ },
+ "ICT": {
+  "number": 10,
+  "name": "Digital, Mobile Money & 5G",
+  "investor": "5G towers, fibre, mobile-money services, BPO",
+  "trader": "devices, networking kit"
+ },
+ "CRE": {
+  "number": 11,
+  "name": "Construction, Roads & Housing",
+  "investor": "roads, social housing, citizen-contractor finance",
+  "trader": "building materials, aggregates"
+ },
+ "TOU": {
+  "number": 12,
+  "name": "Tourism (Okavango, Chobe, Kalahari)",
+  "investor": "mid-market lodges, community tourism, regional packages",
+  "trader": "safari packages, crafts"
+ },
+ "HLT": {
+  "number": 13,
+  "name": "Health & Pharmaceuticals",
+  "investor": "supply-chain services, generics, clinics",
+  "trader": "medicines, devices"
+ },
+ "EDU": {
+  "number": 14,
+  "name": "Education & Skills",
+  "investor": "private tertiary, TVET partnerships, accreditation services",
+  "trader": "devices, books"
+ },
+ "FIN": {
+  "number": 15,
+  "name": "Finance, Pensions & Fintech",
+  "investor": "fintech (sandbox), pension alternatives, SME and citizen-contractor finance",
+  "trader": "FX, trade finance"
+ },
+ "TRD": {
+  "number": 16,
+  "name": "Trade, Retail & Citizen Markets",
+  "investor": "citizen-market distribution, re-export to Zambia/DRC, AfCFTA trading",
+  "trader": "vegetables, FMCG, diamonds"
+ },
+ "GRN": {
+  "number": 17,
+  "name": "Green Economy & Climate Finance",
+  "investor": "GCF-funded services, solar-for-agriculture, carbon readiness",
+  "trader": "carbon credits (when framework passes), solar kit"
+ },
+ "CSP": {
+  "number": 18,
+  "name": "Creative, Sport & Professional Services",
+  "investor": "events, film, BPO and IFSC services",
+  "trader": "content, event services"
+ }
+}

@@ -16,6 +16,7 @@ class Rooms
         'lending' => 'Lending / Credit Review',
         'partnership' => 'Strategic Partnership / JV',
         'procurement' => 'Procurement / PPP',
+        'restructuring' => 'Restructuring / Distressed',
     ];
 
     public const TEMPLATES = [
@@ -106,7 +107,11 @@ class Rooms
             'sector' => $room->sector,
             'dealType' => self::DEAL_TYPES[$room->deal_type] ?? $room->deal_type,
             'transactionType' => $room->transaction_type,
+            'transactionGroup' => EnquiryOptions::groupOf($room->transaction_type),
             'amount' => (int) $room->amount_zar,
+            // Indicative raise band chosen at enquiry; older rooms fall back to the band of their amount.
+            'raiseBand' => EnquiryOptions::band($room->enquiry['raise_band'] ?? null)
+                ?? ($room->amount_zar > 0 ? EnquiryOptions::bandForAmount((int) $room->amount_zar) : null),
             'status' => $room->status,
             'pausedReason' => $room->paused_reason,
             'currentStage' => ['code' => $current, 'name' => Stages::get($current)['name'], 'page' => Stages::get($current)['page']],

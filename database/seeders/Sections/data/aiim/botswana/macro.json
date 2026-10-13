@@ -1,0 +1,245 @@
+[
+ {
+  "id": "BW-MAC-F1",
+  "item": "Real GDP growth 2024",
+  "value": "-2.8% (revised; IMF Article IV: -3%)",
+  "source": "Statistics Botswana via Reuters/BusinessDay; IMF PR 25/317",
+  "date": "2026-03-31",
+  "url": "https://www.businessday.co.za/world/africa/2026-03-31-mining-slump-a-major-reason-for-botswanas-shrinking-economy/",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F2",
+  "item": "Real GDP growth 2025",
+  "value": "-0.7% (Q4 2025 -5.4% y/y; mining value added -47% in Q4)",
+  "source": "Statistics Botswana via Reuters/BusinessDay",
+  "date": "2026-03-31",
+  "url": "https://www.businessday.co.za/world/africa/2026-03-31-mining-slump-a-major-reason-for-botswanas-shrinking-economy/",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F3",
+  "item": "Real GDP growth Q2 2026",
+  "value": "+8.7% y/y (Q1 2026 +3.5%); mining +81.7%, diamond mining +94.7%; non-mining GDP -0.2%; nominal Q2 GDP P70,039.7m",
+  "source": "Statistics Botswana GDP Q2 2026",
+  "date": "2026-09",
+  "url": "https://www.statsbots.org.bw/sites/default/files/Gross%20Domestic%20Product%20Second%20Quarter%20Of%202026.pdf",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F4",
+  "item": "GDP growth forecast 2026",
+  "value": "+3.1% (Ministry of Finance projection; 2025 projected -0.4% at the time)",
+  "source": "Bank of Botswana MPC statement 26 Feb 2026",
+  "date": "2026-02-26",
+  "url": "https://www.bankofbotswana.bw/sites/default/files/press-release-files/Monetary%20Policy%20Committee%20Decision%20-%2026%20February%202026.pdf",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F5",
+  "item": "IMF medium-term view",
+  "value": "2025 contraction ~1%; growth could recover to >4% medium term with reforms; FY2024/25 deficit 7.1% of GDP; debt >30% of GDP; reserves ~5 months imports",
+  "source": "IMF Press Release 25/317 (2025 Article IV mission, Edouard Martin)",
+  "date": "2025-09-26",
+  "url": "https://www.imf.org/en/news/articles/2025/09/26/pr-25317-botswana-imf-staff-completes-2025-article-iv-mission-to-botswana",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F6",
+  "item": "Headline inflation (latest)",
+  "value": "9.3% y/y Aug 2026 (9.4% Jul; 10.7% May-Jun; 10.3% Apr; 4.2% Mar); transport 19.7%; target 3-6%",
+  "source": "Bank of Botswana / Statistics Botswana CPI",
+  "date": "2026-09-16",
+  "url": "https://bankofbotswana.bw/latest-news?page=0",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F7",
+  "item": "Inflation forecast",
+  "value": "BoB MPC: avg 7.9% in 2026, 4.9% in 2027; above target until Q1 2027 (fuel prices, electricity tariffs)",
+  "source": "Trading Economics reporting BoB MPC 27 Aug 2026",
+  "date": "2026-08-27",
+  "url": "https://tradingeconomics.com/botswana/interest-rate/news/578724",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F8",
+  "item": "Monetary Policy Rate",
+  "value": "5.5% (held 18 Jun & 27 Aug 2026; +200bp from 3.5% on 30 Apr 2026); SDF/SCF +/-100bp around MoPR (2.5%/4.5% when MoPR was 3.5%)",
+  "source": "Bank of Botswana",
+  "date": "2026-08-27",
+  "url": "https://www.capmad.com/post/bank-of-botswana-keeps-policy-rate-at-55-as-inflation-holds-at-94",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F9",
+  "item": "Pula per US$",
+  "value": "13.8408 BWP per USD (9 Oct 2026); BoB end-Jun 2026 month-end mid 0.0704 USD per BWP (~14.20 BWP/USD)",
+  "source": "Wise mid-market; Bank of Botswana June 2026 statement",
+  "date": "2026-10-09",
+  "url": "https://wise.com/au/currency-converter/usd-to-bwp-rate/history",
+  "grade": 2
+ },
+ {
+  "id": "BW-MAC-F10",
+  "item": "Pula vs ZAR",
+  "value": "1 BWP = 1.20664 ZAR (7 Oct 2026) (~0.829 BWP per ZAR); BoB: pula -1.1% vs ZAR in Aug 2026, -7.2% y/y; +1.9% y/y vs USD and SDR",
+  "source": "Wise; Bank of Botswana news 3 Sep 2026",
+  "date": "2026-10-07",
+  "url": "https://wise.com/au/currency-converter/bwp-to-zar-rate/history",
+  "grade": 2
+ },
+ {
+  "id": "BW-MAC-F11",
+  "item": "Pula crawl & basket",
+  "value": "Downward crawl 2.76% p.a. (since Jul 2025, from 1.51%); basket 50% ZAR / 50% SDR (was 45/55 in 2024)",
+  "source": "Ministry of Finance 31 Dec 2025 release via Pow Rocket Press; Business Weekly",
+  "date": "2026-01-02",
+  "url": "https://powrocket.beehiiv.com/p/the-new-pula-exchange-policy",
+  "grade": 2
+ },
+ {
+  "id": "BW-MAC-F12",
+  "item": "Foreign exchange reserves",
+  "value": "P59.117bn / US$4.162bn end-Jun 2026; P47.4bn at Dec 2025 = 5.5 months import cover (BoB CFO Daniel Loeto)",
+  "source": "Bank of Botswana June 2026 statement; DailyNews 29 Jun 2026",
+  "date": "2026-06-30",
+  "url": "https://bankofbotswana.bw/sites/default/files/publications/June%202026%20Monthly%20and%20Annual%20Financial%20Statements.pdf",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F13",
+  "item": "Budget 2026/27 (as tabled)",
+  "value": "Revenue & grants P77.22bn; expenditure & net lending P103.58bn; deficit P26.35bn (8.9% of GDP); 2025/26 revised deficit P25.48bn; 2024/25 outturn deficit P19.01bn",
+  "source": "PwC Budget 2026/27 summary; Reuters (8.9%)",
+  "date": "2026-02-09",
+  "url": "https://www.pwc.com/bw/en/assets/pdf/botswana-budget-2026-27.pdf",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F14",
+  "item": "Revised 2026/27 deficit",
+  "value": "Cut to P9.26bn (3.1% of GDP) from P26.35bn (8.9%), on larger BoB transfer (Finance Minister Ndaba Gaolathe)",
+  "source": "Reuters via Polity.org.za",
+  "date": "2026-09-22",
+  "url": "https://www.polity.org.za/article/botswana-sharply-reduces-budget-deficit-forecast-on-revenue-boost-from-central-bank-2026-09-22",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F15",
+  "item": "Public debt",
+  "value": "33% of GDP in 2025/26 (19.7% in 2022/23); domestic P56.06bn, external P27.88bn; statutory ceiling raised from 40% to 60% of GDP in Mar 2026",
+  "source": "DailyNews/BOPA (Parliament)",
+  "date": "2026-08-13",
+  "url": "https://dailynews.gov.bw/news-detail/92706",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F16",
+  "item": "Unemployment (latest)",
+  "value": "21.0% overall (BMTHS 2024/25, Nov 2024-Nov 2025); youth 15-35 28.9%; labour force 1,018,099; employed 804,663. Earlier QMTS Q1 2024: 27.6%",
+  "source": "Statistics Botswana BMTHS 2024/25 Stats Brief",
+  "date": "2026-03",
+  "url": "https://statsbots.org.bw/sites/default/files/Botswana%20Multitopic%20Household%20Survey%20Stats%20Brief%202025.pdf",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F17",
+  "item": "Population Census 2022",
+  "value": "2,359,609",
+  "source": "Statistics Botswana",
+  "date": "2022",
+  "url": "https://www.statsbots.org.bw/2022-population-and-housing-census-preliminary-results",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F18",
+  "item": "Corporate income tax",
+  "value": "Standard 22% (2026/27 budget proposes increase - KPMG reads 23.5%, PwC/RSM read 25%; confirm enacted bill); approved manufacturing 15%; IFSC approved services 15%; dividend WHT 10%; VAT 14% with narrower zero-rating; top PIT surcharge +2.5% above P400,000",
+  "source": "KPMG Tax News Flash; PwC Budget summary",
+  "date": "2026-02-10",
+  "url": "https://kpmg.com/kpmg-us/content/dam/kpmg/taxnewsflash/pdf/2026/02/tnf-botswana-feb-10-2026.pdf",
+  "grade": 2
+ },
+ {
+  "id": "BW-MAC-F19",
+  "item": "Exchange controls",
+  "value": "All remaining exchange control regulations abolished February 1999",
+  "source": "IMF Public Information Notice 99/105",
+  "date": "1999",
+  "url": "https://www.imf.org/external/np/sec/pn/1999/pn99105.htm",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F20",
+  "item": "Economic Inclusion Act",
+  "value": "Act 26 of 2021 (Cap 28:05), commenced 20 Apr 2022: Economic Empowerment Office, 'targeted citizens', localisation, procurement/tendering preferences, anti-fronting (NB: it is a 2021 Act, not 2025)",
+  "source": "Botswana Laws (consolidated statutes)",
+  "date": "2022-04-20",
+  "url": "https://botswanalaws.com/consolidated-statutes/principle-legislation/economic-inclusion-act",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F21",
+  "item": "Citizen-reserved activities",
+  "value": "Effective 1 Jun 2020 (Industrial Development Act / Trade Act): manufacturing reserved e.g. bread & confectionery, ice, meat processing, peanut butter, bottled water, sour milk, sorghum; trading reserved e.g. general dealer, fresh produce, car wash, cleaning, funeral parlour, hair & beauty, takeaway, imported pre-owned motor dealer, internet cafe",
+  "source": "RSM Botswana",
+  "date": "2020-06-01",
+  "url": "https://www.rsm.global/botswana/node/59",
+  "grade": 2
+ },
+ {
+  "id": "BW-MAC-F22",
+  "item": "Citizen procurement preferences",
+  "value": "PPA 2001 s.74 reserved schemes for citizen contractors; 100% youth-owned firms get 50% discount on tender/registration fees; EDD local-goods preference (Minister Wynter Mmolotsi in Parliament)",
+  "source": "DailyNews/BOPA",
+  "date": "2026-07-16",
+  "url": "https://dailynews.gov.bw/news-detail/92272",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F23",
+  "item": "Citizen reservation in services",
+  "value": "35 service sectors restricted to citizen-owned businesses; CEE law to require foreign firms to outsource >=50% of services/projects to citizen-owned firms",
+  "source": "US Commerce Country Commercial Guide",
+  "date": "2026",
+  "url": "https://www.trade.gov/country-commercial-guides/botswana-market-challenges",
+  "grade": 2
+ },
+ {
+  "id": "BW-MAC-F24",
+  "item": "2024 political change",
+  "value": "Oct 2024 election: UDC 36 of 61 elected seats, BDP 4 (ending rule since 1966); Duma Boko took office 1 Nov 2024; UDC pledged 450-500k jobs over 5 yrs, higher minimum wage, new De Beers sales pact",
+  "source": "African Business",
+  "date": "2024-11",
+  "url": "https://african.business/2024/11/politics/how-will-duma-bokos-historic-win-change-botswana",
+  "grade": 2
+ },
+ {
+  "id": "BW-MAC-F25",
+  "item": "Diamond dependence",
+  "value": "Diamonds ~1/3 of national revenue and ~3/4 of FX receipts; revenue ~23% of GDP (historic ~40%); tax/GDP 13.4%",
+  "source": "Reuters via BusinessDay; PwC budget summary",
+  "date": "2026-03-31",
+  "url": "https://www.businessday.co.za/world/africa/2026-03-31-mining-slump-a-major-reason-for-botswanas-shrinking-economy/",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F26",
+  "item": "Debswana output 2025 (to Nov)",
+  "value": "14,143,511 carats produced (16,338,000 prior yr); 18,119,562 carats sold for US$1,780,645,444",
+  "source": "MME Committee of Supply speech 2026/27",
+  "date": "2026-03-04",
+  "url": "https://www.parliament.gov.bw/documents/BUDGET-2026-27-MARCH---Ministry-of-Minerals-and-Energy-Committee-of-Supply-Final-Speech_12_59_20_04_08_2026.pdf",
+  "grade": 3
+ },
+ {
+  "id": "BW-MAC-F27",
+  "item": "Sovereign rating",
+  "value": "S&P BBB-/A-3, negative outlook (affirmed 11 Sep 2026)",
+  "source": "Bank of Botswana news listing",
+  "date": "2026-09-11",
+  "url": "https://bankofbotswana.bw/latest-news?page=0",
+  "grade": 3
+ }
+]

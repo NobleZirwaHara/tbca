@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button, ButtonLink } from '@/Components/ui/Button';
 import { Checkbox, ChoiceCard, Field, Input, Textarea } from '@/Components/ui/Form';
 import { Panel, SimpleTable, StatusPill } from '@/Components/ui/Kit';
+import { useBandLabel } from '@/lib/moneyBands';
 import type { Charge, Gate, RoomHeader } from '@/types/deal-room';
 import { roomUrl } from '../RoomShell';
 import { CheckItem, ChargeTable, Empty, Gauge, KvList, Stat, StatStrip, zar } from '../Ui';
@@ -11,8 +12,16 @@ import { CheckItem, ChargeTable, Empty, Gauge, KvList, Stat, StatStrip, zar } fr
 type Range = [number, number];
 const range = (r: Range) => `${zar(r[0])} – ${zar(r[1])}`;
 
+/** Deal size as chosen at enquiry: the raise band in the display currency, else the stored ZAR amount. */
+function useDealSize(room: RoomHeader) {
+    const bandLabel = useBandLabel();
+
+    return room.raiseBand ? bandLabel(room.raiseBand) : zar(room.amount);
+}
+
 export function EstimateScreen({ room, data }: { room: RoomHeader; data: { estimate: { reference: string; expert: Range; platform: Range; external: Range; total: Range; validDays: number }; diagnostic: { readiness: number; complexity: string } } }) {
     const e = data.estimate;
+    const dealSize = useDealSize(room);
     const cards: [string, Range, string[]][] = [
         ['A. TBCA Expert Fees', e.expert, ['Financial Due Diligence', 'Valuation & Analysis', 'Legal & Transaction Advisory', 'Negotiation Support']],
         ['B. TBCA Platform Fees', e.platform, ['Deal Room & Security', 'AI Agents & RPA', 'Q&A & Reporting', 'Document Management']],
@@ -22,7 +31,7 @@ export function EstimateScreen({ room, data }: { room: RoomHeader; data: { estim
         <div className="space-y-5">
             <div className="grid gap-5 lg:grid-cols-4">
                 <Panel title="1. Transaction Snapshot">
-                    <KvList rows={[['Deal Type', room.transactionType], ['Estimated Transaction Value', zar(room.amount)], ['Country / Jurisdiction', room.country], ['Sector / Industry', room.sector ?? '—'], ['Complexity Level', data.diagnostic.complexity], ['Readiness', `${data.diagnostic.readiness}%`]]} />
+                    <KvList rows={[['Deal Type', room.transactionType], ['Estimated Transaction Value', dealSize], ['Country / Jurisdiction', room.country], ['Sector / Industry', room.sector ?? '—'], ['Complexity Level', data.diagnostic.complexity], ['Readiness', `${data.diagnostic.readiness}%`]]} />
                 </Panel>
                 <Panel title="2. Preliminary Fee Estimate (Non-Binding Ranges)" className="lg:col-span-3">
                     <div className="grid gap-3 md:grid-cols-3">
@@ -55,6 +64,7 @@ interface Quote { reference: string; professional: QuoteRow[]; disbursements: Qu
 
 export function QuoteScreen({ room, data, commercial }: { room: RoomHeader; data: { quote: Quote }; commercial: Record<string, string | null> }) {
     const q = data.quote;
+    const dealSize = useDealSize(room);
     const [changes, setChanges] = useState('');
     const decide = (decision: string, note?: string) => router.post(roomUrl(room.slug, 'commercial/quote'), { decision, note }, { preserveScroll: true });
     const accepted = !!commercial.quote_accepted_at;
@@ -62,7 +72,7 @@ export function QuoteScreen({ room, data, commercial }: { room: RoomHeader; data
         <div className="space-y-5">
             <div className="grid gap-5 lg:grid-cols-3">
                 <Panel title="1. Quotation Summary">
-                    <KvList rows={[['Quote Number', q.reference], ['Prepared For', room.company], ['Deal', room.name], ['Transaction Type', room.transactionType], ['Engagement Type', 'Transaction Advisory Mandate'], ['Estimated Transaction Value', zar(room.amount)], ['Pricing Model', 'Success Fee + Retainer + Disbursements'], ['Confidentiality', 'Strict'], ['Status', accepted ? 'Accepted' : commercial.quote_declined_at ? 'Declined' : 'Issued']]} />
+                    <KvList rows={[['Quote Number', q.reference], ['Prepared For', room.company], ['Deal', room.name], ['Transaction Type', room.transactionType], ['Engagement Type', 'Transaction Advisory Mandate'], ['Estimated Transaction Value', dealSize], ['Pricing Model', 'Success Fee + Retainer + Disbursements'], ['Confidentiality', 'Strict'], ['Status', accepted ? 'Accepted' : commercial.quote_declined_at ? 'Declined' : 'Issued']]} />
                 </Panel>
                 <Panel title="2. Fees & Disbursements" className="lg:col-span-2">
                     <p className="mb-1 text-xs font-bold uppercase">A. Professional Fees</p>

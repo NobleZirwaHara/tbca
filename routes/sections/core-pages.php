@@ -17,8 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 /* --- Landing pages ------------------------------------------------------- */
 Route::get('/contact', [InfoPagesController::class, 'contact'])->name('contact');
-Route::get('/webinars', [InfoPagesController::class, 'webinars'])->name('webinars');
-Route::get('/kp-thought-leadership', [InfoPagesController::class, 'kp'])->name('kp-thought-leadership');
+Route::get('/contact/offices', [InfoPagesController::class, 'offices'])->name('contact.offices');
 Route::get('/diagnostics', [InfoPagesController::class, 'diagnostics'])->name('diagnostics');
 
 /* --- Book a Discovery Call ------------------------------------------------ */

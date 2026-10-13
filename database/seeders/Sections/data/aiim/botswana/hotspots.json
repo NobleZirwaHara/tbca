@@ -1,0 +1,380 @@
+[
+ {
+  "name": "Debswana Jwaneng mine",
+  "place": "Jwaneng (council point)",
+  "unit_code": "JW",
+  "fact": "BW-MIN-F1",
+  "status": "Operating — output cut",
+  "place_id": "UJW",
+  "match": "exact"
+ },
+ {
+  "name": "Debswana Orapa mine",
+  "place": "Orapa",
+  "unit_code": "CE",
+  "fact": "BW-MIN-F1",
+  "status": "Operating — output cut",
+  "place_id": "T15781",
+  "match": "exact"
+ },
+ {
+  "name": "Letlhakane / Karowe (Lucara) diamond cluster",
+  "place": "Letlhakane",
+  "unit_code": "CE",
+  "fact": "BW-MIN-F1",
+  "status": "Operating",
+  "place_id": "T15750",
+  "match": "exact"
+ },
+ {
+  "name": "Khoemacau copper expansion (US$900 m) [proxy town]",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "fact": "BW-MIN-F4",
+  "status": "Expansion approved",
+  "place_id": "T15793",
+  "match": "exact"
+ },
+ {
+  "name": "Motheo copper mine (Sandfire)",
+  "place": "Ghanzi",
+  "unit_code": "GH",
+  "fact": "BW-MIN-F3",
+  "status": "Operating",
+  "place_id": "T15737",
+  "match": "exact"
+ },
+ {
+  "name": "Morupule A/B power and coal mine",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "fact": "BW-ENR-F1",
+  "status": "Operating — one unit",
+  "place_id": "T15783",
+  "match": "exact"
+ },
+ {
+  "name": "Mmamabula 600 MW coal IPP [proxy town]",
+  "place": "Mahalapye",
+  "unit_code": "CE",
+  "fact": "BW-ENR-F4",
+  "status": "Under construction",
+  "place_id": "T15755",
+  "match": "exact"
+ },
+ {
+  "name": "Jwaneng 100 MW solar",
+  "place": "Jwaneng (council point)",
+  "unit_code": "JW",
+  "fact": "BW-ENR-F6",
+  "status": "Commissioning",
+  "place_id": "UJW",
+  "match": "exact"
+ },
+ {
+  "name": "Mmadinare 100 MW solar [proxy: Selebi Phikwe]",
+  "place": "Selibe Phikwe (council point)",
+  "unit_code": "SP",
+  "fact": "BW-GRN-F2",
+  "status": "Under construction",
+  "place_id": "USP",
+  "match": "exact"
+ },
+ {
+  "name": "Tlou Lesedi CBM (first gas sales) [proxy town]",
+  "place": "Serowe",
+  "unit_code": "CE",
+  "fact": "BW-OGS-F6",
+  "status": "Early production",
+  "place_id": "T15795",
+  "match": "exact"
+ },
+ {
+  "name": "Francistown fuel depot expansion",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "fact": "BW-OGS-F2",
+  "status": "Under construction",
+  "place_id": "UFR",
+  "match": "exact"
+ },
+ {
+  "name": "Ghanzi 30 Ml fuel depot",
+  "place": "Ghanzi",
+  "unit_code": "GH",
+  "fact": "BW-OGS-F2",
+  "status": "Planned",
+  "place_id": "T15737",
+  "match": "exact"
+ },
+ {
+  "name": "Lobatse Meat & Leather City SEZ",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "fact": "BW-MFG-F3",
+  "status": "Operating — expanding",
+  "place_id": "ULO",
+  "match": "exact"
+ },
+ {
+  "name": "BMC Lobatse beef chain",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "fact": "BW-AGR-F5",
+  "status": "Operating — EU suspended",
+  "place_id": "ULO",
+  "match": "exact"
+ },
+ {
+  "name": "FMD outbreak zone, Barolong [proxy town]",
+  "place": "Kanye",
+  "unit_code": "SO",
+  "fact": "BW-AGR-F2",
+  "status": "Outbreak — export suspension",
+  "place_id": "T15744",
+  "match": "exact"
+ },
+ {
+  "name": "Pandamatenga commercial farms",
+  "place": "Pandamatenga",
+  "unit_code": "NW",
+  "fact": "BW-AGR-F4",
+  "status": "Operating",
+  "place_id": "T15784",
+  "match": "exact"
+ },
+ {
+  "name": "Okavango Delta tourism (Maun gateway)",
+  "place": "Maun",
+  "unit_code": "NW",
+  "fact": "BW-TOU-F1",
+  "status": "Operating",
+  "place_id": "T15764",
+  "match": "exact"
+ },
+ {
+  "name": "Chobe tourism (Kasane)",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "fact": "BW-TOU-F2",
+  "status": "Operating",
+  "place_id": "T164517",
+  "match": "exact"
+ },
+ {
+  "name": "Kazungula Bridge OSBP (24-hour move)",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "fact": "BW-TRN-F3",
+  "status": "Operating — expanding",
+  "place_id": "T164517",
+  "match": "exact"
+ },
+ {
+  "name": "Mosetse–Kazungula–Livingstone rail",
+  "place": "Mosetse",
+  "unit_code": "CE",
+  "fact": "BW-TRN-F4",
+  "status": "Studies to end-2026",
+  "place_id": "T15776",
+  "match": "exact"
+ },
+ {
+  "name": "SSKIA Gaborone airport",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-TRN-F2",
+  "status": "Operating",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Francistown rail hub",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "fact": "BW-TRN-F1",
+  "status": "Operating",
+  "place_id": "UFR",
+  "match": "exact"
+ },
+ {
+  "name": "NSC 2.2 / Mmamashia treatment plant",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-WSW-F3",
+  "status": "Substantially complete",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Gaborone Dam",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-WSW-F4",
+  "status": "Operating — volatile",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Lesotho–Botswana water transfer (feasibility)",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "fact": "BW-WSW-F5",
+  "status": "Feasibility",
+  "place_id": "ULO",
+  "match": "exact"
+ },
+ {
+  "name": "BTC 5G launch (Gaborone)",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-ICT-F4",
+  "status": "Launching Oct 2026",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "BoFiNet local-access fibre (Ramotswa)",
+  "place": "Ramotswa",
+  "unit_code": "SE",
+  "fact": "BW-ICT-F5",
+  "status": "Operating",
+  "place_id": "T15789",
+  "match": "exact"
+ },
+ {
+  "name": "BoFiNet local-access fibre (Thamaga)",
+  "place": "Thamaga",
+  "unit_code": "KW",
+  "fact": "BW-ICT-F5",
+  "status": "Operating",
+  "place_id": "T15799",
+  "match": "exact"
+ },
+ {
+  "name": "Botswana Stock Exchange",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-FIN-F4",
+  "status": "Operating",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Okavango Diamond Company sales",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-MFG-F4",
+  "status": "Operating",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Diamond cutting and polishing cluster",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-MFG-F5",
+  "status": "Operating — shrinking",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "National Stadium (World Athletics Relays 2026)",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-CSP-F1",
+  "status": "Event held 2026 — legacy",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Sir Ketumile Masire Teaching Hospital",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-HLT-F6",
+  "status": "Transition to public",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Kazungula TVET satellite centre",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "fact": "BW-EDU-F6",
+  "status": "Planned 2026/27",
+  "place_id": "T164517",
+  "match": "exact"
+ },
+ {
+  "name": "Phane harvesting (Tshimoyapula area) [proxy town]",
+  "place": "Serowe",
+  "unit_code": "CE",
+  "fact": "BW-FOR-F2",
+  "status": "Seasonal",
+  "place_id": "T15795",
+  "match": "exact"
+ },
+ {
+  "name": "Chobe forest reserves",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "fact": "BW-FOR-F3",
+  "status": "Gazetted",
+  "place_id": "T164517",
+  "match": "exact"
+ },
+ {
+  "name": "Okavango panhandle fishery",
+  "place": "Shakawe",
+  "unit_code": "NW",
+  "fact": "BW-BLU-F3",
+  "status": "Operating",
+  "place_id": "T15796",
+  "match": "exact"
+ },
+ {
+  "name": "Francistown–Nata road reconstruction",
+  "place": "Nata",
+  "unit_code": "CE",
+  "fact": "BW-CRE-F3",
+  "status": "Under way",
+  "place_id": "T15778",
+  "match": "exact"
+ },
+ {
+  "name": "Palapye–Martin's Drift road reconstruction",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "fact": "BW-CRE-F3",
+  "status": "Under way",
+  "place_id": "T15783",
+  "match": "exact"
+ },
+ {
+  "name": "Social housing (Gaborone)",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-CRE-F4",
+  "status": "Funded 2026/27",
+  "place_id": "T15735",
+  "match": "exact"
+ },
+ {
+  "name": "Mogoditshane–Gaborone growth corridor housing",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "fact": "BW-CRE-F5",
+  "status": "Operating",
+  "place_id": "T15771",
+  "match": "exact"
+ },
+ {
+  "name": "Gaborone private hospitals and medical aid",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "fact": "BW-HLT-F6",
+  "status": "Operating",
+  "place_id": "T15735",
+  "match": "exact"
+ }
+]

@@ -37,6 +37,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { displayCurrency, displayMoney } from '@/lib/money';
 
 /* ==========================================================================
    Retainers-specific building blocks (charts, icons, formatting, footers).
@@ -98,6 +99,7 @@ export function fmtDateTime(iso?: string | null): string {
 }
 
 export function zar(n: number): string {
+    if (displayCurrency() !== 'ZAR') return displayMoney(n);
     return `ZAR ${Math.round(n).toLocaleString('en-ZA').replace(/ /g, ',').replace(/ /g, ',')}`;
 }
 

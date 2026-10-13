@@ -1,0 +1,1568 @@
+[
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)",
+  "layer": "Rivers by stream order with flow gauges",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)",
+  "layer": "Catchments and sub-catchments",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)",
+  "layer": "Dam walls and reservoirs",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)",
+  "layer": "Potential sites from master plans (diamonds)",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)",
+  "layer": "Elevation profile along river",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)",
+  "layer": "Inundation polygon with affected roads/settlements",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)",
+  "layer": "Heavy-haul route port→site",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A02",
+  "sector_code": "ENR",
+  "asset_type": "Solar PV (utility, C&I, rooftop) and hybrids",
+  "layer": "Solar irradiation raster",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A02",
+  "sector_code": "ENR",
+  "asset_type": "Solar PV (utility, C&I, rooftop) and hybrids",
+  "layer": "Substations with available capacity (GCCA)",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "ENR-A02",
+  "sector_code": "ENR",
+  "asset_type": "Solar PV (utility, C&I, rooftop) and hybrids",
+  "layer": "Flat land parcels >X ha within N km of substation",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "ENR-A02",
+  "sector_code": "ENR",
+  "asset_type": "Solar PV (utility, C&I, rooftop) and hybrids",
+  "layer": "C&I load clusters (mines, malls, factories)",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A02",
+  "sector_code": "ENR",
+  "asset_type": "Solar PV (utility, C&I, rooftop) and hybrids",
+  "layer": "REIPPPP and private project pins by bid window",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A03",
+  "sector_code": "ENR",
+  "asset_type": "Onshore wind",
+  "layer": "Wind speed raster at 100 m",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A03",
+  "sector_code": "ENR",
+  "asset_type": "Onshore wind",
+  "layer": "Renewable Energy Development Zones (REDZ)",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A03",
+  "sector_code": "ENR",
+  "asset_type": "Onshore wind",
+  "layer": "Bird/bat sensitivity layers",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A03",
+  "sector_code": "ENR",
+  "asset_type": "Onshore wind",
+  "layer": "Radar and airport exclusion zones",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A03",
+  "sector_code": "ENR",
+  "asset_type": "Onshore wind",
+  "layer": "Abnormal-load routes",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A04",
+  "sector_code": "ENR",
+  "asset_type": "Gas-to-power (OCGT/CCGT/engines) and LNG-to-power",
+  "layer": "Gas pipelines and tie-in points",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "ENR-A04",
+  "sector_code": "ENR",
+  "asset_type": "Gas-to-power (OCGT/CCGT/engines) and LNG-to-power",
+  "layer": "LNG terminal/FSRU candidate sites",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A04",
+  "sector_code": "ENR",
+  "asset_type": "Gas-to-power (OCGT/CCGT/engines) and LNG-to-power",
+  "layer": "Air quality priority areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A05",
+  "sector_code": "ENR",
+  "asset_type": "Coal and clean-coal conversion / repurposing",
+  "layer": "Coal stations with decommissioning year",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A05",
+  "sector_code": "ENR",
+  "asset_type": "Coal and clean-coal conversion / repurposing",
+  "layer": "Mines supplying stations",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A05",
+  "sector_code": "ENR",
+  "asset_type": "Coal and clean-coal conversion / repurposing",
+  "layer": "Just Energy Transition project sites",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A06",
+  "sector_code": "ENR",
+  "asset_type": "Biomass, biogas and waste-to-energy",
+  "layer": "Agri-residue density",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A06",
+  "sector_code": "ENR",
+  "asset_type": "Biomass, biogas and waste-to-energy",
+  "layer": "Sugar mills/sawmills",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A06",
+  "sector_code": "ENR",
+  "asset_type": "Biomass, biogas and waste-to-energy",
+  "layer": "Landfills and abattoirs",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A07",
+  "sector_code": "ENR",
+  "asset_type": "Battery energy storage (BESS)",
+  "layer": "Constrained grid nodes",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A07",
+  "sector_code": "ENR",
+  "asset_type": "Battery energy storage (BESS)",
+  "layer": "Large load centres",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A08",
+  "sector_code": "ENR",
+  "asset_type": "Transmission and interconnectors (ITP)",
+  "layer": "Existing/planned lines by voltage and year",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A08",
+  "sector_code": "ENR",
+  "asset_type": "Transmission and interconnectors (ITP)",
+  "layer": "Strategic transmission corridors",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A08",
+  "sector_code": "ENR",
+  "asset_type": "Transmission and interconnectors (ITP)",
+  "layer": "Cross-border interconnectors",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A09",
+  "sector_code": "ENR",
+  "asset_type": "Distribution, municipal utilities and mini-grids",
+  "layer": "Electrification rate by municipality",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A09",
+  "sector_code": "ENR",
+  "asset_type": "Distribution, municipal utilities and mini-grids",
+  "layer": "Unserved settlements",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A09",
+  "sector_code": "ENR",
+  "asset_type": "Distribution, municipal utilities and mini-grids",
+  "layer": "Mini-grid concession areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A10",
+  "sector_code": "ENR",
+  "asset_type": "Green hydrogen and derivatives (ammonia, e-fuels)",
+  "layer": "Hydrogen valleys/hubs",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A10",
+  "sector_code": "ENR",
+  "asset_type": "Green hydrogen and derivatives (ammonia, e-fuels)",
+  "layer": "Port sites (e.g. SEZ zones)",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A10",
+  "sector_code": "ENR",
+  "asset_type": "Green hydrogen and derivatives (ammonia, e-fuels)",
+  "layer": "Desalination candidate sites",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A11",
+  "sector_code": "ENR",
+  "asset_type": "Clean cooking and LPG",
+  "layer": "Household fuel-use choropleth",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ENR-A11",
+  "sector_code": "ENR",
+  "asset_type": "Clean cooking and LPG",
+  "layer": "LPG depots",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A01",
+  "sector_code": "OGS",
+  "asset_type": "Upstream exploration and production",
+  "layer": "Licence blocks by status",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A01",
+  "sector_code": "OGS",
+  "asset_type": "Upstream exploration and production",
+  "layer": "Wells and discoveries",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A01",
+  "sector_code": "OGS",
+  "asset_type": "Upstream exploration and production",
+  "layer": "Marine protected areas overlap",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A02",
+  "sector_code": "OGS",
+  "asset_type": "Gas processing, pipelines and LNG import",
+  "layer": "Gas pipelines",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "OGS-A02",
+  "sector_code": "OGS",
+  "asset_type": "Gas processing, pipelines and LNG import",
+  "layer": "Industrial gas users",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A02",
+  "sector_code": "OGS",
+  "asset_type": "Gas processing, pipelines and LNG import",
+  "layer": "Candidate LNG berths",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A03",
+  "sector_code": "OGS",
+  "asset_type": "Refining, storage terminals and depots",
+  "layer": "Refineries (operating/mothballed)",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A03",
+  "sector_code": "OGS",
+  "asset_type": "Refining, storage terminals and depots",
+  "layer": "Tank farms and depots",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A03",
+  "sector_code": "OGS",
+  "asset_type": "Refining, storage terminals and depots",
+  "layer": "Product pipelines",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "OGS-A04",
+  "sector_code": "OGS",
+  "asset_type": "Fuel and LPG retail and distribution",
+  "layer": "Fuel stations by brand",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "OGS-A04",
+  "sector_code": "OGS",
+  "asset_type": "Fuel and LPG retail and distribution",
+  "layer": "Underserved towns and corridors",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A01",
+  "sector_code": "MIN",
+  "asset_type": "Precious metals (gold, PGMs)",
+  "layer": "Mining rights polygons",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A01",
+  "sector_code": "MIN",
+  "asset_type": "Precious metals (gold, PGMs)",
+  "layer": "Shafts and plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A01",
+  "sector_code": "MIN",
+  "asset_type": "Precious metals (gold, PGMs)",
+  "layer": "Tailings storage facilities",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "MIN-A02",
+  "sector_code": "MIN",
+  "asset_type": "Base metals (copper, nickel, zinc, iron ore, manganese, chrome)",
+  "layer": "Deposits and mines",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A02",
+  "sector_code": "MIN",
+  "asset_type": "Base metals (copper, nickel, zinc, iron ore, manganese, chrome)",
+  "layer": "Ore rail lines and ports",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A02",
+  "sector_code": "MIN",
+  "asset_type": "Base metals (copper, nickel, zinc, iron ore, manganese, chrome)",
+  "layer": "Smelters",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A03",
+  "sector_code": "MIN",
+  "asset_type": "Battery and critical minerals (lithium, graphite, rare earths, vanadium, cobalt)",
+  "layer": "Critical-mineral occurrences",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A03",
+  "sector_code": "MIN",
+  "asset_type": "Battery and critical minerals (lithium, graphite, rare earths, vanadium, cobalt)",
+  "layer": "Pilot/processing plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A04",
+  "sector_code": "MIN",
+  "asset_type": "Coal",
+  "layer": "Coal mines",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A04",
+  "sector_code": "MIN",
+  "asset_type": "Coal",
+  "layer": "Coal rail line and terminal",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A05",
+  "sector_code": "MIN",
+  "asset_type": "Industrial minerals and construction materials",
+  "layer": "Quarries and borrow pits",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A05",
+  "sector_code": "MIN",
+  "asset_type": "Industrial minerals and construction materials",
+  "layer": "Cement plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A06",
+  "sector_code": "MIN",
+  "asset_type": "Diamonds and gemstones",
+  "layer": "Diamond mining areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A06",
+  "sector_code": "MIN",
+  "asset_type": "Diamonds and gemstones",
+  "layer": "Cutting/polishing centres",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MIN-A07",
+  "sector_code": "MIN",
+  "asset_type": "Artisanal and small-scale mining (ASM)",
+  "layer": "ASM areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A01",
+  "sector_code": "AGR",
+  "asset_type": "Grains and oilseeds (maize, wheat, soya, sunflower, sorghum)",
+  "layer": "Production by district",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A01",
+  "sector_code": "AGR",
+  "asset_type": "Grains and oilseeds (maize, wheat, soya, sunflower, sorghum)",
+  "layer": "Silo network with capacity",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A01",
+  "sector_code": "AGR",
+  "asset_type": "Grains and oilseeds (maize, wheat, soya, sunflower, sorghum)",
+  "layer": "Rail sidings at silos",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A01",
+  "sector_code": "AGR",
+  "asset_type": "Grains and oilseeds (maize, wheat, soya, sunflower, sorghum)",
+  "layer": "SAFEX delivery points",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A02",
+  "sector_code": "AGR",
+  "asset_type": "Pulses (dry beans, pigeon peas, chickpeas, cowpeas, lentils)",
+  "layer": "Production districts",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A02",
+  "sector_code": "AGR",
+  "asset_type": "Pulses (dry beans, pigeon peas, chickpeas, cowpeas, lentils)",
+  "layer": "Aggregation and cleaning plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A02",
+  "sector_code": "AGR",
+  "asset_type": "Pulses (dry beans, pigeon peas, chickpeas, cowpeas, lentils)",
+  "layer": "Export routes",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A03",
+  "sector_code": "AGR",
+  "asset_type": "Horticulture (citrus, subtropical, deciduous, vegetables)",
+  "layer": "Orchards/production clusters",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A03",
+  "sector_code": "AGR",
+  "asset_type": "Horticulture (citrus, subtropical, deciduous, vegetables)",
+  "layer": "Pack-houses and cold stores",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A03",
+  "sector_code": "AGR",
+  "asset_type": "Horticulture (citrus, subtropical, deciduous, vegetables)",
+  "layer": "Reefer ports and berths",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A03",
+  "sector_code": "AGR",
+  "asset_type": "Horticulture (citrus, subtropical, deciduous, vegetables)",
+  "layer": "Airports with perishable cargo",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A04",
+  "sector_code": "AGR",
+  "asset_type": "Sugar and sugarcane",
+  "layer": "Sugar mills and cane areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A05",
+  "sector_code": "AGR",
+  "asset_type": "Wine, spirits and beverages",
+  "layer": "Wine regions and wineries",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A06",
+  "sector_code": "AGR",
+  "asset_type": "Nuts (macadamia, pecan, cashew, groundnuts)",
+  "layer": "Orchards",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A06",
+  "sector_code": "AGR",
+  "asset_type": "Nuts (macadamia, pecan, cashew, groundnuts)",
+  "layer": "Cracking plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A07",
+  "sector_code": "AGR",
+  "asset_type": "Cash crops (tobacco, tea, coffee, cotton)",
+  "layer": "Estates and auction floors",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A07",
+  "sector_code": "AGR",
+  "asset_type": "Cash crops (tobacco, tea, coffee, cotton)",
+  "layer": "Ginneries",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A08",
+  "sector_code": "AGR",
+  "asset_type": "Irrigation development",
+  "layer": "Irrigation schemes",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A08",
+  "sector_code": "AGR",
+  "asset_type": "Irrigation development",
+  "layer": "Canals and dams",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A08",
+  "sector_code": "AGR",
+  "asset_type": "Irrigation development",
+  "layer": "Groundwater potential",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A09",
+  "sector_code": "AGR",
+  "asset_type": "Inputs (seed, fertiliser, agrochemicals, mechanisation)",
+  "layer": "Input dealers and blending plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A10",
+  "sector_code": "AGR",
+  "asset_type": "Agro-processing and food manufacturing",
+  "layer": "Processing plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "AGR-A10",
+  "sector_code": "AGR",
+  "asset_type": "Agro-processing and food manufacturing",
+  "layer": "Raw-material zones",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A01",
+  "sector_code": "BLU",
+  "asset_type": "Beef, small stock and feedlots",
+  "layer": "Livestock density",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A01",
+  "sector_code": "BLU",
+  "asset_type": "Beef, small stock and feedlots",
+  "layer": "FMD control areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A01",
+  "sector_code": "BLU",
+  "asset_type": "Beef, small stock and feedlots",
+  "layer": "Abattoirs and feedlots",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A02",
+  "sector_code": "BLU",
+  "asset_type": "Dairy",
+  "layer": "Dairy farms and processors",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A03",
+  "sector_code": "BLU",
+  "asset_type": "Poultry and eggs",
+  "layer": "Poultry farms and abattoirs",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A03",
+  "sector_code": "BLU",
+  "asset_type": "Poultry and eggs",
+  "layer": "Feed mills",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A04",
+  "sector_code": "BLU",
+  "asset_type": "Wild-capture fisheries",
+  "layer": "Fishing zones",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A04",
+  "sector_code": "BLU",
+  "asset_type": "Wild-capture fisheries",
+  "layer": "Harbours and landing sites",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A04",
+  "sector_code": "BLU",
+  "asset_type": "Wild-capture fisheries",
+  "layer": "Processing plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A05",
+  "sector_code": "BLU",
+  "asset_type": "Aquaculture and mariculture",
+  "layer": "Aquaculture development zones",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A05",
+  "sector_code": "BLU",
+  "asset_type": "Aquaculture and mariculture",
+  "layer": "Hatcheries",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "BLU-A06",
+  "sector_code": "BLU",
+  "asset_type": "Marine services (ship repair, bunkering)",
+  "layer": "Dry docks, repair yards",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FOR-A01",
+  "sector_code": "FOR",
+  "asset_type": "Plantation forestry",
+  "layer": "Plantations",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FOR-A01",
+  "sector_code": "FOR",
+  "asset_type": "Plantation forestry",
+  "layer": "Fire history",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FOR-A02",
+  "sector_code": "FOR",
+  "asset_type": "Sawmilling, panels, poles",
+  "layer": "Mills",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FOR-A03",
+  "sector_code": "FOR",
+  "asset_type": "Pulp, paper and bio-products",
+  "layer": "Pulp mills",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A01",
+  "sector_code": "MFG",
+  "asset_type": "Automotive and components",
+  "layer": "OEM plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A01",
+  "sector_code": "MFG",
+  "asset_type": "Automotive and components",
+  "layer": "Supplier parks",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A02",
+  "sector_code": "MFG",
+  "asset_type": "Food and beverage processing",
+  "layer": "Food plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A02",
+  "sector_code": "MFG",
+  "asset_type": "Food and beverage processing",
+  "layer": "Retail DCs",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A03",
+  "sector_code": "MFG",
+  "asset_type": "Chemicals, plastics and packaging",
+  "layer": "Chemical clusters",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A04",
+  "sector_code": "MFG",
+  "asset_type": "Steel and metal fabrication",
+  "layer": "Mills, fabricators",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A05",
+  "sector_code": "MFG",
+  "asset_type": "Textiles, clothing, leather, footwear",
+  "layer": "Clothing clusters",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A06",
+  "sector_code": "MFG",
+  "asset_type": "Cement and building materials",
+  "layer": "Cement plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A06",
+  "sector_code": "MFG",
+  "asset_type": "Cement and building materials",
+  "layer": "Quarries",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A07",
+  "sector_code": "MFG",
+  "asset_type": "Industrial parks and SEZ development",
+  "layer": "SEZ boundaries",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "MFG-A07",
+  "sector_code": "MFG",
+  "asset_type": "Industrial parks and SEZ development",
+  "layer": "Available plots",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "WSW-A01",
+  "sector_code": "WSW",
+  "asset_type": "Bulk water and dams",
+  "layer": "Dams and transfer schemes",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "WSW-A02",
+  "sector_code": "WSW",
+  "asset_type": "Water and wastewater treatment",
+  "layer": "Treatment works coloured by compliance",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "WSW-A03",
+  "sector_code": "WSW",
+  "asset_type": "Desalination",
+  "layer": "Candidate sites",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "WSW-A04",
+  "sector_code": "WSW",
+  "asset_type": "Non-revenue water and metering",
+  "layer": "NRW by municipality",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "WSW-A05",
+  "sector_code": "WSW",
+  "asset_type": "Solid waste and recycling",
+  "layer": "Landfills, MRFs",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A01",
+  "sector_code": "TRN",
+  "asset_type": "Roads (national, provincial, district, municipal)",
+  "layer": "See Worked Example 2",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A02",
+  "sector_code": "TRN",
+  "asset_type": "Rail freight and passenger",
+  "layer": "Rail lines by status",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A02",
+  "sector_code": "TRN",
+  "asset_type": "Rail freight and passenger",
+  "layer": "Sidings and terminals",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A03",
+  "sector_code": "TRN",
+  "asset_type": "Ports and terminals",
+  "layer": "Ports, terminals, berths",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A03",
+  "sector_code": "TRN",
+  "asset_type": "Ports and terminals",
+  "layer": "Back-of-port logistics",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A04",
+  "sector_code": "TRN",
+  "asset_type": "Airports and air cargo",
+  "layer": "Airports by category",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A05",
+  "sector_code": "TRN",
+  "asset_type": "Logistics parks, dry ports, warehousing",
+  "layer": "ICDs, logistics parks",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRN-A06",
+  "sector_code": "TRN",
+  "asset_type": "Urban public transport",
+  "layer": "BRT/rail routes",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ICT-A01",
+  "sector_code": "ICT",
+  "asset_type": "Fibre (backbone, metro, FTTH)",
+  "layer": "Fibre routes (generalised)",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "ICT-A01",
+  "sector_code": "ICT",
+  "asset_type": "Fibre (backbone, metro, FTTH)",
+  "layer": "Unconnected towns",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ICT-A02",
+  "sector_code": "ICT",
+  "asset_type": "Mobile towers and rural coverage",
+  "layer": "Coverage raster",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ICT-A02",
+  "sector_code": "ICT",
+  "asset_type": "Mobile towers and rural coverage",
+  "layer": "Gap settlements",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ICT-A03",
+  "sector_code": "ICT",
+  "asset_type": "Data centres and cloud",
+  "layer": "Data centres (S2)",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "ICT-A03",
+  "sector_code": "ICT",
+  "asset_type": "Data centres and cloud",
+  "layer": "Substations near metros",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "ICT-A04",
+  "sector_code": "ICT",
+  "asset_type": "Submarine cables and landing stations",
+  "layer": "Cables and landing stations",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ICT-A05",
+  "sector_code": "ICT",
+  "asset_type": "Digital services, BPO and software",
+  "layer": "BPO clusters",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "ICT-A06",
+  "sector_code": "ICT",
+  "asset_type": "E-commerce and digital payments platforms",
+  "layer": "Fulfilment coverage",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CRE-A01",
+  "sector_code": "CRE",
+  "asset_type": "Affordable and social housing",
+  "layer": "Backlog choropleth",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CRE-A01",
+  "sector_code": "CRE",
+  "asset_type": "Affordable and social housing",
+  "layer": "Housing projects",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CRE-A01",
+  "sector_code": "CRE",
+  "asset_type": "Affordable and social housing",
+  "layer": "Well-located land parcels",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CRE-A02",
+  "sector_code": "CRE",
+  "asset_type": "Commercial property (retail, office, mixed-use)",
+  "layer": "Malls, office nodes",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CRE-A03",
+  "sector_code": "CRE",
+  "asset_type": "Industrial and logistics property",
+  "layer": "Industrial nodes",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CRE-A04",
+  "sector_code": "CRE",
+  "asset_type": "Student and specialised housing",
+  "layer": "Campuses with bed gap",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CRE-A05",
+  "sector_code": "CRE",
+  "asset_type": "Construction services and materials supply",
+  "layer": "Project pipeline",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S2"
+ },
+ {
+  "asset_id": "TOU-A01",
+  "sector_code": "TOU",
+  "asset_type": "Hotels and resorts",
+  "layer": "Hotels by grade",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TOU-A01",
+  "sector_code": "TOU",
+  "asset_type": "Hotels and resorts",
+  "layer": "Demand generators",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TOU-A02",
+  "sector_code": "TOU",
+  "asset_type": "Wildlife and nature concessions",
+  "layer": "Parks, concession areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TOU-A03",
+  "sector_code": "TOU",
+  "asset_type": "Coastal, heritage and cultural tourism",
+  "layer": "Attractions",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TOU-A04",
+  "sector_code": "TOU",
+  "asset_type": "MICE and events",
+  "layer": "Convention centres",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "HLT-A01",
+  "sector_code": "HLT",
+  "asset_type": "Hospitals, clinics and diagnostics",
+  "layer": "Facilities by type",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "HLT-A01",
+  "sector_code": "HLT",
+  "asset_type": "Hospitals, clinics and diagnostics",
+  "layer": "Access isochrones",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "HLT-A02",
+  "sector_code": "HLT",
+  "asset_type": "Pharmaceutical and vaccine manufacturing",
+  "layer": "Plants",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "HLT-A03",
+  "sector_code": "HLT",
+  "asset_type": "Medical devices and consumables",
+  "layer": "Distributors",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "HLT-A04",
+  "sector_code": "HLT",
+  "asset_type": "Health tech and telemedicine",
+  "layer": "Underserved areas",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "EDU-A01",
+  "sector_code": "EDU",
+  "asset_type": "Independent schools",
+  "layer": "Schools",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "EDU-A01",
+  "sector_code": "EDU",
+  "asset_type": "Independent schools",
+  "layer": "School-age population",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "EDU-A02",
+  "sector_code": "EDU",
+  "asset_type": "Higher education and TVET",
+  "layer": "Campuses",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "EDU-A03",
+  "sector_code": "EDU",
+  "asset_type": "Ed-tech",
+  "layer": "Connectivity",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FIN-A01",
+  "sector_code": "FIN",
+  "asset_type": "Banking and lending (incl. SME and agri finance)",
+  "layer": "Branch/agent density",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FIN-A02",
+  "sector_code": "FIN",
+  "asset_type": "Insurance and risk transfer",
+  "layer": null,
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FIN-A03",
+  "sector_code": "FIN",
+  "asset_type": "Payments and fintech",
+  "layer": "Agent networks",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "FIN-A04",
+  "sector_code": "FIN",
+  "asset_type": "Capital markets and funds",
+  "layer": "Exchanges",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRD-A01",
+  "sector_code": "TRD",
+  "asset_type": "Wholesale and FMCG distribution",
+  "layer": "Wholesalers, DCs",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRD-A02",
+  "sector_code": "TRD",
+  "asset_type": "Modern retail and malls",
+  "layer": "Retail centres",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRD-A03",
+  "sector_code": "TRD",
+  "asset_type": "Fresh produce markets",
+  "layer": "Municipal fresh produce markets",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "TRD-A04",
+  "sector_code": "TRD",
+  "asset_type": "Commodity trading and export houses",
+  "layer": "Trade flows",
+  "geometry": "Line/flow",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "GRN-A01",
+  "sector_code": "GRN",
+  "asset_type": "Carbon projects (nature-based and engineered)",
+  "layer": "Registered projects",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "GRN-A02",
+  "sector_code": "GRN",
+  "asset_type": "Climate adaptation infrastructure",
+  "layer": "Hazard hotspots",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "GRN-A03",
+  "sector_code": "GRN",
+  "asset_type": "Circular economy and recycling",
+  "layer": "Material recovery facilities",
+  "geometry": "Raster/choropleth",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "GRN-A04",
+  "sector_code": "GRN",
+  "asset_type": "Green finance (bonds, transition funds)",
+  "layer": null,
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CSP-A01",
+  "sector_code": "CSP",
+  "asset_type": "Film, TV and studios",
+  "layer": "Studios and locations",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CSP-A02",
+  "sector_code": "CSP",
+  "asset_type": "Music, events and live entertainment",
+  "layer": "Venues",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CSP-A03",
+  "sector_code": "CSP",
+  "asset_type": "Sports facilities and academies",
+  "layer": "Stadiums",
+  "geometry": "Point (pin/peg)",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ },
+ {
+  "asset_id": "CSP-A04",
+  "sector_code": "CSP",
+  "asset_type": "Professional and business services",
+  "layer": "Service clusters",
+  "geometry": "Polygon",
+  "levels": "L0–L5 (zoom-dependent)",
+  "security_class": "S0"
+ }
+]

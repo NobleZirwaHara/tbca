@@ -1,6 +1,6 @@
 # TBCA Integrations & AI Architecture Plan
 
-**Status:** Planning draft for client review. No code has been written for anything here.
+**Status:** Planning draft for client review, updated 13 October 2026. Sections 8 (VOVE ID), 11 (translation) and 18 (Zoho One) describe code that is now built; the rest is still a plan.
 **Prepared:** 6 October 2026, in response to the client review of 5 October 2026.
 **Scope:** Third-party integrations and the "AI Council" (the AI that drives the WebApp) for The Business Clinic.Africa (TBCA). The app is Laravel 13 + Inertia + React on Laravel Cloud, with Postgres.
 
@@ -28,6 +28,7 @@
 16. [Skills, Connectors and Plugins for "200%"](#15-skills-connectors-and-plugins-for-200)
 17. [Prioritised roadmap](#16-prioritised-roadmap)
 18. [What the client must provide (checklist)](#17-client-checklist)
+19. [Zoho One integration](#18-zoho-one-integration)
 
 ---
 
@@ -212,6 +213,8 @@ Announce call recording. Replicate recordings to **TBCA's own S3 bucket** with a
 - **Data centres:** Zoho has DCs in the US, EU, India, Australia, Japan, China, Canada, Saudi Arabia and the UAE. **There is no South African DC yet**; Zoho is reported to be planning one ([Bloomberg](https://www.bloomberg.com/news/articles/2026-02-25/billionaire-backed-zoho-plans-more-mideast-africa-data-centers), [billionaires.africa](https://www.billionaires.africa/2026/02/27/billionaire-backed-zoho-ramps-up-south-africa-push-with-plans-for-local-data-centers/), [DCD UAE](https://www.datacenterdynamics.com/en/news/zoho-corp-launches-two-data-center-regions-in-uae/)). **The DC is chosen at sign-up and is hard to change.** EU (GDPR-aligned, which helps the s72 "adequate protection" argument) or UAE are the realistic options today.
 - **APIs:** every app has a REST API with OAuth 2.0. Zoho also runs an **official MCP platform** ([zoho.com/mcp](https://www.zoho.com/mcp/)), with pre-built servers for CRM, Books and Desk among others. That is useful for the AI Council (section 15).
 
+**Superseded in part (13 October 2026).** The client's *TBCA Zoho One Implementation Guide* (11 October 2026) ranks 30 apps and sets the rollout order. Section 18 follows that guide and describes the integration layer now built. The table below is kept for the system-of-record reasoning.
+
 ### The client's list takes precedence
 
 The client's Drive folder names the 18 required apps. The likely list below is justified against TBCA's modules and should be reconciled with it.
@@ -332,6 +335,73 @@ Biometric data is **special personal information**. That means explicit consent,
 |---|---|
 | **M** | A VOVE account, sandbox keys, a quote per verification for each relevant country, decision rules (who must be verified, and what happens on a fail), and legal sign-off on consent wording. |
 
+### VOVE ID: findings, fit and what is built (13 October 2026)
+
+The client asked TBCA to "explore the services of VOVE ID. Very good integrations and cheap." The public developer documentation was read in full for this update.
+
+#### What VOVE ID offers (checked against its own pages)
+
+| Area | Finding | Source |
+|---|---|---|
+| KYC | Government ID check, passive and active liveness (iBeta PAD Level 2), face match, information matching against data you send. Web, iOS, Android, React Native and Flutter SDKs, or a hosted link. | [voveid.com/en](https://voveid.com/en), [Web SDK](https://docs.voveid.com/docs/sdks/web-sdk.md) |
+| Proof of address | Utility bill verification: name and address extraction, document date check, comparison with customer data. Runs as an `ADDRESS_PROOF` step in a KYC flow. | [Utility bill verification](https://voveid.com/en/products/utility-bill-verification), [Get verification results](https://docs.voveid.com/docs/kyc-api/get-user-verification.md) |
+| KYB | Company registry check, directors and beneficial owners (each UBO invited to KYC), website analysis, country-specific flows, hosted business journey. | [KYB integration](https://docs.voveid.com/docs/business-verification/kyb-integration.md), [Create a KYB case](https://docs.voveid.com/docs/business-verification/kyb-create-case.md) |
+| AML | Sanctions, PEP, watchlist and adverse-media screening for people and entities, with case statuses `NO_MATCH`, `IN_REVIEW`, `CLEARED`, `REJECTED` and dashboard review of possible matches. `NO_MATCH` is not proof that every source was searched. | [AML API reference](https://docs.voveid.com/docs/watchlist-screening/aml-screening.md), [Statuses](https://docs.voveid.com/docs/api-fundamentals/statuses.md) |
+| African coverage | ID card and passport supported for South Africa, Botswana, Malawi, Zambia, Zimbabwe, Namibia, Mozambique, Kenya, Tanzania, Uganda, Rwanda, Nigeria, Ghana, Senegal, Côte d'Ivoire, Ethiopia, Egypt, Morocco and others; driver's licences for most of these. KYB country flows are listed per account, so registry coverage (for example CIPC) must be confirmed. | [Supported documents](https://docs.voveid.com/docs/supported-documents.md), [KYB flows](https://docs.voveid.com/docs/business-verification/kyb-flows.md) |
+| API | Public REST API. Private key in the `x-api-key` header, server side only. Sandbox `https://api.voveid.net`, production `https://api.voveid.com`. KYC under `/v2`; KYB and AML unversioned. | [Environments and credentials](https://docs.voveid.com/docs/setup-your-credentials.md), [API conventions](https://docs.voveid.com/docs/api-fundamentals/api-conventions.md) |
+| Webhooks | Signed with Svix (`svix-id`, `svix-timestamp`, `svix-signature`). Deduplicate on `svix-id`; fetch the current resource before any consequential decision. | [Webhooks](https://docs.voveid.com/docs/kyc-api/webhooks.md), [KYB webhooks](https://docs.voveid.com/docs/business-verification/kyb-webhooks.md) |
+| Compliance | GDPR DPA templates, Moroccan CNDP compliance, EU data residency on request. | [voveid.com/en](https://voveid.com/en) |
+| Pricing | Not published on the pricing page. VOVE describes "Pay-As-You-Grow / No Min Engagement" and "free test access, live keys in 24 hours". Capterra lists subscription plus usage pricing; third-party listings quote Startup about $49/month and Growth about $200/month, pay per successful verification. | [Utility bill page comparison table](https://voveid.com/en/products/utility-bill-verification), [Capterra](https://www.capterra.com/p/10037963/VOVE-ID/) |
+
+#### Fit for TBCA
+
+- **Good fit** for the identity, screening and address checks in Individual, Director and UBO, and Investor due diligence, and for KYB intake on company subjects. One contract and one API cover KYC, KYB and AML, which keeps the integration small.
+- **Not a full replacement** for the TBCA check plan: litigation, regulatory records, bank verification, employment and education, criminal records and the project checks stay with other sources and the TBCA expert panel.
+- **Cost:** no per-check price is public. Ask for a written per-verification quote split by KYC, proof of address, KYB and AML, by country, and confirm whether failed or abandoned attempts are charged. Compare it with the DD fee line "Third-Party Data Provider Fees" (R 500 to R 10,000+) in `Catalogue.php`.
+- **Data protection:** selfies and ID images are biometric special personal information under POPIA. TBCA stores only decision fields (status, document type, match level, fraud flags); images stay with VOVE. Request EU data residency and VOVE's DPA, and confirm the processing location before production.
+
+#### How VOVE ID checks map to Due Diligence
+
+| DD check or add-on | VOVE ID product | Coverage |
+|---|---|---|
+| Identity Verification | KYC (ID, liveness, face match) | Full |
+| Sanctions, PEP & Watchlists | AML (person or entity flow) | Full; possible matches go to an analyst |
+| Adverse Media Check | AML flow | Partial; TBCA media review still applies |
+| Address Verification | KYC with proof-of-address step | Full |
+| Director & UBO Checks | KYB, then KYC per UBO | Partial |
+| Company Incorporation & Legal Status | KYB registry check | Partial; depends on the country flow |
+| Shareholding Structure & Ownership Mapping | KYB UBO list | Partial; layered structures need an analyst |
+| Add-on **PEP & Sanctions Enhanced** (DD-ADD-PEP) | AML with an enhanced flow | Partial: screening yes; the ongoing "PEP watch" is a scheduled re-screen by TBCA, because continuous monitoring is not in the public API |
+| Add-on **Beneficial Ownership Deep Dive** (DD-ADD-UBO) | KYB plus KYC per owner | Partial: owner capture and verification yes; nominee tracing and control analysis stay with an analyst |
+
+#### What is built in Laravel
+
+| Part | File |
+|---|---|
+| Provider interface | `app/Support/DueDiligence/Identity/IdentityVerificationProvider.php` |
+| VOVE ID provider (KYC sessions, KYB cases, AML cases, result retrieval, Svix signature check) | `app/Support/DueDiligence/Identity/VoveIdProvider.php` |
+| Simulated provider, the default (no network; names containing "PEP" or "Sanction" return a possible match) | `app/Support/DueDiligence/Identity/SimulatedProvider.php` |
+| Check and add-on map | `app/Support/DueDiligence/Identity/CheckMap.php` |
+| Manager: start, apply results to the check, case timeline and ledger | `app/Support/DueDiligence/Identity/IdentityVerifications.php` |
+| Verification records (decision fields only) | table `dd_identity_verifications`, model `App\Models\DueDiligence\IdentityVerification` |
+| Webhook | `POST /integrations/vove/webhook` (Svix verification, deduplicated by `svix-id`, 204 reply, processed on the queue) |
+| Subject link | `GET /due-diligence/verify/{token}`: a one-time TBCA link that mints a fresh VOVE session on each visit and redirects to the hosted journey |
+| Staff console | `/admin/integrations`: provider status, checks ready to start, recent verifications |
+| Tests | `tests/Feature/Integrations/VoveIdTest.php` (Http::fake) |
+
+Rules the code follows: a clear result completes a fully served check automatically; `suspected`, `IN_REVIEW`, `REJECTED` and any unknown status put the check on hold, make expert review mandatory and count as human work in the automation measure. A terminal webhook is confirmed with `GET /v2/users/{refId}`, `GET /kyb/case/{refId}/details` or `GET /aml/case/{refId}` before it changes anything. AML screening can start automatically when a case enters Checks Running (`IDENTITY_VERIFICATION_AUTO_START=true`); KYC and KYB need the subject, so staff send the link.
+
+**Assumed, to confirm in the sandbox:** the exact response shape of `GET /kyb/case/{refId}/details` (the code reads `status`, `ubos`, `businessSearch.verified` and `websiteAnalysis.risk`, with or without a `data` wrapper), and whether the KYC flow's proof-of-address step needs its own flow ID (`VOVE_KYC_ADDRESS_FLOW_ID`).
+
+#### What Noble needs to do in VOVE ID
+
+1. Create the account ("Try for free") and open the **Sandbox** dashboard (`dashboard.voveid.net`).
+2. Under **Settings, General**, copy the sandbox API key and public key into `VOVE_API_KEY` and `VOVE_PUBLIC_KEY`.
+3. Create flows: one KYC flow (with information matching on), one KYC flow with the proof-of-address step if VOVE requires a separate flow, AML flows for "Standard individual screening" and "Standard entity screening", and check which KYB country flows the account has (South Africa first). Put the IDs in `VOVE_KYC_FLOW_ID`, `VOVE_KYC_ADDRESS_FLOW_ID`, `VOVE_AML_INDIVIDUAL_FLOW_ID`, `VOVE_AML_ENTITY_FLOW_ID` and `VOVE_KYB_FLOW_ID`.
+4. Under **Webhooks**, add `https://<TBCA host>/integrations/vove/webhook`, select the KYC, KYB and AML events, and copy the signing secret (`whsec_...`) into `VOVE_WEBHOOK_SECRET`.
+5. Set `IDENTITY_VERIFICATION_DRIVER=vove`, run fictional subjects through each check from `/admin/integrations`, and replay a webhook from the dashboard.
+6. Before production: the per-verification quote by country, VOVE's DPA with EU residency, POPIA sign-off on biometric consent wording, then production keys (`VOVE_ENVIRONMENT=Production`, `VOVE_API_BASE_URL=https://api.voveid.com`, `VOVE_HOSTED_URL=https://web.voveid.com`) and VOVE's production checklist.
+
 ---
 
 ## 9. AI Systems Vault: calculators and templates
@@ -381,6 +451,24 @@ A one-time **£37** bundle (advertised as down from £188) of "100,000+ digital 
 
 **Languages:** English (`en`), Afrikaans (`af`), Portuguese (`pt`), Mandarin Chinese (`zh-Hans`), French (`fr`), Swahili (`sw`) and Arabic (`ar`, right-to-left).
 
+### What is built (October 2026)
+
+- **Dictionaries:** `lang/{af,pt,zh,fr,sw,ar}.json`, keyed by the English text (Laravel's JSON format). The same files serve `__()` on the server and `t()` in React (`resources/js/lib/i18n.ts`). English needs no file.
+- **Coverage:** the header, mega menus, mobile menu, footer, home page, contact page, offices page, language and currency selectors and the Virtual Deal Room transaction types are translated in all six languages. Shared components (`PageHeader`, `SectionHeading`, `Blocks`, `CtaBand`, `Breadcrumbs`, `Flash`) pass their text through `t()`, so register content is translated as soon as its keys are added.
+- **Fallback:** a key with no translation shows the English text. Nothing breaks when a page has not been translated yet.
+- **Switching:** the selected language is stored in the session (`POST /context`). The new dictionary is loaded before the switch is posted, so the page re-renders once in the new language. `ApplyLocale` middleware sets the Laravel locale on every request.
+- **Right-to-left:** `app.blade.php` renders `<html lang dir>` from the session, and `applyDocumentLocale()` updates it on every Inertia visit. Arabic loads Noto Sans Arabic (Google Fonts) only when selected. Shared layout uses logical utilities (`ms-/me-/ps-/pe-`, `start-/end-`, `text-start`), and arrow and chevron icons mirror through CSS.
+
+### Machine translation hook
+
+Remaining content (the large PHP registers, catalogue and CMS text) can be translated by a service without code changes in the pages:
+
+1. Implement `App\Support\I18n\MachineTranslator` (`translate(array $texts, string $locale): array`) for the chosen provider. It must keep `:placeholders` and brand names (TBCA, AIIM, Sprint, NIKIWE) unchanged.
+2. Set `TBCA_TRANSLATOR` in `.env` to that class (default `NullMachineTranslator`, which translates nothing).
+3. Run `php artisan tbca:translations --fill`. Missing keys are sent to the translator and merged into `lang/{locale}.json`. `php artisan tbca:translations --locale=ar` lists what is still missing.
+4. To find page-body strings that need keys, open a page in a language and run `window.__tbcaMissingTranslations('fr')` in the browser console. It lists every string that page passed through `t()` without a translation. A later step can post these to a collection endpoint and queue them for the translator.
+5. Machine output for Afrikaans, Swahili and Arabic should be reviewed by a person before release.
+
 ### Provider comparison (verified where linked)
 
 | | **DeepL API** | **Google Cloud Translation** | **Azure Translator** |
@@ -403,7 +491,7 @@ A one-time **£37** bundle (advertised as down from £188) of "100,000+ digital 
 
 ### RTL and fonts
 
-- Set `<html dir="rtl" lang="ar">`; the config already models `dir`. Use Tailwind **logical utilities** (`ms-/me-/ps-/pe-`, `start-/end-`, `rtl:` variant) and mirror directional icons and arrows. Test checkout, tables, charts and the chat drawer in RTL.
+- Done for the shared layout (see "What is built"). Still to check page by page in RTL: checkout, data tables, charts and the chat drawer.
 - **Fonts:** the review mandates **Segoe UI**. Segoe UI has no CJK glyphs, so Mandarin needs a fallback stack (for example "Microsoft YaHei", "PingFang SC", "Noto Sans SC"). Arabic should fall back to an Arabic-capable font on non-Windows devices. Note too that Segoe UI is a Microsoft system font with no web licence for self-hosting, so it only renders on Windows. **Ask the client to accept a matched fallback stack**, such as "Segoe UI", system-ui, -apple-system, and so on.
 
 ### Recommendation
@@ -718,10 +806,10 @@ Ranked by impact. **P1** = do with phase 1–2, **P2** = next, **P3** = nice-to-
 
 - [ ] **Meta Business Manager** with completed business verification; WhatsApp Business Account
 - [ ] **WhatChimp** Enterprise plan (or written confirmation of Lalexi's WhatsApp access method if still being considered)
-- [ ] **Zoho One** subscription (All-Employee vs Flexible), **data-centre choice**, and admin access
+- [ ] **Zoho One** subscription (All-Employee vs Flexible), **data-centre choice**, and admin access; a dedicated integration user and an OAuth Self Client with the IDs and fields listed in section 18 (no passwords in the codebase)
 - [ ] **Voiso** Pro account; country list for local numbers; agent count
 - [ ] **Krisp** Call Center account (CC Core); CC Advanced trial request
-- [ ] **VOVE ID** account, sandbox keys and a per-verification quote by country (plus alternative quotes if wanted)
+- [ ] **VOVE ID** account, sandbox keys and a per-verification quote by country (plus alternative quotes if wanted); sandbox flows and webhook secret as listed in section 8
 - [ ] **Payment gateway merchant accounts**, as per the Drive document (KYB documents, settlement bank accounts per currency)
 - [ ] **Translation provider** (DeepL API Pro and/or Google Cloud) account
 - [ ] **FX feed** subscription (Open Exchange Rates or ExchangeRate-API Pro)
@@ -768,9 +856,194 @@ Ranked by impact. **P1** = do with phase 1–2, **P2** = next, **P3** = nice-to-
 | Hippo NOTP stand-alone API, pricing, country coverage | **Not published.** Ask JungleWorks. |
 | Krisp support for all 7 languages in live translation, and its Voiso compatibility | Afrikaans, Arabic and Swahili listed. **Mandarin/Portuguese/French to confirm in trial.** |
 | Voiso African number coverage | **Not itemised.** Request the list. |
-| VOVE per-verification price and processing location | **Not published.** Request a quote and DPA. |
+| VOVE per-verification price and processing location | **Not published.** Request a quote and DPA. The API and webhook contract are public (section 8). |
 | Gio commercial-use rights; no API | **Check Prequel's terms.** |
 | DeepSeek model version and official pricing | **Third-party sources only.** The client should confirm which DeepSeek model is meant. |
 | Exact current DeepL API Pro pricing; Azure S1 price | **Confirm on the vendor pages** before budgeting. |
 | Zoho South African data centre | **Planned, not live.** |
 | Laravel Cloud African region | **None listed.** |
+
+---
+
+## 18. Zoho One integration
+
+**Client brief (Kruger Phiri):** configure and customise Zoho One for the TBCA WebApp so that functions are 90% automated and 10% human, including bookkeeping from bank statements through to financial statements. **Source:** *TBCA Zoho One Implementation Guide*, 11 October 2026 (client document, 100 pages). Where this section and the guide differ, the guide wins.
+
+### Architecture: Laravel in front, Zoho One behind
+
+The guide recommends the hybrid model (guide sections 1 and 8), and that is what is built:
+
+- **Laravel** remains the customer experience: language, catalogue, sign-in, checkout, the client dashboard and every permission check.
+- **Zoho One** is the operating backbone: CRM relationships, Creator control records, Desk support, Projects delivery, Books and Billing finance, WorkDrive documents, Sign signatures, Flow automation.
+- **The integration layer** sits on the Laravel server. Domain events go into an event ledger; a dispatcher sends them to Zoho with idempotency and retries; Zoho reports back through a signed webhook. A Zoho outage shows as a pending sync, never as a lost purchase.
+
+Customer sign-in stays in Laravel. Customers never authorise Zoho, and no Zoho credential reaches the browser.
+
+### What is built in Laravel
+
+The integration is **off by default** (`ZOHO_ENABLED=false`). While it is off, events are still written to the ledger with the status `held`, so nothing is lost and nothing leaves the app.
+
+| Part | Where | What it does |
+|---|---|---|
+| Configuration | `config/zoho.php`, `.env.example` | Data centre, OAuth client, organisation IDs per app, Flow webhook URLs, webhook secret, retry policy, 90% target |
+| OAuth client | `app/Support/Integrations/Zoho/ZohoAuth.php`, `ZohoClient.php` | Refresh-token flow, access token cached until a minute before expiry, one refresh on 401, retryable and non-retryable errors |
+| App wrappers | `app/Support/Integrations/Zoho/Apps/` | CRM (upsert Accounts, Contacts, Deals, Leads by TBCA ID), Desk (ticket), Projects (project from template), Books (customer, invoice, payment, bank statement import), WorkDrive (folder), Creator (record), Flow (webhook trigger) |
+| Event ledger | migration `2026_10_13_160000_create_integration_tables.php`, models `IntegrationEvent`, `IntegrationLink` | Event id (UUID), type, process, aggregate reference, payload snapshot, status, attempts, last error, completed steps with returned Zoho IDs; a link table maps each order, ticket or case to its Zoho ID |
+| Domain hooks | `app/Support/Integrations/DomainHooks.php` | Model listeners that record events only; Zoho is never called inline |
+| Outbox dispatcher | `php artisan zoho:sync`, `Dispatcher.php`, `OutboundSync.php`, job `SyncIntegrationEvent` | Claims each due event, runs its steps, resumes after a failure without repeating finished steps, backs off 1, 5, 15, 60 and 360 minutes with jitter, parks validation errors for a person. Scheduled every minute in `routes/console.php` |
+| Inbound webhook | `POST /integrations/zoho/webhook` | HMAC signature, five-minute replay window, stored once per event id, processed on the queue |
+| Status console | `/admin/integrations` (staff only) | Connection health, app readiness, ledger with retry and "resolved by staff", automation coverage, identity checks |
+| Tests | `tests/Feature/Integrations/` | Client, outbox, webhook and VOVE ID tests with `Http::fake` |
+
+**Events recorded and what the dispatcher does with them**
+
+| Event | Recorded when | Zoho actions | Guide recipe |
+|---|---|---|---|
+| `order.payment_verified` | An order becomes paid (card checkout, free Sprint, EFT confirmed in Books) | CRM account, contact and deal; Books customer, invoice (reference = order number) and payment; for Sprints and retainers a Projects project from the template and a WorkDrive folder | A2 |
+| `enquiry.received` | Any contact form, enquiry, quote request or application (`Submission`) | CRM lead (duplicate check on email) | A1 |
+| `webinar.registered` | Webinar registration | CRM lead, source "Webinar" | A1 |
+| `support.requested` | Client Portal ticket, or a complaint or human-assistance request | Desk ticket with the TBCA reference | A8 |
+| `dd.case_created` | A paid Due Diligence case opens | CRM account and contact; Creator `DD_Cases` record | A4 |
+| `vdr.enquiry_submitted` | A Virtual Deal Room enquiry opens a room | CRM account and contact; Creator `Deal_Rooms` record | A5 |
+
+Every event can also trigger a Zoho Flow webhook (`ZOHO_FLOW_*_URL`) carrying the guide's event envelope (`schema_version`, `event_id`, `event_type`, `occurred_at`, `correlation_id`, `business_id`, `data`) plus the Zoho IDs already created. With `ZOHO_FLOW_AWAIT_CONFIRMATION=true` the event stays `sent` until Flow posts `flow.completed`.
+
+**Ledger statuses:** `held` (recorded while off), `pending`, `sent` (waiting for Flow), `failed` (retrying, or parked for a person), `complete`.
+
+**Inbound events accepted** at `POST /integrations/zoho/webhook`:
+
+| Event type | Data expected | Effect in Laravel |
+|---|---|---|
+| `books.invoice_paid` | `invoice_id`, `reference_number` | Laravel asks Books for the invoice; only if Books says `paid` for that order number is the order marked paid |
+| `desk.ticket_updated` | `ticket_id` or `tbca_reference`, `status`, optional `assignee`, `handled_by` | Updates the Client Portal ticket (Closed becomes resolved) |
+| `flow.completed`, `flow.failed` | `event_id` of the TBCA event | Completes or fails the outbound event |
+| `projects.milestone_updated`, `sign.completed`, `billing.subscription_updated` | Free-form | Recorded in the ledger for the dashboard and the measure |
+| `review.decided` | Free-form | Recorded as human work (expert review) |
+
+Request format, signed by Flow (a Deluge custom function) or a relay:
+
+```
+POST /integrations/zoho/webhook
+X-TBCA-Timestamp: 1791712800
+X-TBCA-Signature: sha256=<hex HMAC-SHA256 of "1791712800.<raw body>" with ZOHO_WEBHOOK_SECRET>
+
+{"event_id": "zf-000101", "event_type": "books.invoice_paid", "occurred_at": "2026-10-13T08:00:00Z",
+ "data": {"invoice_id": "460000000012345", "reference_number": "TBCA-ORD-2026-AB12CD"}}
+```
+
+**Not yet wired:** the "Pending sync" label on the Client Portal dashboard. Each event carries `user_id`, so the portal can show any `pending` or `failed` event for the signed-in client; this is a small front-end change once the first Zoho apps are live.
+
+### The 30 applications, in the guide's order
+
+Importance rank is not installation order: Directory and Vault come first. Phase numbers refer to the rollout table below.
+
+| Rank | App | Job at TBCA | Phase |
+|---|---|---|---|
+| 1 | CRM | Every business, contact, prospect and opportunity | 2 |
+| 2 | Creator | Control records: engagements, DD cases, deal rooms, approvals, automation runs | 2 |
+| 3 | Flow | Turns approved events into repeatable steps | 2 |
+| 4 | Desk | Help, complaints, escalation, SLAs | 2 |
+| 5 | Projects | Sprint and advisory delivery with expert review | 3 |
+| 6 | Books | Accounting, one-time invoices, payments, reconciliation | 3 |
+| 7 | WorkDrive | Evidence, deliverable versions, closing packs | 3 |
+| 8 | Sign | Signatures, consent and mandate evidence | 3 |
+| 9 | Billing | Subscriptions, renewals, payment recovery | 4 |
+| 10 | Forms | Diagnostics, enquiries, onboarding checklists | 2 |
+| 11 | SalesIQ | Live chat and handoff to people | 5 |
+| 12 | Bookings | Discovery and onboarding scheduling | 3 |
+| 13 | Analytics | Operational and automation dashboards | 4 |
+| 14 | Directory | Staff identity, groups, MFA, offboarding | 1 |
+| 15 | Contracts | Non-standard mandates and partner agreements | 4 |
+| 16 | DataPrep | Cleans customer and research data | 4 |
+| 17 | RPA | Approved desktop tasks with no API | 6 |
+| 18 | Learn | Procedures and reviewer training | 5 |
+| 19 | Campaigns | Governed newsletters and announcements | 5 |
+| 20 | Marketing Automation | Consent-aware nurture journeys | 5 |
+| 21 | Survey | Satisfaction and recovery signals | 5 |
+| 22 | Meeting | Discovery calls and delivery reviews | 3 |
+| 23 | Mail | Business mail and sending domains | 2 |
+| 24 | TeamInbox | Consultation and partnership threads | 2 |
+| 25 | Cliq | Internal alerts and approvals | 2 |
+| 26 | Vault | Staff and integration credentials | 1 |
+| 27 | Writer | Proposals, DD report shells, approved documents | 7 |
+| 28 | Sheet | Financial models and working papers | 7 |
+| 29 | PageSense | Public-page usability tests | 7 |
+| 30 | Commerce | Conditional: only if a Zoho storefront is wanted | 7 |
+
+### What Noble must configure inside the Zoho tenant
+
+No password belongs in the codebase or `.env`. Laravel uses OAuth credentials from the Zoho API console only. Nobody should paste the client's Zoho password into code, tickets or chat.
+
+1. **Admin access and checks (guide section 3).** Sign in as a Zoho One administrator. Record the organisation name and ID, data centre, licence model and app editions. Confirm whether a Books organisation already exists; do not create a second one. Turn on MFA for staff and keep two administrators for recovery.
+2. **Integration user.** Create a dedicated Zoho user (for example `integration@thebusinessclinic.africa`) with only the roles the sync needs. The OAuth token is generated as this user, never as the organisation owner.
+3. **Apps to enable first.** Directory, Vault, CRM, Creator, Flow, Desk, Books, Projects, WorkDrive and Sign. Assign pilot users only.
+4. **Fields and IDs to create.** API names must match exactly.
+
+   | App | Create | Laravel setting |
+   |---|---|---|
+   | CRM | Accounts: `TBCA_Business_ID` (unique). Contacts: `TBCA_Person_ID` (unique). Deals: `TBCA_Order_ID` (unique), `SKU`, `Payment_Verification` (picklist: Pending, Verified). Leads: `TBCA_Reference`, `TBCA_Person_ID`. A Sprint pipeline with the guide's stages and a "Closed Won" stage. | `ZOHO_CRM_PIPELINE` |
+   | Books | Confirm the organisation ID, base currency ZAR, VAT, items with stable SKUs, invoice numbering, and the bank account used for statements. | `ZOHO_BOOKS_ORG_ID`, `ZOHO_BOOKS_BANK_ACCOUNT_ID` |
+   | Desk | Department for customer support; ticket fields `cf_tbca_reference` and `cf_tbca_business_id`. | `ZOHO_DESK_ORG_ID`, `ZOHO_DESK_DEPARTMENT_ID` |
+   | Projects | A Sprint project template with the milestones Intake complete, Evidence accepted, Draft complete, Expert review, Customer delivery, Acceptance. | `ZOHO_PROJECTS_PORTAL_ID`, `ZOHO_PROJECTS_TEMPLATE_ID` |
+   | WorkDrive | A restricted team folder "Engagements"; its folder ID. | `ZOHO_WORKDRIVE_PARENT_FOLDER_ID` |
+   | Creator | Application `tbca-operations` with forms `DD_Cases` (TBCA_Reference, TBCA_Business_ID, Order_ID, SKU, Subject_Type, Jurisdiction, Purpose, State) and `Deal_Rooms` (TBCA_Reference, TBCA_Business_ID, Company, Country, Deal_Type, Transaction_Type, Amount_ZAR, Fit_Score, State), and reports `All_DD_Cases`, `All_Deal_Rooms`. | `ZOHO_CREATOR_OWNER`, `ZOHO_CREATOR_APP` |
+   | Billing | Confirm the Billing organisation matches Books before linking them; the link cannot be undone. | `ZOHO_BILLING_ORG_ID` |
+
+5. **OAuth self client.** As the integration user, open the API console for the data centre (`api-console.zoho.eu` for EU), choose **Add Client, Self Client**, and note the client ID and secret. Under **Generate Code**, enter the scopes below and a 10-minute duration, then exchange the code once: `POST https://accounts.zoho.eu/oauth/v2/token` with `grant_type=authorization_code`, `client_id`, `client_secret` and `code`. Keep the `refresh_token` from the reply. Suggested scopes (confirm names in each API's scope list): `ZohoCRM.modules.accounts.ALL, ZohoCRM.modules.contacts.ALL, ZohoCRM.modules.deals.ALL, ZohoCRM.modules.leads.ALL, ZohoBooks.contacts.ALL, ZohoBooks.invoices.ALL, ZohoBooks.customerpayments.ALL, ZohoBooks.banking.ALL, Desk.tickets.ALL, Desk.basic.READ, ZohoProjects.projects.ALL, WorkDrive.files.ALL, ZohoCreator.form.CREATE, ZohoCreator.report.READ`.
+6. **Environment variables** (Laravel Cloud secrets): `ZOHO_DC`, `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`, the organisation IDs in step 4, `ZOHO_WEBHOOK_SECRET` (a long random string shared with Flow), and the Flow URLs in step 7. Set `ZOHO_ENABLED=true` last.
+7. **Flow webhooks.**
+   - *TBCA to Zoho:* for each event that needs extra steps (welcome message, Cliq alert, Campaigns list), create a flow with a **Webhook** trigger, named as the guide suggests (for example "TBCA TEST Order Payment Verified v1"), and put its URL in `ZOHO_FLOW_ORDER_PAID_URL`, `ZOHO_FLOW_ENQUIRY_URL`, `ZOHO_FLOW_WEBINAR_URL`, `ZOHO_FLOW_SUPPORT_URL`, `ZOHO_FLOW_DD_CASE_URL` or `ZOHO_FLOW_VDR_ENQUIRY_URL`. Do not repeat in Flow what the dispatcher already does (CRM, Books, Projects, WorkDrive, Desk), or records will be duplicated.
+   - *Zoho to TBCA:* create flows (or app workflow rules with a custom function) for Books "invoice paid", Desk "ticket status changed", Projects "milestone updated", Sign "document completed" and Billing "subscription changed". Each posts to `https://<TBCA host>/integrations/zoho/webhook` with the signed format above; a Deluge custom function computes the HMAC with `ZOHO_WEBHOOK_SECRET`.
+8. **First run.** `php artisan zoho:sync --status`, then one dummy customer through the pilot journey (guide section 3, step 11). `php artisan zoho:sync --release-held` sends events recorded while the integration was off; review them first, because they may include test data.
+
+### Bookkeeping: bank statements into Zoho Books
+
+The client wants bookkeeping from bank statements to financial statements done by AI. In the guide this is Books chapter 7.6, step 11 ("connect bank feeds where supported, or import statements securely").
+
+- **Connector point (built):** `Zoho::books()->importBankStatement($start, $end, $transactions)` posts a statement to the Books bank account in `ZOHO_BOOKS_BANK_ACCOUNT_ID` through the Books `bankstatements` API. Each transaction carries date, debit or credit, amount, payee, description and reference.
+- **Sources of statements, in order of preference:** (1) Books' own bank feeds, if Books supports TBCA's banks in this edition and region (check under Banking in Books); (2) the bank's CSV or OFX export, uploaded through a staff-only screen or a WorkDrive drop folder and passed to the connector; (3) a licensed bank-data provider with TBCA's written mandate. No bank log-in, screen scraping or storage of bank passwords is built or planned.
+- **What runs automatically after import:** Books bank rules categorise and match transactions to invoices and payments recorded by the dispatcher. Routine matches count as automated work.
+- **What stays with the finance owner (guide 7.6 and 12):** unmatched items, refunds, bank-detail changes, tax decisions, journals, period close and approval of the financial statements. "Payment verified" and "bank settled" are separate statuses.
+
+### Rollout phases (guide section 14, condensed)
+
+| Phase | Weeks | Work | Gate before the next phase |
+|---|---|---|---|
+| 1 Foundation | 1-2 | Tenant and licence audit, roles, Directory, Vault, data ownership, dummy businesses | Entity, access, environments and commercial dependencies confirmed |
+| 2 Customer operating core | 3-4 | CRM, Creator, Desk, Forms, Mail, TeamInbox, Flow, Cliq; ID mapping; switch on the sync for enquiries and tickets | Enquiry, account isolation and ticket path pass tests |
+| 3 Payment and delivery | 5-6 | Books, Projects, WorkDrive, Sign, Bookings, Meeting; the first full paid Sprint | Duplicate events, payment matching, exact-version approval and delivery pass |
+| 4 Recurring service and intelligence | 7-8 | Billing, Contracts, DataPrep, Analytics; AIIM source pilot; bank statement import | One invoice owner, entitlement states and source provenance validated |
+| 5 Knowledge and engagement | 9-10 | Learn, Survey, Campaigns, Marketing Automation, SalesIQ | Knowledge, consent, handoff and suppression tests pass |
+| 6 Agents and legacy automation | 11-12 | KAREN and intake pilots, bounded tools, RPA pilot | Access, evidence, failure handling and cost controls pass |
+| 7 Experience optimisation | 13-14 | PageSense, Writer and Sheet templates, Commerce only if needed | Tracking exclusions and catalogue design verified |
+| 8 Scale and handover | 15-16 | Load and failure tests, restore exercise, training, automation measurement | Business, finance, privacy, delivery and technical owners sign off |
+
+Flow and Cliq sit in phase 2 and bank statement import in phase 4 because the integration depends on them; the guide does not give them a phase of their own.
+
+### Launch tests (guide section 15, condensed)
+
+Run in a test environment or a constrained pilot, and record evidence for each. Tests marked **Laravel** are already covered by automated tests in `tests/Feature/Integrations/`.
+
+| ID | Scenario | Pass condition |
+|---|---|---|
+| T01 | New visitor submits a diagnostic or enquiry | One record, one owner, one next-step message |
+| T02, T03 | Business switching; Customer A tries Customer B's records | No cross-business data through any route |
+| T04 | One-time order is paid | One verified payment, one invoice, one project (**Laravel**) |
+| T05 | Forged success redirect or wrong amount | No entitlement; finance exception (**Laravel** for Books confirmation) |
+| T06 | Events delivered three times or out of order | No duplicates; newer state kept (**Laravel**) |
+| T07 | Timeout after Zoho created a record | Retry finds it and resumes (**Laravel**) |
+| T08 to T12 | Unsafe evidence, missing DD consent, uncertain identity, report changed after approval, NDA expired | Blocked or sent to a person; no autonomous consequential outcome (**Laravel** for identity results) |
+| T13 to T15 | Subscription renewal failure, unsubscribe, booking across time zones | Terms, suppression and local time respected |
+| T16, T17 | Malicious AI source; synthetic AIIM data | Permission filters hold; demo data stays segregated |
+| T18 to T21 | RPA runner offline, PageSense on private pages, quota exceeded, admin leaves | Truthful pending or exception state; access ends; alerts visible (**Laravel** for pending state) |
+| T22 to T24 | Restore from backup; all language and currency combinations; peak load | Recovery objectives met; correct text and precision; no locking or duplicate failures |
+
+### Measuring 90 percent automation
+
+The guide (section 12) treats 90% as a target to validate, not a promise, and keeps strategy, pricing, material DD and legal conclusions, final expert review, refunds, complaints and disputes with people. The ledger measures it per guide recipe (A1 Enquiry to discovery through A10 Operational control):
+
+- **Overall automation share** = task instances completed with no human intervention / all task instances, including review gates and exceptions.
+- **Routine straight-through rate** = routine instances completed with no human intervention / routine instances attempted.
+- **Human minutes**, logged when staff mark an event "resolved by staff". The guide's human-time share also needs a four-week labour baseline, which TBCA must measure first.
+
+An event counts as automated when the dispatcher or an inbound rule completed it; as human when staff resolved it, when it is an expert decision (`review.decided`), or when an identity result needs an analyst. Held events are excluded. The table is on `/admin/integrations`; processes with no events yet show "Not yet measured". Follow the guide's sequence: weeks 1-4 baseline and drafts, 5-8 routine core, 9-12 bounded agents, 13-16 decide whether 90% is justified. If quality or access checks fail, reduce automation even if the percentage falls.

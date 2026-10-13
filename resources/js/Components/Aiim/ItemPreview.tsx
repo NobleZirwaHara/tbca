@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Tabs } from '@/Components/ui/Kit';
 import { ButtonLink } from '@/Components/ui/Button';
 import type { AiimPageProps, ProjectItem } from '@/types/aiim';
+import { useCompactPrice } from './Explorer/money';
+import ScreeningPanel from './Explorer/ScreeningPanel';
 import { CompareButton, FeeButton, ListToggle } from './Actions';
 import AiimIcon from './AiimIcon';
 import { Donut, Gauge, ScoreRing } from './Charts';
@@ -33,17 +35,25 @@ export default function ItemPreview({ item, as, entitled, unlockFrom, saved }: I
     const locked = (label: string) =>
         entitled ? <Chip tone="good">Unlocked</Chip> : item.hasPremium ? <Link href={unlockHref} className="inline-flex items-center gap-1 text-xs font-semibold text-gold-700 hover:underline"><Lock className="size-3" />{label}</Link> : <LockedTag>{label}</LockedTag>;
     const share = () => void navigator.clipboard?.writeText(window.location.href);
+    const compact = useCompactPrice();
+    const country = item.country ?? { iso2: 'ZA', slug: 'south-africa', name: 'South Africa' };
+    const s = item.screening ?? null;
+    const regionCrumb = item.province
+        ? { label: item.provinceName, href: `/aiim/province/${item.province}` }
+        : item.provinceName ? { label: item.provinceName, href: `/aiim/country/${country.slug}?tab=places` } : null;
 
     const facts: [string, string, string][] = [
         ['Location', item.location ?? '—', 'map-pin'], [isProject ? 'Project Type' : 'Opportunity Type', item.type, 'target'], ['Stage', item.stage, 'gauge'],
-        ['Investment Size', item.size, 'coins'], ['Sector', d.subsector ?? item.sectorName, 'server'], ['Power Capacity', m['Power Capacity'] ?? '—', 'zap'],
-        ['Sponsor', d.sponsor ?? 'Identified sponsor', 'building-2'], ['Jobs Potential', m['Jobs Potential'] ?? '—', 'users'], ['Land Size', m['Land Size'] ?? '—', 'globe'],
+        ['Investment Size', s ? compact(s.capexZar) : item.size, 'coins'], ['Sector', d.subsector ?? item.sectorName, 'server'], ['Power Capacity', m['Power Capacity'] ?? '—', 'zap'],
+        ...(s
+            ? ([['Project IRR', s.projectIrr !== null ? `${s.projectIrr}%` : 'Not stated', 'trending-up'], ['Hurdles passed', `${s.hurdlesPassed ?? 0} of 4`, 'shield-check'], ['Country', country.name, 'globe']] as [string, string, string][])
+            : ([['Sponsor', d.sponsor ?? 'Identified sponsor', 'building-2'], ['Jobs Potential', m['Jobs Potential'] ?? '—', 'users'], ['Land Size', m['Land Size'] ?? '—', 'globe']] as [string, string, string][])),
     ];
 
     return (
         <AiimPage
             title={isProject ? 'Project Overview' : 'Opportunity Preview'}
-            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: 'South Africa', href: '/aiim/country/south-africa' }, { label: item.provinceName, href: `/aiim/province/${item.province}` }, { label: item.sectorName, href: `/aiim/sector/${item.sector}` }, { label: isProject ? 'Projects' : 'Opportunity Search', href: isProject ? '/aiim/projects' : '/aiim/opportunities' }, { label: item.name }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: country.name, href: `/aiim/country/${country.slug}${s ? '?tab=opportunities' : ''}` }, ...(regionCrumb ? [regionCrumb] : []), { label: item.sectorName, href: `/aiim/sector/${item.sector}` }, { label: isProject ? 'Projects' : 'Opportunity Search', href: isProject ? '/aiim/projects' : '/aiim/opportunities' }, { label: item.name }]}
             subtitle="Comprehensive intelligence on a high-potential investment opportunity."
             description={isProject ? 'Review key project details, investment rationale, financials, risk profile, and next steps.' : undefined}
             actions={<ButtonLink href={isProject ? '/aiim/projects' : '/aiim/opportunities'} size="sm" variant="outline" icon="arrow-right">Back to Results</ButtonLink>}
@@ -90,7 +100,7 @@ export default function ItemPreview({ item, as, entitled, unlockFrom, saved }: I
                 </div>
                 <div className="flex flex-col items-center justify-center gap-2 lg:col-span-2">
                     {isProject ? <Gauge value={item.score} label={item.level} /> : <ScoreRing value={item.score} size={110} dark />}
-                    <p className="text-xs text-ink-300">Opportunity Score</p>
+                    <p className="text-xs text-ink-300">{s ? 'Hurdle score (share of 4 tests passed)' : 'Opportunity Score'}</p>
                 </div>
                 {isProject && (
                     <dl className="grid grid-cols-2 gap-3 border-t border-ink-800 pt-3 text-xs sm:grid-cols-4 lg:col-span-12">
@@ -101,6 +111,7 @@ export default function ItemPreview({ item, as, entitled, unlockFrom, saved }: I
                 )}
             </section>
             <div className="mt-3"><EvidenceStrip evidence={item.evidence} /></div>
+            {s && <div className="mt-4"><ScreeningPanel s={s} countrySlug={country.slug} /></div>}
 
             <Tabs className="mt-4" tabs={TABS.map((t) => ({ key: t, label: t }))} value={tab} onChange={setTab} />
             <div className="mt-4">

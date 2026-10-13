@@ -1,0 +1,322 @@
+[
+ {
+  "code": "TQ01",
+  "question": "What exactly is the product (HS code and grades)?",
+  "info_types": "HS 6-digit, national 8-digit tariff line, grade standards",
+  "tag": "BRIEF",
+  "map_behaviour": "Product search highlights producing areas",
+  "anchor": "SARS Tariff Book (Schedule 1); Agricultural Product Standards Act regulations"
+ },
+ {
+  "code": "TQ02",
+  "question": "How much is available? (actual quantities)",
+  "info_types": "Production by season, stocks, marketed surplus, exports to date",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Production bubbles by district with tonnes and season",
+  "anchor": "SAGIS; Crop Estimates Committee (CEC); Stats SA"
+ },
+ {
+  "code": "TQ03",
+  "question": "Which province/district/town produces it?",
+  "info_types": "Production by ADM2/ADM3 and main places",
+  "tag": "MAP",
+  "map_behaviour": "District heat; town pins",
+  "anchor": "CEC; Dept of Agriculture; provincial departments"
+ },
+ {
+  "code": "TQ04",
+  "question": "Where exactly can I collect it?",
+  "info_types": "Aggregation points, silos, warehouses, depots with coordinates",
+  "tag": "MAP",
+  "map_behaviour": "Enabler pins with capacity",
+  "anchor": "Silo owners; SAGIS registered storage"
+ },
+ {
+  "code": "TQ05",
+  "question": "Local (farm-gate) price",
+  "info_types": "Price by market and date",
+  "tag": "MAP",
+  "map_behaviour": "Price chip on market pins",
+  "anchor": "NAMC price reports; fresh produce market data"
+ },
+ {
+  "code": "TQ06",
+  "question": "Agent/trader/wholesale price",
+  "info_types": "Buying-agent price, wholesale, delivered price",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Second price chip; spread shown",
+  "anchor": "Fresh produce markets (e.g. Joburg Market); broker quotes"
+ },
+ {
+  "code": "TQ07",
+  "question": "Exchange or auction price and availability",
+  "info_types": "Exchange contract, last trade, open interest, auction calendar",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Exchange/auction pins with calendar",
+  "anchor": "JSE Commodity Derivatives (SAFEX)"
+ },
+ {
+  "code": "TQ08",
+  "question": "National commodity trading or regulatory entity",
+  "info_types": "Marketing board, exchange, strategic reserve, statutory levy body",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Party pins",
+  "anchor": "NAMC; statutory measures/levy administrators; JSE"
+ },
+ {
+  "code": "TQ09",
+  "question": "Seasonality and harvest calendar",
+  "info_types": "Planting/harvest/marketing months",
+  "tag": "MAP",
+  "map_behaviour": "Season slider",
+  "anchor": "CEC; Dept of Agriculture"
+ },
+ {
+  "code": "TQ10",
+  "question": "Quality, grading and testing",
+  "info_types": "Grade standards, labs, mycotoxin/MRL testing points",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Lab pins",
+  "anchor": "Agricultural Product Standards Act; PPECB; accredited labs (SANAS)"
+ },
+ {
+  "code": "TQ11",
+  "question": "Storage and warehouse receipts",
+  "info_types": "Certified warehouses, capacity, receipt system, collateral managers",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Warehouse pins coloured by certification",
+  "anchor": "Silo certificates; JSE-registered silos"
+ },
+ {
+  "code": "TQ12",
+  "question": "Which corridor and route?",
+  "info_types": "Road/rail routes to port or border, distance, time, cost",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Animated corridor; segment costs",
+  "anchor": "Transnet; SANRAL; corridor bodies"
+ },
+ {
+  "code": "TQ13",
+  "question": "Which port or border post?",
+  "info_types": "Port terminal, border post, hours, clearance time",
+  "tag": "MAP",
+  "map_behaviour": "Port/border hexagons",
+  "anchor": "TNPA; Border Management Authority (BMA)"
+ },
+ {
+  "code": "TQ14",
+  "question": "Export taxes, levies and fees",
+  "info_types": "Export duty, statutory levies, port dues",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "SARS; NAMC statutory measures; Ports Regulator"
+ },
+ {
+  "code": "TQ15",
+  "question": "Destination tariffs and preferences",
+  "info_types": "MFN, preferential rates, quotas",
+  "tag": "BRIEF",
+  "map_behaviour": "Destination country fill by tariff",
+  "anchor": "WTO tariff data; ITC Market Access Map; agreements (AfCFTA, SADC, SACU-EU EPA, AGOA status)"
+ },
+ {
+  "code": "TQ16",
+  "question": "Rules of origin",
+  "info_types": "Origin criteria, certificate type",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "SARS origin unit; agreement texts"
+ },
+ {
+  "code": "TQ17",
+  "question": "SPS/TBT and non-tariff measures",
+  "info_types": "Phytosanitary protocols, MRLs, labelling",
+  "tag": "BRIEF",
+  "map_behaviour": "Protocol status by destination",
+  "anchor": "Dept of Agriculture Plant Health; destination NPPOs"
+ },
+ {
+  "code": "TQ18",
+  "question": "Export regulations",
+  "info_types": "Controlled exports, quotas, bans, permits",
+  "tag": "BRIEF",
+  "map_behaviour": "Restriction hatch",
+  "anchor": "ITAC (export control list); Dept of Agriculture"
+ },
+ {
+  "code": "TQ19",
+  "question": "Licences and permits",
+  "info_types": "Exporter registration, export permit, PPECB/APSA certificate",
+  "tag": "BRIEF",
+  "map_behaviour": "Issuing office pins",
+  "anchor": "SARS customs registration; ITAC; PPECB; Dept of Agriculture"
+ },
+ {
+  "code": "TQ20",
+  "question": "Central bank forex rules",
+  "info_types": "Export proceeds repatriation, CFC accounts, documentation",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "SARB Currency and Exchanges Manual for Authorised Dealers [VERIFY current section]"
+ },
+ {
+  "code": "TQ21",
+  "question": "Exchange rate and convertibility",
+  "info_types": "Official rate, spread, hedging instruments",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "FX chip",
+  "anchor": "SARB; JSE currency derivatives"
+ },
+ {
+  "code": "TQ22",
+  "question": "Trade finance options",
+  "info_types": "Pre-shipment finance, LCs, receivables, export credit insurance",
+  "tag": "BRIEF",
+  "map_behaviour": "Bank/ECA pins",
+  "anchor": "Commercial banks; ECIC"
+ },
+ {
+  "code": "TQ23",
+  "question": "Who are the buyers?",
+  "info_types": "Importers, processors, traders in destination",
+  "tag": "BRIEF",
+  "map_behaviour": "Buyer country flows",
+  "anchor": "Trade directories; customs data"
+ },
+ {
+  "code": "TQ24",
+  "question": "Who are the competing origins?",
+  "info_types": "Competitor countries, their prices and seasons",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Competing-origin flows",
+  "anchor": "UN Comtrade; ITC Trade Map"
+ },
+ {
+  "code": "TQ25",
+  "question": "World benchmark price",
+  "info_types": "International reference prices",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "World Bank commodity prices; exchanges"
+ },
+ {
+  "code": "TQ26",
+  "question": "Logistics providers",
+  "info_types": "Forwarders, hauliers, clearing agents, inspection firms",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Provider pins near nodes",
+  "anchor": "Industry associations"
+ },
+ {
+  "code": "TQ27",
+  "question": "Documents required",
+  "info_types": "Commercial, transport, SPS, origin, customs",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "SARS; destination customs"
+ },
+ {
+  "code": "TQ28",
+  "question": "Customs procedure and time",
+  "info_types": "Declaration, inspection, release time",
+  "tag": "BRIEF",
+  "map_behaviour": "Clearance-time chip at border/port",
+  "anchor": "SARS; BMA"
+ },
+ {
+  "code": "TQ29",
+  "question": "Fumigation, packing and containerisation",
+  "info_types": "Service points, container depots",
+  "tag": "MAP",
+  "map_behaviour": "Service pins",
+  "anchor": "Port service providers"
+ },
+ {
+  "code": "TQ30",
+  "question": "Insurance",
+  "info_types": "Cargo, credit, political risk",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "Insurers; ECIC"
+ },
+ {
+  "code": "TQ31",
+  "question": "Contract standards and dispute resolution",
+  "info_types": "GAFTA/FOSFA/other forms, arbitration",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "Trade associations"
+ },
+ {
+  "code": "TQ32",
+  "question": "Traceability and sustainability compliance",
+  "info_types": "Traceability, deforestation-free, child labour",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "Destination regulations"
+ },
+ {
+  "code": "TQ33",
+  "question": "Sanctions and KYC",
+  "info_types": "Counterparty screening",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "Sanctions lists"
+ },
+ {
+  "code": "TQ34",
+  "question": "Landed cost / netback",
+  "info_types": "Full cost stack origin to destination",
+  "tag": "BRIEF",
+  "map_behaviour": "Cost chips along route",
+  "anchor": "AIIM landed-cost calculator"
+ },
+ {
+  "code": "TQ35",
+  "question": "Risks on the trade",
+  "info_types": "Price, policy, quality, logistics, counterparty, security",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Route risk triangles",
+  "anchor": "AIIM Risk tab"
+ },
+ {
+  "code": "TQ36",
+  "question": "Local consumption and alternative markets",
+  "info_types": "Domestic demand, processors, regional markets",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Domestic demand bubbles",
+  "anchor": "Stats SA; industry"
+ },
+ {
+  "code": "TQ37",
+  "question": "Value-chain gaps (opportunities)",
+  "info_types": "Missing nodes: storage, processing, finance, testing",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Gap markers on value-chain map",
+  "anchor": "AIIM opportunity register"
+ },
+ {
+  "code": "TQ38",
+  "question": "Public procurement and tenders for the product",
+  "info_types": "Government/humanitarian buying",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Tender pins",
+  "anchor": "eTender portal; WFP"
+ },
+ {
+  "code": "TQ39",
+  "question": "Producer organisations and contacts",
+  "info_types": "Cooperatives, associations, out-grower schemes",
+  "tag": "MAP",
+  "map_behaviour": "Party pins",
+  "anchor": "Industry bodies"
+ },
+ {
+  "code": "TQ40",
+  "question": "How reliable is the data?",
+  "info_types": "Source, grade, date",
+  "tag": "MAP",
+  "map_behaviour": "Freshness/grade chips",
+  "anchor": "AIIM Sources and Evidence"
+ }
+]

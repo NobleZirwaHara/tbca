@@ -6,20 +6,24 @@ import { Chip, levelTone, VerificationChip } from '@/Components/Aiim/Chips';
 import AiimPage from '@/Components/Aiim/Shell';
 import { CheckGroup, DarkSelect, FilterBar, Pagination, RefinePanel, ResultsHeader, SearchRail, type Filters } from '@/Components/Aiim/SearchKit';
 import type { AiimPageProps, Paginated, ProjectItem } from '@/types/aiim';
+import { useCompactPrice } from '@/Components/Aiim/Explorer/money';
 
 interface Props extends AiimPageProps {
     kind: 'opportunity' | 'project';
-    filters: Filters & { q: string; province: string; sector: string; types: string[]; size: string; stage: string; sort: string; view: string };
+    filters: Filters & { q: string; province: string; sector: string; types: string[]; size: string; stage: string; sort: string; view: string; country: string };
     results: Paginated<ProjectItem>;
-    options: { types: string[]; stages: string[]; sizes: [string, string][]; provinces: { slug: string; name: string }[]; sectors: { slug: string; name: string }[] };
+    options: { types: string[]; stages: string[]; sizes: [string, string][]; provinces: { slug: string; name: string }[]; sectors: { slug: string; name: string }[]; countries: { slug: string; name: string }[] };
     saved: string[];
 }
 
 export default function Search({ kind, filters, results, options, saved }: Props) {
     const isProject = kind === 'project';
+    const compact = useCompactPrice();
+    // Screened project briefs carry ZAR amounts and follow the selected display currency.
+    const size = (p: ProjectItem) => (p.screening ? compact(p.screening.capexZar) : p.size);
     const path = isProject ? '/aiim/projects' : '/aiim/opportunities';
     const noun = isProject ? 'Projects' : 'Opportunities';
-    const provinceName = options.provinces.find((p) => p.slug === filters.province)?.name;
+    const provinceName = options.provinces.find((p) => p.slug === filters.province)?.name ?? options.countries.find((c) => c.slug === filters.country)?.name;
     const sectorName = options.sectors.find((s) => s.slug === filters.sector)?.name;
     const scope = [sectorName, provinceName].filter(Boolean).join(' · ');
     const href = (p: ProjectItem) => (isProject ? `/aiim/projects/${p.slug}` : `/aiim/opportunities/${p.slug}`);
@@ -27,7 +31,7 @@ export default function Search({ kind, filters, results, options, saved }: Props
     return (
         <AiimPage
             title={isProject ? 'Project Search' : 'Opportunity Search'}
-            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, ...(provinceName ? [{ label: provinceName, href: `/aiim/province/${filters.province}` }] : []), ...(sectorName ? [{ label: sectorName, href: `/aiim/sector/${filters.sector}` }] : []), { label: noun }]}
+            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, ...(provinceName ? [{ label: provinceName, href: filters.province ? `/aiim/province/${filters.province}` : `/aiim/country/${filters.country}?tab=opportunities` }] : []), ...(sectorName ? [{ label: sectorName, href: `/aiim/sector/${filters.sector}` }] : []), { label: noun }]}
             subtitle={isProject ? `Discover high-potential projects${scope ? ` in ${scope}` : ' across Africa'}` : `Find and filter high-potential investment opportunities${scope ? ` in ${scope}` : ' across Africa'}`}
             description={isProject ? 'Filter, compare and explore investment-ready projects with verified insights.' : `Use filters to narrow results or explore all ${results.total} active opportunities.`}
             rail={<SearchRail compareLabel={`Compare ${noun}`} />}
@@ -36,6 +40,7 @@ export default function Search({ kind, filters, results, options, saved }: Props
                 path={path}
                 filters={filters}
                 labels={[
+                    { key: 'country', label: 'Country', display: (v) => options.countries.find((c) => c.slug === v)?.name ?? v },
                     { key: 'province', label: 'Location', display: (v) => options.provinces.find((p) => p.slug === v)?.name ?? v },
                     { key: 'sector', label: 'Sector', display: (v) => options.sectors.find((s) => s.slug === v)?.name ?? v },
                     { key: 'types', label: isProject ? 'Project Type' : 'Opportunity Type' },
@@ -47,6 +52,7 @@ export default function Search({ kind, filters, results, options, saved }: Props
                 <RefinePanel key={JSON.stringify(filters)} path={path} filters={filters} placeholder="e.g. data centre, fintech, cloud, AI">
                     {(d, set) => (
                         <>
+                            <DarkSelect label="Country" value={d.country as string} onChange={(v) => set('country', v)} options={options.countries.map((c) => [c.slug, c.name])} all="All Countries" />
                             <DarkSelect label="Location" value={d.province as string} onChange={(v) => set('province', v)} options={options.provinces.map((p) => [p.slug, p.name])} all="All Provinces" />
                             <CheckGroup label={isProject ? 'Project Type' : 'Opportunity Type'} options={options.types} value={d.types as string[]} onChange={(v) => set('types', v)} />
                             <DarkSelect label="Investment Size (ZAR)" value={d.size as string} onChange={(v) => set('size', v)} options={options.sizes} all="All Sizes" />
@@ -68,7 +74,7 @@ export default function Search({ kind, filters, results, options, saved }: Props
                                         <ScoreRing value={p.score} dark size={44} />
                                     </div>
                                     <p className="mt-1 text-xs text-ink-300">{p.summary}</p>
-                                    <p className="mt-2 text-xs">{p.location} · {p.size}</p>
+                                    <p className="mt-2 text-xs">{p.location} · {size(p)}</p>
                                     <div className="mt-2 flex flex-wrap gap-1"><Chip tone={levelTone(p.level)}>{p.level}</Chip><Chip tone="dark">{p.stage}</Chip></div>
                                     <div className="mt-2 flex gap-1"><ListToggle list="saved" type={kind} itemKey={p.slug} saved={saved} variant="icon" dark /><CompareButton type={kind} itemKey={p.slug} variant="icon" dark /></div>
                                 </li>
@@ -92,7 +98,7 @@ export default function Search({ kind, filters, results, options, saved }: Props
                                                 </div>
                                             </td>
                                             <td className="px-3 py-3">{p.location}</td>
-                                            <td className="px-3 py-3"><span className="font-semibold">{p.size}</span><br /><span className="text-ink-400">{p.sizeBand}</span></td>
+                                            <td className="px-3 py-3"><span className="font-semibold">{size(p)}</span><br /><span className="text-ink-400">{p.sizeBand}</span></td>
                                             <td className="px-3 py-3">{p.type}</td>
                                             <td className="px-3 py-3">{p.stage}</td>
                                             <td className="px-3 py-3"><ScoreRing value={p.score} dark size={44} /></td>

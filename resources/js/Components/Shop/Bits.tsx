@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { BadgeCheck, Coins, Lock, ShieldCheck, Trophy } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { formatZar } from '@/lib/money';
+import { displayCurrency, displayMoney } from '@/lib/money';
 
 /** Two-decimal ZAR for VAT lines, e.g. "ZAR 2,962.50". */
 export function zar2(value: number): string {
@@ -9,6 +10,7 @@ export function zar2(value: number): string {
 }
 
 export function zar(value: number): string {
+    if (displayCurrency() !== 'ZAR') return displayMoney(value);
     return formatZar(value).replace('R', 'ZAR ');
 }
 

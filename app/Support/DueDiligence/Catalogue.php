@@ -137,18 +137,22 @@ class Catalogue
         return null;
     }
 
-    /** Common external costs (at cost, approved per item before payment). */
+    /**
+     * Common external costs (at cost, approved per item before payment).
+     * min/max are whole ZAR so the front end can show them in any currency;
+     * `range` keeps the rand wording for PDFs and emails.
+     */
     public static function externalCosts(): array
     {
         return [
-            ['item' => 'Government Filing Fees', 'range' => 'From R 200 – R 5,000', 'payable' => 'Government'],
-            ['item' => 'Registry Search Fees', 'range' => 'From R 150 – R 2,500', 'payable' => 'Registry'],
-            ['item' => 'Courier / Legalisation', 'range' => 'From R 250 – R 2,000', 'payable' => 'Courier'],
-            ['item' => 'Third-Party Data Provider Fees', 'range' => 'From R 500 – R 10,000+', 'payable' => 'Provider'],
-            ['item' => 'Translation & Notarisation', 'range' => 'From R 300 – R 2,500', 'payable' => 'Service Firm'],
-            ['item' => 'International Verification', 'range' => 'From R 1,000 – R 20,000+', 'payable' => 'Provider'],
-            ['item' => 'Site Visit Travel Costs', 'range' => 'From R 2,000 – R 15,000+', 'payable' => 'Travel Vendor'],
-            ['item' => 'Other Disbursements', 'range' => 'At cost', 'payable' => 'Various'],
+            ['item' => 'Government Filing Fees', 'min' => 200, 'max' => 5000, 'plus' => false, 'range' => 'From R 200 – R 5,000', 'payable' => 'Government'],
+            ['item' => 'Registry Search Fees', 'min' => 150, 'max' => 2500, 'plus' => false, 'range' => 'From R 150 – R 2,500', 'payable' => 'Registry'],
+            ['item' => 'Courier / Legalisation', 'min' => 250, 'max' => 2000, 'plus' => false, 'range' => 'From R 250 – R 2,000', 'payable' => 'Courier'],
+            ['item' => 'Third-Party Data Provider Fees', 'min' => 500, 'max' => 10000, 'plus' => true, 'range' => 'From R 500 – R 10,000+', 'payable' => 'Provider'],
+            ['item' => 'Translation & Notarisation', 'min' => 300, 'max' => 2500, 'plus' => false, 'range' => 'From R 300 – R 2,500', 'payable' => 'Service Firm'],
+            ['item' => 'International Verification', 'min' => 1000, 'max' => 20000, 'plus' => true, 'range' => 'From R 1,000 – R 20,000+', 'payable' => 'Provider'],
+            ['item' => 'Site Visit Travel Costs', 'min' => 2000, 'max' => 15000, 'plus' => true, 'range' => 'From R 2,000 – R 15,000+', 'payable' => 'Travel Vendor'],
+            ['item' => 'Other Disbursements', 'min' => null, 'max' => null, 'plus' => false, 'range' => 'At cost', 'payable' => 'Various'],
         ];
     }
 

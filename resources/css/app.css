@@ -132,6 +132,37 @@
     text-align: start;
   }
 
+  /* --- Languages -------------------------------------------------------
+     Arabic uses Noto Sans Arabic (loaded only for RTL in app.blade.php and
+     lib/i18n.ts); Latin text inside Arabic pages falls back to Segoe UI.
+     Chinese prefers the platform's Simplified Chinese UI fonts. */
+  html:lang(ar) {
+    --font-sans: 'Noto Sans Arabic', 'Segoe UI', system-ui, Tahoma, Arial, sans-serif;
+    --font-serif: 'Noto Sans Arabic', 'Segoe UI', system-ui, Tahoma, Arial, sans-serif;
+  }
+
+  html:lang(zh-Hans) {
+    --font-sans: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', system-ui, sans-serif;
+    --font-serif: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', system-ui, sans-serif;
+  }
+
+  /* Letter spacing breaks the joins in Arabic script, so tracking utilities
+     (eyebrows, uppercase labels) are neutralised for Arabic. */
+  html:lang(ar) body * {
+    letter-spacing: 0 !important;
+  }
+
+  /* Arabic needs a little more line height for its ascenders and dots. */
+  html:lang(ar) body {
+    line-height: 1.6;
+  }
+
+  /* Directional icons point the other way in right-to-left layouts. Uses the
+     individual `scale` property so Tailwind translate utilities still apply. */
+  [dir='rtl'] :is(.lucide-arrow-right, .lucide-arrow-left, .lucide-chevron-right, .lucide-chevron-left, .lucide-chevrons-right, .lucide-chevrons-left, .lucide-move-right, .lucide-arrow-big-right, .lucide-circle-arrow-right, .lucide-square-arrow-right, .lucide-log-out, .lucide-log-in, .lucide-send, .lucide-undo-2, .lucide-redo-2) {
+    scale: -1 1;
+  }
+
   p {
     text-wrap: pretty;
   }
@@ -156,7 +187,7 @@
   &::after {
     content: '';
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     bottom: 0;
     height: 3px;
     width: 3.5rem;

@@ -5,6 +5,8 @@ import type { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { openAskQuestion } from '@/Components/AskQuestion';
 import type { Bucket } from '@/types/countries';
+import { displayCurrency, displayMoney, displayRates } from '@/lib/money';
+import { compactMoney } from '@/lib/moneyBands';
 
 /* ------------------------------------------------------------------ icons */
 const ICONS: Record<string, LucideIcon> = {
@@ -448,11 +450,13 @@ export function FooterBar({ updated = '15 Aug 2026 10:24 SAST' }: { updated?: st
 
 export function money(n: number | null | undefined, currency = 'ZAR') {
     if (n === null || n === undefined) return '—';
+    if (currency === 'ZAR' && displayCurrency() !== 'ZAR') return displayMoney(Number(n));
     const s = Number(n).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return currency === 'ZAR' ? `R ${s}` : `${s} ${currency}`;
 }
 
 export function rands(n: number) {
+    if (displayCurrency() !== 'ZAR') return compactMoney(n, displayCurrency(), displayRates());
     if (n >= 1_000_000_000) return `R${(n / 1_000_000_000).toFixed(2)}B`;
     if (n >= 1_000_000) return `R${(n / 1_000_000).toFixed(1)}M`;
     return `R${Math.round(n).toLocaleString('en-ZA')}`;

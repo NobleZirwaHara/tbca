@@ -76,6 +76,9 @@ class AiimSeeder extends Seeder
             Alert::updateOrCreate(['title' => $a['title'], 'user_id' => null], $a);
         }
 
+        // 54-country geography, map layers, project briefs, registers and the Botswana country pack.
+        $this->call(AiimGeoSeeder::class);
+
         Pricing::flush();
 
         $client = User::query()->where('email', 'amahle@agritechsa.co.za')->first();

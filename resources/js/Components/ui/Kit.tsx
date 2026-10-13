@@ -167,7 +167,7 @@ export function Tabs({
                         )}
                     >
                         {t.label}
-                        {t.count !== undefined && <span className="ml-1.5 rounded-full bg-parchment-300 px-1.5 text-[0.6875rem] text-ink-600">{t.count}</span>}
+                        {t.count !== undefined && <span className="ms-1.5 rounded-full bg-parchment-300 px-1.5 text-[0.6875rem] text-ink-600">{t.count}</span>}
                     </button>
                 );
             })}
@@ -198,7 +198,7 @@ export function Stepper({
                         {i > 0 && (
                             <span
                                 aria-hidden="true"
-                                className={cn('absolute top-4 right-1/2 h-0.5 w-full', done || active ? 'bg-gold-500' : tone === 'dark' ? 'bg-ink-700' : 'bg-parchment-400')}
+                                className={cn('absolute top-4 end-1/2 h-0.5 w-full', done || active ? 'bg-gold-500' : tone === 'dark' ? 'bg-ink-700' : 'bg-parchment-400')}
                             />
                         )}
                         <span
@@ -302,7 +302,7 @@ export function SimpleTable({
 }) {
     return (
         <div className={cn('overflow-x-auto rounded-[6px] border border-parchment-400', className)}>
-            <table className="w-full text-left text-[0.8125rem]">
+            <table className="w-full text-start text-[0.8125rem]">
                 <thead className="bg-parchment-200 text-xs font-semibold text-ink-600">
                     <tr>
                         {columns.map((c, i) => (

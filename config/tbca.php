@@ -31,18 +31,28 @@ return [
     ],
 
     /*
-    | Platform languages and currencies — Africa (Active).
-    | Languages: UI chrome is English-only until a translation provider is chosen;
-    | the selection persists and sets <html lang/dir> (Arabic is right-to-left).
+    | Platform languages. Dictionaries are lang/{code}.json (keyed by the English
+    | text) and serve both __() on the server and t() in the front end. The
+    | selection persists in the session and sets <html lang dir>; Arabic is
+    | right-to-left and loads an Arabic web font. Untranslated keys show English.
     */
     'languages' => [
         ['code' => 'en', 'label' => 'English', 'native' => 'English', 'html' => 'en', 'dir' => 'ltr', 'status' => 'live'],
-        ['code' => 'af', 'label' => 'Afrikaans', 'native' => 'Afrikaans', 'html' => 'af', 'dir' => 'ltr', 'status' => 'coming_soon'],
-        ['code' => 'pt', 'label' => 'Portuguese', 'native' => 'Português', 'html' => 'pt', 'dir' => 'ltr', 'status' => 'coming_soon'],
-        ['code' => 'zh', 'label' => 'Chinese (Mandarin)', 'native' => '中文', 'html' => 'zh-Hans', 'dir' => 'ltr', 'status' => 'coming_soon'],
-        ['code' => 'fr', 'label' => 'French', 'native' => 'Français', 'html' => 'fr', 'dir' => 'ltr', 'status' => 'coming_soon'],
-        ['code' => 'sw', 'label' => 'Swahili', 'native' => 'Kiswahili', 'html' => 'sw', 'dir' => 'ltr', 'status' => 'coming_soon'],
-        ['code' => 'ar', 'label' => 'Arabic', 'native' => 'العربية', 'html' => 'ar', 'dir' => 'rtl', 'status' => 'coming_soon'],
+        ['code' => 'af', 'label' => 'Afrikaans', 'native' => 'Afrikaans', 'html' => 'af', 'dir' => 'ltr', 'status' => 'live'],
+        ['code' => 'pt', 'label' => 'Portuguese', 'native' => 'Português', 'html' => 'pt', 'dir' => 'ltr', 'status' => 'live'],
+        ['code' => 'zh', 'label' => 'Chinese (Mandarin)', 'native' => '中文', 'html' => 'zh-Hans', 'dir' => 'ltr', 'status' => 'live'],
+        ['code' => 'fr', 'label' => 'French', 'native' => 'Français', 'html' => 'fr', 'dir' => 'ltr', 'status' => 'live'],
+        ['code' => 'sw', 'label' => 'Swahili', 'native' => 'Kiswahili', 'html' => 'sw', 'dir' => 'ltr', 'status' => 'live'],
+        ['code' => 'ar', 'label' => 'Arabic', 'native' => 'العربية', 'html' => 'ar', 'dir' => 'rtl', 'status' => 'live'],
+    ],
+
+    /*
+    | Machine translation hook for keys that have no translation yet. The class
+    | must implement App\Support\I18n\MachineTranslator; the default translates
+    | nothing. Run `php artisan tbca:translations --fill` to apply it.
+    */
+    'translation' => [
+        'translator' => env('TBCA_TRANSLATOR', \App\Support\I18n\NullMachineTranslator::class),
     ],
 
     /*

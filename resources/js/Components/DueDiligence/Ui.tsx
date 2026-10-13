@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Link } from '@inertiajs/react';
 import { BadgeCheck, Check, CheckCircle2, ChevronRight, Info, Lock, Receipt, ShieldCheck, UserCheck } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import { ZAR_PER_USD } from '@/lib/money';
+import { displayCurrency, displayMoney, referenceMoney } from '@/lib/money';
 import DdIcon from './DdIcon';
 import type { DdChip, DdJourneyStep, DdPrice } from '@/types/due-diligence';
 
@@ -10,12 +10,20 @@ import type { DdChip, DdJourneyStep, DdPrice } from '@/types/due-diligence';
 
 export function rand(n: number | null | undefined, decimals = 0): string {
     if (n === null || n === undefined) return 'Quote';
+    if (displayCurrency() !== 'ZAR') return displayMoney(n);
     return 'R ' + n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 
+/** Reference amount beside a price: USD while browsing in rand, otherwise the rand amount charged. */
 export function usd(n: number | null | undefined): string {
     if (n === null || n === undefined) return '';
-    return 'USD ' + Math.round(n / ZAR_PER_USD).toLocaleString('en-US');
+    return referenceMoney(n);
+}
+
+/** A ZAR range such as external cost bands, shown in the display currency. */
+export function randRange(min: number, max: number | null, plus = false): string {
+    if (max === null) return `From ${rand(min)}${plus ? '+' : ''}`;
+    return `From ${rand(min)} to ${rand(max)}${plus ? '+' : ''}`;
 }
 
 export function shortDate(iso?: string | null, withTime = false): string {

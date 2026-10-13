@@ -4,12 +4,12 @@ import { Info } from 'lucide-react';
 import { Button } from '@/Components/ui/Button';
 import QuoteShell from '@/Components/DueDiligence/QuoteShell';
 import DdIcon from '@/Components/DueDiligence/DdIcon';
-import { Card, rand } from '@/Components/DueDiligence/Ui';
+import { Card, rand, randRange } from '@/Components/DueDiligence/Ui';
 import type { DdAddon, DdQuotePageProps } from '@/types/due-diligence';
 
 interface Props extends DdQuotePageProps {
     addons: DdAddon[];
-    externalCosts: { item: string; range: string; payable: string }[];
+    externalCosts: { item: string; min: number | null; max: number | null; plus: boolean; range: string; payable: string }[];
     selectedAddons: string[];
 }
 
@@ -64,7 +64,7 @@ export default function AddOns(props: Props) {
                 <Card title="Common External Costs (At Cost)" className="2xl:col-span-5">
                     <table className="w-full text-left text-xs">
                         <thead className="text-ink-500"><tr><th className="py-2">External Cost Item</th><th>Typical Range (ex VAT)</th><th>Payable To</th></tr></thead>
-                        <tbody className="divide-y divide-parchment-300">{externalCosts.map((e) => <tr key={e.item}><td className="py-2 font-medium">{e.item}</td><td>{e.range}</td><td>{e.payable}</td></tr>)}</tbody>
+                        <tbody className="divide-y divide-parchment-300">{externalCosts.map((e) => <tr key={e.item}><td className="py-2 font-medium">{e.item}</td><td>{e.min === null ? e.range : randRange(e.min, e.max, e.plus)}</td><td>{e.payable}</td></tr>)}</tbody>
                     </table>
                     <p className="mt-3 rounded bg-gold-50 p-2 text-[0.6875rem] text-ink-600">All external costs are variable and charged at actual cost. You will approve each item before payment.</p>
                 </Card>

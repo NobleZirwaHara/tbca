@@ -9,8 +9,18 @@ export interface Office {
     city: string;
     address: string;
     phone: string | null;
+    /** African Union region label (e.g. "Southern Africa"). */
+    region: string | null;
+    /** Contact email for the office (the general enquiries mailbox until office mailboxes exist). */
+    email: string;
     map_embed: string;
     map_link: string;
+}
+
+/** Country offices grouped by region (App\Support\Platform\Offices::byRegion). */
+export interface OfficeRegion {
+    region: string;
+    offices: Office[];
 }
 
 /** Mirrors App\Support\Platform\Directory (role mailboxes, proposed — not yet active). */

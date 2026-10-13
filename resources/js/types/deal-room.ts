@@ -20,7 +20,11 @@ export interface RoomHeader {
     sector: string | null;
     dealType: string;
     transactionType: string;
+    /** Group of the transaction type (null for unrecognised older labels). */
+    transactionGroup: string | null;
     amount: number;
+    /** Indicative raise band (ZAR limits); rendered in the display currency. */
+    raiseBand: RaiseBand | null;
     status: 'active' | 'paused' | 'closed' | 'archived';
     pausedReason: string | null;
     currentStage: { code: string; name: string; page: string };
@@ -28,6 +32,20 @@ export interface RoomHeader {
     role: string | null;
     manages: boolean;
     stepper: StepperStage[];
+}
+
+/** Mirrors App\Support\DealRoom\EnquiryOptions::RAISE_BANDS (whole ZAR; max is exclusive, null = open). */
+export interface RaiseBand {
+    code: string;
+    min: number;
+    max: number | null;
+    indicative_zar: number;
+}
+
+/** Grouped transaction types for the enquiry select. */
+export interface TransactionTypeGroup {
+    group: string;
+    options: string[];
 }
 
 export interface AuditEntry {

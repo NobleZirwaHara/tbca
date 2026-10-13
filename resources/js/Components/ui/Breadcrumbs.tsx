@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { ChevronRight } from 'lucide-react';
+import { useT } from '@/lib/i18n';
 
 export interface Crumb {
     label: string;
@@ -7,8 +8,10 @@ export interface Crumb {
 }
 
 export default function Breadcrumbs({ items }: { items: Crumb[] }) {
+    const t = useT();
+
     return (
-        <nav aria-label="Breadcrumb" className="mb-6">
+        <nav aria-label={t('Breadcrumb')} className="mb-6">
             <ol className="flex flex-wrap items-center gap-1.5 text-[0.8125rem] text-ink-400">
                 {items.map((item, index) => {
                     const last = index === items.length - 1;
@@ -20,11 +23,11 @@ export default function Breadcrumbs({ items }: { items: Crumb[] }) {
                                     href={item.href}
                                     className="transition-colors hover:text-ink-800"
                                 >
-                                    {item.label}
+                                    {t(item.label)}
                                 </Link>
                             ) : (
                                 <span className={last ? 'text-gold-700' : undefined} aria-current={last ? 'page' : undefined}>
-                                    {item.label}
+                                    {t(item.label)}
                                 </span>
                             )}
                             {!last && <ChevronRight className="size-3.5 text-parchment-500" aria-hidden="true" />}

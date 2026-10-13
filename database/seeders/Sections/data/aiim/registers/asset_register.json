@@ -1,0 +1,584 @@
+[
+ {
+  "asset_id": "ENR-A01",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Hydropower (large, run-of-river, small/mini, pumped storage)"
+ },
+ {
+  "asset_id": "ENR-A02",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Solar PV (utility, C&I, rooftop) and hybrids"
+ },
+ {
+  "asset_id": "ENR-A03",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Onshore wind"
+ },
+ {
+  "asset_id": "ENR-A04",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Gas-to-power (OCGT/CCGT/engines) and LNG-to-power"
+ },
+ {
+  "asset_id": "ENR-A05",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Coal and clean-coal conversion / repurposing"
+ },
+ {
+  "asset_id": "ENR-A06",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Biomass, biogas and waste-to-energy"
+ },
+ {
+  "asset_id": "ENR-A07",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Battery energy storage (BESS)"
+ },
+ {
+  "asset_id": "ENR-A08",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Transmission and interconnectors (ITP)"
+ },
+ {
+  "asset_id": "ENR-A09",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Distribution, municipal utilities and mini-grids"
+ },
+ {
+  "asset_id": "ENR-A10",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Green hydrogen and derivatives (ammonia, e-fuels)"
+ },
+ {
+  "asset_id": "ENR-A11",
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "asset_type": "Clean cooking and LPG"
+ },
+ {
+  "asset_id": "OGS-A01",
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "asset_type": "Upstream exploration and production"
+ },
+ {
+  "asset_id": "OGS-A02",
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "asset_type": "Gas processing, pipelines and LNG import"
+ },
+ {
+  "asset_id": "OGS-A03",
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "asset_type": "Refining, storage terminals and depots"
+ },
+ {
+  "asset_id": "OGS-A04",
+  "sector_code": "OGS",
+  "sector": "Oil, Gas & Petroleum",
+  "asset_type": "Fuel and LPG retail and distribution"
+ },
+ {
+  "asset_id": "MIN-A01",
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "asset_type": "Precious metals (gold, PGMs)"
+ },
+ {
+  "asset_id": "MIN-A02",
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "asset_type": "Base metals (copper, nickel, zinc, iron ore, manganese, chrome)"
+ },
+ {
+  "asset_id": "MIN-A03",
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "asset_type": "Battery and critical minerals (lithium, graphite, rare earths, vanadium, cobalt)"
+ },
+ {
+  "asset_id": "MIN-A04",
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "asset_type": "Coal"
+ },
+ {
+  "asset_id": "MIN-A05",
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "asset_type": "Industrial minerals and construction materials"
+ },
+ {
+  "asset_id": "MIN-A06",
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "asset_type": "Diamonds and gemstones"
+ },
+ {
+  "asset_id": "MIN-A07",
+  "sector_code": "MIN",
+  "sector": "Mining & Minerals",
+  "asset_type": "Artisanal and small-scale mining (ASM)"
+ },
+ {
+  "asset_id": "AGR-A01",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Grains and oilseeds (maize, wheat, soya, sunflower, sorghum)"
+ },
+ {
+  "asset_id": "AGR-A02",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Pulses (dry beans, pigeon peas, chickpeas, cowpeas, lentils)"
+ },
+ {
+  "asset_id": "AGR-A03",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Horticulture (citrus, subtropical, deciduous, vegetables)"
+ },
+ {
+  "asset_id": "AGR-A04",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Sugar and sugarcane"
+ },
+ {
+  "asset_id": "AGR-A05",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Wine, spirits and beverages"
+ },
+ {
+  "asset_id": "AGR-A06",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Nuts (macadamia, pecan, cashew, groundnuts)"
+ },
+ {
+  "asset_id": "AGR-A07",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Cash crops (tobacco, tea, coffee, cotton)"
+ },
+ {
+  "asset_id": "AGR-A08",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Irrigation development"
+ },
+ {
+  "asset_id": "AGR-A09",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Inputs (seed, fertiliser, agrochemicals, mechanisation)"
+ },
+ {
+  "asset_id": "AGR-A10",
+  "sector_code": "AGR",
+  "sector": "Agriculture & Agro-processing",
+  "asset_type": "Agro-processing and food manufacturing"
+ },
+ {
+  "asset_id": "BLU-A01",
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "asset_type": "Beef, small stock and feedlots"
+ },
+ {
+  "asset_id": "BLU-A02",
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "asset_type": "Dairy"
+ },
+ {
+  "asset_id": "BLU-A03",
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "asset_type": "Poultry and eggs"
+ },
+ {
+  "asset_id": "BLU-A04",
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "asset_type": "Wild-capture fisheries"
+ },
+ {
+  "asset_id": "BLU-A05",
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "asset_type": "Aquaculture and mariculture"
+ },
+ {
+  "asset_id": "BLU-A06",
+  "sector_code": "BLU",
+  "sector": "Livestock, Fisheries & Blue Economy",
+  "asset_type": "Marine services (ship repair, bunkering)"
+ },
+ {
+  "asset_id": "FOR-A01",
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "asset_type": "Plantation forestry"
+ },
+ {
+  "asset_id": "FOR-A02",
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "asset_type": "Sawmilling, panels, poles"
+ },
+ {
+  "asset_id": "FOR-A03",
+  "sector_code": "FOR",
+  "sector": "Forestry & Timber",
+  "asset_type": "Pulp, paper and bio-products"
+ },
+ {
+  "asset_id": "MFG-A01",
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "asset_type": "Automotive and components"
+ },
+ {
+  "asset_id": "MFG-A02",
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "asset_type": "Food and beverage processing"
+ },
+ {
+  "asset_id": "MFG-A03",
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "asset_type": "Chemicals, plastics and packaging"
+ },
+ {
+  "asset_id": "MFG-A04",
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "asset_type": "Steel and metal fabrication"
+ },
+ {
+  "asset_id": "MFG-A05",
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "asset_type": "Textiles, clothing, leather, footwear"
+ },
+ {
+  "asset_id": "MFG-A06",
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "asset_type": "Cement and building materials"
+ },
+ {
+  "asset_id": "MFG-A07",
+  "sector_code": "MFG",
+  "sector": "Manufacturing & Industrial",
+  "asset_type": "Industrial parks and SEZ development"
+ },
+ {
+  "asset_id": "WSW-A01",
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "asset_type": "Bulk water and dams"
+ },
+ {
+  "asset_id": "WSW-A02",
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "asset_type": "Water and wastewater treatment"
+ },
+ {
+  "asset_id": "WSW-A03",
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "asset_type": "Desalination"
+ },
+ {
+  "asset_id": "WSW-A04",
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "asset_type": "Non-revenue water and metering"
+ },
+ {
+  "asset_id": "WSW-A05",
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "asset_type": "Solid waste and recycling"
+ },
+ {
+  "asset_id": "TRN-A01",
+  "sector_code": "TRN",
+  "sector": "Transport & Logistics",
+  "asset_type": "Roads (national, provincial, district, municipal)"
+ },
+ {
+  "asset_id": "TRN-A02",
+  "sector_code": "TRN",
+  "sector": "Transport & Logistics",
+  "asset_type": "Rail freight and passenger"
+ },
+ {
+  "asset_id": "TRN-A03",
+  "sector_code": "TRN",
+  "sector": "Transport & Logistics",
+  "asset_type": "Ports and terminals"
+ },
+ {
+  "asset_id": "TRN-A04",
+  "sector_code": "TRN",
+  "sector": "Transport & Logistics",
+  "asset_type": "Airports and air cargo"
+ },
+ {
+  "asset_id": "TRN-A05",
+  "sector_code": "TRN",
+  "sector": "Transport & Logistics",
+  "asset_type": "Logistics parks, dry ports, warehousing"
+ },
+ {
+  "asset_id": "TRN-A06",
+  "sector_code": "TRN",
+  "sector": "Transport & Logistics",
+  "asset_type": "Urban public transport"
+ },
+ {
+  "asset_id": "ICT-A01",
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "asset_type": "Fibre (backbone, metro, FTTH)"
+ },
+ {
+  "asset_id": "ICT-A02",
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "asset_type": "Mobile towers and rural coverage"
+ },
+ {
+  "asset_id": "ICT-A03",
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "asset_type": "Data centres and cloud"
+ },
+ {
+  "asset_id": "ICT-A04",
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "asset_type": "Submarine cables and landing stations"
+ },
+ {
+  "asset_id": "ICT-A05",
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "asset_type": "Digital services, BPO and software"
+ },
+ {
+  "asset_id": "ICT-A06",
+  "sector_code": "ICT",
+  "sector": "ICT, Digital & Telecoms",
+  "asset_type": "E-commerce and digital payments platforms"
+ },
+ {
+  "asset_id": "CRE-A01",
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "asset_type": "Affordable and social housing"
+ },
+ {
+  "asset_id": "CRE-A02",
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "asset_type": "Commercial property (retail, office, mixed-use)"
+ },
+ {
+  "asset_id": "CRE-A03",
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "asset_type": "Industrial and logistics property"
+ },
+ {
+  "asset_id": "CRE-A04",
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "asset_type": "Student and specialised housing"
+ },
+ {
+  "asset_id": "CRE-A05",
+  "sector_code": "CRE",
+  "sector": "Construction, Real Estate & Housing",
+  "asset_type": "Construction services and materials supply"
+ },
+ {
+  "asset_id": "TOU-A01",
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "asset_type": "Hotels and resorts"
+ },
+ {
+  "asset_id": "TOU-A02",
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "asset_type": "Wildlife and nature concessions"
+ },
+ {
+  "asset_id": "TOU-A03",
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "asset_type": "Coastal, heritage and cultural tourism"
+ },
+ {
+  "asset_id": "TOU-A04",
+  "sector_code": "TOU",
+  "sector": "Tourism & Hospitality",
+  "asset_type": "MICE and events"
+ },
+ {
+  "asset_id": "HLT-A01",
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "asset_type": "Hospitals, clinics and diagnostics"
+ },
+ {
+  "asset_id": "HLT-A02",
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "asset_type": "Pharmaceutical and vaccine manufacturing"
+ },
+ {
+  "asset_id": "HLT-A03",
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "asset_type": "Medical devices and consumables"
+ },
+ {
+  "asset_id": "HLT-A04",
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "asset_type": "Health tech and telemedicine"
+ },
+ {
+  "asset_id": "EDU-A01",
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "asset_type": "Independent schools"
+ },
+ {
+  "asset_id": "EDU-A02",
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "asset_type": "Higher education and TVET"
+ },
+ {
+  "asset_id": "EDU-A03",
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "asset_type": "Ed-tech"
+ },
+ {
+  "asset_id": "FIN-A01",
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "asset_type": "Banking and lending (incl. SME and agri finance)"
+ },
+ {
+  "asset_id": "FIN-A02",
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "asset_type": "Insurance and risk transfer"
+ },
+ {
+  "asset_id": "FIN-A03",
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "asset_type": "Payments and fintech"
+ },
+ {
+  "asset_id": "FIN-A04",
+  "sector_code": "FIN",
+  "sector": "Financial Services & Fintech",
+  "asset_type": "Capital markets and funds"
+ },
+ {
+  "asset_id": "TRD-A01",
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "asset_type": "Wholesale and FMCG distribution"
+ },
+ {
+  "asset_id": "TRD-A02",
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "asset_type": "Modern retail and malls"
+ },
+ {
+  "asset_id": "TRD-A03",
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "asset_type": "Fresh produce markets"
+ },
+ {
+  "asset_id": "TRD-A04",
+  "sector_code": "TRD",
+  "sector": "Trade, Distribution & Retail",
+  "asset_type": "Commodity trading and export houses"
+ },
+ {
+  "asset_id": "GRN-A01",
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "asset_type": "Carbon projects (nature-based and engineered)"
+ },
+ {
+  "asset_id": "GRN-A02",
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "asset_type": "Climate adaptation infrastructure"
+ },
+ {
+  "asset_id": "GRN-A03",
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "asset_type": "Circular economy and recycling"
+ },
+ {
+  "asset_id": "GRN-A04",
+  "sector_code": "GRN",
+  "sector": "Green Economy, Climate & Carbon",
+  "asset_type": "Green finance (bonds, transition funds)"
+ },
+ {
+  "asset_id": "CSP-A01",
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "asset_type": "Film, TV and studios"
+ },
+ {
+  "asset_id": "CSP-A02",
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "asset_type": "Music, events and live entertainment"
+ },
+ {
+  "asset_id": "CSP-A03",
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "asset_type": "Sports facilities and academies"
+ },
+ {
+  "asset_id": "CSP-A04",
+  "sector_code": "CSP",
+  "sector": "Creative, Sports & Professional Services",
+  "asset_type": "Professional and business services"
+ }
+]

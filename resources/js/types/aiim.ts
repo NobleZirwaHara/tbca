@@ -62,6 +62,10 @@ export interface ProjectItem {
     tags: string[];
     evidence: Evidence;
     hasPremium: boolean;
+    /** Country of the record (South Africa for the province pack). */
+    country?: { iso2: string; slug: string; name: string };
+    /** Screening metrics for TBCA investor project briefs (amounts in ZAR). */
+    screening?: import('@/Components/Aiim/Explorer/types').ScreenedProject | null;
     details?: ProjectDetails;
     premium?: PremiumObject | null;
     sourceCode?: string | null;
@@ -319,7 +323,7 @@ export interface CountryIndicator {
     year: number | null;
     source: string;
     /** "placeholder" until replaced by an API feed / client Test Data. */
-    status: 'placeholder' | 'permanent' | 'live';
+    status: 'placeholder' | 'permanent' | 'live' | 'sourced';
 }
 
 export interface CountryProfile extends CountryOption {
@@ -331,4 +335,6 @@ export interface CountryProfile extends CountryOption {
     indicators: Record<string, CountryIndicator>;
     subregions: string[];
     hasProvincePack: boolean;
+    /** Roll-out wave and country pack status (Deep Registers 2.1, Country_Activation). */
+    activation: { auRegion: string | null; wave: string | null; packStatus: string | null; packCode: string | null };
 }

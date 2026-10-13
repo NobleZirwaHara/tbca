@@ -14,6 +14,9 @@ class Country extends Model
 
     protected $table = 'aiim_countries';
 
+    /** Boundary geometry is only sent to the country map, never in lists. */
+    protected $hidden = ['outline'];
+
     protected function casts(): array
     {
         return [
@@ -21,6 +24,7 @@ class Country extends Model
             'subregions' => 'array',
             'has_province_pack' => 'boolean',
             'area_km2' => 'integer',
+            'outline' => 'array',
         ];
     }
 
@@ -58,12 +62,24 @@ class Country extends Model
             'indicators' => $this->indicators ?? [],
             'subregions' => $this->subregions ?? [],
             'hasProvincePack' => $this->has_province_pack,
+            'activation' => $this->activation(),
+        ];
+    }
+
+    /** Roll-out wave and country pack status (Deep Registers 2.1, Country_Activation). */
+    public function activation(): array
+    {
+        return [
+            'auRegion' => $this->au_region,
+            'wave' => $this->activation_wave,
+            'packStatus' => $this->pack_status,
+            'packCode' => $this->pack_code,
         ];
     }
 
     /** All 54 countries for selects, ordered by name. */
     public static function options(): array
     {
-        return static::query()->orderBy('name')->get()->map(fn (self $c) => $c->summary())->all();
+        return static::query()->orderBy('name')->get(['slug', 'name', 'iso2', 'region'])->map(fn (self $c) => $c->summary())->all();
     }
 }

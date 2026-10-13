@@ -15,8 +15,16 @@
     <title inertia>{{ config('tbca.brand.name') }}</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/brand/tbca-mark.png" type="image/png">
+    <link rel="icon" href="/brand/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/brand/icon-192.png" type="image/png" sizes="192x192">
     <link rel="apple-touch-icon" href="/brand/icon-180.png">
+
+    @if ($tbcaDir === 'rtl')
+        {{-- Arabic web font, loaded only for right-to-left languages (the client adds it on a switch). --}}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link id="tbca-font-rtl" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap">
+    @endif
 
     @routes
     @viteReactRefresh

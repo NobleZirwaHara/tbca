@@ -16,6 +16,10 @@ class WebinarRegistration extends Model
         return [
             'opt_resources' => 'boolean',
             'opt_offers' => 'boolean',
+            'notices' => 'array',
+            'joined_at' => 'datetime',
+            'left_at' => 'datetime',
+            'followup_sent_at' => 'datetime',
         ];
     }
 

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { Currentness } from '@/types/insights';
+import { displayCurrency, displayMoney } from '@/lib/money';
 
 /* ------------------------------------------------------------------ */
 /* Icon registry: server registers store icon names as strings.        */
@@ -31,7 +32,7 @@ export function DynIcon({ name, className }: { name?: string | null; className?:
 /* Formatting                                                          */
 /* ------------------------------------------------------------------ */
 export const zar = (n: number | null | undefined, decimals = 0) =>
-    n === null || n === undefined ? '—' : `R${n.toLocaleString('en-ZA', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).replace(/ /g, ',')}`;
+    n === null || n === undefined ? '—' : decimals === 0 && displayCurrency() !== 'ZAR' ? displayMoney(n) : `R${n.toLocaleString('en-ZA', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).replace(/ /g, ',')}`;
 export const num = (n: number | null | undefined) => (n === null || n === undefined ? '—' : n.toLocaleString('en-ZA').replace(/ /g, ','));
 export const label = (s: string | null | undefined) => (s ?? '').replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 

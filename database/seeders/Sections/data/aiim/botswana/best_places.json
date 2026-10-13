@@ -1,0 +1,3212 @@
+[
+ {
+  "template": "BW-ENR-S01",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S02",
+  "place_id": "USP",
+  "place": "Selibe Phikwe (council point)",
+  "unit_code": "SP",
+  "lat": -21.976,
+  "lon": 27.84,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-ENR-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-ENR-S04",
+  "place_id": "USP",
+  "place": "Selibe Phikwe (council point)",
+  "unit_code": "SP",
+  "lat": -21.976,
+  "lon": 27.84,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S05",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S06",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S07",
+  "place_id": "T15755",
+  "place": "Mahalapye",
+  "unit_code": "CE",
+  "lat": -23.104,
+  "lon": 26.814,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S08",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S09",
+  "place_id": "T15755",
+  "place": "Mahalapye",
+  "unit_code": "CE",
+  "lat": -23.104,
+  "lon": 26.814,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S11",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-ENR-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-ENR-S15",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S16",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S17",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S18",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S01",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S02",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S03",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-OGS-S04",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S05",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S06",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 7,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S07",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-OGS-S08",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S09",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S11",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-OGS-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-OGS-S13",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-OGS-S14",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 6,
+  "tier": "C"
+ },
+ {
+  "template": "BW-MIN-S01",
+  "place_id": "T15737",
+  "place": "Ghanzi",
+  "unit_code": "GH",
+  "lat": -21.698,
+  "lon": 21.646,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S02",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S03",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S04",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S05",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S06",
+  "place_id": "T15737",
+  "place": "Ghanzi",
+  "unit_code": "GH",
+  "lat": -21.698,
+  "lon": 21.646,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S07",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S09",
+  "place_id": "T15750",
+  "place": "Letlhakane",
+  "unit_code": "CE",
+  "lat": -21.415,
+  "lon": 25.593,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S10",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S11",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-MIN-S13",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 7,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S14",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S15",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S16",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S17",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 5,
+  "tier": "C"
+ },
+ {
+  "template": "BW-MIN-S18",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-AGR-S01",
+  "place_id": "T15744",
+  "place": "Kanye",
+  "unit_code": "SO",
+  "lat": -24.967,
+  "lon": 25.333,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-AGR-S02",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "A"
+ },
+ {
+  "template": "BW-AGR-S03",
+  "place_id": "T15784",
+  "place": "Pandamatenga",
+  "unit_code": "NW",
+  "lat": -18.528,
+  "lon": 25.627,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S04",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-AGR-S05",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 7,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S06",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S07",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S08",
+  "place_id": "T15784",
+  "place": "Pandamatenga",
+  "unit_code": "NW",
+  "lat": -18.528,
+  "lon": 25.627,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S09",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S10",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S11",
+  "place_id": "T15744",
+  "place": "Kanye",
+  "unit_code": "SO",
+  "lat": -24.967,
+  "lon": 25.333,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-AGR-S13",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S14",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S15",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S16",
+  "place_id": "ULO",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "lat": -25.217,
+  "lon": 25.667,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-AGR-S17",
+  "place_id": "T15744",
+  "place": "Kanye",
+  "unit_code": "SO",
+  "lat": -24.967,
+  "lon": 25.333,
+  "lead_score": 6,
+  "tier": "C"
+ },
+ {
+  "template": "BW-AGR-S18",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S19",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S20",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S01",
+  "place_id": "T164514",
+  "place": "Tlokweng",
+  "unit_code": "SE",
+  "lat": -24.669,
+  "lon": 25.971,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S02",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S03",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S05",
+  "place_id": "T15796",
+  "place": "Shakawe",
+  "unit_code": "NW",
+  "lat": -18.365,
+  "lon": 21.842,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-BLU-S07",
+  "place_id": "T15780",
+  "place": "Nokaneng",
+  "unit_code": "NW",
+  "lat": -19.667,
+  "lon": 22.267,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-BLU-S08",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S10",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S11",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S12",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S13",
+  "place_id": "T164514",
+  "place": "Tlokweng",
+  "unit_code": "SE",
+  "lat": -24.669,
+  "lon": 25.971,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S01",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-FOR-S02",
+  "place_id": "T15780",
+  "place": "Nokaneng",
+  "unit_code": "NW",
+  "lat": -19.667,
+  "lon": 22.267,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S03",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S04",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S05",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-FOR-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-FOR-S07",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S08",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S09",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-FOR-S10",
+  "place_id": "T15795",
+  "place": "Serowe",
+  "unit_code": "CE",
+  "lat": -22.388,
+  "lon": 26.711,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-FOR-S11",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S12",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S01",
+  "place_id": "ULO",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "lat": -25.217,
+  "lon": 25.667,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MFG-S02",
+  "place_id": "ULO",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "lat": -25.217,
+  "lon": 25.667,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S05",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MFG-S11",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S12",
+  "place_id": "USP",
+  "place": "Selibe Phikwe (council point)",
+  "unit_code": "SP",
+  "lat": -21.976,
+  "lon": 27.84,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-MFG-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MFG-S15",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S16",
+  "place_id": "T15797",
+  "place": "Sua",
+  "unit_code": "ST",
+  "lat": -20.05,
+  "lon": 26.2,
+  "lead_score": 6,
+  "tier": "C"
+ },
+ {
+  "template": "BW-MFG-S17",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S18",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S01",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S02",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-WSW-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-WSW-S04",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-WSW-S05",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-WSW-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S08",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-WSW-S11",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S12",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-WSW-S13",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-WSW-S14",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S15",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A"
+ },
+ {
+  "template": "BW-TRN-S01",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S02",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-TRN-S03",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-TRN-S04",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S05",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-TRN-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S08",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S09",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S10",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S11",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 13,
+  "tier": "A"
+ },
+ {
+  "template": "BW-TRN-S12",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-TRN-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S15",
+  "place_id": "T15737",
+  "place": "Ghanzi",
+  "unit_code": "GH",
+  "lat": -21.698,
+  "lon": 21.646,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S16",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S17",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S18",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-ICT-S01",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S02",
+  "place_id": "T15789",
+  "place": "Ramotswa",
+  "unit_code": "SE",
+  "lat": -24.872,
+  "lon": 25.87,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-ICT-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 6,
+  "tier": "C"
+ },
+ {
+  "template": "BW-ICT-S05",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-ICT-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-ICT-S11",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-CRE-S01",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S02",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S05",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CRE-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CRE-S09",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CRE-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S11",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CRE-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S14",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S01",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S02",
+  "place_id": "T15780",
+  "place": "Nokaneng",
+  "unit_code": "NW",
+  "lat": -19.667,
+  "lon": 22.267,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S03",
+  "place_id": "T15780",
+  "place": "Nokaneng",
+  "unit_code": "NW",
+  "lat": -19.667,
+  "lon": 22.267,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-TOU-S05",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S08",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S10",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S11",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S12",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S01",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-HLT-S02",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-HLT-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S05",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S10",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S11",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "C"
+ },
+ {
+  "template": "BW-EDU-S01",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-EDU-S02",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-EDU-S05",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-EDU-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S10",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S11",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S01",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S02",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S05",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-FIN-S07",
+  "place_id": "T15744",
+  "place": "Kanye",
+  "unit_code": "SO",
+  "lat": -24.967,
+  "lon": 25.333,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-FIN-S11",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S01",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 7,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S02",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S03",
+  "place_id": "ULO",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "lat": -25.217,
+  "lon": 25.667,
+  "lead_score": 6,
+  "tier": "C"
+ },
+ {
+  "template": "BW-TRD-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S05",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S08",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S09",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S11",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S12",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 6,
+  "tier": "B"
+ },
+ {
+  "template": "BW-GRN-S01",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-GRN-S02",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-GRN-S03",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-GRN-S04",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-GRN-S05",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-GRN-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-GRN-S07",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-GRN-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-GRN-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-GRN-S10",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 8,
+  "tier": "C"
+ },
+ {
+  "template": "BW-GRN-S11",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 11,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-CSP-S01",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 14,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-CSP-S02",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S03",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CSP-S04",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CSP-S05",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S06",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S07",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S08",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S09",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-CSP-S10",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S11",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 14,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-ENR-S19",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-ENR-S20",
+  "place_id": "T15755",
+  "place": "Mahalapye",
+  "unit_code": "CE",
+  "lat": -23.104,
+  "lon": 26.814,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-OGS-S15",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-OGS-S16",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MIN-S19",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S20",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S21",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S21",
+  "place_id": "T15780",
+  "place": "Nokaneng",
+  "unit_code": "NW",
+  "lat": -19.667,
+  "lon": 22.267,
+  "lead_score": 7,
+  "tier": "C"
+ },
+ {
+  "template": "BW-AGR-S22",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S23",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-AGR-S24",
+  "place_id": "T15784",
+  "place": "Pandamatenga",
+  "unit_code": "NW",
+  "lat": -18.528,
+  "lon": 25.627,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-AGR-S25",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S26",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S14",
+  "place_id": "T15796",
+  "place": "Shakawe",
+  "unit_code": "NW",
+  "lat": -18.365,
+  "lon": 21.842,
+  "lead_score": 12,
+  "tier": "B"
+ },
+ {
+  "template": "BW-BLU-S15",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FOR-S13",
+  "place_id": "T15795",
+  "place": "Serowe",
+  "unit_code": "CE",
+  "lat": -22.388,
+  "lon": 26.711,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-FOR-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S19",
+  "place_id": "ULO",
+  "place": "Lobatse (council point)",
+  "unit_code": "LO",
+  "lat": -25.217,
+  "lon": 25.667,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S20",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MFG-S21",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MFG-S22",
+  "place_id": "T15793",
+  "place": "Sehithwa",
+  "unit_code": "NW",
+  "lat": -20.467,
+  "lon": 22.717,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-MFG-S23",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S16",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-WSW-S17",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-TRN-S19",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S20",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-TRN-S21",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S15",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S16",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-CRE-S15",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CRE-S16",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S17",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S13",
+  "place_id": "T15780",
+  "place": "Nokaneng",
+  "unit_code": "NW",
+  "lat": -19.667,
+  "lon": 22.267,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TOU-S15",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-HLT-S15",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-HLT-S16",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-EDU-S12",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-EDU-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-FIN-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-FIN-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S14",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S15",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-GRN-S12",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 12,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-GRN-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-CSP-S13",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S14",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "C"
+ },
+ {
+  "template": "BW-CSP-S15",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ENR-S21",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-MIN-S22",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 7,
+  "tier": "B"
+ },
+ {
+  "template": "BW-AGR-S27",
+  "place_id": "T15744",
+  "place": "Kanye",
+  "unit_code": "SO",
+  "lat": -24.967,
+  "lon": 25.333,
+  "lead_score": 12,
+  "tier": "A"
+ },
+ {
+  "template": "BW-WSW-S18",
+  "place_id": "T15783",
+  "place": "Palapye",
+  "unit_code": "CE",
+  "lat": -22.546,
+  "lon": 27.125,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRN-S22",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 8,
+  "tier": "B"
+ },
+ {
+  "template": "BW-ICT-S17",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 9,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CRE-S18",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 11,
+  "tier": "A"
+ },
+ {
+  "template": "BW-TOU-S16",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 14,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-HLT-S17",
+  "place_id": "UFR",
+  "place": "Francistown (council point)",
+  "unit_code": "FR",
+  "lat": -21.174,
+  "lon": 27.512,
+  "lead_score": 11,
+  "tier": "B"
+ },
+ {
+  "template": "BW-EDU-S14",
+  "place_id": "T15764",
+  "place": "Maun",
+  "unit_code": "NW",
+  "lat": -19.983,
+  "lon": 23.417,
+  "lead_score": 11,
+  "tier": "A+"
+ },
+ {
+  "template": "BW-FIN-S15",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 7,
+  "tier": "B"
+ },
+ {
+  "template": "BW-TRD-S16",
+  "place_id": "T164517",
+  "place": "Kasane",
+  "unit_code": "CH",
+  "lat": -17.802,
+  "lon": 25.16,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-GRN-S14",
+  "place_id": "T15771",
+  "place": "Mogoditshane",
+  "unit_code": "KW",
+  "lat": -24.627,
+  "lon": 25.866,
+  "lead_score": 10,
+  "tier": "B"
+ },
+ {
+  "template": "BW-CSP-S16",
+  "place_id": "T15735",
+  "place": "Gaborone",
+  "unit_code": "GA",
+  "lat": -24.762,
+  "lon": 25.799,
+  "lead_score": 13,
+  "tier": "B"
+ }
+]

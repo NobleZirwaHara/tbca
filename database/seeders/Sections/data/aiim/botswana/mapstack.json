@@ -1,0 +1,722 @@
+[
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Power plants",
+  "levels": "L0–L5",
+  "geometry": "Pin (MW)",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Transmission",
+  "levels": "L0–L2",
+  "geometry": "Line",
+  "illumination": "kV"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Solar sites",
+  "levels": "L1–L4",
+  "geometry": "Pin",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Off-grid villages",
+  "levels": "L1–L3",
+  "geometry": "Point",
+  "illumination": "Access"
+ },
+ {
+  "sector_code": "ENR",
+  "sector": "Energy & Power",
+  "layer": "Imports interconnectors",
+  "levels": "L0",
+  "geometry": "Line",
+  "illumination": "MW"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Fuels, Strategic Reserves & Coal-bed Methane",
+  "layer": "Depots",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Ml"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Fuels, Strategic Reserves & Coal-bed Methane",
+  "layer": "Filling stations",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Density"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Fuels, Strategic Reserves & Coal-bed Methane",
+  "layer": "Fuel routes",
+  "levels": "L0–L1",
+  "geometry": "Line",
+  "illumination": "Volume"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Fuels, Strategic Reserves & Coal-bed Methane",
+  "layer": "CBM licences",
+  "levels": "L1–L3",
+  "geometry": "Polygon",
+  "illumination": "Holder"
+ },
+ {
+  "sector_code": "OGS",
+  "sector": "Fuels, Strategic Reserves & Coal-bed Methane",
+  "layer": "Stock days",
+  "levels": "L0",
+  "geometry": "Card",
+  "illumination": "Days"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Diamonds, Copper & Mining",
+  "layer": "Mines",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Output"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Diamonds, Copper & Mining",
+  "layer": "Copper belt",
+  "levels": "L1–L3",
+  "geometry": "Polygon",
+  "illumination": "Projects"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Diamonds, Copper & Mining",
+  "layer": "Licences",
+  "levels": "L1–L4",
+  "geometry": "Polygon",
+  "illumination": "Holder"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Diamonds, Copper & Mining",
+  "layer": "Haul routes",
+  "levels": "L0–L2",
+  "geometry": "Line",
+  "illumination": "Trucks"
+ },
+ {
+  "sector_code": "MIN",
+  "sector": "Diamonds, Copper & Mining",
+  "layer": "Mining towns",
+  "levels": "L2–L3",
+  "geometry": "Point",
+  "illumination": "Population"
+ },
+ {
+  "sector_code": "AGR",
+  "sector": "Livestock, Beef & Horticulture",
+  "layer": "FMD zones",
+  "levels": "L1–L3",
+  "geometry": "Polygon",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "AGR",
+  "sector": "Livestock, Beef & Horticulture",
+  "layer": "Cattle posts",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Density"
+ },
+ {
+  "sector_code": "AGR",
+  "sector": "Livestock, Beef & Horticulture",
+  "layer": "Abattoirs",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Approval"
+ },
+ {
+  "sector_code": "AGR",
+  "sector": "Livestock, Beef & Horticulture",
+  "layer": "Horticulture farms",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Crop"
+ },
+ {
+  "sector_code": "AGR",
+  "sector": "Livestock, Beef & Horticulture",
+  "layer": "Pandamatenga",
+  "levels": "L2–L4",
+  "geometry": "Polygon",
+  "illumination": "Grain"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Fisheries & Aquaculture",
+  "layer": "Okavango fishery",
+  "levels": "L1–L3",
+  "geometry": "Polygon",
+  "illumination": "Catch"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Fisheries & Aquaculture",
+  "layer": "Fish farms",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Output"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Fisheries & Aquaculture",
+  "layer": "Dams",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Cage potential"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Fisheries & Aquaculture",
+  "layer": "Cold stores",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "BLU",
+  "sector": "Fisheries & Aquaculture",
+  "layer": "Markets",
+  "levels": "L2–L3",
+  "geometry": "Point",
+  "illumination": "Demand"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Veld Products",
+  "layer": "Forest reserves",
+  "levels": "L1–L3",
+  "geometry": "Polygon",
+  "illumination": "Area"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Veld Products",
+  "layer": "Harvest areas",
+  "levels": "L2–L4",
+  "geometry": "Heat",
+  "illumination": "Season"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Veld Products",
+  "layer": "Fuelwood use",
+  "levels": "L1–L2",
+  "geometry": "Choropleth",
+  "illumination": "%"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Veld Products",
+  "layer": "Processing",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "FOR",
+  "sector": "Forestry & Veld Products",
+  "layer": "Fire risk",
+  "levels": "L1–L3",
+  "geometry": "Heat",
+  "illumination": "Season"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing, SEZs & Beneficiation",
+  "layer": "SEZs",
+  "levels": "L1–L4",
+  "geometry": "Polygon",
+  "illumination": "Occupancy"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing, SEZs & Beneficiation",
+  "layer": "Factories",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Jobs"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing, SEZs & Beneficiation",
+  "layer": "Industrial land",
+  "levels": "L2–L4",
+  "geometry": "Polygon",
+  "illumination": "Availability"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing, SEZs & Beneficiation",
+  "layer": "Logistics",
+  "levels": "L0–L2",
+  "geometry": "Line",
+  "illumination": "Corridors"
+ },
+ {
+  "sector_code": "MFG",
+  "sector": "Manufacturing, SEZs & Beneficiation",
+  "layer": "Labour pools",
+  "levels": "L1–L2",
+  "geometry": "Choropleth",
+  "illumination": "Unemployment"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Dams",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "Level"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Pipelines (NSC)",
+  "levels": "L0–L2",
+  "geometry": "Line",
+  "illumination": "Flow"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Treatment works",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Village schemes",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "WSW",
+  "sector": "Water, Sanitation & Waste",
+  "layer": "Wastewater",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Reuse"
+ },
+ {
+  "sector_code": "TRN",
+  "sector": "Transport, Corridors & Logistics",
+  "layer": "Corridors",
+  "levels": "L0–L1",
+  "geometry": "Line",
+  "illumination": "Trucks"
+ },
+ {
+  "sector_code": "TRN",
+  "sector": "Transport, Corridors & Logistics",
+  "layer": "Border posts",
+  "levels": "L1–L4",
+  "geometry": "Pin",
+  "illumination": "Dwell time"
+ },
+ {
+  "sector_code": "TRN",
+  "sector": "Transport, Corridors & Logistics",
+  "layer": "Rail network",
+  "levels": "L0–L2",
+  "geometry": "Line",
+  "illumination": "Tonnes"
+ },
+ {
+  "sector_code": "TRN",
+  "sector": "Transport, Corridors & Logistics",
+  "layer": "Airports",
+  "levels": "L1–L4",
+  "geometry": "Pin",
+  "illumination": "Passengers"
+ },
+ {
+  "sector_code": "TRN",
+  "sector": "Transport, Corridors & Logistics",
+  "layer": "Dry ports",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "Digital, Mobile Money & 5G",
+  "layer": "Coverage",
+  "levels": "L1–L3",
+  "geometry": "Choropleth",
+  "illumination": "2G/4G/5G"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "Digital, Mobile Money & 5G",
+  "layer": "Fibre",
+  "levels": "L2–L4",
+  "geometry": "Line",
+  "illumination": "Customers"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "Digital, Mobile Money & 5G",
+  "layer": "Towers",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Sites"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "Digital, Mobile Money & 5G",
+  "layer": "Agents",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Density"
+ },
+ {
+  "sector_code": "ICT",
+  "sector": "Digital, Mobile Money & 5G",
+  "layer": "Data centres",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "MW"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Roads & Housing",
+  "layer": "Road projects",
+  "levels": "L0–L2",
+  "geometry": "Line",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Roads & Housing",
+  "layer": "Housing projects",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Units"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Roads & Housing",
+  "layer": "Quarries",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Permits"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Roads & Housing",
+  "layer": "Public buildings",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Budget"
+ },
+ {
+  "sector_code": "CRE",
+  "sector": "Construction, Roads & Housing",
+  "layer": "Land",
+  "levels": "L2–L4",
+  "geometry": "Polygon",
+  "illumination": "Availability"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism (Okavango, Chobe, Kalahari)",
+  "layer": "Parks and concessions",
+  "levels": "L1–L4",
+  "geometry": "Polygon",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism (Okavango, Chobe, Kalahari)",
+  "layer": "Lodges",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Beds"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism (Okavango, Chobe, Kalahari)",
+  "layer": "Airstrips",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Flights"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism (Okavango, Chobe, Kalahari)",
+  "layer": "Community areas",
+  "levels": "L2–L4",
+  "geometry": "Polygon",
+  "illumination": "Trusts"
+ },
+ {
+  "sector_code": "TOU",
+  "sector": "Tourism (Okavango, Chobe, Kalahari)",
+  "layer": "Border gateways",
+  "levels": "L1–L4",
+  "geometry": "Pin",
+  "illumination": "Arrivals"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Facilities",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Type"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Pharmacies",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Density"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Stock-outs",
+  "levels": "L1–L3",
+  "geometry": "Heat",
+  "illumination": "%"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Labs",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "HLT",
+  "sector": "Health & Pharmaceuticals",
+  "layer": "Private hospitals",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Beds"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Institutions",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Students"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "TVET centres",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Places"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Youth unemployment",
+  "levels": "L1–L2",
+  "geometry": "Choropleth",
+  "illumination": "%"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "Student housing",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Beds"
+ },
+ {
+  "sector_code": "EDU",
+  "sector": "Education & Skills",
+  "layer": "New satellites",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Status"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Finance, Pensions & Fintech",
+  "layer": "Branches and agents",
+  "levels": "L2–L4",
+  "geometry": "Point",
+  "illumination": "Density"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Finance, Pensions & Fintech",
+  "layer": "Mobile money",
+  "levels": "L1–L3",
+  "geometry": "Choropleth",
+  "illumination": "Users"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Finance, Pensions & Fintech",
+  "layer": "SME credit",
+  "levels": "L1–L2",
+  "geometry": "Choropleth",
+  "illumination": "Access"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Finance, Pensions & Fintech",
+  "layer": "Pension assets",
+  "levels": "L0",
+  "geometry": "Card",
+  "illumination": "P"
+ },
+ {
+  "sector_code": "FIN",
+  "sector": "Finance, Pensions & Fintech",
+  "layer": "Listed firms",
+  "levels": "L0",
+  "geometry": "List",
+  "illumination": "Cap"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Retail & Citizen Markets",
+  "layer": "Retail nodes",
+  "levels": "L2–L4",
+  "geometry": "Heat",
+  "illumination": "Sales"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Retail & Citizen Markets",
+  "layer": "Border trade",
+  "levels": "L1–L4",
+  "geometry": "Pin",
+  "illumination": "Flows"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Retail & Citizen Markets",
+  "layer": "Export flows",
+  "levels": "L0",
+  "geometry": "Flow",
+  "illumination": "P"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Retail & Citizen Markets",
+  "layer": "Wholesale hubs",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Coverage"
+ },
+ {
+  "sector_code": "TRD",
+  "sector": "Trade, Retail & Citizen Markets",
+  "layer": "Reserved-activity map",
+  "levels": "L1–L2",
+  "geometry": "Choropleth",
+  "illumination": "Licences"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy & Climate Finance",
+  "layer": "Solar sites",
+  "levels": "L1–L5",
+  "geometry": "Pin",
+  "illumination": "MW"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy & Climate Finance",
+  "layer": "GCF projects",
+  "levels": "L1–L4",
+  "geometry": "Polygon",
+  "illumination": "Area"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy & Climate Finance",
+  "layer": "Rangelands",
+  "levels": "L1–L3",
+  "geometry": "Polygon",
+  "illumination": "Condition"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy & Climate Finance",
+  "layer": "Bush encroachment",
+  "levels": "L1–L3",
+  "geometry": "Heat",
+  "illumination": "Density"
+ },
+ {
+  "sector_code": "GRN",
+  "sector": "Green Economy & Climate Finance",
+  "layer": "Carbon projects",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Credits"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sport & Professional Services",
+  "layer": "Venues",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Capacity"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sport & Professional Services",
+  "layer": "Creative hubs",
+  "levels": "L2–L4",
+  "geometry": "Pin",
+  "illumination": "Firms"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sport & Professional Services",
+  "layer": "BPO centres",
+  "levels": "L2–L5",
+  "geometry": "Pin",
+  "illumination": "Seats"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sport & Professional Services",
+  "layer": "Film locations",
+  "levels": "L1–L4",
+  "geometry": "Pin",
+  "illumination": "Permits"
+ },
+ {
+  "sector_code": "CSP",
+  "sector": "Creative, Sport & Professional Services",
+  "layer": "Talent",
+  "levels": "L1–L2",
+  "geometry": "Choropleth",
+  "illumination": "Youth"
+ }
+]

@@ -6,10 +6,16 @@ import { Gauge } from '@/Components/DealRoom/Ui';
 import { Button } from '@/Components/ui/Button';
 import { Checkbox, Field, Input, Select, Textarea } from '@/Components/ui/Form';
 import { Panel } from '@/Components/ui/Kit';
+import { useT } from '@/lib/i18n';
+import { useBandLabel } from '@/lib/moneyBands';
 import type { SharedProps } from '@/types';
+import type { RaiseBand, TransactionTypeGroup } from '@/types/deal-room';
 
 interface Props {
-    transactionTypes: string[];
+    /** Grouped transaction types (App\Support\DealRoom\EnquiryOptions). */
+    transactionTypes: TransactionTypeGroup[];
+    /** Indicative raise bands in whole ZAR; the stored value is the band code. */
+    raiseBands: RaiseBand[];
     sectors: string[];
     prefill: { name: string; email: string; phone: string | null; company: string | null } | null;
 }
@@ -20,21 +26,36 @@ const readDraft = () => {
     try { return JSON.parse(window.localStorage.getItem(DRAFT_KEY) ?? 'null'); } catch { return null; }
 };
 
+/** Drops draft values saved before the transaction types and raise bands changed (8 Oct 2026). */
+function cleanDraft(draft: Record<string, unknown> | null, types: string[], bands: string[]) {
+    if (!draft) return {};
+    const { amount: _legacyAmount, ...rest } = draft;
+    void _legacyAmount;
+    if (typeof rest.transaction_type === 'string' && !types.includes(rest.transaction_type)) rest.transaction_type = '';
+    if (typeof rest.raise_band === 'string' && !bands.includes(rest.raise_band)) rest.raise_band = '';
+
+    return rest;
+}
+
 const stepper = [['A', 'Enquiry & Lead Qualification'], ['B', 'Diagnostic & Proposal'], ['C', 'Mandate & Payment Gate'], ['0', 'Create Room'], ['1', 'Sponsor Onboarding'], ['2', 'Data Room Build'], ['3', 'Counterparty Qualification']];
 
 /** Stage A: enquiry form, live preliminary checks preview and fit score; submission creates the room. */
-export default function Enquiry({ transactionTypes, sectors, prefill }: Props) {
+export default function Enquiry({ transactionTypes, raiseBands, sectors, prefill }: Props) {
     const { auth } = usePage<SharedProps>().props;
-    const draft = useMemo(readDraft, []);
+    const t = useT();
+    const bandLabel = useBandLabel();
+    const allTypes = useMemo(() => transactionTypes.flatMap((g) => g.options), [transactionTypes]);
+    const draft = useMemo(() => cleanDraft(readDraft(), allTypes, raiseBands.map((b) => b.code)), [allTypes, raiseBands]);
     const form = useForm({
-        transaction_type: transactionTypes[0], objective: '', amount: 150000000, target_close_date: '', current_stage: 'Preparation',
+        transaction_type: '', objective: '', raise_band: '', target_close_date: '', current_stage: 'Preparation',
         company: prefill?.company ?? '', jurisdiction: 'South Africa', sector: sectors[0], website: '', employees: '51 - 200', revenue: 'R50m - R200m',
         name: prefill?.name ?? '', email: prefill?.email ?? '', phone: prefill?.phone ?? '', role: 'Founder / CEO', room_name: '', authority: false,
         ...(draft ?? {}),
     });
     const d = form.data;
+    const amount = raiseBands.find((b) => b.code === d.raise_band)?.indicative_zar ?? 0;
     // Indicative fit (the server recomputes on submit).
-    const fit = Math.min(95, 55 + (d.amount >= 10_000_000 ? 10 : 0) + (d.website ? 5 : 0) + (['R50m - R200m', 'R200m+'].includes(d.revenue) ? 10 : 5) + (d.target_close_date ? 5 : 0) + (d.objective.length > 40 ? 5 : 0));
+    const fit = Math.min(95, 55 + (amount >= 10_000_000 ? 10 : 0) + (d.website ? 5 : 0) + (['R50m - R200m', 'R200m+'].includes(d.revenue) ? 10 : 5) + (d.target_close_date ? 5 : 0) + (d.objective.length > 40 ? 5 : 0));
     const saveDraft = () => { try { window.localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...d, authority: false })); } catch { /* storage unavailable */ } };
     const submit = () => form.post('/virtual-deal-room/enquiry', { onSuccess: () => { try { window.localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ } } });
 
@@ -63,9 +84,29 @@ export default function Enquiry({ transactionTypes, sectors, prefill }: Props) {
                     <div className="space-y-5">
                         <Panel title="1. About Your Transaction">
                             <div className="grid gap-4 sm:grid-cols-2">
-                                <Field label="Transaction Type" required error={form.errors.transaction_type}>{(id) => <Select id={id} value={d.transaction_type} onChange={(e) => form.setData('transaction_type', e.target.value)} options={transactionTypes} />}</Field>
+                                <Field label={t('Transaction Type')} required error={form.errors.transaction_type}>
+                                    {(id) => (
+                                        <Select
+                                            id={id}
+                                            value={d.transaction_type}
+                                            onChange={(e) => form.setData('transaction_type', e.target.value)}
+                                            placeholder={t('Select a transaction type')}
+                                            options={transactionTypes.map((g) => ({ group: t(g.group), options: g.options.map((o) => ({ value: o, label: t(o) })) }))}
+                                        />
+                                    )}
+                                </Field>
                                 <Field label="Objective" required error={form.errors.objective} hint={`${d.objective.length} / 250`}>{(id) => <Textarea id={id} maxLength={250} value={d.objective} onChange={(e) => form.setData('objective', e.target.value)} className="min-h-16" placeholder="Raise growth capital to expand our digital lending platform across Africa" />}</Field>
-                                <Field label="Indicative Raise / Deal Amount (ZAR)" required error={form.errors.amount}>{(id) => <Input id={id} type="number" min={100000} step={100000} value={d.amount} onChange={(e) => form.setData('amount', Number(e.target.value))} />}</Field>
+                                <Field label={t('Indicative Raise / Deal Amount')} required error={form.errors.raise_band} hint={t('Bands are set in South African rand and shown in your selected currency.')}>
+                                    {(id) => (
+                                        <Select
+                                            id={id}
+                                            value={d.raise_band}
+                                            onChange={(e) => form.setData('raise_band', e.target.value)}
+                                            placeholder={t('Select a range')}
+                                            options={raiseBands.map((b) => ({ value: b.code, label: bandLabel(b) }))}
+                                        />
+                                    )}
+                                </Field>
                                 <Field label="Target Close Date" error={form.errors.target_close_date}>{(id) => <Input id={id} type="date" value={d.target_close_date} onChange={(e) => form.setData('target_close_date', e.target.value)} />}</Field>
                                 <Field label="Current Stage" error={form.errors.current_stage}>{(id) => <Select id={id} value={d.current_stage} onChange={(e) => form.setData('current_stage', e.target.value)} options={['Preparation', 'Early Interest', 'Active Diligence', 'Negotiation', 'Closing']} />}</Field>
                                 <Field label="Company / Organisation Name" required error={form.errors.company}>{(id) => <Input id={id} value={d.company} onChange={(e) => form.setData('company', e.target.value)} />}</Field>

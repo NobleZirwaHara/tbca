@@ -3,6 +3,7 @@ import { Mail, Phone } from 'lucide-react';
 import Logo from './Logo';
 import SocialIcon from './SocialIcons';
 import Icon from './ui/Icon';
+import { useT } from '@/lib/i18n';
 import type { SharedProps } from '@/types';
 
 // Profile URLs are placeholders until TBCA confirms its official handles.
@@ -16,6 +17,7 @@ const socials = [
 
 export default function Footer() {
     const { nav, contact, brand, trustBadges } = usePage<SharedProps>().props;
+    const t = useT();
 
     return (
         <footer className="bg-ink-950 text-parchment-200">
@@ -26,7 +28,9 @@ export default function Footer() {
 
                         <address className="mt-6 space-y-0.5 text-[0.8125rem] leading-relaxed text-ink-300 not-italic">
                             {contact.address_lines.map((line) => (
-                                <p key={line}>{line}</p>
+                                <p key={line}>
+                                    <span dir="ltr">{line}</span>
+                                </p>
                             ))}
                         </address>
 
@@ -36,7 +40,7 @@ export default function Footer() {
                                 className="flex items-center gap-2 text-ink-300 transition-colors hover:text-gold-300"
                             >
                                 <Phone className="size-3.5 text-gold-600" aria-hidden="true" />
-                                {contact.phone}
+                                <span dir="ltr">{contact.phone}</span>
                             </a>
                             <a
                                 href={contact.whatsapp_url}
@@ -45,7 +49,7 @@ export default function Footer() {
                                 className="flex items-center gap-2 text-ink-300 transition-colors hover:text-gold-300"
                             >
                                 <SocialIcon network="whatsapp" className="size-3.5 text-[#25D366]" />
-                                WhatsApp {contact.whatsapp}
+                                WhatsApp <span dir="ltr">{contact.whatsapp}</span>
                             </a>
                             <a
                                 href={`mailto:${contact.email}`}
@@ -59,9 +63,9 @@ export default function Footer() {
 
                     <div className="grid gap-8 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-5 lg:gap-6">
                         {Object.entries(nav.footer).map(([heading, links]) => (
-                            <nav key={heading} aria-label={heading}>
+                            <nav key={heading} aria-label={t(heading)}>
                                 <h2 className="text-[0.8125rem] font-semibold tracking-[-0.01em] text-parchment-100">
-                                    {heading}
+                                    {t(heading)}
                                 </h2>
                                 <ul className="mt-3.5 space-y-2">
                                     {links.map((link) => (
@@ -70,7 +74,7 @@ export default function Footer() {
                                                 href={link.href}
                                                 className="text-[0.8125rem] text-ink-300 transition-colors hover:text-gold-300"
                                             >
-                                                {link.label}
+                                                {t(link.label)}
                                             </Link>
                                         </li>
                                     ))}
@@ -90,7 +94,7 @@ export default function Footer() {
                                 className="inline-flex items-center gap-2 rounded-[4px] border border-ink-700 px-3 py-2 text-[0.75rem] font-medium text-parchment-200"
                             >
                                 <Icon name={badge.icon} className="size-4 text-gold-500" />
-                                {badge.label}
+                                {t(badge.label)}
                             </span>
                         ))}
                     </div>
@@ -103,7 +107,7 @@ export default function Footer() {
                                     href={href}
                                     target={href.startsWith('http') ? '_blank' : undefined}
                                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                                    aria-label={`TBCA on ${label}`}
+                                    aria-label={t('TBCA on :network', { network: label })}
                                     title={label}
                                     className="inline-flex size-9 items-center justify-center rounded-full border border-ink-700 text-parchment-200 transition-colors hover:border-gold-600 hover:text-gold-300"
                                 >
@@ -117,8 +121,12 @@ export default function Footer() {
 
             <div className="border-t border-ink-800">
                 <div className="container-tbca flex flex-col gap-2 py-5 text-[0.75rem] text-ink-400 sm:flex-row sm:items-center sm:justify-between">
-                    <p>© {new Date().getFullYear()} {brand.trademark} All rights reserved.</p>
-                    <p className="text-ink-500">{brand.promise}</p>
+                    <p>
+                        © {new Date().getFullYear()} <span dir="ltr">{brand.trademark}</span> {t('All rights reserved.')}
+                    </p>
+                    <p className="text-ink-500" dir="ltr">
+                        {brand.promise}
+                    </p>
                 </div>
             </div>
         </footer>

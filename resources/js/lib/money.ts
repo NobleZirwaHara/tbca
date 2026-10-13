@@ -60,15 +60,68 @@ export function formatMoney(zar: number, currency: string, rates?: Record<string
     return formatIn(convertZar(zar, currency, rates), currency);
 }
 
+/* ------------------------------------------------------------------
+ * Display currency store
+ *
+ * Many module-level helpers (rand(), zar(), money()) format amounts outside
+ * React hooks. They read the visitor's display currency from this store, which
+ * <DisplayCurrency> updates from the shared Inertia props on every render, before
+ * any page content renders. Staff consoles are pinned to ZAR because that is
+ * the currency TBCA books and reports in.
+ * ------------------------------------------------------------------ */
+
+type DisplayState = { currency: string; rates: Record<string, number> | null };
+
+const display: DisplayState = { currency: 'ZAR', rates: null };
+
+/** Paths where amounts must stay in rand: staff consoles book and report in ZAR. */
+const ZAR_ONLY = /^\/admin(\/|$)/;
+
+export function pinnedToZar(path: string): boolean {
+    return ZAR_ONLY.test(path);
+}
+
+export function setDisplayCurrency(currency: string, rates?: Record<string, number> | null): void {
+    display.currency = (currency || 'ZAR').toUpperCase();
+    display.rates = rates ?? null;
+}
+
+export function displayCurrency(): string {
+    return display.currency;
+}
+
+export function displayRates(): Record<string, number> | null {
+    return display.rates;
+}
+
+/** Formats a ZAR amount in the current display currency (non-hook helpers). */
+export function displayMoney(zar: number): string {
+    return formatMoney(zar, display.currency, display.rates);
+}
+
+/** Converts a ZAR amount into the current display currency without formatting. */
+export function displayAmount(zar: number): number {
+    return convertZar(zar, display.currency, display.rates);
+}
+
+/**
+ * The reference amount shown beside a price: USD when the visitor sees rand,
+ * otherwise the rand amount TBCA actually charges.
+ */
+export function referenceMoney(zar: number): string {
+    return display.currency === 'ZAR' ? formatMoney(zar, 'USD', display.rates) : formatZar(zar);
+}
+
 /**
  * Formats a ZAR amount in the visitor's selected display currency.
  *   const price = usePrice();  price(14800) -> "R14 800", "$822", "€755", "¥5 920", "494 320 CFA"
  */
 export function usePrice(empty = 'Custom') {
-    const { context, fx } = usePage<SharedProps>().props;
+    const { props, url } = usePage<SharedProps>();
+    const currency = pinnedToZar(url.split('?')[0]) ? 'ZAR' : props.context.currency;
 
     return (zar: number | null | undefined) =>
-        zar === null || zar === undefined ? empty : formatMoney(Number(zar), context.currency, fx?.rates);
+        zar === null || zar === undefined ? empty : formatMoney(Number(zar), currency, props.fx?.rates);
 }
 
 /**
@@ -76,8 +129,9 @@ export function usePrice(empty = 'Custom') {
  * whether the visitor is seeing a converted (non-ZAR) figure.
  */
 export function useCurrency() {
-    const { context, fx } = usePage<SharedProps>().props;
-    const currency = context.currency.toUpperCase();
+    const { props, url } = usePage<SharedProps>();
+    const { context, fx } = props;
+    const currency = pinnedToZar(url.split('?')[0]) ? 'ZAR' : context.currency.toUpperCase();
     const option: CurrencyOption | undefined = context.currencies.find((c) => c.code === currency);
 
     return {

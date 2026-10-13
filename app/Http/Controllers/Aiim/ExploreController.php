@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Aiim;
 
+use App\Models\Aiim\AdminUnit;
 use App\Models\Aiim\Brief;
 use App\Models\Aiim\Corridor;
 use App\Models\Aiim\Country;
+use App\Models\Aiim\OpportunityTemplate;
 use App\Models\Aiim\Organisation;
 use App\Models\Aiim\Project;
 use App\Models\Aiim\Province;
@@ -12,6 +14,7 @@ use App\Models\Aiim\Sector;
 use App\Models\Aiim\Source;
 use App\Support\Aiim\Catalogue;
 use App\Support\Aiim\Content;
+use App\Support\Aiim\CountryIntel;
 use App\Support\Aiim\Grades;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +37,7 @@ class ExploreController extends AiimController
             'sectors' => Sector::query()->orderBy('sort')->get(['slug', 'name', 'icon']),
             'top' => Project::query()->whereIn('code', ['OPP-NC-GH2-013', 'OPP-KZN-AGH-014', 'OPP-GA-LTP-012'])->get()->map(fn ($p) => Catalogue::project($p)),
             'provinces' => Province::query()->orderBy('rank')->get(['slug', 'name', 'score']),
+            'coverage' => $this->coverage(),
         ], 'Landing');
     }
 
@@ -51,7 +55,25 @@ class ExploreController extends AiimController
             'content' => $country->has_province_pack ? Content::cockpit() : null,
             'provinces' => $country->has_province_pack ? Province::query()->orderByDesc('score')->get(['slug', 'name', 'score']) : [],
             'sectors' => Sector::query()->orderBy('sort')->get(['slug', 'name', 'icon']),
+            'intel' => CountryIntel::for($country),
+            'initialTab' => (string) $request->query('tab', 'overview'),
+            'initialUnit' => $request->query('unit') ? (string) $request->query('unit') : null,
         ], 'Investor Cockpit');
+    }
+
+    /** All 54 countries with roll-out wave, pack status and loaded record counts. */
+    private function coverage(): array
+    {
+        $projects = Project::query()->whereIn('screening_status', ['QUALIFIED', 'WATCHLIST'])->selectRaw('country_iso2, count(*) n')->groupBy('country_iso2')->pluck('n', 'country_iso2');
+        $opps = OpportunityTemplate::query()->whereNotNull('country_iso2')->selectRaw('country_iso2, count(*) n')->groupBy('country_iso2')->pluck('n', 'country_iso2');
+        $units = AdminUnit::query()->selectRaw('country_iso2, count(*) n')->groupBy('country_iso2')->pluck('n', 'country_iso2');
+
+        return Country::query()->orderBy('name')->get(['slug', 'name', 'iso2', 'region', 'au_region', 'activation_wave', 'pack_status', 'pack_code'])
+            ->map(fn (Country $c) => $c->summary() + $c->activation() + [
+                'projects' => (int) ($projects[$c->iso2] ?? 0),
+                'opportunities' => (int) ($opps[$c->iso2] ?? 0),
+                'units' => (int) ($units[$c->iso2] ?? 0),
+            ])->all();
     }
 
     public function provinces(Request $request, string $slug): Response|RedirectResponse

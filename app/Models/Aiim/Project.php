@@ -18,6 +18,11 @@ class Project extends Model
             'score' => 'float',
             'added_on' => 'date',
             'next_review_on' => 'date',
+            'screening' => 'array',
+            'coordinates_placeholder' => 'boolean',
+            'latitude' => 'float',
+            'longitude' => 'float',
+            'capex_zar' => 'integer',
         ];
     }
 

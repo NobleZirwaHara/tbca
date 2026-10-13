@@ -1,0 +1,562 @@
+[
+ {
+  "code": "OS-01",
+  "feature": "Ticket-Size Opportunity Marketplace",
+  "problem": "Small investors cannot find deals",
+  "how": "Band, unit, town, persona, citizen-reserved flag, FX flag, freshness-gated tier",
+  "gate": "Free browse"
+ },
+ {
+  "code": "OS-02",
+  "feature": "Invest-in-a-Box packs",
+  "problem": "First-time investors",
+  "how": "S-band packs with tornado and equity IRR",
+  "gate": "Paid pack"
+ },
+ {
+  "code": "OS-03",
+  "feature": "District and Town Profiles",
+  "problem": "National data hides local opportunity",
+  "how": "16 admin units with Census 2022 population; 83 pinned towns/points",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-04",
+  "feature": "Pula Crawl Navigator",
+  "problem": "Crawling peg vs rand",
+  "how": "Scenarios for crawl and rand moves",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-05",
+  "feature": "Land and Site Concierge",
+  "problem": "Tribal, state and freehold land",
+  "how": "Land-board and SEZ routes",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-06",
+  "feature": "BITC One-Stop Pathway",
+  "problem": "Approvals",
+  "how": "BITC service-centre sequence",
+  "gate": "Free summary"
+ },
+ {
+  "code": "OS-07",
+  "feature": "Verified Opportunity Badge",
+  "problem": "Phantom deals",
+  "how": "Field verification and title check",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-08",
+  "feature": "Co-investment Syndicate Rooms",
+  "problem": "Small tickets",
+  "how": "Pooling with escrow",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-09",
+  "feature": "Diaspora Desk",
+  "problem": "Batswana abroad",
+  "how": "Curated S-band deals",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-10",
+  "feature": "Anchor-Project Supplier Map",
+  "problem": "SMEs miss procurement",
+  "how": "Khoemacau, Mmamabula, solar IPPs, depots, NSC, roads, Kazungula",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-11",
+  "feature": "Commodity Price Board",
+  "problem": "Price opacity",
+  "how": "Cattle, vegetables, phane, fuel",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-12",
+  "feature": "Landed-Cost and Netback Calculator",
+  "problem": "Landlocked corridors",
+  "how": "Walvis Bay/Durban, borders, SACU",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-13",
+  "feature": "English/Setswana interface",
+  "problem": "Language",
+  "how": "Bilingual UI",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-14",
+  "feature": "Citizen Partner Matchmaker",
+  "problem": "Reserved activities and preferences",
+  "how": "Vetted citizen partners and JV structuring",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-15",
+  "feature": "Finance Finder",
+  "problem": "Capital",
+  "how": "Banks, CEDA, BDC, NDB, DFIs, GCF",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-16",
+  "feature": "Escrow and Milestones",
+  "problem": "Remote trust",
+  "how": "Milestone release",
+  "gate": "Fee"
+ },
+ {
+  "code": "OS-17",
+  "feature": "Drought and FMD Alerts",
+  "problem": "Water and disease shocks",
+  "how": "Dam levels, FMD zones",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-18",
+  "feature": "Aftercare Desk",
+  "problem": "Post-investment issues",
+  "how": "BITC aftercare",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-19",
+  "feature": "Policy Watch",
+  "problem": "Rule changes",
+  "how": "Alerts and re-scoring",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-20",
+  "feature": "Impact and ESG Matcher",
+  "problem": "Impact metrics",
+  "how": "Youth jobs, water, renewables",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-21",
+  "feature": "Data Rooms",
+  "problem": "Documents",
+  "how": "NDA rooms",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-22",
+  "feature": "Field Scouts",
+  "problem": "Data gaps",
+  "how": "Scouts in 16 units",
+  "gate": "Internal"
+ },
+ {
+  "code": "OS-23",
+  "feature": "Business-plan Generator",
+  "problem": "Bankable plans",
+  "how": "After-tax, tornado, equity IRR",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-24",
+  "feature": "Trade Window",
+  "problem": "Rules of origin",
+  "how": "SACU, SADC, AfCFTA, EPA, AGOA",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-25",
+  "feature": "Incentive Estimator",
+  "problem": "Incentive uncertainty",
+  "how": "15 % manufacturing/IFSC; SEZ",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-26",
+  "feature": "SEZ Desk",
+  "problem": "Zone entry",
+  "how": "Lobatse, Selebi Phikwe, SSKIA zones",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-27",
+  "feature": "Export Compliance Desk",
+  "problem": "Beef re-listing",
+  "how": "BAITS, EU/UK requirements",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-28",
+  "feature": "Solar and Storage Desk",
+  "problem": "IRP 50 % target",
+  "how": "IPP pipeline, mine PPAs",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-29",
+  "feature": "Water Supplier Desk",
+  "problem": "WUC programmes",
+  "how": "Network and O&M contracts",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-30",
+  "feature": "Health Supply-Chain Desk",
+  "problem": "Medicine shortages",
+  "how": "CMS reform contracts",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-31",
+  "feature": "Import-Substitution Radar",
+  "problem": "SA dependence",
+  "how": "Import lines vs local capacity",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-32",
+  "feature": "Town Pinning",
+  "problem": "Sites can't be found",
+  "how": "Town point → locality (DG) → P1",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-33",
+  "feature": "Title Search",
+  "problem": "Land disputes",
+  "how": "Land-board and deeds searches",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-34",
+  "feature": "Water-Stress Overlay",
+  "problem": "Drought",
+  "how": "Dams, NSC, boreholes",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-35",
+  "feature": "Skills Partnership Desk",
+  "problem": "Youth unemployment 28.9 %",
+  "how": "TVET, DTEF, BQA partners",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-36",
+  "feature": "Corridor Window",
+  "problem": "Landlocked logistics",
+  "how": "Kazungula, Trans-Kalahari, North-South",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-37",
+  "feature": "Shock-Exposure Simulator",
+  "problem": "Shocks differ by sector",
+  "how": "Diamonds, SA, fiscal, water, FMD, rates",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-38",
+  "feature": "Traceable Scoring View",
+  "problem": "Opaque scores",
+  "how": "Fact, instrument, freshness gate",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-39",
+  "feature": "Capacity and Incumbent Check",
+  "problem": "Gap may be filled",
+  "how": "Named incumbents",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-40",
+  "feature": "Precedent Deal Register",
+  "problem": "Unrealistic tickets",
+  "how": "Sourced deals with status",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-41",
+  "feature": "SOE Partner Map",
+  "problem": "BPC, WUC, Debswana, ODC, BMC",
+  "how": "Entry points",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-42",
+  "feature": "Monetary Monitor",
+  "problem": "Rate shock (+200 bp)",
+  "how": "MoPR, inflation, crawl",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-43",
+  "feature": "Corridor and Rail Tracker",
+  "problem": "Transit volumes",
+  "how": "Rail tonnes, border flows",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-44",
+  "feature": "Diamond Cycle Tracker",
+  "problem": "Revenue swings",
+  "how": "Debswana output, ODC sales",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-45",
+  "feature": "Gazetteer and Arithmetic QA Flags",
+  "problem": "Dataset errors",
+  "how": "E.g. Gaborone population 647 in dataset",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-46",
+  "feature": "Data-Gap Board (closed and open)",
+  "problem": "Gaps never close",
+  "how": "Closure log + open gaps with plan",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-47",
+  "feature": "Tourism Capacity Planner",
+  "problem": "Arrivals +29.6 %",
+  "how": "Beds vs demand",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-48",
+  "feature": "Bilingual Market Names",
+  "problem": "Search mismatch",
+  "how": "English/Setswana search",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-49",
+  "feature": "Regulatory-Change Monitor (impact-scored)",
+  "problem": "Rule changes",
+  "how": "+ / − impact and templates affected",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-50",
+  "feature": "Grant and Subsidy Calculator",
+  "problem": "Incentives",
+  "how": "CEDA, GCF, sandbox",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-51",
+  "feature": "Licence Pathway",
+  "problem": "New entrants",
+  "how": "Permit sequence by sector",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-52",
+  "feature": "Value-Capture Desk",
+  "problem": "Raw exports",
+  "how": "Diamonds, copper, beef, phane",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-53",
+  "feature": "Event Supplier Map",
+  "problem": "Events",
+  "how": "Relays legacy, conferences",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-54",
+  "feature": "Lead Tracker",
+  "problem": "Leads go stale",
+  "how": "Next action, institution to call, owner, date",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-55",
+  "feature": "Cross-Country Benchmark (dated)",
+  "problem": "Comparison",
+  "how": "Eight AIIM countries",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-56",
+  "feature": "Time-to-Revenue Filter",
+  "problem": "Patience",
+  "how": "Explicit per template",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-57",
+  "feature": "Ownership Navigator",
+  "problem": "Citizen rules",
+  "how": "Reserved activities, preferences, mining stake",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-58",
+  "feature": "Permit Pathway",
+  "problem": "Approval risk",
+  "how": "Issuer, permit, time",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-59",
+  "feature": "Regulatory Watch",
+  "problem": "Policy reversals",
+  "how": "Horticulture bans, beef suspension, tax",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-60",
+  "feature": "Public-Payment Risk Overlay",
+  "problem": "Arrears (e.g. US$75 m to private health providers)",
+  "how": "Payment-risk flags",
+  "gate": "Free/paid"
+ },
+ {
+  "code": "OS-61",
+  "feature": "Ranked Town Leads (demand-weighted)",
+  "problem": "Coverage is not signal",
+  "how": "Census-weighted, corridor-aware, no rotation",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-62",
+  "feature": "Investor Persona Filter",
+  "problem": "One list for all",
+  "how": "SME, DFI, corporate, fund, trader, diaspora",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-63",
+  "feature": "Robustness Badge",
+  "problem": "Fragile scores",
+  "how": "Score 12 Tier A",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-64",
+  "feature": "CPDS Validator",
+  "problem": "Replication",
+  "how": "Automated CPDS-1.2 checks",
+  "gate": "Internal"
+ },
+ {
+  "code": "OS-65",
+  "feature": "Dual-Currency View (pula/rand)",
+  "problem": "Rand-linked costs",
+  "how": "Values in BWP, USD and ZAR",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-66",
+  "feature": "Citizen-Reserved Filter",
+  "problem": "Foreigners blocked from reserved lines",
+  "how": "Explicit flag per template",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-67",
+  "feature": "New-Policy Early-Mover Desk",
+  "problem": "New government (2024)",
+  "how": "Policy shifts and new programmes",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-68",
+  "feature": "Corridor-Distance Score",
+  "problem": "Landlocked",
+  "how": "Distance to 6 gateways [COMPUTED]",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-69",
+  "feature": "Verification Log Viewer",
+  "problem": "Trust",
+  "how": "Random second-pass checks",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-70",
+  "feature": "Import-Restriction Planner",
+  "problem": "Horticulture bans",
+  "how": "Product list and status",
+  "gate": "Paid"
+ },
+ {
+  "code": "OS-71",
+  "feature": "Repatriation Note",
+  "problem": "No exchange controls",
+  "how": "Simple repatriation; tax only",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-72",
+  "feature": "Investment Envelope (demand-weighted)",
+  "problem": "Where money goes",
+  "how": "Envelope weighted by lead score × population",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-73",
+  "feature": "Freshness-Gated Tiering",
+  "problem": "Old facts inflate tiers",
+  "how": "Tier A needs a fact ≤18 months old",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-74",
+  "feature": "Tornado Sensitivity",
+  "problem": "Single-point plans",
+  "how": "Price, volume, capex ±20 % IRR swing",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-75",
+  "feature": "Equity-IRR Calculator",
+  "problem": "Financing ignored",
+  "how": "50 % debt at prime + 3 pp",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-76",
+  "feature": "Diamond-Downturn Re-tiering",
+  "problem": "Country-level shock",
+  "how": "Re-scores all templates under a diamond downturn",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-77",
+  "feature": "Random Verification Sampler",
+  "problem": "Hand-picked checks",
+  "how": "Seeded, stratified sample per sector",
+  "gate": "Internal"
+ },
+ {
+  "code": "OS-78",
+  "feature": "Gap-Closure Ledger",
+  "problem": "Gaps never closed",
+  "how": "Gaps closed during this issue",
+  "gate": "Free"
+ },
+ {
+  "code": "OS-79",
+  "feature": "Institution-to-Call Directory",
+  "problem": "Next actions vague",
+  "how": "Named institution per hotspot lead",
+  "gate": "Included"
+ },
+ {
+  "code": "OS-80",
+  "feature": "Semantic Validator Checks",
+  "problem": "Structural QA only",
+  "how": "Freshness, gate, envelope sums, duplicates",
+  "gate": "Internal"
+ }
+]

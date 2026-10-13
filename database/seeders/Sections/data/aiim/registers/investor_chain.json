@@ -1,0 +1,362 @@
+[
+ {
+  "code": "IQ01",
+  "question": "How big is the sector and is it growing?",
+  "info_types": "Sector GDP/value added, output volumes, 5-yr CAGR, forecasts",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Country/province choropleth of sector output",
+  "anchor": "Stats SA GDP by industry; SARB Quarterly Bulletin; sector bodies"
+ },
+ {
+  "code": "IQ02",
+  "question": "Where is the demand–supply gap?",
+  "info_types": "Demand, installed capacity, imports, shortage indicators",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Gap heat by province/district; import-dependence chip",
+  "anchor": "Stats SA; SARS trade data; sector regulators"
+ },
+ {
+  "code": "IQ03",
+  "question": "Which sub-sector/technology/asset type?",
+  "info_types": "Asset-type options, technology maturity, scale bands",
+  "tag": "BRIEF",
+  "map_behaviour": "Asset-type filter loads its layer stack",
+  "anchor": "AIIM sector register (this document)"
+ },
+ {
+  "code": "IQ04",
+  "question": "What projects already exist (government or private)?",
+  "info_types": "Project register: owner type, status, capacity, sponsor, funders",
+  "tag": "MAP",
+  "map_behaviour": "Project pins by ownership colour; time slider",
+  "anchor": "Infrastructure South Africa (ISA) pipeline; IPP Office; SIPs; company disclosures"
+ },
+ {
+  "code": "IQ05",
+  "question": "What opportunities exist, how big and where?",
+  "info_types": "Opportunity register: form, capacity/size, stage, location, ask",
+  "tag": "MAP",
+  "map_behaviour": "Gold diamonds with size label; district clusters",
+  "anchor": "InvestSA One-Stop Shop; dtic; provincial investment agencies; owners"
+ },
+ {
+  "code": "IQ06",
+  "question": "Exactly where (province, district, municipality, town)?",
+  "info_types": "ADM1–ADM3 codes, main place, ward",
+  "tag": "MAP",
+  "map_behaviour": "Breadcrumb drill-down; boundary illumination",
+  "anchor": "Stats SA/MDB boundaries (Municipal Demarcation Board)"
+ },
+ {
+  "code": "IQ07",
+  "question": "Exact coordinates and site extent",
+  "info_types": "Pin lat/lon, precision class, site polygon, SG diagram",
+  "tag": "MAP",
+  "map_behaviour": "Fly-to pin; site polygon; pegs",
+  "anchor": "Chief Surveyor-General (CSG) cadastre; owner survey"
+ },
+ {
+  "code": "IQ08",
+  "question": "Who owns the land and on what title?",
+  "info_types": "Title deed, tenure, encumbrances, servitudes, land claims",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Tenure hatch; claim flag",
+  "anchor": "Deeds Office (DeedsWeb); Commission on Restitution of Land Rights"
+ },
+ {
+  "code": "IQ09",
+  "question": "Is the use permitted (zoning)?",
+  "info_types": "Zoning scheme, SDF designation, rezoning need",
+  "tag": "MAP",
+  "map_behaviour": "Municipal zoning overlay",
+  "anchor": "Municipal SDFs/land-use schemes under SPLUMA"
+ },
+ {
+  "code": "IQ10",
+  "question": "How do I get there? Road access",
+  "info_types": "Nearest paved road, class, distance, condition, bridges",
+  "tag": "MAP",
+  "map_behaviour": "Access route drawn; condition colour",
+  "anchor": "SANRAL; provincial RAMS; municipal RAMS"
+ },
+ {
+  "code": "IQ11",
+  "question": "Power: where do I connect?",
+  "info_types": "Nearest substation by voltage, spare capacity, connection lead time",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Connection Finder line to substation",
+  "anchor": "Eskom/NTCSA Generation Connection Capacity Assessment; municipal utilities"
+ },
+ {
+  "code": "IQ12",
+  "question": "Water: is there water and may I use it?",
+  "info_types": "Source, yield, quality, licence status, bulk supply",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Water sources, bulk mains, catchment stress",
+  "anchor": "Dept of Water and Sanitation (WARMS, WULA); water boards"
+ },
+ {
+  "code": "IQ13",
+  "question": "Telecoms and fibre",
+  "info_types": "Coverage, nearest fibre PoP",
+  "tag": "MAP",
+  "map_behaviour": "Coverage raster; fibre route generalised",
+  "anchor": "ICASA; operators' coverage maps"
+ },
+ {
+  "code": "IQ14",
+  "question": "Rail and port access",
+  "info_types": "Nearest siding/terminal/port, capacity, tariffs",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Rail and port nodes with distance/time",
+  "anchor": "Transnet (TFR, TNPA, TPT) tariff books and port statistics"
+ },
+ {
+  "code": "IQ15",
+  "question": "Terrain, topography and natural hazards",
+  "info_types": "Slope, elevation, flood lines, seismicity, sinkholes, fire",
+  "tag": "MAP",
+  "map_behaviour": "Hazard overlays; elevation profile",
+  "anchor": "SANSA/NGI elevation; Council for Geoscience; SAWS; municipal flood lines"
+ },
+ {
+  "code": "IQ16",
+  "question": "Environmental sensitivity",
+  "info_types": "Sensitivity themes by site, required specialist studies",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Site sensitivity report on click",
+  "anchor": "DFFE National Web-based Environmental Screening Tool"
+ },
+ {
+  "code": "IQ17",
+  "question": "Protected and conservation areas",
+  "info_types": "Protected areas, CBAs, wetlands, heritage",
+  "tag": "MAP",
+  "map_behaviour": "Exclusion polygons",
+  "anchor": "DFFE SAPAD/SACAD; provincial CBA maps; SAHRA SAHRIS"
+ },
+ {
+  "code": "IQ18",
+  "question": "Communities and social licence",
+  "info_types": "Settlements, traditional councils, land claims, resettlement exposure",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Settlement layer; traditional council boundaries",
+  "anchor": "Stats SA census; traditional council boundaries; DLRRD"
+ },
+ {
+  "code": "IQ19",
+  "question": "Labour and skills",
+  "info_types": "Labour force, unemployment, skills, wages by province",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Labour catchment isochrone",
+  "anchor": "Stats SA QLFS; SETAs"
+ },
+ {
+  "code": "IQ20",
+  "question": "Which laws and licences apply?",
+  "info_types": "Sector acts, licence types, issuing agency",
+  "tag": "BRIEF",
+  "map_behaviour": "Agency pins",
+  "anchor": "Gazette; sector regulators"
+ },
+ {
+  "code": "IQ21",
+  "question": "How long and what will permits cost?",
+  "info_types": "Step sequence, statutory timelines, fees, documents",
+  "tag": "BRIEF",
+  "map_behaviour": "Pathway Gantt beside map",
+  "anchor": "InvestSA OSS; regulators"
+ },
+ {
+  "code": "IQ22",
+  "question": "What incentives apply?",
+  "info_types": "Tax incentives, grants, SEZ benefits, eligibility",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Incentive chip on site; SEZ polygons",
+  "anchor": "dtic incentives (e.g. s12I, SEZ regime), SARS"
+ },
+ {
+  "code": "IQ23",
+  "question": "Tax regime",
+  "info_types": "CIT, VAT, WHT, royalties, customs duties",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "SARS; National Treasury"
+ },
+ {
+  "code": "IQ24",
+  "question": "Ownership/empowerment conditions",
+  "info_types": "B-BBEE codes, sector charters, local content",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "B-BBEE Commission; dtic; sector charters"
+ },
+ {
+  "code": "IQ25",
+  "question": "Can I move money in and out?",
+  "info_types": "Exchange control, loop structures, dividend repatriation",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "SARB Financial Surveillance (Currency and Exchanges Manual for Authorised Dealers)"
+ },
+ {
+  "code": "IQ26",
+  "question": "How is my investment protected?",
+  "info_types": "Domestic investment law, BITs/DTAs, dispute forum",
+  "tag": "BRIEF",
+  "map_behaviour": "Treaty lines between countries",
+  "anchor": "Protection of Investment Act 2015; SARS DTA list"
+ },
+ {
+  "code": "IQ27",
+  "question": "Who buys the output (offtakers)?",
+  "info_types": "Offtaker identity, credit, contract terms",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Offtaker pins and service areas",
+  "anchor": "Utilities, SOEs, retailers, exporters"
+ },
+ {
+  "code": "IQ28",
+  "question": "What price/tariff will I receive?",
+  "info_types": "Regulated tariffs, market prices, history",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Price chips at nodes",
+  "anchor": "NERSA, Ports Regulator, JSE, sector boards"
+ },
+ {
+  "code": "IQ29",
+  "question": "What will it cost to build and run?",
+  "info_types": "Capex/opex benchmarks, unit rates, inflation",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "Construction cost indices; CIDB; precedent projects"
+ },
+ {
+  "code": "IQ30",
+  "question": "What investment model fits?",
+  "info_types": "PPP/IPP/JV/concession/greenfield/acquisition options",
+  "tag": "BRIEF",
+  "map_behaviour": "Model chip on pin",
+  "anchor": "National Treasury PPP Unit (Reg. 16); GTAC"
+ },
+ {
+  "code": "IQ31",
+  "question": "Who will finance it?",
+  "info_types": "DFIs, banks, guarantees, grants, blended windows",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Funder footprint layer",
+  "anchor": "DBSA, IDC, Land Bank, PIC, commercial banks, DFIs"
+ },
+ {
+  "code": "IQ32",
+  "question": "What did comparable deals look like?",
+  "info_types": "Precedent deals, valuations, terms",
+  "tag": "BRIEF",
+  "map_behaviour": "Comparable project pins highlight",
+  "anchor": "Deal databases; IPP Office results"
+ },
+ {
+  "code": "IQ33",
+  "question": "What are the risks?",
+  "info_types": "Country, sector, site, counterparty risk register",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Risk overlays + triangles",
+  "anchor": "AIIM Risk tab"
+ },
+ {
+  "code": "IQ34",
+  "question": "Physical climate risk over asset life",
+  "info_types": "Heat, drought, flood, wind projections",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Climate projection rasters",
+  "anchor": "SAWS; CSIR Green Book"
+ },
+ {
+  "code": "IQ35",
+  "question": "ESG and lender standards",
+  "info_types": "IFC PS gaps, E&S permits, grievance",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "DFFE; lender standards"
+ },
+ {
+  "code": "IQ36",
+  "question": "Which studies exist (concept, PFS, FS, EIA)?",
+  "info_types": "Document inventory and quality",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Document icons on pin",
+  "anchor": "Owners; DFFE EIA register"
+ },
+ {
+  "code": "IQ37",
+  "question": "Who is the counterparty and are they clean?",
+  "info_types": "KYC, beneficial ownership, sanctions, litigation",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "CIPC; court records; sanctions lists"
+ },
+ {
+  "code": "IQ38",
+  "question": "Local partners, contractors, suppliers",
+  "info_types": "Contractors (grading), suppliers, consultants nearby",
+  "tag": "MAP+BRIEF",
+  "map_behaviour": "Supplier pins",
+  "anchor": "CIDB register; industry associations"
+ },
+ {
+  "code": "IQ39",
+  "question": "Government counterparts and contacts",
+  "info_types": "Agencies, OSS, municipal officials",
+  "tag": "MAP",
+  "map_behaviour": "Party pins",
+  "anchor": "InvestSA; provincial agencies"
+ },
+ {
+  "code": "IQ40",
+  "question": "How long to first revenue?",
+  "info_types": "Development/construction timeline, critical path",
+  "tag": "BRIEF",
+  "map_behaviour": "Timeline overlay",
+  "anchor": "Precedents"
+ },
+ {
+  "code": "IQ41",
+  "question": "How do I exit?",
+  "info_types": "Listing, trade sale, refinancing markets",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "JSE; private markets data"
+ },
+ {
+  "code": "IQ42",
+  "question": "Can I insure it?",
+  "info_types": "Political risk, asset, credit insurance availability",
+  "tag": "BRIEF",
+  "map_behaviour": null,
+  "anchor": "SASRIA; ECIC; MIGA; ATI"
+ },
+ {
+  "code": "IQ43",
+  "question": "Is the site secure?",
+  "info_types": "Crime and security incidents, private security cost",
+  "tag": "MAP",
+  "map_behaviour": "Incident heat",
+  "anchor": "SAPS crime statistics"
+ },
+ {
+  "code": "IQ44",
+  "question": "How reliable is this information?",
+  "info_types": "Source, grade, date, conflicts",
+  "tag": "MAP",
+  "map_behaviour": "Freshness badge; grade chip",
+  "anchor": "AIIM Sources and Evidence"
+ },
+ {
+  "code": "IQ45",
+  "question": "What do I do next?",
+  "info_types": "Advisor, site visit, NDA/data room, EOI",
+  "tag": "BRIEF",
+  "map_behaviour": "CTA on pin",
+  "anchor": "AIIM embedded services"
+ }
+]

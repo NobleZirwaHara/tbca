@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Aiim;
 
 use App\Models\Aiim\Corridor;
+use App\Models\Aiim\Country;
 use App\Models\Aiim\Organisation;
 use App\Models\Aiim\Project;
 use App\Models\Aiim\Province;
@@ -32,9 +33,12 @@ class SearchController extends AiimController
 
     public function projects(Request $request, string $kind = 'project'): Response
     {
-        $f = $this->filters($request, ['types' => [], 'size' => '', 'stage' => '']);
+        $f = $this->filters($request, ['types' => [], 'size' => '', 'stage' => '', 'country' => '']);
         $q = Project::query()->whereIn('kind', [$kind, 'both']);
         $this->common($q, $f, ['name', 'summary', 'location']);
+        if ($f['country']) {
+            $q->where('country_iso2', Country::query()->where('slug', $f['country'])->value('iso2') ?? '--');
+        }
         if ($f['types']) {
             $q->whereIn('type', $f['types']);
         }
@@ -58,6 +62,7 @@ class SearchController extends AiimController
                 'types' => (clone $base)->distinct()->orderBy('type')->pluck('type'),
                 'stages' => (clone $base)->distinct()->orderBy('stage')->pluck('stage'),
                 'sizes' => [['small', 'Small-Medium (< R150M)'], ['medium', 'Medium (R150M – R400M)'], ['large', 'Large (> R400M)']],
+                'countries' => Country::query()->whereIn('iso2', (clone $base)->whereNotNull('country_iso2')->distinct()->pluck('country_iso2'))->orderBy('name')->get(['slug', 'name']),
             ] + $this->geo(),
             'saved' => $this->savedKeys($request->user()),
         ], $kind === 'project' ? 'Project Search' : 'Opportunity Search');
@@ -167,7 +172,12 @@ class SearchController extends AiimController
 
     private function showProject(Request $request, Project $project, string $as): Response
     {
-        $this->select($request, ['province' => $project->province_slug, 'sector' => $project->sector_slug, 'item' => $project->name]);
+        $this->select($request, [
+            'country' => Country::query()->where('iso2', $project->country_iso2 ?? 'ZA')->value('name'),
+            'province' => $project->province_slug ?: '',
+            'sector' => $project->sector_slug,
+            'item' => $project->name,
+        ]);
         $ent = $this->entitled($request->user(), 'project', $project->code);
 
         return $this->render($request, $as === 'project' ? 'Aiim/ProjectShow' : 'Aiim/OpportunityShow', [

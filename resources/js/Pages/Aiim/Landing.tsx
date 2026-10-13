@@ -6,6 +6,7 @@ import AiimIcon from '@/Components/Aiim/AiimIcon';
 import { Chip, levelTone } from '@/Components/Aiim/Chips';
 import { Gauge } from '@/Components/Aiim/Charts';
 import CountryPicker from '@/Components/Aiim/CountryPicker';
+import CoverageBoard, { type CoverageRow } from '@/Components/Aiim/Explorer/CoverageBoard';
 import { Ribbon, SubNav } from '@/Components/Aiim/Shell';
 import { ButtonLink } from '@/Components/ui/Button';
 import type { AiimPageProps, CountryOption, ProjectItem } from '@/types/aiim';
@@ -25,11 +26,13 @@ interface Props extends AiimPageProps {
     sectors: { slug: string; name: string; icon: string }[];
     top: ProjectItem[];
     provinces: { slug: string; name: string; score: number }[];
+    /** All 54 countries with roll-out wave, pack status and loaded record counts. */
+    coverage: CoverageRow[];
 }
 
 const panel = 'rounded-[10px] border border-gold-700/40 bg-ink-900/80 p-5';
 
-export default function Landing({ content, countries, regions, sectors, top, provinces }: Props) {
+export default function Landing({ content, countries, regions, sectors, top, provinces, coverage }: Props) {
     const [country, setCountry] = useState('');
     const [province, setProvince] = useState('');
     const [sector, setSector] = useState('');
@@ -96,6 +99,8 @@ export default function Landing({ content, countries, regions, sectors, top, pro
                         ))}
                     </ul>
                 </section>
+
+                <CoverageBoard rows={coverage} />
 
                 {/* Cockpit search + snapshot */}
                 <section className="container-tbca grid gap-5 py-8 lg:grid-cols-12">

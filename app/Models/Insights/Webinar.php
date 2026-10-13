@@ -18,6 +18,10 @@ class Webinar extends Model
             'review_due' => 'date',
             'cpd' => 'boolean',
             'gains' => 'array',
+            'details' => 'array',
+            'featured' => 'boolean',
+            'price_zar' => 'integer',
+            'replay_published_at' => 'datetime',
         ];
     }
 
@@ -29,6 +33,65 @@ class Webinar extends Model
     public function registrations(): HasMany
     {
         return $this->hasMany(WebinarRegistration::class);
+    }
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(\App\Models\Webinars\Question::class);
+    }
+
+    public function chat(): HasMany
+    {
+        return $this->hasMany(\App\Models\Webinars\ChatMessage::class);
+    }
+
+    public function polls(): HasMany
+    {
+        return $this->hasMany(\App\Models\Webinars\Poll::class)->orderBy('sort');
+    }
+
+    public function feedback(): HasMany
+    {
+        return $this->hasMany(\App\Models\Webinars\Feedback::class);
+    }
+
+    public function records(): HasMany
+    {
+        return $this->hasMany(\App\Models\Webinars\ConsoleRecord::class)->orderBy('sort');
+    }
+
+    public function endsAt(): \Illuminate\Support\Carbon
+    {
+        return $this->starts_at->copy()->addMinutes($this->duration_minutes);
+    }
+
+    /**
+     * Server-side event state (WB-COMP-01). An approved event whose slot has passed
+     * without a recorded W2 close is reported as AWAITING W3: ENDED never equals PUBLISHED.
+     */
+    public function publicState(): string
+    {
+        $state = $this->state ?? 'approved';
+        if (in_array($state, ['approved', 'awaiting_w1'], true) && $this->endsAt()->isPast()) {
+            return 'awaiting_w3';
+        }
+
+        return $state;
+    }
+
+    public function registrationOpen(): bool
+    {
+        return in_array($this->publicState(), ['awaiting_w1', 'approved'], true);
+    }
+
+    public function replayAvailable(): bool
+    {
+        return in_array($this->publicState(), ['published', 'edited', 'corrected'], true);
+    }
+
+    public function detail(string $key, mixed $default = null): mixed
+    {
+        return data_get($this->details ?? [], $key, $default);
     }
 
     public function isUpcoming(): bool

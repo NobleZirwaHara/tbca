@@ -9,7 +9,7 @@ import type { AuditEntry, Charge, CommercialRequestRow, Gate, StepperStage, Usag
 import { DisputeActions } from './Requests';
 
 interface Props {
-    room: { slug: string; reference: string; name: string; company: string; owner: string | null; stage: string; stageName: string; status: string; documents: number; parties: number; updated: string };
+    room: { slug: string; reference: string; name: string; company: string; owner: string | null; stage: string; stageName: string; status: string; documents: number; parties: number; updated: string; transactionType: string | null; transactionGroup: string | null; raiseBand: string | null };
     stages: (StepperStage & { gate: Gate | null })[];
     charges: Charge[];
     requests: CommercialRequestRow[];
@@ -21,7 +21,7 @@ export default function AdminRoom({ room, stages, charges, requests, audit, usag
     const open = stages.filter((s) => s.gate);
     return (
         <ConsoleLayout area="Deal Room Control Tower" areaIcon={FolderLock} groups={DEAL_ROOM_ADMIN_NAV} crumbs={[{ label: 'Admin', href: '/admin' }, { label: 'Virtual Deal Room', href: '/admin/deal-room' }, { label: room.reference }]}
-            title={room.name} badge={<StatusPill status={room.status} />} description={`${room.company} · owner ${room.owner ?? '—'} · Stage ${room.stage} ${room.stageName}`}
+            title={room.name} badge={<StatusPill status={room.status} />} description={`${room.company} · owner ${room.owner ?? '—'} · Stage ${room.stage} ${room.stageName}${room.transactionType ? ` · ${room.transactionType}` : ''}${room.raiseBand ? ` · ${room.raiseBand}` : ''}`}
             actions={<ButtonLink href={`/virtual-deal-room/rooms/${room.slug}`} size="sm" variant="outline">Open room as TBCA</ButtonLink>}>
             <Head title={`${room.reference} — Control Tower`} />
             <Panel title="Stage Machine">

@@ -1,0 +1,442 @@
+[
+ {
+  "group": "Minerals",
+  "product": "Rough diamonds (gem)",
+  "setswana": "Diamane",
+  "hs": "7102.31",
+  "sector_code": "MIN",
+  "note": "72.6 % of 2025 exports"
+ },
+ {
+  "group": "Minerals",
+  "product": "Industrial diamonds",
+  "setswana": "Diamane tsa madirelo",
+  "hs": "7102.21",
+  "sector_code": "MIN",
+  "note": "[VERIFY share]"
+ },
+ {
+  "group": "Minerals",
+  "product": "Polished diamonds",
+  "setswana": "Diamane e e kgabisitsweng",
+  "hs": "7102.39",
+  "sector_code": "MFG",
+  "note": "Beneficiation"
+ },
+ {
+  "group": "Minerals",
+  "product": "Copper concentrate",
+  "setswana": "Kopore",
+  "hs": "2603.00",
+  "sector_code": "MIN",
+  "note": "Motheo 45,379 t; Khoemacau 37,468 t (to Nov 2025)"
+ },
+ {
+  "group": "Minerals",
+  "product": "Silver (in concentrate)",
+  "setswana": "Selefera",
+  "hs": "2616.10",
+  "sector_code": "MIN",
+  "note": ">4 Moz from Khoemacau expansion"
+ },
+ {
+  "group": "Minerals",
+  "product": "Coal",
+  "setswana": "Malatlha",
+  "hs": "2701.12",
+  "sector_code": "MIN",
+  "note": "Morupule 2.2 Mt"
+ },
+ {
+  "group": "Minerals",
+  "product": "Soda ash",
+  "setswana": "Soda ash",
+  "hs": "2836.20",
+  "sector_code": "MIN",
+  "note": "Sowa [VERIFY data]"
+ },
+ {
+  "group": "Minerals",
+  "product": "Salt",
+  "setswana": "Letswai",
+  "hs": "2501.00",
+  "sector_code": "MIN",
+  "note": "Sowa [VERIFY data]"
+ },
+ {
+  "group": "Minerals",
+  "product": "Nickel (care and maintenance)",
+  "setswana": "Nikele",
+  "hs": "2604.00",
+  "sector_code": "MIN",
+  "note": "BCL closed [VERIFY]"
+ },
+ {
+  "group": "Minerals",
+  "product": "Gold",
+  "setswana": "Gauta",
+  "hs": "7108.12",
+  "sector_code": "MIN",
+  "note": "Small-scale [VERIFY]"
+ },
+ {
+  "group": "Minerals",
+  "product": "Coal-bed methane",
+  "setswana": "Gase",
+  "hs": "2711.21",
+  "sector_code": "OGS",
+  "note": "Tlou first sales 2026"
+ },
+ {
+  "group": "Minerals",
+  "product": "Aggregates and sand",
+  "setswana": "Motlhaba",
+  "hs": "2517.10",
+  "sector_code": "CRE",
+  "note": "Construction input"
+ },
+ {
+  "group": "Fish",
+  "product": "Tilapia (three-spot, Okavango)",
+  "setswana": "Tlhapi",
+  "hs": "0302.71",
+  "sector_code": "BLU",
+  "note": "Local catch"
+ },
+ {
+  "group": "Fish",
+  "product": "Sharptooth catfish",
+  "setswana": "Tlhapi ya Nnyelele [VERIFY]",
+  "hs": "0302.72",
+  "sector_code": "BLU",
+  "note": "Okavango"
+ },
+ {
+  "group": "Fish",
+  "product": "Tigerfish (sport)",
+  "setswana": "Tlhapi ya nkwe [VERIFY]",
+  "hs": "0302.89",
+  "sector_code": "BLU",
+  "note": "Angling tourism"
+ },
+ {
+  "group": "Fish",
+  "product": "Bream (Oreochromis)",
+  "setswana": "Tlhapi",
+  "hs": "0302.71",
+  "sector_code": "BLU",
+  "note": "Aquaculture"
+ },
+ {
+  "group": "Fish",
+  "product": "Frozen hake (imported)",
+  "setswana": "Tlhapi e e gatsetsweng",
+  "hs": "0303.66",
+  "sector_code": "BLU",
+  "note": "Import substitution target"
+ },
+ {
+  "group": "Fish",
+  "product": "Canned fish (imported)",
+  "setswana": "Tlhapi ya mo thineng",
+  "hs": "1604.13",
+  "sector_code": "BLU",
+  "note": "Imports >90 %"
+ },
+ {
+  "group": "Fish",
+  "product": "Fish feed",
+  "setswana": "Dijo tsa ditlhapi",
+  "hs": "2309.90",
+  "sector_code": "BLU",
+  "note": "Aquaculture input"
+ },
+ {
+  "group": "Fish",
+  "product": "Fingerlings",
+  "setswana": "Ditlhapinyana",
+  "hs": "0301.99",
+  "sector_code": "BLU",
+  "note": "Hatchery"
+ },
+ {
+  "group": "Fish",
+  "product": "Mopane worms (phane)",
+  "setswana": "Phane",
+  "hs": "0410.90",
+  "sector_code": "FOR",
+  "note": "Export permit P2,200"
+ },
+ {
+  "group": "Fish",
+  "product": "Dried fish",
+  "setswana": "Tlhapi e e omisitsweng",
+  "hs": "0305.59",
+  "sector_code": "BLU",
+  "note": "Trade with Zambia/Namibia [VERIFY]"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Beef",
+  "setswana": "Nama ya kgomo",
+  "hs": "0201.30",
+  "sector_code": "AGR",
+  "note": "EU/UK suspended (FMD)"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Live cattle",
+  "setswana": "Dikgomo",
+  "hs": "0102.29",
+  "sector_code": "AGR",
+  "note": "P523 m exports (2024)"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Goats",
+  "setswana": "Dipudi",
+  "hs": "0104.20",
+  "sector_code": "AGR",
+  "note": "1.27 m"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Sorghum",
+  "setswana": "Mabele",
+  "hs": "1007.90",
+  "sector_code": "AGR",
+  "note": "Citizen-reserved milling"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Maize",
+  "setswana": "Mmidi",
+  "hs": "1005.90",
+  "sector_code": "AGR",
+  "note": "Pandamatenga"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Tomatoes",
+  "setswana": "Ditamati",
+  "hs": "0702.00",
+  "sector_code": "AGR",
+  "note": "Import restriction"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Potatoes",
+  "setswana": "Ditapole",
+  "hs": "0701.90",
+  "sector_code": "AGR",
+  "note": "Import restriction"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Onions",
+  "setswana": "Dieie",
+  "hs": "0703.10",
+  "sector_code": "AGR",
+  "note": "Import restriction"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Hides and skins",
+  "setswana": "Matlalo",
+  "hs": "4101.20",
+  "sector_code": "AGR",
+  "note": "Lobatse leather"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Milk",
+  "setswana": "Mashi",
+  "hs": "0401.10",
+  "sector_code": "AGR",
+  "note": "Sour milk citizen-reserved"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Poultry",
+  "setswana": "Dikoko",
+  "hs": "0207.11",
+  "sector_code": "AGR",
+  "note": "Domestic"
+ },
+ {
+  "group": "Forest",
+  "product": "Marula",
+  "setswana": "Morula",
+  "hs": "2009.89",
+  "sector_code": "FOR",
+  "note": "Veld product"
+ },
+ {
+  "group": "Forest",
+  "product": "Devil's claw",
+  "setswana": "Sengaparile",
+  "hs": "1211.90",
+  "sector_code": "FOR",
+  "note": "Veld product"
+ },
+ {
+  "group": "Forest",
+  "product": "Firewood",
+  "setswana": "Dikgong",
+  "hs": "4401.11",
+  "sector_code": "FOR",
+  "note": "29.7 % of households"
+ },
+ {
+  "group": "Forest",
+  "product": "Timber (imported)",
+  "setswana": "Ditlhare",
+  "hs": "4407.11",
+  "sector_code": "FOR",
+  "note": "HS44 imports US$66.3 m (2023)"
+ },
+ {
+  "group": "Energy",
+  "product": "Electricity",
+  "setswana": "Motlakase",
+  "hs": "2716.00",
+  "sector_code": "ENR",
+  "note": "Imports ≈35–43 %"
+ },
+ {
+  "group": "Energy",
+  "product": "Diesel",
+  "setswana": "Diesele",
+  "hs": "2710.19",
+  "sector_code": "OGS",
+  "note": "55 % of fuel use"
+ },
+ {
+  "group": "Energy",
+  "product": "Solar modules",
+  "setswana": "Diphanele tsa letsatsi",
+  "hs": "8541.43",
+  "sector_code": "ENR",
+  "note": "104 MW operating"
+ },
+ {
+  "group": "Industry",
+  "product": "Car wiring harnesses",
+  "setswana": "Megala ya dikoloi",
+  "hs": "8544.30",
+  "sector_code": "MFG",
+  "note": "Lobatse SEZ (303 jobs)"
+ },
+ {
+  "group": "Industry",
+  "product": "Leather goods",
+  "setswana": "Dilwana tsa letlalo",
+  "hs": "4202.21",
+  "sector_code": "MFG",
+  "note": "Lobatse SEZ"
+ },
+ {
+  "group": "Industry",
+  "product": "Bottled water",
+  "setswana": "Metsi a mo dibotlolong",
+  "hs": "2201.10",
+  "sector_code": "MFG",
+  "note": "Citizen-reserved"
+ },
+ {
+  "group": "Industry",
+  "product": "Bread and confectionery",
+  "setswana": "Borotho",
+  "hs": "1905.90",
+  "sector_code": "MFG",
+  "note": "Citizen-reserved"
+ },
+ {
+  "group": "Industry",
+  "product": "Peanut butter",
+  "setswana": "Botoro jwa ditloomo",
+  "hs": "2008.11",
+  "sector_code": "MFG",
+  "note": "Citizen-reserved"
+ },
+ {
+  "group": "Services",
+  "product": "Tourism (safari)",
+  "setswana": "Bojanala",
+  "hs": null,
+  "sector_code": "TOU",
+  "note": "P9.2 bn inbound spend (2024)"
+ },
+ {
+  "group": "Services",
+  "product": "BPO / customer service",
+  "setswana": "Ditirelo tsa BPO",
+  "hs": null,
+  "sector_code": "CSP",
+  "note": "CCI Global deal"
+ },
+ {
+  "group": "Services",
+  "product": "Financial services (IFSC)",
+  "setswana": "Ditirelo tsa madi",
+  "hs": null,
+  "sector_code": "FIN",
+  "note": "15 % tax regime"
+ },
+ {
+  "group": "Services",
+  "product": "Education services",
+  "setswana": "Thuto",
+  "hs": null,
+  "sector_code": "EDU",
+  "note": "60,287 tertiary students"
+ },
+ {
+  "group": "Agriculture",
+  "product": "Game meat",
+  "setswana": "Nama ya diphologolo",
+  "hs": "0208.90",
+  "sector_code": "AGR",
+  "note": "Value chain"
+ },
+ {
+  "group": "Industry",
+  "product": "Ice",
+  "setswana": "Kgapetla",
+  "hs": "2201.90",
+  "sector_code": "MFG",
+  "note": "Citizen-reserved"
+ },
+ {
+  "group": "Industry",
+  "product": "Animal feed",
+  "setswana": "Dijo tsa diphologolo",
+  "hs": "2309.90",
+  "sector_code": "AGR",
+  "note": "Herd rebuild"
+ },
+ {
+  "group": "Services",
+  "product": "Logistics (Kazungula corridor)",
+  "setswana": "Dipalangwang",
+  "hs": null,
+  "sector_code": "TRN",
+  "note": "400 → 1,000 trucks/day capacity"
+ },
+ {
+  "group": "Minerals",
+  "product": "Polished jewellery",
+  "setswana": "Dikgabisa",
+  "hs": "7113.19",
+  "sector_code": "MFG",
+  "note": "Tourist retail"
+ },
+ {
+  "group": "Forest",
+  "product": "Mopane wood",
+  "setswana": "Mophane",
+  "hs": "4403.99",
+  "sector_code": "FOR",
+  "note": "Fuelwood"
+ }
+]

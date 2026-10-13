@@ -81,7 +81,7 @@ Every order adds VAT at 15% and a R250 platform fee. Card payments also carry a 
 - **Payments:** the payment gateway is simulated.
 - **Messages:** emails and WhatsApp messages are recorded but not sent. This covers invitations, reminders and notifications.
 - **External integrations are not connected yet.** This covers payment gateways, email and WhatsApp, the AI agents, translation and data feeds. The plan is in `docs/INTEGRATIONS_PLAN.md`.
-- **Translation:** the language selector saves your choice and switches Arabic to right-to-left, but the text stays in English ("coming soon") until a translation provider is connected.
+- **Translation:** menus, footer, home, contact and offices pages are translated into all 7 languages. Other page content shows in English until its keys are added to `lang/{locale}.json` (see `php artisan tbca:translations`).
 - **Payment options:** 7 gateways and 11 methods are listed, but only card, EFT and wallet work today. The rest show "coming soon".
 - **AI features are stand-ins:**
   - NATASHA, KAREN, MICHAELA and NIKIWE answer from built-in intent matchers.
@@ -114,7 +114,11 @@ These are available on every page or across all modules.
   - Rebuilt header logo, with separate sizes for the header and footer.
   - Subtle page backdrops.
   - Generated cover art on sprint, product and brief cards.
-- **Language selector (header):** 7 languages: English, Afrikaans, Portuguese, Mandarin, French, Swahili and Arabic. Choosing Arabic switches the page to right-to-left. Only English is translated today; the others show "coming soon".
+- **Language selector (header):** 7 languages: English, Afrikaans, Portuguese, Mandarin, French, Swahili and Arabic.
+  - Switching re-renders the page in the new language without a reload, and the choice persists across pages.
+  - Translated: header, all menus, mobile menu, footer, home page, contact page, offices page and the deal room transaction types. Untranslated text falls back to English.
+  - Arabic switches the layout to right-to-left, mirrors arrows and loads the Noto Sans Arabic font.
+  - Dictionaries: `lang/{af,pt,zh,fr,sw,ar}.json`. `php artisan tbca:translations` reports coverage.
 - **Currency selector (header):**
   - 5 currencies: ZAR, USD, XOF, EUR and RMB.
   - Rates come from a live daily feed (open.er-api.com) and fall back to fixed rates in `config/tbca.php` if the feed fails.
@@ -180,6 +184,7 @@ These are available on every page or across all modules.
     - Corridor views.
   - Contact page:
     - Head Office and 12 Country Offices; clicking an office opens its Google Map.
+    - Under Head Office: two featured country offices (Botswana, Mauritius), then "View all other Country Offices", which opens `/contact/offices` (all offices by region).
     - A directory of Functional Leads.
   - Diagnostics page with a walkthrough player.
 - **How to use:**
@@ -190,7 +195,7 @@ These are available on every page or across all modules.
   - **Countries:** open `/find-the-right-service/countries`, search for a country, then open its page, e.g. `/find-the-right-service/countries/ng` or `/countries/ke`.
   - **Contact:** open `/contact` and click an office to show its map.
 - **URLs:**
-  - Landing pages: `/`, `/contact`, `/webinars`, `/kp-thought-leadership`, `/diagnostics`
+  - Landing pages: `/`, `/contact`, `/contact/offices`, `/webinars`, `/kp-thought-leadership`, `/diagnostics`
   - Journeys: `/discovery-call`, `/business-health-score`, `/tools`, `/find-the-right-service`
   - Country and corridor views: `/find-the-right-service/countries/za`, `/find-the-right-service/corridors`
 - **Demo data:**
@@ -447,6 +452,8 @@ These are available on every page or across all modules.
   - MICHAELA, an in-room assistant that knows the current room and stage.
   - Embedded services for deal rooms are listed at `/embedded-services/virtual-deal-room`.
   - Enquiry, then pre-mandate stages A–C and stages 0–15.
+  - Enquiry transaction types are grouped (M&A; Capital Raising & Financing; Real Estate & Infrastructure; Restructuring & Distressed Transactions; Strategic Partnerships & Commercial Agreements).
+  - Indicative Raise is a set of bands held in rand (under R1m up to over R500m) and shown in the selected display currency. The band code is stored.
   - Each stage has gates, tick lists, approvals and stage fees.
   - A setup wizard.
   - Commercial screens: estimate → quotation → fee breakdown → scope → engagement → deposit, then statements, closing invoice and post-close subscription.

@@ -1,0 +1,114 @@
+[
+ {
+  "measure": "Sweep templates",
+  "value": 321
+ },
+ {
+  "measure": "S-band share %",
+  "value": 75
+ },
+ {
+  "measure": "Tier A pre-gate",
+  "value": 141
+ },
+ {
+  "measure": "Gated to B (stale)",
+  "value": 10
+ },
+ {
+  "measure": "Gated to B (RA < 10)",
+  "value": 45
+ },
+ {
+  "measure": "Tier A+",
+  "value": 28
+ },
+ {
+  "measure": "Tier A",
+  "value": 58
+ },
+ {
+  "measure": "Tier B",
+  "value": 206
+ },
+ {
+  "measure": "Tier C",
+  "value": 29
+ },
+ {
+  "measure": "Robust Tier A",
+  "value": 79
+ },
+ {
+  "measure": "Citizen-reserved templates",
+  "value": 11
+ },
+ {
+  "measure": "FX-earning templates",
+  "value": 60
+ },
+ {
+  "measure": "Hotspot leads",
+  "value": 126
+ },
+ {
+  "measure": "Ranked leads",
+  "value": 2137
+ },
+ {
+  "measure": "Coverage rows",
+  "value": 10346
+ },
+ {
+  "measure": "Top-1 concentration % (no rotation)",
+  "value": 46
+ },
+ {
+  "measure": "Top-1 concentration % (DZ rotation rule)",
+  "value": 19
+ },
+ {
+  "measure": "Places in ranked lists",
+  "value": 34
+ },
+ {
+  "measure": "Units",
+  "value": 16
+ },
+ {
+  "measure": "Places",
+  "value": 83
+ },
+ {
+  "measure": "Population (16 units)",
+  "value": 2350961
+ },
+ {
+  "measure": "Sector facts",
+  "value": 102
+ },
+ {
+  "measure": "Grade 3 %",
+  "value": 76
+ },
+ {
+  "measure": "Macro facts",
+  "value": 27
+ },
+ {
+  "measure": "Facts verified (random sample)",
+  "value": 18
+ },
+ {
+  "measure": "Downturn: A+ base → downturn",
+  "value": "28 → 28"
+ },
+ {
+  "measure": "Downturn: downgraded",
+  "value": 19
+ },
+ {
+  "measure": "Validator passes",
+  "value": "30/30"
+ }
+]

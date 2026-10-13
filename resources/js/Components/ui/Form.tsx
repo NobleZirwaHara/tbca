@@ -38,7 +38,7 @@ export function Field({
             {label && (
                 <label htmlFor={id} className="block text-[0.8125rem] font-medium text-ink-800">
                     {label}
-                    {required && <span className="ml-0.5 text-risk-500">*</span>}
+                    {required && <span className="ms-0.5 text-risk-500">*</span>}
                 </label>
             )}
             {children(id)}
@@ -60,6 +60,24 @@ export function Textarea({ className, invalid, ...rest }: TextareaHTMLAttributes
     return <textarea aria-invalid={invalid || undefined} className={cn(control, 'min-h-24 py-2', className)} {...rest} />;
 }
 
+type SelectOption = string | { value: string; label: string };
+
+/** A labelled group of options, rendered as an <optgroup>. */
+export interface SelectGroup {
+    group: string;
+    options: SelectOption[];
+}
+
+function renderOption(o: SelectOption) {
+    const opt = typeof o === 'string' ? { value: o, label: o } : o;
+
+    return (
+        <option key={opt.value} value={opt.value}>
+            {opt.label}
+        </option>
+    );
+}
+
 export function Select({
     className,
     options,
@@ -67,21 +85,22 @@ export function Select({
     invalid,
     ...rest
 }: SelectHTMLAttributes<HTMLSelectElement> & {
-    options: (string | { value: string; label: string })[];
+    options: (SelectOption | SelectGroup)[];
     placeholder?: string;
     invalid?: boolean;
 }) {
     return (
-        <select aria-invalid={invalid || undefined} className={cn(control, 'h-10 pr-8', className)} {...rest}>
+        <select aria-invalid={invalid || undefined} className={cn(control, 'h-10 pe-8', className)} {...rest}>
             {placeholder && <option value="">{placeholder}</option>}
-            {options.map((o) => {
-                const opt = typeof o === 'string' ? { value: o, label: o } : o;
-                return (
-                    <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                    </option>
-                );
-            })}
+            {options.map((o) =>
+                typeof o === 'object' && 'group' in o ? (
+                    <optgroup key={o.group} label={o.group}>
+                        {o.options.map(renderOption)}
+                    </optgroup>
+                ) : (
+                    renderOption(o)
+                ),
+            )}
         </select>
     );
 }
@@ -126,7 +145,7 @@ export function ChoiceCard({
             aria-checked={selected}
             onClick={onSelect}
             className={cn(
-                'flex w-full items-center gap-3 rounded-[6px] border px-4 py-3 text-left transition-colors',
+                'flex w-full items-center gap-3 rounded-[6px] border px-4 py-3 text-start transition-colors',
                 selected ? 'border-gold-500 bg-gold-50 ring-1 ring-gold-500' : 'border-parchment-400 bg-white hover:border-gold-300',
                 className,
             )}

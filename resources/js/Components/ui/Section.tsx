@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { useT } from '@/lib/i18n';
 
 export function Section({
     children,
@@ -43,6 +44,7 @@ export function SectionHeading({
     className?: string;
 }) {
     const dark = tone === 'dark';
+    const t = useT();
 
     return (
         <header
@@ -59,7 +61,7 @@ export function SectionHeading({
                         dark ? 'text-gold-400' : 'text-gold-700',
                     )}
                 >
-                    {eyebrow}
+                    {t(eyebrow)}
                 </p>
             )}
 
@@ -69,7 +71,7 @@ export function SectionHeading({
                     dark ? 'text-parchment-100' : 'text-ink-900',
                 )}
             >
-                {title}
+                {t(title)}
             </h2>
 
             {lead && (
@@ -79,7 +81,7 @@ export function SectionHeading({
                         dark ? 'text-gold-300' : 'text-gold-700',
                     )}
                 >
-                    {lead}
+                    {t(lead)}
                 </p>
             )}
 
@@ -90,7 +92,7 @@ export function SectionHeading({
                         dark ? 'text-ink-200' : 'text-ink-600',
                     )}
                 >
-                    {body}
+                    {t(body)}
                 </p>
             )}
         </header>

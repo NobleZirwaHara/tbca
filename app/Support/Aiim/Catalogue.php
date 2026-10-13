@@ -4,6 +4,7 @@ namespace App\Support\Aiim;
 
 use App\Models\Aiim\Brief;
 use App\Models\Aiim\Corridor;
+use App\Models\Aiim\Country;
 use App\Models\Aiim\Organisation;
 use App\Models\Aiim\Project;
 use App\Models\Aiim\Province;
@@ -53,7 +54,9 @@ class Catalogue
             'kind' => $p->kind,
             'summary' => $p->summary,
             'province' => $p->province_slug,
-            'provinceName' => Province::query()->where('slug', $p->province_slug)->value('name') ?? ucfirst($p->province_slug),
+            'provinceName' => $p->province_slug
+                ? (Province::query()->where('slug', $p->province_slug)->value('name') ?? ucfirst($p->province_slug))
+                : (ProjectBriefs::placeName(1, $p->screening['location']['region'] ?? null)[0] ?? ''),
             'sector' => $p->sector_slug,
             'sectorName' => Sector::query()->where('slug', $p->sector_slug)->value('name') ?? $p->sector_slug,
             'location' => $p->location,
@@ -69,6 +72,8 @@ class Catalogue
             'tags' => $d['tags'] ?? [],
             'evidence' => Grades::evidence($p->confidence, $p->verification, Source::query()->where('code', $p->source_code)->value('name') ?? ($d['source'] ?? null), $p->updated_at?->format('j M Y'), $p->next_review_on?->format('j M Y')),
             'hasPremium' => ! empty($p->premium),
+            'country' => self::countryOf($p),
+            'screening' => $p->screening_status ? ProjectBriefs::present($p) : null,
         ];
 
         if ($full) {
@@ -78,6 +83,17 @@ class Catalogue
         }
 
         return $base;
+    }
+
+    /** Country of a project for breadcrumbs (South Africa for the province pack). */
+    private static function countryOf(Project $p): array
+    {
+        static $cache = [];
+        $iso = $p->country_iso2 ?? 'ZA';
+        $cache[$iso] ??= Country::query()->where('iso2', $iso)->first(['slug', 'name']);
+        $c = $cache[$iso];
+
+        return ['iso2' => $iso, 'slug' => $c->slug ?? 'south-africa', 'name' => $c->name ?? 'South Africa'];
     }
 
     public static function organisation(Organisation $o, bool $full = false): array

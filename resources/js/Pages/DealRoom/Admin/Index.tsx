@@ -8,7 +8,7 @@ import { KpiTile, Panel, SimpleTable, StatusPill } from '@/Components/ui/Kit';
 import ConsoleLayout from '@/Layouts/ConsoleLayout';
 import type { ApprovalRow } from '@/types/deal-room';
 
-interface RoomRow { slug: string; reference: string; name: string; company: string; owner: string | null; stage: string; stageName: string; status: string; documents: number; parties: number; updated: string }
+interface RoomRow { slug: string; reference: string; name: string; company: string; owner: string | null; stage: string; stageName: string; status: string; documents: number; parties: number; updated: string; transactionType: string | null; transactionGroup: string | null; raiseBand: string | null }
 interface Props {
     rooms: RoomRow[];
     approvals: (ApprovalRow & { subject: string; room: string; slug: string })[];
@@ -61,7 +61,7 @@ export default function AdminIndex({ rooms, approvals, kpis, stageDistribution, 
             }>
                 <SimpleTable columns={['Reference', 'Room', 'Owner', 'Stage', 'Status', 'Docs', 'Parties', 'Updated']} empty="No rooms match." rows={rooms.map((r) => [
                     <Link key="r" href={`/admin/deal-room/rooms/${r.slug}`} className="font-mono text-xs text-controlled-700 hover:underline">{r.reference}</Link>,
-                    <span key="n"><span className="font-medium">{r.name}</span><span className="block text-[0.6875rem] text-ink-400">{r.company}</span></span>,
+                    <span key="n"><span className="font-medium">{r.name}</span><span className="block text-[0.6875rem] text-ink-400">{r.company}</span>{r.transactionType && <span className="block text-[0.6875rem] text-ink-500" title={r.transactionGroup ?? undefined}>{r.transactionType}{r.raiseBand ? ` · ${r.raiseBand}` : ''}</span>}</span>,
                     r.owner ?? '—', `${r.stage} · ${r.stageName}`, <StatusPill key="s" status={r.status} />, r.documents, r.parties, r.updated,
                 ])} />
             </Panel>
