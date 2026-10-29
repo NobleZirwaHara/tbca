@@ -63,5 +63,3 @@ Require a named owner, a credible baseline, a measurable improvement and a decis
 \[3\] Central Bank of Kenya, Licensing of Digital Credit Providers, 14 July 2026. [Primary source](https://www.centralbank.go.ke/uploads/press_releases/1035898107_Press%20Release%20-%20Licensing%20of%20Digital%20Credit%20Providers%20-%20July%202026.pdf)
 
 \[4\] GSMA, State of the Industry Report on Mobile Money 2026. [Primary source](https://www.gsma.com/sotir/)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

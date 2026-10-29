@@ -59,5 +59,3 @@ This approach is adaptable to a hospital improvement, a municipal customer-servi
 \[1\] World Bank, Business Ready 2025, framework and 101-economy report. [Primary source](https://www.worldbank.org/en/businessready/publications)
 
 \[2\] OECD, G20/OECD Principles of Corporate Governance 2023. [Primary source](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report.html)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

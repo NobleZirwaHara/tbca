@@ -12,6 +12,7 @@ import { cn } from '@/lib/cn';
 import { usePrice } from '@/lib/money';
 import type { SharedProps } from '@/types';
 import type { Notices, WebinarDetail, WebinarEvent, WebinarRegistrationInfo } from '@/types/webinars';
+import ProductDeliverablesPanel from '@/Components/Sprints/ProductDeliverablesPanel';
 
 /* ========================================================================== */
 /* Icons and colours                                                          */
@@ -256,6 +257,7 @@ export function WebinarShell({
                         <div className="min-w-0 space-y-5">{children}</div>
                         {rail && <aside className="min-w-0 space-y-4">{rail}</aside>}
                     </div>
+                    <ProductDeliverablesPanel />
                 </main>
             </div>
             <Footer />

@@ -5,12 +5,8 @@
   "title": "AI Won’t Replace You. But Someone Using AI Will.",
   "kicker": "KP THOUGHT LEADERSHIP / TECHNOLOGY & AI",
   "deck": "AI should improve the quality and speed of work, with human judgement accountable for the result.",
-  "byline": [
-    "By The Business Clinic.Africa | 15 April 2026 | Pan-African Business Analysis"
-  ],
   "date": "2026-04-15",
   "date_note": null,
-  "author": "The Business Clinic.Africa",
   "voice": "I",
   "scope": "AFR-G0",
   "themes": [
@@ -27,9 +23,7 @@
       "url": "https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure"
     }
   ],
-  "notes": [
-    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
-  ],
+  "notes": [],
   "source": {
     "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
     "file": "ai-wont-replace-you.docx",

@@ -13,6 +13,8 @@ export interface ReceivedDeliverable {
     keyIssues: string[];
     pageUnit: string | null;
     tiers: Record<DeliverableTier, { extent: string | null; pages: string | null; delivery: string | null }>;
+    /** Produced for every product of this kind (for example every Due Diligence case), not only this one. */
+    shared?: boolean;
 }
 
 const TIERS: { key: DeliverableTier; label: string }[] = [
@@ -23,14 +25,23 @@ const TIERS: { key: DeliverableTier; label: string }[] = [
 
 const asTier = (v: string | null | undefined): DeliverableTier | null => (v === 'basic' || v === 'standard' || v === 'premium' ? v : null);
 
-/** Reads the package a visitor picks in any Sprint template's package selector, without each template having to report it. */
-function tierFromEvent(target: EventTarget | null, panel: HTMLElement | null): DeliverableTier | null {
+/**
+ * Reads the package a visitor picks in the page's package selector, without each page
+ * having to report it. Aliases map a page's own package names (for example Essential,
+ * Enhanced, Executive) to Basic, Standard and Premium.
+ */
+function tierFromEvent(target: EventTarget | null, panel: HTMLElement | null, aliases: Record<string, DeliverableTier>): DeliverableTier | null {
     if (!(target instanceof Element) || panel?.contains(target)) return null;
-    if (target instanceof HTMLInputElement && target.type === 'radio') return asTier(target.value);
-    const option = target.closest('[role="radio"]');
+    const names = ['basic', 'standard', 'premium', ...Object.keys(aliases)];
+    const resolve = (word: string | undefined) => (word ? (asTier(word.toLowerCase()) ?? aliases[word.toLowerCase()] ?? null) : null);
+    if (target instanceof HTMLInputElement && target.type === 'radio') {
+        const direct = resolve(target.value);
+        if (direct) return direct;
+    }
+    const option = target.closest('[role="radio"], label:has(input[type="radio"])');
     // The option's text runs together (name, price, delivery), so take the first package name in it.
-    const word = option?.textContent?.match(/(Basic|Standard|Premium)/i)?.[1];
-    return word ? asTier(word.toLowerCase()) : null;
+    const word = option?.textContent?.match(new RegExp(`(${names.join('|')})`, 'i'))?.[1];
+    return resolve(word);
 }
 
 /**
@@ -38,7 +49,15 @@ function tierFromEvent(target: EventTarget | null, panel: HTMLElement | null): D
  * of Deliverables links to this Sprint, with the extent of detail and page count for
  * the selected package. Follows the page's package selector and the ?package= query.
  */
-export default function WhatYouWillReceive({ deliverables, selectedPackage }: { deliverables: ReceivedDeliverable[]; selectedPackage?: string | null }) {
+export default function WhatYouWillReceive({
+    deliverables,
+    selectedPackage,
+    tierAliases = {},
+}: {
+    deliverables: ReceivedDeliverable[];
+    selectedPackage?: string | null;
+    tierAliases?: Record<string, DeliverableTier>;
+}) {
     const [tier, setTier] = useState<DeliverableTier>(asTier(selectedPackage) ?? 'standard');
     const [panel, setPanel] = useState<HTMLElement | null>(null);
 
@@ -49,7 +68,7 @@ export default function WhatYouWillReceive({ deliverables, selectedPackage }: { 
 
     useEffect(() => {
         const follow = (e: Event) => {
-            const t = tierFromEvent(e.target, panel);
+            const t = tierFromEvent(e.target, panel, tierAliases);
             if (t) setTier(t);
         };
         document.addEventListener('change', follow);
@@ -58,11 +77,13 @@ export default function WhatYouWillReceive({ deliverables, selectedPackage }: { 
             document.removeEventListener('change', follow);
             document.removeEventListener('click', follow);
         };
-    }, [panel]);
+    }, [panel, tierAliases]);
 
     if (deliverables.length === 0) return null;
 
     const tierLabel = TIERS.find((t) => t.key === tier)?.label ?? 'Standard';
+    const own = deliverables.filter((d) => !d.shared);
+    const shared = deliverables.filter((d) => d.shared);
 
     return (
         <section ref={setPanel} aria-labelledby="what-you-will-receive" className="border-t border-parchment-400 bg-parchment-100">
@@ -94,11 +115,15 @@ export default function WhatYouWillReceive({ deliverables, selectedPackage }: { 
                     </div>
                 </div>
 
-                <ul className="mt-5 space-y-4">
-                    {deliverables.map((d) => (
-                        <DeliverableCard key={d.ref} d={d} tier={tier} />
-                    ))}
-                </ul>
+                {own.length > 0 && (
+                    <ul className="mt-5 space-y-4">
+                        {own.map((d) => (
+                            <DeliverableCard key={d.ref} d={d} tier={tier} />
+                        ))}
+                    </ul>
+                )}
+
+                {shared.length > 0 && <SharedList items={shared} tier={tier} />}
             </div>
         </section>
     );
@@ -166,5 +191,45 @@ function DeliverableCard({ d, tier }: { d: ReceivedDeliverable; tier: Deliverabl
                 </div>
             </div>
         </li>
+    );
+}
+
+/** Deliverables produced for every order of this kind, listed compactly. */
+function SharedList({ items, tier }: { items: ReceivedDeliverable[]; tier: DeliverableTier }) {
+    const [open, setOpen] = useState<string | null>(null);
+
+    return (
+        <div className="mt-5 rounded-[8px] border border-parchment-400 bg-white p-4 sm:p-5">
+            <h3 className="text-[0.9375rem] font-semibold text-ink-900">Also provided with every order of this kind</h3>
+            <ul className="mt-3 divide-y divide-parchment-300">
+                {items.map((d) => {
+                    const t = d.tiers[tier];
+                    const format = d.format === 'Other' && d.formatDetail ? d.formatDetail : d.format;
+                    const expanded = open === d.ref;
+                    return (
+                        <li key={d.ref} className="py-2.5">
+                            <button
+                                type="button"
+                                aria-expanded={expanded}
+                                onClick={() => setOpen(expanded ? null : d.ref)}
+                                className="flex w-full flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-left"
+                            >
+                                <span className="min-w-0 text-[0.8125rem] font-medium text-ink-900 [overflow-wrap:anywhere]">{d.name}</span>
+                                <span className="text-[0.75rem] text-ink-500">
+                                    {format}
+                                    {t.pages ? ` · ${t.pages} ${d.pageUnit ?? 'pages'}` : ''}
+                                </span>
+                            </button>
+                            {expanded && (
+                                <div className="mt-2 space-y-1.5 text-[0.8125rem] text-ink-700">
+                                    {d.description && <p>{d.description}</p>}
+                                    {t.extent && <p className="text-ink-600">{t.extent}</p>}
+                                </div>
+                            )}
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
     );
 }

@@ -17,5 +17,5 @@ Route::prefix('admin/deliverables')->name('admin.deliverables.')->middleware(['a
     Route::get('/automation', [AdminController::class, 'automation'])->name('automation');
     Route::get('/standards', [AdminController::class, 'standards'])->name('standards');
     Route::get('/export.csv', [AdminController::class, 'export'])->name('export');
-    Route::get('/{ref}', [AdminController::class, 'show'])->where('ref', 'DEL-[A-Z]{2}-[0-9]{3,5}')->name('show');
+    Route::get('/{ref}', [AdminController::class, 'show'])->where('ref', 'DEL-[A-Z]{2,3}-[0-9]{3,5}')->name('show');
 });

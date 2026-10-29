@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import * as L from 'lucide-react';
 import { btnClass } from '@/Components/Webinars/kit';
-import { BASE, Box, ConfidenceRing, Empty, FreshnessBadge, KpPage, Meter, VoiceBadge, scoreTone, type KpAnswerT, type KpShared } from '@/Components/Kp/kit';
+import { BASE, Box, ConfidenceRing, Empty, FreshnessBadge, KpPage, Meter, scoreTone, type KpAnswerT, type KpShared } from '@/Components/Kp/kit';
 
 interface Props extends KpShared {
     answer: KpAnswerT;
@@ -67,15 +67,13 @@ export default function Sources({ screen, kpNav, answer: a, breakdown, freshness
                 {a.sources.length === 0 ? <Empty>No sources: the assistant did not answer from evidence, so nothing was cited.</Empty> : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-[0.8125rem]">
-                            <thead className="border-b border-parchment-400 text-[0.75rem] text-ink-600"><tr><th className="py-2 pr-2">#</th><th className="py-2 pr-2">Source</th><th className="py-2 pr-2">Role</th><th className="py-2 pr-2">Author</th><th className="py-2 pr-2">Voice</th><th className="py-2 pr-2">Freshness</th><th className="py-2 pr-2">Evidence</th><th className="py-2">Score</th></tr></thead>
+                            <thead className="border-b border-parchment-400 text-[0.75rem] text-ink-600"><tr><th className="py-2 pr-2">#</th><th className="py-2 pr-2">Source</th><th className="py-2 pr-2">Role</th><th className="py-2 pr-2">Freshness</th><th className="py-2 pr-2">Evidence</th><th className="py-2">Score</th></tr></thead>
                             <tbody className="divide-y divide-parchment-300">
                                 {a.sources.map((s) => (
                                     <tr key={s.n}>
                                         <td className="py-2 pr-2">{s.n}</td>
                                         <td className="py-2 pr-2"><Link href={s.href} className="font-semibold text-ink-900 hover:text-gold-700">{s.title}</Link><span className="block text-[0.6875rem] text-ink-500">{s.typeLabel} | {s.scope}</span></td>
                                         <td className="py-2 pr-2"><span className="rounded-[4px] bg-verified-50 px-1.5 py-0.5 text-[0.6875rem] font-semibold text-verified-700">{s.role}</span></td>
-                                        <td className="py-2 pr-2">{s.author}</td>
-                                        <td className="py-2 pr-2"><VoiceBadge code={s.voice} /></td>
                                         <td className="py-2 pr-2"><FreshnessBadge state={s.freshness} /></td>
                                         <td className="py-2 pr-2 text-[0.75rem]">{s.evidence}</td>
                                         <td className="py-2 font-bold">{s.weight}</td>

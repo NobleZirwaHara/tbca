@@ -63,5 +63,3 @@ Finally, build a monthly capital-allocation rule. Projects that demonstrate sust
 \[2\] GSMA, State of the Industry Report on Mobile Money 2026. [Primary source](https://www.gsma.com/sotir/)
 
 \[3\] IFC, Connecting SMEs with Equitable Access to Working Capital, 2025. [Primary source](https://www.ifc.org/en/insights-reports/2025/connecting-smes-with-equitable-access-to-working-capital)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

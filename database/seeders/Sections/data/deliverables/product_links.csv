@@ -1,0 +1,187 @@
+deliverable_ref,product_type,product_code,product_slug,product_name,product_url,scope,match_method,confidence,note
+DEL-SV-005,service,SVC-033,company-registration-sprint,"Company Registration Sprint",/services/catalogue/company-registration-sprint,product,"Reviewed pair",high,"Same service: company registration"
+DEL-SV-006,service,SVC-018,board-charter-governance-sprint,"Board Charter & Governance Sprint",/services/catalogue/board-charter-governance-sprint,product,"Name match 0.75",high,
+DEL-SV-008,service,SVC-068,market-research-sprint,"Market Research Sprint",/services/catalogue/market-research-sprint,product,"Name match 0.67",high,
+DEL-SV-012,service,SVC-045,elearning-course-design-sprint,"eLearning Course Design Sprint",/services/catalogue/elearning-course-design-sprint,product,"Reviewed pair",high,"Same service: eLearning course design"
+DEL-SV-014,service,SVC-028,cash-flow-forecast-sprint,"Cash Flow Forecast Sprint",/services/catalogue/cash-flow-forecast-sprint,product,"Reviewed pair",high,"Same service: cash flow forecast"
+DEL-SV-015,service,SVC-054,funding-readiness-sprint,"Funding Readiness Sprint",/services/catalogue/funding-readiness-sprint,product,"Name match 0.67",high,
+DEL-SV-021,service,SVC-057,hr-policy-pack-sprint,"HR Policy Pack Sprint",/services/catalogue/hr-policy-pack-sprint,product,"Reviewed pair",high,"Same service: HR policy pack"
+DEL-SV-022,service,SVC-038,culture-engagement-survey-sprint,"Culture & Engagement Survey Sprint",/services/catalogue/culture-engagement-survey-sprint,product,"Name match 0.75",high,
+DEL-SV-030,service,SVC-046,enterprise-risk-register-sprint,"Enterprise Risk Register Sprint",/services/catalogue/enterprise-risk-register-sprint,product,"Name match 0.75",high,
+DEL-SV-035,service,SVC-010,ai-use-case-discovery-sprint,"AI Use-Case Discovery Sprint",/services/catalogue/ai-use-case-discovery-sprint,product,"Reviewed pair",high,"Same service: AI use-case discovery"
+DEL-SV-038,service,SVC-098,supply-chain-diagnostic-sprint,"Supply Chain Diagnostic Sprint",/services/catalogue/supply-chain-diagnostic-sprint,product,"Name match 1.00",high,
+DEL-SV-039,service,SVC-086,project-concept-note-sprint,"Project Concept Note Sprint",/services/catalogue/project-concept-note-sprint,product,"Name match 1.00",high,
+DEL-SV-044,service,SVC-023,business-rescue-readiness-sprint,"Business Rescue Readiness Sprint",/services/catalogue/business-rescue-readiness-sprint,product,"Name match 0.75",high,
+DEL-SV-045,service,SVC-048,esg-baseline-assessment-sprint,"ESG Baseline Assessment Sprint",/services/catalogue/esg-baseline-assessment-sprint,product,"Reviewed pair",high,"Same service: ESG baseline"
+DEL-SV-047,service,SVC-058,impact-measurement-framework-sprint,"Impact Measurement Framework Sprint",/services/catalogue/impact-measurement-framework-sprint,product,"Name match 1.00",high,
+DEL-SV-048,service,SVC-044,digital-transformation-roadmap-sprint,"Digital Transformation Roadmap Sprint",/services/catalogue/digital-transformation-roadmap-sprint,product,"Name match 1.00",high,
+DEL-SV-052,service,SVC-024,business-valuation-sprint,"Business Valuation Sprint",/services/catalogue/business-valuation-sprint,product,"Name match 0.67",high,
+DEL-SV-054,service,SVC-107,website-build-sprint,"Website Build Sprint",/services/catalogue/website-build-sprint,product,"Reviewed pair",high,"Same service: website build"
+DEL-SV-055,service,SVC-072,online-shop-launch-sprint,"Online Shop Launch Sprint",/services/catalogue/online-shop-launch-sprint,product,"Name match 0.75",high,
+DEL-SV-056,service,SVC-051,export-readiness-sprint,"Export Readiness Sprint",/services/catalogue/export-readiness-sprint,product,"Name match 0.67",high,
+DEL-SV-057,service,SVC-008,afcfta-opportunity-sprint,"AfCFTA Opportunity Sprint",/services/catalogue/afcfta-opportunity-sprint,product,"Reviewed pair",high,"Same service: AfCFTA opportunity"
+DEL-SV-058,service,SVC-047,esd-programme-design-sprint,"ESD Programme Design Sprint",/services/catalogue/esd-programme-design-sprint,product,"Reviewed pair",high,"Same service: enterprise and supplier development programme design"
+DEL-DD-001,dd_family,DDF-INDIVIDUAL,individual,"Individual Checks",/due-diligence/individual,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-002,dd_family,DDF-COMPANY,company,"Company Checks",/due-diligence/company,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-003,dd_family,DDF-SUPPLIER,supplier,"Supplier Checks",/due-diligence/supplier,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-004,dd_family,DDF-DIRECTOR-UBO,director-ubo,"Director & UBO Checks",/due-diligence/director-ubo,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-005,dd_family,DDF-INVESTOR,investor,"Investor Checks",/due-diligence/investor,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-006,dd_family,DDF-PROJECT-SPONSOR,project-sponsor,"Project Sponsor Checks",/due-diligence/project-sponsor,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-007,dd_family,DDF-INSTITUTION,institution,"Institution Checks",/due-diligence/institution,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-008,dd_family,DDF-AML-KYC-KYB,aml-kyc-kyb,"AML, KYC & KYB",/due-diligence/aml-kyc-kyb,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-009,dd_family,DDF-PROJECT,project,"Project Due Diligence",/due-diligence/project,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-010,dd_family,DDF-ESG,esg,"ESG Due Diligence",/due-diligence/esg,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-011,dd_family,DDF-ENTERPRISE,enterprise,"Enterprise Screening",/due-diligence/enterprise,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-012,dd_family,DDF-MONITORING,monitoring,"Monitoring Services",/due-diligence/monitoring,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-013,dd_family,DDF-REPORTS,reports,"Reports & Dashboards",/due-diligence/reports,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-014,dd_family,DDF-PORTAL-API,portal-api,"Portal & API Setup",/due-diligence/portal-api,product,"Check family = Due Diligence family page (same order and name)",high,
+DEL-DD-028,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-029,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-030,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-031,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-032,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-033,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-034,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-035,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-036,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-037,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-038,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-039,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-040,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DD-041,dd_family,*,,"Every Due Diligence check",,all,"Journey output of every Due Diligence case (Stages A to 14)",high,
+DEL-DP-001,digital_product,DP-PLN-000123,business-plan-template,"Business Plan Template",/digital-products/business-plan-template,product,"Name match 1.00",high,
+DEL-DP-002,digital_product,DP-TPL-000132,lean-business-plan-template,"Lean Business Plan Template",/digital-products/lean-business-plan-template,product,"Name match 1.00",high,
+DEL-DP-003,digital_product,DP-GOV-000610,board-pack-template,"Board Pack Template",/digital-products/board-pack-template,product,"Name match 1.00",high,
+DEL-DP-004,digital_product,DP-PR-000441,pitch-deck-template,"Pitch Deck Template",/digital-products/pitch-deck-template,product,"Name match 1.00",high,
+DEL-DP-007,digital_product,DP-FIN-000215,financial-model-template-3-statements,"Financial Model Template (3-Statements)",/digital-products/financial-model-template-3-statements,product,"Name match 1.00",high,
+DEL-DP-008,digital_product,DP-FN-000332,cash-flow-forecast-template,"Cash Flow Forecast Template",/digital-products/cash-flow-forecast-template,product,"Name match 1.00",high,
+DEL-DP-010,digital_product,DP-RPT-000101,south-africa-investment-opportunities-report-2026,"South Africa Investment Opportunities Report 2026",/digital-products/south-africa-investment-opportunities-report-2026,product,"Reviewed pair",high,"App edition of the country report (South Africa 2026)"
+DEL-DP-011,digital_product,DP-GD-000701,sector-opportunity-guide-energy,"Sector Opportunity Guide – Energy",/digital-products/sector-opportunity-guide-energy,product,"Name match 0.75",high,
+DEL-DP-012,digital_product,DP-CRS-000801,financial-literacy-for-founders-course,"Financial Literacy for Founders Course",/digital-products/financial-literacy-for-founders-course,product,"Name match 1.00",high,
+DEL-DP-013,digital_product,DP-TLK-000402,esg-due-diligence-toolkit,"ESG Due Diligence Toolkit",/digital-products/esg-due-diligence-toolkit,product,"Name match 1.00",high,
+DEL-DP-014,digital_product,DP-RS-000511,market-research-toolkit,"Market Research Toolkit",/digital-products/market-research-toolkit,product,"Name match 1.00",high,
+DEL-DP-015,digital_product,DP-CHK-000188,aml-kyc-compliance-checklist,"AML & KYC Compliance Checklist",/digital-products/aml-kyc-compliance-checklist,product,"Name match 1.00",high,
+DEL-DP-016,digital_product,DP-DSH-000301,project-feasibility-dashboard,"Project Feasibility Dashboard",/digital-products/project-feasibility-dashboard,product,"Name match 1.00",high,
+DEL-DP-018,digital_product,*,,"Every digital product",,all,"Statement produced for every product of the type",high,
+DEL-SU-001,subscription_plan,SUB-ESS,essentials,Essentials,/subscriptions/essentials,product,"Register family = subscription plan name",high,
+DEL-SU-002,subscription_plan,SUB-ESS,essentials,Essentials,/subscriptions/essentials,product,"Register family = subscription plan name",high,
+DEL-SU-003,subscription_plan,SUB-ESS,essentials,Essentials,/subscriptions/essentials,product,"Register family = subscription plan name",high,
+DEL-SU-004,subscription_plan,SUB-GRO,growth,Growth,/subscriptions/growth,product,"Register family = subscription plan name",high,
+DEL-SU-005,subscription_plan,SUB-GRO,growth,Growth,/subscriptions/growth,product,"Register family = subscription plan name",high,
+DEL-SU-006,subscription_plan,SUB-GRO,growth,Growth,/subscriptions/growth,product,"Register family = subscription plan name",high,
+DEL-SU-007,subscription_plan,SUB-PRO,professional,Professional,/subscriptions/professional,product,"Register family = subscription plan name",high,
+DEL-SU-008,subscription_plan,SUB-PRO,professional,Professional,/subscriptions/professional,product,"Register family = subscription plan name",high,
+DEL-SU-009,subscription_plan,SUB-PRO,professional,Professional,/subscriptions/professional,product,"Register family = subscription plan name",high,
+DEL-SU-010,subscription_plan,SUB-ENT,enterprise,Enterprise,/subscriptions/enterprise,product,"Register family = subscription plan name",high,
+DEL-SU-010,subscription_plan,SUB-CUS,custom-intelligence-archive,"Custom / Intelligence Archive",/subscriptions/custom-intelligence-archive,product,"Register family = subscription plan name",high,
+DEL-SU-011,subscription_plan,SUB-ENT,enterprise,Enterprise,/subscriptions/enterprise,product,"Register family = subscription plan name",high,
+DEL-SU-011,subscription_plan,SUB-CUS,custom-intelligence-archive,"Custom / Intelligence Archive",/subscriptions/custom-intelligence-archive,product,"Register family = subscription plan name",high,
+DEL-SU-012,subscription_plan,*,,"Every subscription plan",,all,"Statement produced for every product of the type",high,
+DEL-RT-001,retainer,RSV-001,executive-advisory,"Executive Advisory Retainer",/retainers/executive-advisory,product,"Register family = retainer service name",high,
+DEL-RT-002,retainer,RSV-001,executive-advisory,"Executive Advisory Retainer",/retainers/executive-advisory,product,"Register family = retainer service name",high,
+DEL-RT-003,retainer,RSV-002,procurement-desk,"Procurement Desk Retainer",/retainers/procurement-desk,product,"Register family = retainer service name",high,
+DEL-RT-004,retainer,RSV-002,procurement-desk,"Procurement Desk Retainer",/retainers/procurement-desk,product,"Register family = retainer service name",high,
+DEL-RT-005,retainer,RSV-003,due-diligence-desk,"Due Diligence Desk Retainer",/retainers/due-diligence-desk,product,"Register family = retainer service name",high,
+DEL-RT-006,retainer,RSV-003,due-diligence-desk,"Due Diligence Desk Retainer",/retainers/due-diligence-desk,product,"Register family = retainer service name",high,
+DEL-RT-007,retainer,RSV-004,project-advisory-desk,"Project Advisory Desk Retainer",/retainers/project-advisory-desk,product,"Register family = retainer service name",high,
+DEL-RT-008,retainer,RSV-005,technology-desk,"Technology Desk Retainer",/retainers/technology-desk,product,"Register family = retainer service name",high,
+DEL-RT-009,retainer,*,,"Every retainer",,all,"Register family says all desks",high,
+DEL-RT-010,retainer,*,,"Every retainer",,all,"Register family says all desks",high,
+DEL-MP-001,marketplace_listing,MKT-005,financial-model-review,"Financial Model Review",/marketplace/services/financial-model-review,product,"Name match 0.75",high,
+DEL-MP-004,marketplace_listing,MKT-009,monthly-financial-reporting-review,"Monthly Financial Reporting & Review",/marketplace/services/monthly-financial-reporting-review,product,"Name match 1.00",high,
+DEL-MP-005,marketplace_listing,MKT-008,market-entry-study,"Market Entry Study",/marketplace/services/market-entry-study,product,"Name match 1.00",high,
+DEL-MP-006,marketplace_listing,MKT-002,cash-flow-projection,"Cash Flow Projection (24 Months)",/marketplace/services/cash-flow-projection,product,"Name match 1.00",high,
+DEL-PS-001,partner_service,PSV-011,contract-drafting-review,"Contract Drafting & Review",/partner-services/services/contract-drafting-review,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-001,partner_service,PSV-012,corporate-commercial-advisory,"Corporate & Commercial Advisory",/partner-services/services/corporate-commercial-advisory,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-001,partner_service,PSV-034,regulatory-compliance-advisory,"Regulatory Compliance Advisory",/partner-services/services/regulatory-compliance-advisory,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-001,partner_service,PSV-026,legal-due-diligence-support,"Legal Due Diligence Support",/partner-services/services/legal-due-diligence-support,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-001,partner_service,PSV-027,ma-transaction-legal-support,"M&A Transaction Legal Support",/partner-services/services/ma-transaction-legal-support,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-001,partner_service,PSV-009,commercial-dispute-advisory,"Commercial Dispute Advisory",/partner-services/services/commercial-dispute-advisory,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-001,partner_service,PSV-024,intellectual-property-licensing-support,"Intellectual Property & Licensing Support",/partner-services/services/intellectual-property-licensing-support,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-001,partner_service,PSV-013,employment-law-advisory,"Employment Law Advisory",/partner-services/services/employment-law-advisory,product,"Discipline = Partner Services listing category",high,"Category legal-services"
+DEL-PS-002,partner_service,PSV-035,statutory-audit-coordination,"Statutory Audit Coordination",/partner-services/services/statutory-audit-coordination,product,"Discipline = Partner Services listing category",high,"Category audit-assurance"
+DEL-PS-002,partner_service,PSV-022,independent-review-compilation,"Independent Review (Compilation)",/partner-services/services/independent-review-compilation,product,"Discipline = Partner Services listing category",high,"Category audit-assurance"
+DEL-PS-002,partner_service,PSV-001,agreed-upon-procedures,"Agreed-Upon Procedures",/partner-services/services/agreed-upon-procedures,product,"Discipline = Partner Services listing category",high,"Category audit-assurance"
+DEL-PS-003,partner_service,PSV-038,tax-compliance-returns,"Tax Compliance & Returns",/partner-services/services/tax-compliance-returns,product,"Discipline = Partner Services listing category",high,"Category tax-advisory"
+DEL-PS-003,partner_service,PSV-039,tax-structuring-review,"Tax Structuring Review",/partner-services/services/tax-structuring-review,product,"Discipline = Partner Services listing category",high,"Category tax-advisory"
+DEL-PS-003,partner_service,PSV-042,transfer-pricing-documentation,"Transfer Pricing Documentation",/partner-services/services/transfer-pricing-documentation,product,"Discipline = Partner Services listing category",high,"Category tax-advisory"
+DEL-PS-004,partner_service,PSV-017,esg-reporting-readiness,"ESG Reporting Readiness",/partner-services/services/esg-reporting-readiness,product,"Discipline = Partner Services listing category",high,"Category esg-advisory"
+DEL-PS-004,partner_service,PSV-037,sustainability-assurance-support,"Sustainability Assurance Support",/partner-services/services/sustainability-assurance-support,product,"Discipline = Partner Services listing category",high,"Category esg-advisory"
+DEL-PS-005,partner_service,PSV-016,environmental-impact-assessment-eia,"Environmental Impact Assessment (EIA)",/partner-services/services/environmental-impact-assessment-eia,product,"Discipline = Partner Services listing category",high,"Category environmental-services"
+DEL-PS-005,partner_service,PSV-003,basic-assessment-report,"Basic Assessment Report",/partner-services/services/basic-assessment-report,product,"Discipline = Partner Services listing category",high,"Category environmental-services"
+DEL-PS-005,partner_service,PSV-015,environmental-compliance-audit,"Environmental Compliance Audit",/partner-services/services/environmental-compliance-audit,product,"Discipline = Partner Services listing category",high,"Category environmental-services"
+DEL-PS-005,partner_service,PSV-045,water-use-licence-support,"Water Use Licence Support",/partner-services/services/water-use-licence-support,product,"Discipline = Partner Services listing category",high,"Category environmental-services"
+DEL-PS-005,partner_service,PSV-021,heritage-impact-assessment,"Heritage Impact Assessment",/partner-services/services/heritage-impact-assessment,product,"Discipline = Partner Services listing category",high,"Category environmental-services"
+DEL-PS-005,partner_service,PSV-044,waste-management-licence-support,"Waste Management Licence Support",/partner-services/services/waste-management-licence-support,product,"Discipline = Partner Services listing category",high,"Category environmental-services"
+DEL-PS-006,partner_service,PSV-014,engineering-design-review,"Engineering Design Review",/partner-services/services/engineering-design-review,product,"Discipline = Partner Services listing category",high,"Category engineering-technical"
+DEL-PS-006,partner_service,PSV-040,technical-due-diligence,"Technical Due Diligence",/partner-services/services/technical-due-diligence,product,"Discipline = Partner Services listing category",high,"Category engineering-technical"
+DEL-PS-006,partner_service,PSV-036,structural-engineering-sign-off,"Structural Engineering Sign-off",/partner-services/services/structural-engineering-sign-off,product,"Discipline = Partner Services listing category",high,"Category engineering-technical"
+DEL-PS-006,partner_service,PSV-020,geotechnical-investigation-coordination,"Geotechnical Investigation Coordination",/partner-services/services/geotechnical-investigation-coordination,product,"Discipline = Partner Services listing category",high,"Category engineering-technical"
+DEL-PS-007,partner_service,PSV-019,financial-model-review-expert-review,"Financial Model Review (Expert Review)",/partner-services/services/financial-model-review-expert-review,product,"Discipline = Partner Services listing category",high,"Category financial-advisory"
+DEL-PS-007,partner_service,PSV-023,independent-valuation-opinion,"Independent Valuation Opinion",/partner-services/services/independent-valuation-opinion,product,"Discipline = Partner Services listing category",high,"Category financial-advisory"
+DEL-PS-008,partner_service,PSV-002,aml-kyc-programme-review,"AML / KYC Programme Review",/partner-services/services/aml-kyc-programme-review,product,"Discipline = Partner Services listing category",high,"Category specialist-compliance"
+DEL-PS-008,partner_service,PSV-029,popia-information-officer-support,"POPIA Information Officer Support",/partner-services/services/popia-information-officer-support,product,"Discipline = Partner Services listing category",high,"Category specialist-compliance"
+DEL-PS-009,partner_service,*,,"Every partner service",,all,"Register family says all disciplines",high,
+DEL-PS-010,partner_service,*,,"Every partner service",,all,"Register family says all disciplines",high,
+DEL-PS-011,partner_service,*,,"Every partner service",,all,"Register family says all disciplines",high,
+DEL-PS-012,partner_service,*,,"Every partner service",,all,"Register family says all disciplines",high,
+DEL-PS-013,partner_service,*,,"Every partner service",,all,"Register family says all disciplines",high,
+DEL-PS-014,partner_service,*,,"Every partner service",,all,"Register family says all disciplines",high,
+DEL-TS-001,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-002,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-003,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-004,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-005,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-006,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-007,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-008,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-009,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-010,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-011,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-012,tech_tower,*,,"Every Technology Solutions engagement",,all,"Stage output (S0 to S13) of every Technology Solutions engagement",high,
+DEL-TS-013,tech_tower,TS-1,business-systems-zoho-one,"Business Systems & Zoho One",/technology-solutions/towers/business-systems-zoho-one,product,"Register tower TS-1 to TS-7 = tower page (same order and name)",high,
+DEL-TS-014,tech_tower,TS-2,data-bi-dashboards,"Data, BI & Dashboards",/technology-solutions/towers/data-bi-dashboards,product,"Register tower TS-1 to TS-7 = tower page (same order and name)",high,
+DEL-TS-015,tech_tower,TS-3,ai-agentic-automation,"AI & Agentic Automation",/technology-solutions/towers/ai-agentic-automation,product,"Register tower TS-1 to TS-7 = tower page (same order and name)",high,
+DEL-TS-016,tech_tower,TS-4,rpa-workflow-automation,"RPA & Workflow Automation",/technology-solutions/towers/rpa-workflow-automation,product,"Register tower TS-1 to TS-7 = tower page (same order and name)",high,
+DEL-TS-017,tech_tower,TS-5,web-ecommerce-portals,"Web, eCommerce, Portals & Online Shops",/technology-solutions/towers/web-ecommerce-portals,product,"Register tower TS-1 to TS-7 = tower page (same order and name)",high,
+DEL-TS-018,tech_tower,TS-6,cloud-cyber-infrastructure,"Cloud, Cybersecurity & Digital Infrastructure",/technology-solutions/towers/cloud-cyber-infrastructure,product,"Register tower TS-1 to TS-7 = tower page (same order and name)",high,
+DEL-TS-019,tech_tower,TS-7,experience-design-product,"Experience, Design & Product",/technology-solutions/towers/experience-design-product,product,"Register tower TS-1 to TS-7 = tower page (same order and name)",high,
+DEL-PC-003,pa_service,PA-T-001,project-concept-development,"Project Concept Development",/project-advisory/services/project-concept-development,product,"Reviewed pair",high,"App service lists Concept Note"
+DEL-PC-007,pa_service,PA-T-001,project-concept-development,"Project Concept Development",/project-advisory/services/project-concept-development,product,"Reviewed pair",high,"App service lists Investability Screen"
+DEL-PC-008,pa_service,PA-T-001,project-concept-development,"Project Concept Development",/project-advisory/services/project-concept-development,product,"Reviewed pair",high,"App service lists Roadmap"
+DEL-PC-015,pa_service,PA-T-002,feasibility-studies,"Feasibility Studies",/project-advisory/services/feasibility-studies,product,"Reviewed pair",high,"App service lists Feasibility Report"
+DEL-PC-016,pa_service,PA-T-004,financial-modelling-valuation,"Financial Modelling & Valuation",/project-advisory/services/financial-modelling-valuation,product,"Reviewed pair",high,"App service lists Financial Model"
+DEL-PC-017,pa_service,PA-T-004,financial-modelling-valuation,"Financial Modelling & Valuation",/project-advisory/services/financial-modelling-valuation,product,"Reviewed pair",high,"App service lists Model Book and assumptions log"
+DEL-PC-021,pa_service,PA-T-003,business-case-strategy,"Business Case & Strategy",/project-advisory/services/business-case-strategy,product,"Reviewed pair",high,"App service lists Business Case and Investment Memorandum"
+DEL-PC-022,pa_service,PA-T-003,business-case-strategy,"Business Case & Strategy",/project-advisory/services/business-case-strategy,product,"Reviewed pair",high,"App service lists Options Appraisal"
+DEL-PC-025,pa_service,PA-T-002,feasibility-studies,"Feasibility Studies",/project-advisory/services/feasibility-studies,product,"Reviewed pair",high,"App service lists Executive Summary"
+DEL-PC-034,pa_service,PA-T-004,financial-modelling-valuation,"Financial Modelling & Valuation",/project-advisory/services/financial-modelling-valuation,product,"Reviewed pair",high,"App service lists Valuation Report"
+DEL-PT-003,pa_service,PA-T-006,funding-investor-readiness,"Funding & Investor Readiness",/project-advisory/services/funding-investor-readiness,product,"Reviewed pair",high,"App service lists Funder Map and Approach Strategy"
+DEL-PT-005,pa_service,PA-T-005,project-structuring-packaging,"Project Structuring & Packaging",/project-advisory/services/project-structuring-packaging,product,"Reviewed pair",high,"App service lists Structuring Options Paper and Risk Matrix"
+DEL-PT-006,pa_service,PA-T-005,project-structuring-packaging,"Project Structuring & Packaging",/project-advisory/services/project-structuring-packaging,product,"Reviewed pair",high,"App service lists Information Memorandum and Teaser"
+DEL-PT-017,pa_service,PA-T-007,implementation-support-pmo,"Implementation Support & PMO",/project-advisory/services/implementation-support-pmo,product,"Reviewed pair",high,"App service lists Monthly PMO Report"
+DEL-IN-018,industry,AGR,agriculture-agro-industry,"Agriculture & Agro-Industry",/industries/agriculture-agro-industry,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-019,industry,RET,retail-consumer-commerce,"Retail & Consumer Commerce",/industries/retail-consumer-commerce,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-020,industry,MFG,manufacturing-industrial,"Manufacturing & Industrial",/industries/manufacturing-industrial,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-021,industry,TRN,transport-logistics,"Transport & Logistics",/industries/transport-logistics,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-022,industry,MIN,mining-minerals,"Mining & Minerals",/industries/mining-minerals,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-023,industry,ENE,energy-utilities,"Energy & Utilities",/industries/energy-utilities,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-024,industry,INF,infrastructure-public-projects,"Infrastructure & Public Projects",/industries/infrastructure-public-projects,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-025,industry,PRC,property-construction,"Property & Construction",/industries/property-construction,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-026,industry,TOU,tourism-hospitality,"Tourism & Hospitality",/industries/tourism-hospitality,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-027,industry,PRO,professional-services,"Professional Services",/industries/professional-services,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-028,industry,ICT,technology-ict-digital,"Technology, ICT & Digital",/industries/technology-ict-digital,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-029,industry,GOV,government-public-sector,"Government & Public Sector",/industries/government-public-sector,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-030,industry,NGO,ngo-social-enterprise-development,"NGO, Social Enterprise & Development",/industries/ngo-social-enterprise-development,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-031,industry,EDU,education-skills,"Education & Skills",/industries/education-skills,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-032,industry,HLT,health-pharmaceuticals,"Health & Pharmaceuticals",/industries/health-pharmaceuticals,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-033,industry,CRE,creative-media-entertainment,"Creative, Media & Entertainment",/industries/creative-media-entertainment,product,"Industry brief = industry page (same industry name)",high,
+DEL-IN-034,industry,FIN,financial-services,"Financial Services",/industries/financial-services,product,"Industry brief = industry page (same industry name)",high,
+DEL-TC-022,tool,TLS-009,startup-runway-calculator,"Startup Runway Calculator",/tools/calculators/startup-runway-calculator,product,"Reviewed pair",high,"Same calculation: cash runway"
+DEL-TC-023,tool,TLS-004,pricing-and-break-even-calculator,"Pricing and Break-Even Calculator",/tools/calculators/pricing-and-break-even-calculator,product,"Name match 0.75",high,
+DEL-TC-027,tool,TLS-011,working-capital-calculator,"Working Capital Calculator",/tools/calculators/working-capital-calculator,product,"Name match 0.75",high,
+DEL-TC-029,tool,TLS-014,budget-variance-calculator,"Budget Variance Calculator",/tools/calculators/budget-variance-calculator,product,"Name match 1.00",high,
+DEL-WB-001,webinar,*,,"Every webinar",,all,"Output of every webinar",high,
+DEL-WB-002,webinar,*,,"Every webinar",,all,"Output of every webinar",high,
+DEL-WB-003,webinar,*,,"Every webinar",,all,"Output of every webinar",high,
+DEL-WB-004,webinar,*,,"Every webinar",,all,"Output of every webinar",high,

@@ -62,7 +62,7 @@ return new class extends Migration
             $table->string('slug', 80)->unique();
             $table->string('name');
             $table->string('region', 20);
-            $table->string('wave', 4)->nullable();
+            $table->string('wave', 40)->nullable();
             $table->string('pack', 20)->nullable();
             $table->string('pack_status', 40)->nullable();
             $table->string('capital')->nullable();
@@ -101,7 +101,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('complexity');
             $table->boolean('viable')->default(false);
             $table->string('population', 20)->nullable();
-            $table->string('entry_tier', 12)->nullable();
+            $table->string('entry_tier', 60)->nullable();
             $table->string('published_tiers', 8)->nullable();
             $table->unsignedInteger('cost_basic')->nullable();
             $table->unsignedInteger('cost_standard')->nullable();

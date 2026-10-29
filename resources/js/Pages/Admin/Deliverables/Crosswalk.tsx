@@ -21,7 +21,8 @@ interface Row {
 
 interface Props {
     filters: { match: Match | null; q: string };
-    stats: { codes: number; code: number; register_id: number; unmatched: number; sprints: number; sprintsWithout: number; statusNew: number; statusLinked: number };
+    stats: { codes: number; code: number; register_id: number; unmatched: number; sprints: number; sprintsWithout: number; statusNew: number; statusLinked: number; statusGenerated: number };
+    productLinks: { type: string; scope: string; links: number; deliverables: number }[];
     byPopulation: { population: string; code: number; register_id: number; unmatched: number }[];
     rows: Paginated<Row>;
     unmatched: { sprint_code: string; sprint_name: string | null; population: string | null; deliverable_ref: string }[];
@@ -31,7 +32,7 @@ interface Props {
 const MATCH_LABEL: Record<Match, string> = { code: 'Linked by code', register_id: 'Linked by register ID', unmatched: 'No app Sprint' };
 const matchTone = (m: Match) => (m === 'unmatched' ? 'warn' : 'good');
 
-export default function Crosswalk({ filters, stats, byPopulation, rows, unmatched, withoutDeliverable }: Props) {
+export default function Crosswalk({ filters, stats, byPopulation, rows, unmatched, withoutDeliverable, productLinks }: Props) {
     const [q, setQ] = useState(filters.q);
     const matched = stats.code + stats.register_id;
 
@@ -51,12 +52,12 @@ export default function Crosswalk({ filters, stats, byPopulation, rows, unmatche
             groups={DELIVERABLES_NAV}
             crumbs={[{ label: 'Admin', href: '/admin' }, { label: 'Deliverables', href: '/admin/deliverables' }, { label: 'Sprint crosswalk' }]}
             title="Sprint Crosswalk Coverage"
-            description="How the register's 7,589 Sprint codes line up with the Sprints published in the app, and which app Sprints have no deliverable yet."
+            description="How the register's 7,589 Sprint codes and the TBCA-generated deliverables line up with the Sprints published in the app, and how Issue 1.0 deliverables link to other products."
         >
             <Head title="Sprint Crosswalk Coverage" />
 
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-                <KpiTile label="Crosswalk codes" value={fmt(stats.codes)} caption={`${fmt(stats.statusNew)} new rows, ${fmt(stats.statusLinked)} linked to Issue 1.0`} />
+                <KpiTile label="Crosswalk codes" value={fmt(stats.codes)} caption={`${fmt(stats.statusNew)} new, ${fmt(stats.statusLinked)} Issue 1.0, ${fmt(stats.statusGenerated)} TBCA generated`} />
                 <KpiTile label="Match rate" value={pct(matched, stats.codes)} caption={`${fmt(matched)} codes have an app Sprint`} tone="good" />
                 <KpiTile label="Linked by code" value={fmt(stats.code)} />
                 <KpiTile label="Linked by register ID" value={fmt(stats.register_id)} />
@@ -78,6 +79,7 @@ export default function Crosswalk({ filters, stats, byPopulation, rows, unmatche
                     />
                     <p className="mt-3 text-xs text-ink-500">
                         The register covers 7,589 Sprints: the 7,008 catalogue Sprints of the Volume 11 register, plus 569 embedded services and 12 internal operations from Batch 4D.
+                        App Sprints the register does not list have a TBCA-generated deliverable (population APP SPRINT).
                     </p>
                 </Panel>
                 <Panel title={`Codes with no app Sprint (${unmatched.length})`}>
@@ -96,9 +98,18 @@ export default function Crosswalk({ filters, stats, byPopulation, rows, unmatche
                 </Panel>
             </div>
 
+            <Panel title="Issue 1.0 deliverables linked to other products" className="mt-5">
+                <SimpleTable
+                    columns={['Product type', 'Links to', 'Links', 'Deliverables']}
+                    empty="No product links loaded."
+                    rows={productLinks.map((p) => [p.type, p.scope === 'all' ? 'Every product of the type' : 'One product', fmt(p.links), fmt(p.deliverables)])}
+                />
+                <p className="mt-3 text-xs text-ink-500">The full mapping with match method and confidence, including rows not linked, is in docs/knowledge-base/kruger-2026-10/deliverables-product-mapping.csv.</p>
+            </Panel>
+
             <Panel title={`App Sprints with no deliverable (${fmt(stats.sprintsWithout)})`} className="mt-5">
                 <p className="mb-3 text-[0.8125rem] text-ink-500">
-                    These Sprints carry neither a code nor a register ID that appears in the crosswalk. Most are earlier mockup pages that the Volume 11 register lists under other names.
+                    These Sprints carry neither a code nor a register ID that appears in the crosswalk. New Sprints get a TBCA-generated deliverable when `php artisan deliverables:generate` is run and the register is reloaded.
                 </p>
                 <div className="max-h-96 overflow-y-auto">
                     <SimpleTable

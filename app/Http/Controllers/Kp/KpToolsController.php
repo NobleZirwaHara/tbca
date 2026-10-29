@@ -176,12 +176,12 @@ class KpToolsController extends Controller
             if ($item) {
                 $weight = ['published' => 95, 'excerpt' => 80, 'pending' => 55][$item['status']] ?? 50;
 
-                return ['n' => $i + 1, 'slug' => $slug, 'title' => $item['title'], 'typeLabel' => Kp::types()[$item['type']][0] ?? 'Article', 'voice' => $item['voice'], 'voiceLabel' => Kp::voices()[$item['voice']][0], 'freshness' => $item['freshness'], 'author' => $item['author'], 'scope' => $item['scope'],
+                return ['n' => $i + 1, 'slug' => $slug, 'title' => $item['title'], 'typeLabel' => Kp::types()[$item['type']][0] ?? 'Article', 'voice' => $item['voice'], 'voiceLabel' => Kp::voices()[$item['voice']][0], 'freshness' => $item['freshness'], 'scope' => $item['scope'],
                     'evidence' => ['published' => 'Full text published', 'excerpt' => 'Excerpt from KP design', 'pending' => 'Title and summary only'][$item['status']] ?? 'Unknown', 'weight' => $weight, 'href' => $item['href'], 'role' => $i === 0 ? 'Primary' : 'Supporting'];
             }
             $r = collect(Kp::resources())->firstWhere(0, $slug);
 
-            return ['n' => $i + 1, 'slug' => $slug, 'title' => $r[1] ?? $slug, 'typeLabel' => Kp::resourceCategories()[$r[2] ?? ''] ?? 'Resource', 'voice' => 'I', 'voiceLabel' => Kp::voices()['I'][0], 'freshness' => 'current', 'author' => 'The Business Clinic.Africa', 'scope' => 'AFR-G0',
+            return ['n' => $i + 1, 'slug' => $slug, 'title' => $r[1] ?? $slug, 'typeLabel' => Kp::resourceCategories()[$r[2] ?? ''] ?? 'Resource', 'voice' => 'I', 'voiceLabel' => Kp::voices()['I'][0], 'freshness' => 'current', 'scope' => 'AFR-G0',
                 'evidence' => 'Summary sheet', 'weight' => 65, 'href' => Kp::BASE.'/resources?q='.urlencode($r[1] ?? $slug), 'role' => 'Supporting'];
         })->all();
 

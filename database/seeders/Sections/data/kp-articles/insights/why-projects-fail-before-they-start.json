@@ -5,12 +5,8 @@
   "title": "Why Projects Fail Before They Start, and How to Stop It.",
   "kicker": "KP THOUGHT LEADERSHIP / PROJECT DEVELOPMENT",
   "deck": "Most expensive project failures start with inexpensive decisions that nobody bothered to test.",
-  "byline": [
-    "By The BusinessClinic.Africa | 28 May 2026 | Pan-African Business Analysis"
-  ],
   "date": "2026-05-28",
   "date_note": null,
-  "author": "The BusinessClinic.Africa",
   "voice": "I",
   "scope": "AFR-G1",
   "themes": [
@@ -37,9 +33,7 @@
       "url": "https://www.pmi.org/learning/thought-leadership/future-of-project-work"
     }
   ],
-  "notes": [
-    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
-  ],
+  "notes": [],
   "source": {
     "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
     "file": "why-projects-fail-before-they-start.docx",

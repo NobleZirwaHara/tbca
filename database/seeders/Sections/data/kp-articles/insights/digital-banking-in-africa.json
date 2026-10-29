@@ -5,12 +5,8 @@
   "title": "Digital Banking in Africa: The Next Leap",
   "kicker": "KP THOUGHT LEADERSHIP / TECHNOLOGY & AI",
   "deck": "The next advance will depend less on new apps and more on safe, interoperable, affordable and genuinely useful banking.",
-  "byline": [
-    "By The Business Clinic.Africa | 09 August 2026 | Pan-African Business Analysis"
-  ],
   "date": "2026-08-09",
   "date_note": null,
-  "author": "The Business Clinic.Africa",
   "voice": "I",
   "scope": "AFR-G1",
   "themes": [
@@ -42,9 +38,7 @@
       "url": "https://remittanceprices.worldbank.org/"
     }
   ],
-  "notes": [
-    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
-  ],
+  "notes": [],
   "source": {
     "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
     "file": "digital-banking-in-africa.docx",

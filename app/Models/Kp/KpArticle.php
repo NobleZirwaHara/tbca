@@ -14,7 +14,6 @@ class KpArticle extends Model
     protected function casts(): array
     {
         return [
-            'byline' => 'array',
             'published_on' => 'date',
             'themes' => 'array',
             'countries' => 'array',

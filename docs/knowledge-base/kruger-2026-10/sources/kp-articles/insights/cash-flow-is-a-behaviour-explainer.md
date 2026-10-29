@@ -55,5 +55,3 @@ Publish cash conversion, aged receivables, overdue supplier accounts and thirtee
 \[1\] Auditor-General of South Africa, “Limited progress made by the outgoing local government administration,” 2026 (2024–25 municipal audit). [\[Primary source\]](https://www.agsa.co.za/news/limited-progress-made-outgoing-local-government-administration-strengthen-governance-and-improve-service-delivery-copy)
 
 \[2\] International Finance Corporation (IFC), “IFC launches call for expression of interest for its new Catalytic First Loss Guarantee Facility,” 8 April 2025. [\[Primary source\]](https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

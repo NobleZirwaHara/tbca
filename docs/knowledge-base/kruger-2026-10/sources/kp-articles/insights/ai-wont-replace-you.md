@@ -53,5 +53,3 @@ Fund three measured pilot workflows, not fifty unmanaged subscriptions. Require 
 ## Sources and verification
 
 \[1\] International Labour Organization, “Generative AI and Jobs: A Refined Global Index of Occupational Exposure,” 20 May 2025. [\[Primary source\]](https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

@@ -66,6 +66,4 @@ Stop holding opportunities hostage to ceremonial planning. Put evidence into the
 
 \[2\] World Bank (2025). [Nigeria Development Update, May 2025](https://www.worldbank.org/en/country/nigeria/publication/nigeria-development-update-ndu)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

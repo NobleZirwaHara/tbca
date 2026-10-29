@@ -63,5 +63,3 @@ During delivery, independently verify earned milestones and changes to scope. Du
 \[3\] World Bank, Private Participation in Infrastructure database, 2024 global results. [Primary source](https://ppi.worldbank.org/en/ppi)
 
 \[4\] Kenya PPP Directorate, PPP frameworks and feasibility guidance. [Primary source](https://pppkenya.go.ke/reports-publications/)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

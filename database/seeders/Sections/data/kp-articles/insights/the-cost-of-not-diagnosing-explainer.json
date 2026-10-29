@@ -5,12 +5,8 @@
   "title": "The Cost of Not Diagnosing the Real Problem.",
   "kicker": "KP THOUGHT LEADERSHIP / STRATEGY & EXECUTION",
   "deck": "When management treats symptoms as causes, the invoice arrives repeatedly and often with interest.",
-  "byline": [
-    "By The Business Clinic.Africa | 28 August 2026 | Explainer"
-  ],
   "date": "2026-08-28",
   "date_note": null,
-  "author": "The Business Clinic.Africa",
   "voice": "I",
   "scope": "AFR-G0",
   "themes": [
@@ -31,9 +27,7 @@
       "url": "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value"
     }
   ],
-  "notes": [
-    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
-  ],
+  "notes": [],
   "source": {
     "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
     "file": "the-cost-of-not-diagnosing-explainer.docx",

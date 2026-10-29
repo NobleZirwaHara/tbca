@@ -72,6 +72,4 @@ A profitable business can fail because it runs out of cash. A cash-rich business
 
 \[3\] US Small Business Administration (2025). [Financial Literacy Resources for America's Small Businesses](https://www.sba.gov/blog/2025/2025-04/financial-literacy-resources-americas-small-businesses/)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

@@ -14,7 +14,7 @@ interface Filters {
     format: string | null;
     loop: string | null;
     tier: Tier;
-    source: 'retained' | 'new' | null;
+    source: 'retained' | 'new' | 'generated' | null;
 }
 
 interface Row {
@@ -26,6 +26,7 @@ interface Row {
     formatDetail: string | null;
     loopId: string | null;
     isNew: boolean;
+    isGenerated: boolean;
     pages: string | null;
     pageUnit: string | null;
     delivery: string | null;
@@ -40,7 +41,7 @@ interface Props {
     filters: Filters;
     results: Paginated<Row>;
     options: { tabs: Option[]; families: Option[]; formats: Option[]; loops: Option[] };
-    stats: { deliverables: number; retained: number; new: number; crosswalk: number; matched: number; safeguards: number; loops: number };
+    stats: { deliverables: number; retained: number; new: number; generated: number; productLinks: number; crosswalk: number; matched: number; safeguards: number; loops: number };
     control: { field: string; value: string }[];
 }
 
@@ -94,9 +95,9 @@ export default function DeliverablesIndex({ filters, results, options, stats, co
             <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
                 <KpiTile label="Deliverables" value={fmt(stats.deliverables)} />
                 <KpiTile label="Issue 1.0 retained" value={fmt(stats.retained)} />
-                <KpiTile label="New from Sprint catalogue" value={fmt(stats.new)} />
+                <KpiTile label="New from Sprint catalogue" value={fmt(stats.new)} caption={`Plus ${fmt(stats.generated)} TBCA generated`} />
                 <KpiTile label="Crosswalk linked to Sprints" value={pct(stats.matched, stats.crosswalk)} caption={`${fmt(stats.matched)} of ${fmt(stats.crosswalk)} codes`} tone="good" />
-                <KpiTile label="Safeguards" value={stats.safeguards} />
+                <KpiTile label="Linked to other products" value={fmt(stats.productLinks)} caption="Deliverables on product pages" />
                 <KpiTile label="Payment-trigger loops" value={stats.loops} />
             </div>
 
@@ -165,9 +166,10 @@ export default function DeliverablesIndex({ filters, results, options, stats, co
                     <label className="text-xs text-ink-500">
                         Register source
                         <select className={selectClass} value={filters.source ?? ''} onChange={(e) => apply({ source: (e.target.value || null) as Filters['source'] })}>
-                            <option value="">Issue 1.0 and new</option>
+                            <option value="">All sources</option>
                             <option value="retained">Issue 1.0 retained</option>
                             <option value="new">New from Sprint catalogue</option>
+                            <option value="generated">TBCA generated (Oct 2026)</option>
                         </select>
                     </label>
                     <label className="text-xs text-ink-500">
@@ -195,7 +197,11 @@ export default function DeliverablesIndex({ filters, results, options, stats, co
                             <Link href={`/admin/deliverables/${r.ref}`} className="font-medium text-ink-900 hover:text-gold-700">
                                 {r.name}
                             </Link>
-                            {r.isNew ? null : <p className="text-[0.6875rem] text-ink-400">Issue 1.0 deliverable</p>}
+                            {r.isGenerated ? (
+                                <p className="text-[0.6875rem] text-attested-700">TBCA generated (Oct 2026)</p>
+                            ) : r.isNew ? null : (
+                                <p className="text-[0.6875rem] text-ink-400">Issue 1.0 deliverable</p>
+                            )}
                         </div>,
                         <div className="min-w-40 text-xs">
                             <p className="text-ink-800">{r.tab}</p>

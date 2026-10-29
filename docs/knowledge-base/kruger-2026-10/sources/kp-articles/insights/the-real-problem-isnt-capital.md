@@ -61,5 +61,3 @@ Before submitting a financing application, insist on five signed-off files: stra
 \[1\] International Finance Corporation (IFC), “IFC launches call for expression of interest for its new Catalytic First Loss Guarantee Facility,” 8 April 2025. [\[Primary source\]](https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar)
 
 \[2\] Auditor-General of South Africa, “AG reports minimal progress, calls on government to double efforts to improve audit outcomes,” 26 March 2026 (2024–25 national and provincial audit). [\[Primary source\]](https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

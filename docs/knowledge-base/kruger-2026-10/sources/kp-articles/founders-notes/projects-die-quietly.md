@@ -66,6 +66,4 @@ Do the difficult work while it is still relatively cheap. Confront the missing l
 
 \[2\] Project Management Institute (2025). [Pulse of the Profession 2025: Boosting Business Acumen](https://www.pmi.org/learning/thought-leadership/boosting-business-acumen)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

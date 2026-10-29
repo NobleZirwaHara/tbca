@@ -68,6 +68,4 @@ Stop approaching capital providers as if your enthusiasm creates an obligation o
 
 \[3\] World Bank (2025). [Nigeria FINCLUDE MSME finance programme approval](https://www.worldbank.org/en/news/press-release/2025/12/22/world-bank-approves-500-million-to-expand-finance-for-small-businesses-in-nigeria)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

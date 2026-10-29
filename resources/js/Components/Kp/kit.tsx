@@ -41,7 +41,6 @@ export interface KpCard {
     status: 'published' | 'excerpt' | 'pending';
     featured: boolean;
     published: string | null;
-    author: string;
     href: string;
     category: 'insights' | 'founders-notes' | 'resources';
     categoryLabel: string;
@@ -332,7 +331,6 @@ export function InsightCard({ item, compact, bookmark = true }: { item: KpCard; 
             )}
             <div className="flex flex-1 flex-col p-4">
                 <div className="flex flex-wrap items-center gap-1.5">
-                    <VoiceBadge code={item.voice} />
                     <ContentStatus status={item.status} />
                 </div>
                 <Link href={item.href} className="mt-2 font-serif text-[1.0625rem] leading-snug font-bold text-ink-900 hover:text-gold-700">
@@ -342,7 +340,7 @@ export function InsightCard({ item, compact, bookmark = true }: { item: KpCard; 
                 <p className="mt-2 text-[0.6875rem] text-ink-500">{item.dateLabel} | {item.readMinutes} min read</p>
                 <div className="mt-auto flex items-center justify-between gap-2 pt-3 text-[0.6875rem] text-ink-500">
                     <span className="inline-flex items-center gap-1">
-                        <Ico name={item.icon} className="size-3.5" /> {item.typeLabel} | {item.author}
+                        <Ico name={item.icon} className="size-3.5" /> {item.typeLabel}
                     </span>
                     {bookmark && (
                         <button type="button" onClick={() => setSaved(!saved)} aria-pressed={saved} aria-label={saved ? 'Remove bookmark' : 'Bookmark'} className="text-ink-400 hover:text-gold-700">
@@ -366,7 +364,6 @@ export function InsightRow({ item }: { item: KpCard }) {
                 <p className="text-[0.75rem] text-ink-500">{item.summary}</p>
                 <p className="text-[0.6875rem] text-ink-500">{item.dateLabel} | {item.readMinutes} min read | {item.typeLabel}</p>
                 <div className="mt-1 flex flex-wrap gap-1.5">
-                    <VoiceBadge code={item.voice} />
                     <ContentStatus status={item.status} />
                 </div>
             </div>
@@ -548,7 +545,6 @@ export interface AnswerSource {
     voice: string;
     voiceLabel: string;
     freshness: string;
-    author: string;
     scope: string;
     evidence: string;
     weight: number;

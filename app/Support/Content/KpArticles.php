@@ -18,7 +18,7 @@ use League\CommonMark\MarkdownConverter;
  * database/seeders/Sections/data/kp-articles/<category>/<slug>.md with a
  * <slug>.json metadata file each, and loaded into kp_articles by KpArticlesSeeder.
  *
- * The article body, standfirst, byline, sources and notes are KP's own text. Only
+ * The article body, standfirst, sources and notes are KP's own text. Only
  * conversion artefacts were fixed (listed per article under conversion_fixes).
  */
 class KpArticles

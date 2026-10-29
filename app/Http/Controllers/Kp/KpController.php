@@ -104,7 +104,6 @@ class KpController extends Controller
         $all = collect(Kp::items())->where('category', 'insights');
 
         return $this->page('Kp/Insights', '005', $this->listing($all, $f, 9) + [
-            'voices' => collect(Kp::voices())->map(fn ($v, $k) => ['code' => $k, 'label' => $v[0], 'body' => $v[1]])->values(),
             'typeCounts' => collect(Kp::types())->except(['founders-note', 'long-read'])->map(fn ($t, $k) => ['key' => $k, 'label' => $t[1], 'count' => $all->where('type', $k)->count()])->filter(fn ($t) => $t['count'] > 0)->values(),
             'stats' => ['total' => $all->count(), 'current' => $all->where('freshness', 'current')->count(), 'reviewDue' => $all->where('freshness', 'review-due')->count(), 'stale' => $all->where('freshness', 'stale')->count(), 'excerpt' => $all->where('status', 'published')->count()],
             'themes' => $this->themesWithCounts(),
@@ -134,7 +133,6 @@ class KpController extends Controller
         if ($item['category'] !== $category) {
             return redirect($item['href'], 301);
         }
-        $leader = AboutContent::findLeader('kruger-phiri') ?? [];
         $doc = KpArticles::render($item['body']);
         $all = collect(Kp::items())->where('slug', '!=', $slug);
         $shared = fn ($i) => count(array_intersect($i['themes'], $item['themes']));
@@ -145,7 +143,6 @@ class KpController extends Controller
         return $this->page('Kp/Article', '006', [
             'item' => $this->card($item) + [
                 'kicker' => $item['kicker'],
-                'byline' => $item['byline'],
                 'html' => $doc['html'],
                 'toc' => $doc['toc'],
                 'sourcesHeading' => $item['sources_heading'] ?: 'Sources',
@@ -156,7 +153,6 @@ class KpController extends Controller
             ],
             'related' => $related->map(fn ($i) => $this->card($i)),
             'section' => ['label' => KpArticles::CATEGORIES[$category][0], 'href' => Kp::BASE.KpArticles::CATEGORIES[$category][1]],
-            'author' => ['name' => $leader['name'] ?? 'Kruger Phiri', 'role' => $leader['role'] ?? 'Founder'],
         ]);
     }
 
@@ -238,7 +234,7 @@ class KpController extends Controller
             'pagination' => ['page' => $page, 'last' => max(1, (int) ceil($filtered->count() / 10)), 'total' => $filtered->count()],
             'groups' => collect(['Insights & Articles', "Founder's Notes", 'African Business Clinic', 'KP Resources', 'Tools & Frameworks', 'Webinars', 'Topics'])->map(fn ($g) => ['label' => $g, 'count' => $counts[$g] ?? 0])->values(),
             'popular' => ['strategy execution', 'capital readiness', 'board effectiveness', 'project development', 'African growth agenda'],
-            'glance' => ['total' => $results->count(), 'kp' => $results->where('author', 'Kruger Phiri')->count(), 'categories' => $counts->count()],
+            'glance' => ['total' => $results->count(), 'kp' => $results->where('article', true)->count(), 'categories' => $counts->count()],
         ]);
     }
 
@@ -536,7 +532,7 @@ class KpController extends Controller
             'slug' => $i['slug'], 'title' => $i['title'], 'summary' => $i['summary'], 'type' => $i['type'], 'typeLabel' => $t[0], 'icon' => $t[2],
             'theme' => $i['theme'], 'themeLabel' => Kp::themeLabel($i['theme']), 'voice' => $i['voice'], 'voiceLabel' => Kp::voices()[$i['voice']][0] ?? $i['voice'],
             'scope' => $i['scope'], 'scopeLabel' => Kp::scopes()[$i['scope']][0] ?? $i['scope'], 'freshness' => $i['freshness'], 'status' => $i['status'],
-            'featured' => $i['featured'], 'published' => $i['published'], 'author' => $i['author'], 'href' => $i['href'],
+            'featured' => $i['featured'], 'published' => $i['published'], 'href' => $i['href'],
             'category' => $i['category'], 'categoryLabel' => $i['categoryLabel'], 'dateLabel' => $i['date_label'], 'dateNote' => $i['date_note'], 'readMinutes' => $i['read_minutes'],
             'topics' => collect($i['themes'])->map(fn ($t) => ['slug' => $t, 'label' => Kp::themeLabel($t), 'href' => Kp::BASE.'/topics/'.$t])->values()->all(),
             'countries' => collect($i['countries'])->map(fn ($c) => $c + ['href' => $c['slug'] === 'china' ? Kp::BASE.'/search?q=China' : Kp::BASE.'/africa/'.$c['slug']])->values()->all(),
@@ -578,7 +574,7 @@ class KpController extends Controller
     {
         $hits = ($f['q'] ?? null) ? KpArticles::matching($f['q']) : [];
         $rows = $all
-            ->when($f['q'] ?? null, fn ($c, $q) => $c->filter(fn ($i) => in_array($i['slug'], $hits, true) || Str::contains(Str::lower($i['title'].' '.$i['summary'].' '.Kp::themeLabel($i['theme']).' '.$i['author']), Str::lower(trim($q)))))
+            ->when($f['q'] ?? null, fn ($c, $q) => $c->filter(fn ($i) => in_array($i['slug'], $hits, true) || Str::contains(Str::lower($i['title'].' '.$i['summary'].' '.Kp::themeLabel($i['theme'])), Str::lower(trim($q)))))
             ->when(! empty($f['types']), fn ($c) => $c->whereIn('type', $f['types']))
             ->when($f['theme'] ?? null, fn ($c, $t) => $c->filter(fn ($i) => in_array($t, $i['themes'], true)))
             ->when($f['voice'] ?? null, fn ($c, $v) => $c->where('voice', $v))
@@ -619,19 +615,19 @@ class KpController extends Controller
                 $i['type'] === 'explainer' => 'African Business Clinic', $i['type'] === 'framework' => 'Tools & Frameworks', default => 'Insights & Articles'
             };
             $s = $score($i['title'].' '.$i['summary'].' '.implode(' ', array_map([Kp::class, 'themeLabel'], $i['themes'])).' '.implode(' ', array_column($i['countries'], 'name')));
-            $out->push(['group' => $group, 'kind' => (Kp::types()[$i['type']][0] ?? 'Article'), 'title' => $i['title'], 'summary' => $i['summary'], 'href' => $i['href'], 'tags' => array_map([Kp::class, 'themeLabel'], $i['themes']), 'author' => $i['author'], 'meta' => $i['date_label'].' | '.$i['read_minutes'].' min read', 'score' => $s + (isset($phrase[$i['slug']]) ? 3 : 0)]);
+            $out->push(['group' => $group, 'kind' => (Kp::types()[$i['type']][0] ?? 'Article'), 'title' => $i['title'], 'summary' => $i['summary'], 'href' => $i['href'], 'tags' => array_map([Kp::class, 'themeLabel'], $i['themes']), 'article' => true, 'meta' => $i['date_label'].' | '.$i['read_minutes'].' min read', 'score' => $s + (isset($phrase[$i['slug']]) ? 3 : 0)]);
         }
         foreach (Kp::resources() as $r) {
-            $out->push(['group' => 'KP Resources', 'kind' => Kp::resourceCategories()[$r[2]] ?? 'Resource', 'title' => $r[1], 'summary' => $r[4], 'href' => Kp::BASE.'/resources?q='.urlencode($r[1]), 'tags' => [$r[3], $r[5]], 'author' => 'The Business Clinic.Africa', 'meta' => $r[5], 'score' => $score($r[1].' '.$r[4].' '.$r[3])]);
+            $out->push(['group' => 'KP Resources', 'kind' => Kp::resourceCategories()[$r[2]] ?? 'Resource', 'title' => $r[1], 'summary' => $r[4], 'href' => Kp::BASE.'/resources?q='.urlencode($r[1]), 'tags' => [$r[3], $r[5]], 'meta' => $r[5], 'score' => $score($r[1].' '.$r[4].' '.$r[3])]);
         }
         foreach (Kp::themes() as $t) {
-            $out->push(['group' => 'Topics', 'kind' => 'Topic', 'title' => $t['label'], 'summary' => $t['blurb'], 'href' => Kp::BASE.'/topics/'.$t['slug'], 'tags' => ['Topic'], 'author' => 'The Business Clinic.Africa', 'meta' => 'Topic hub', 'score' => $score($t['label'].' '.$t['blurb'])]);
+            $out->push(['group' => 'Topics', 'kind' => 'Topic', 'title' => $t['label'], 'summary' => $t['blurb'], 'href' => Kp::BASE.'/topics/'.$t['slug'], 'tags' => ['Topic'], 'meta' => 'Topic hub', 'score' => $score($t['label'].' '.$t['blurb'])]);
         }
         foreach ([['Capital Readiness Scorecard', 'Score ten readiness areas.', '/tools/scorecards/capital-readiness'], ['Investment Case Calculator', 'NPV, ROI, payback and IRR.', '/tools/calculators/investment-case'], ['Decision Checklist', 'Validate decision criteria before acting.', '/tools/checklists/go-no-go'], ['Project Fatal-Flaw Explorer', 'Find deal-breakers early.', '/project-fatal-flaw'], ['Funder Readiness Interviewer', 'Practise funder questions.', '/funder-readiness'], ['Decision Sheet', 'Capture and act on key decisions.', '/decision-sheet'], ['Boardroom Challenger', 'Challenge a decision before the board does.', '/boardroom-challenger']] as [$t, $s, $h]) {
-            $out->push(['group' => 'Tools & Frameworks', 'kind' => 'Tool', 'title' => $t, 'summary' => $s, 'href' => Kp::BASE.$h, 'tags' => ['Tool'], 'author' => 'The Business Clinic.Africa', 'meta' => 'Free tool', 'score' => $score($t.' '.$s)]);
+            $out->push(['group' => 'Tools & Frameworks', 'kind' => 'Tool', 'title' => $t, 'summary' => $s, 'href' => Kp::BASE.$h, 'tags' => ['Tool'], 'meta' => 'Free tool', 'score' => $score($t.' '.$s)]);
         }
         foreach (Webinar::whereNotIn('state', ['draft'])->get() as $w) {
-            $out->push(['group' => 'Webinars', 'kind' => 'Webinar', 'title' => $w->title, 'summary' => $w->summary, 'href' => '/webinars/'.$w->slug, 'tags' => [$w->topic], 'author' => $w->speaker, 'meta' => $w->starts_at->format('j M Y'), 'score' => $score($w->title.' '.$w->summary.' '.$w->topic)]);
+            $out->push(['group' => 'Webinars', 'kind' => 'Webinar', 'title' => $w->title, 'summary' => $w->summary, 'href' => '/webinars/'.$w->slug, 'tags' => [$w->topic], 'meta' => $w->starts_at->format('j M Y'), 'score' => $score($w->title.' '.$w->summary.' '.$w->topic)]);
         }
 
         return $out->where('score', '>', 0)->sortByDesc('score')->values();

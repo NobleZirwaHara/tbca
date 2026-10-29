@@ -11,14 +11,13 @@ interface Props extends KpShared {
     filters: Filters;
     scopes: { code: string; label: string }[];
     typeOptions: { key: string; label: string }[];
-    voices: { code: string; label: string; body: string }[];
     typeCounts: { key: string; label: string; count: number }[];
     stats: { total: number; current: number; reviewDue: number; stale: number; excerpt: number };
     themes: KpTheme[];
 }
 
 /** KP-SCR-005 Insights Home. */
-export default function Insights({ screen, kpNav, items, pagination, filters, scopes, typeCounts, voices, stats, themes }: Props) {
+export default function Insights({ screen, kpNav, items, pagination, filters, scopes, typeCounts, stats, themes }: Props) {
     const [f, setF] = useState<Filters>(filters);
     const [view, setView] = useState<'grid' | 'list'>('grid');
     const toggle = (k: 'types' | 'freshness', v: string) => setF({ ...f, [k]: f[k].includes(v) ? f[k].filter((x) => x !== v) : [...f[k], v] });
@@ -56,9 +55,6 @@ export default function Insights({ screen, kpNav, items, pagination, filters, sc
                     <label className="block text-[0.75rem] font-bold text-ink-900">Theme
                         <Select value={f.theme} onChange={(e) => setF({ ...f, theme: e.target.value })} placeholder="All Themes" options={themes.map((t) => ({ value: t.slug, label: t.label }))} />
                     </label>
-                    <label className="block text-[0.75rem] font-bold text-ink-900">Voice
-                        <Select value={f.voice} onChange={(e) => setF({ ...f, voice: e.target.value })} placeholder="All Voices" options={voices.map((v) => ({ value: v.code, label: `${v.label} (${v.code})` }))} />
-                    </label>
                     <label className="block text-[0.75rem] font-bold text-ink-900">Region
                         <Select value={f.region} onChange={(e) => setF({ ...f, region: e.target.value })} placeholder="All Regions" options={scopes.map((s) => ({ value: s.code, label: `${s.label} (${s.code})` }))} />
                     </label>
@@ -75,16 +71,6 @@ export default function Insights({ screen, kpNav, items, pagination, filters, sc
             }
             rail={
                 <>
-                    <Box title="Voices in This Section" action={<Link href={`${BASE}/standards/voice-badge`} className="text-[0.75rem] font-semibold text-gold-700">Learn more</Link>}>
-                        <ul className="space-y-2.5">
-                            {voices.map((v) => (
-                                <li key={v.code} className="flex gap-2.5">
-                                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-gold-500 font-bold text-gold-700">{v.code}</span>
-                                    <span><span className="block text-[0.8125rem] font-semibold text-ink-900">{v.label}</span><span className="block text-[0.6875rem] text-ink-500">{v.body}</span></span>
-                                </li>
-                            ))}
-                        </ul>
-                    </Box>
                     <Box title="Top Themes" action={<Link href={`${BASE}/topics`} className="text-[0.75rem] font-semibold text-gold-700">View all</Link>}>
                         <ul className="space-y-1.5">
                             {[...themes].sort((a, b) => b.articles - a.articles).map((t) => (
@@ -99,7 +85,7 @@ export default function Insights({ screen, kpNav, items, pagination, filters, sc
                 <form className="relative min-w-[14rem] flex-1" onSubmit={(e) => { e.preventDefault(); go(); }}>
                     <label htmlFor="q" className="sr-only">Find insights</label>
                     <L.Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-400" aria-hidden="true" />
-                    <input id="q" value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} placeholder="Search insights by keyword, topic, author..." className="h-10 w-full rounded-[6px] border border-parchment-500 bg-white pr-3 pl-9 text-[0.875rem]" />
+                    <input id="q" value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} placeholder="Search insights by keyword or topic..." className="h-10 w-full rounded-[6px] border border-parchment-500 bg-white pr-3 pl-9 text-[0.875rem]" />
                 </form>
                 <label className="flex items-center gap-2 text-[0.8125rem] text-ink-600">Sort by
                     <select value={f.sort} onChange={(e) => { const n = { ...f, sort: e.target.value }; setF(n); go(n); }} className="h-10 rounded-[6px] border border-parchment-500 bg-white px-2 text-[0.8125rem]">

@@ -55,5 +55,3 @@ Write a founder dependency register with the ten decisions most likely to stall 
 \[1\] World Bank, “World Development Report 2024: The Middle-Income Trap,” August 2024. [\[Primary source\]](https://www.worldbank.org/en/publication/wdr2024)
 
 \[2\] International Finance Corporation (IFC), “IFC launches call for expression of interest for its new Catalytic First Loss Guarantee Facility,” 8 April 2025. [\[Primary source\]](https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

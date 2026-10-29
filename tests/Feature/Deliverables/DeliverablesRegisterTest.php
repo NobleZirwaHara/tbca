@@ -41,7 +41,7 @@ class DeliverablesRegisterTest extends TestCase
     private function checksum(): string
     {
         $rows = [];
-        foreach (['deliverables' => 'ref', 'deliverable_sprints' => 'sprint_code', 'deliverable_texts' => 'hash', 'deliverable_standards' => 'id', 'deliverable_safeguards' => 'code', 'deliverable_payment_loops' => 'loop_id', 'deliverable_integration_specs' => 'id', 'deliverable_country_matrix' => 'id'] as $table => $order) {
+        foreach (['deliverables' => 'ref', 'deliverable_sprints' => 'sprint_code', 'deliverable_texts' => 'hash', 'deliverable_standards' => 'id', 'deliverable_safeguards' => 'code', 'deliverable_payment_loops' => 'loop_id', 'deliverable_integration_specs' => 'id', 'deliverable_country_matrix' => 'id', 'deliverable_products' => 'id'] as $table => $order) {
             $rows[$table] = DB::table($table)->orderBy($order)->get()->map(fn ($r) => collect((array) $r)->except(['created_at', 'updated_at'])->all())->all();
         }
 
@@ -52,14 +52,16 @@ class DeliverablesRegisterTest extends TestCase
     {
         $this->seed(DeliverablesRegisterSeeder::class);
 
-        $this->assertSame(8318, Deliverable::count());
+        $this->assertSame(8318, Deliverable::where('ref', 'not like', 'DEL-GEN-%')->count());
         $this->assertSame(7457, Deliverable::where('v2_status', 'NEW from Sprint catalogue')->count());
-        $this->assertSame(2112, Deliverable::where('tab', 'Services')->count());
-        $this->assertSame(1933, Deliverable::where('format_class', 'Report')->count());
+        $register = fn () => Deliverable::where('ref', 'not like', 'DEL-GEN-%');
+        $this->assertSame(2112, $register()->where('tab', 'Services')->count());
+        $this->assertSame(1933, $register()->where('format_class', 'Report')->count());
         $this->assertSame(23, Deliverable::distinct()->count('tab'));
+        $this->assertSame(196, Deliverable::where('v2_status', 'TBCA generated (Oct 2026)')->count());
         $this->assertSame(0, Deliverable::whereNull('loop_id')->count());
         $this->assertSame(0, Deliverable::whereNull('format_code')->count());
-        $this->assertSame(7589, DeliverableSprint::count());
+        $this->assertSame(7589, DeliverableSprint::where('status', 'not like', 'TBCA generated%')->count());
         $this->assertSame(132, DeliverableSprint::where('status', 'like', 'LINKED%')->count());
         $this->assertSame(30, Safeguard::count());
         $this->assertSame(17, PaymentLoop::count());
@@ -71,7 +73,7 @@ class DeliverablesRegisterTest extends TestCase
 
         // Every crosswalk ref is a register deliverable; with no Sprints in the app every code is kept as unmatched.
         $this->assertSame(0, DeliverableSprint::whereNotIn('deliverable_ref', Deliverable::select('ref'))->count());
-        $this->assertSame(7589, DeliverableSprint::where('match', 'unmatched')->count());
+        $this->assertSame(7785, DeliverableSprint::where('match', 'unmatched')->count());
 
         // The client's text is carried as written, including the pooled columns.
         $d = Deliverable::where('ref', 'DEL-SV-0562')->sole();
@@ -92,8 +94,8 @@ class DeliverablesRegisterTest extends TestCase
 
         $this->seed(DeliverablesRegisterSeeder::class);
 
-        $this->assertSame(8318, Deliverable::count());
-        $this->assertSame(7589, DeliverableSprint::count());
+        $this->assertSame(8514, Deliverable::count());
+        $this->assertSame(7785, DeliverableSprint::count());
         $this->assertSame($texts, DeliverableText::count());
         $this->assertSame($before, $this->checksum());
     }
@@ -108,7 +110,7 @@ class DeliverablesRegisterTest extends TestCase
 
         $this->assertSame(1, $report['matched_code']);
         $this->assertSame(1, $report['matched_register_id']);
-        $this->assertSame(7587, $report['unmatched']);
+        $this->assertSame(7783, $report['unmatched']);
         $this->assertSame($byCode->id, DeliverableSprint::where('sprint_code', 'TBCA-4C-5288')->value('sprint_id'));
         $this->assertSame('register_id', DeliverableSprint::where('sprint_code', 'TBCA-4C-5001')->value('match'));
         $this->assertSame(['DEL-SV-0062'], Deliverable::forSprint($byRegister)->pluck('ref')->all());
@@ -153,8 +155,8 @@ class DeliverablesRegisterTest extends TestCase
             ->component('Admin/Deliverables/Index')
             ->where('results.total', 4)
             ->where('filters.tier', 'premium')
-            ->where('stats.deliverables', 8318)
-            ->where('stats.crosswalk', 7589));
+            ->where('stats.deliverables', 8514)
+            ->where('stats.crosswalk', 7785));
 
         $this->get('/admin/deliverables?q=Cash+Crisis+Premium&format=Report')->assertOk()->assertInertia(fn (Assert $p) => $p
             ->where('results.data', fn ($rows) => collect($rows)->pluck('ref')->contains('DEL-SV-0562')));
@@ -173,9 +175,9 @@ class DeliverablesRegisterTest extends TestCase
 
         $this->get('/admin/deliverables/crosswalk?match=unmatched')->assertOk()->assertInertia(fn (Assert $p) => $p
             ->component('Admin/Deliverables/Crosswalk')
-            ->where('stats.codes', 7589)
+            ->where('stats.codes', 7785)
             ->where('stats.code', 1)
-            ->where('rows.total', 7588));
+            ->where('rows.total', 7784));
         $this->get('/admin/deliverables/automation')->assertOk()->assertInertia(fn (Assert $p) => $p
             ->component('Admin/Deliverables/Automation')->has('loops', 17)->has('safeguards', 30)->has('specs', 9));
         $this->get('/admin/deliverables/standards')->assertOk()->assertInertia(fn (Assert $p) => $p
@@ -207,7 +209,7 @@ class DeliverablesRegisterTest extends TestCase
         $this->assertSame('Payment-trigger loop', $lines[0][50]);
         $this->assertCount(5, $lines);
         $this->assertSame('Webinars', $lines[1][1]);
-        $this->assertCount(54, $lines[1]);
+        $this->assertCount(55, $lines[1]);
         $this->assertStringStartsWith('BASIC:', $lines[1][42]);
     }
 
@@ -259,7 +261,7 @@ class DeliverablesRegisterTest extends TestCase
 
         $this->sprint();
         $migration->up();
-        $this->assertSame(8318, Deliverable::count());
+        $this->assertSame(8514, Deliverable::count());
         $this->assertSame(1, DeliverableSprint::where('match', 'code')->count());
         $this->assertSame(0, IntegrationEvent::count());
     }

@@ -233,7 +233,7 @@ class KpThoughtLeadership
 
         $order = array_flip(array_keys(KpArticles::CATEGORIES));
         $items = KpArticle::query()
-            ->select(['slug', 'category', 'type', 'title', 'kicker', 'deck', 'published_on', 'date_note', 'author', 'voice', 'scope', 'theme', 'themes', 'countries', 'featured', 'read_minutes', 'word_count', 'source', 'sort'])
+            ->select(['slug', 'category', 'type', 'title', 'kicker', 'deck', 'published_on', 'date_note', 'voice', 'scope', 'theme', 'themes', 'countries', 'featured', 'read_minutes', 'word_count', 'source', 'sort'])
             ->orderBy('sort')->get()
             ->sortBy(fn (KpArticle $a) => sprintf('%d-%s', $order[$a->category] ?? 9, 99999999 - (int) ($a->published_on?->format('Ymd') ?? 0)))
             ->map(fn (KpArticle $a) => self::item($a))
@@ -273,7 +273,6 @@ class KpThoughtLeadership
             'date_note' => $a->date_note,
             'read_minutes' => $a->read_minutes,
             'word_count' => $a->word_count,
-            'author' => $a->author,
             'href' => KpArticles::href($a->category, $a->slug),
         ];
     }
@@ -289,7 +288,6 @@ class KpThoughtLeadership
 
         return $item + [
             'body' => (string) $a?->body,
-            'byline' => $a?->byline ?? [],
             'sources_heading' => $a?->sources_heading,
             'sources' => $a?->sources ?? [],
             'notes' => $a?->notes ?? [],

@@ -20,7 +20,9 @@ class Catalogue
     /** @return list<array<string, mixed>> */
     public static function families(): array
     {
+        // Stable product code per family page (DDF-{slug}), used by the Registry of Deliverables links.
         return array_map(fn (array $f) => $f + [
+            'code' => 'DDF-'.strtoupper($f['slug']),
             'template' => 'tiers',
             'why' => [],
             'triggers' => [],

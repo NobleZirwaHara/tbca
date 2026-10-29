@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import * as L from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { BtnLink } from '@/Components/Webinars/kit';
-import { BASE, Box, InsightCard, KpPage, ScopeBadge, VoiceBadge, type KpCard, type KpShared } from '@/Components/Kp/kit';
+import { BASE, Box, InsightCard, KpPage, ScopeBadge, type KpCard, type KpShared } from '@/Components/Kp/kit';
 
 interface Source {
     n: string;
@@ -14,7 +14,6 @@ interface Source {
 interface Props extends KpShared {
     item: KpCard & {
         kicker: string | null;
-        byline: string[];
         html: string;
         toc: { id: string; text: string }[];
         sourcesHeading: string;
@@ -25,7 +24,6 @@ interface Props extends KpShared {
     };
     related: KpCard[];
     section: { label: string; href: string };
-    author: { name: string; role: string };
 }
 
 /* Typography for KP's article HTML (headings, paragraphs, lists, tables, pull quotes, links). */
@@ -44,15 +42,14 @@ const PROSE = [
 /* The site header, footer and KP navigation are not printed. */
 const PRINT_CSS = '@media print { header.sticky, footer, [data-kp-noprint], body .fixed { display: none !important; } #main { background: #fff; } .kp-print-body { border: 0 !important; padding: 0 !important; } a { color: inherit !important; } }';
 
-/** KP-SCR-006 Article: Kruger Phiri's full text, byline, date, topics, sources and related reading. */
-export default function Article({ screen, kpNav, item, related, section, author }: Props) {
+/** KP-SCR-006 Article: Kruger Phiri's full text, date, topics, sources and related reading. Articles carry no byline. */
+export default function Article({ screen, kpNav, item, related, section }: Props) {
     const [copied, setCopied] = useState(false);
     const [url, setUrl] = useState('');
     useEffect(() => setUrl(window.location.href), []);
     const parts = item.title.split('. ');
     const twoLine = parts.length === 2 && item.title.length < 90 && parts[1] !== '';
     const share = (u: string) => encodeURIComponent(u);
-    const aiDisclosed = item.notes.some((n) => /AI-assisted/i.test(n));
 
     const copy = () => {
         void navigator.clipboard?.writeText(url || window.location.href);
@@ -119,13 +116,11 @@ export default function Article({ screen, kpNav, item, related, section, author 
 
             <div className="space-y-3 border-y border-parchment-400 py-3">
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.8125rem] text-ink-600">
-                    <span className="inline-flex items-center gap-1.5"><L.PenLine className="size-4 text-gold-700" aria-hidden="true" /> <span>By <span className="font-semibold text-ink-900">{item.author}</span>{item.author === author.name && author.role ? <span className="text-ink-500">{`, ${author.role}`}</span> : null}</span></span>
                     <span className="inline-flex items-center gap-1.5" title={item.dateNote ?? undefined}><L.CalendarDays className="size-4" aria-hidden="true" /> {item.published ? <time dateTime={item.published}>{item.dateLabel}</time> : item.dateLabel}{item.dateNote && <span className="text-ink-500">(proposed date)</span>}</span>
                     <span className="inline-flex items-center gap-1.5"><L.Clock className="size-4" aria-hidden="true" /> {item.readMinutes} min read</span>
                     <span className="inline-flex items-center gap-1.5"><L.FileText className="size-4" aria-hidden="true" /> {item.typeLabel}</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5" data-kp-noprint>
-                    <VoiceBadge code={item.voice} full />
                     <ScopeBadge code={item.scope} label={item.scopeLabel} />
                     {item.topics.map((t) => (
                         <Link key={t.slug} href={t.href} className="inline-flex items-center gap-1 rounded-full border border-gold-400 bg-white px-2 py-0.5 text-[0.6875rem] font-semibold text-gold-800 hover:bg-gold-50"><L.Tag className="size-3" aria-hidden="true" />{t.label}</Link>
@@ -164,15 +159,13 @@ export default function Article({ screen, kpNav, item, related, section, author 
                     </section>
                 )}
                 {item.sourceFile.file && (
-                    <p className="mt-6 text-[0.6875rem] text-ink-500">Source document: {item.sourceFile.file}{item.sourceFile.received ? `, supplied by Kruger Phiri on ${item.sourceFile.received}` : ''}. {item.wordCount.toLocaleString('en-ZA')} words.</p>
+                    <p className="mt-6 text-[0.6875rem] text-ink-500">Source document: {item.sourceFile.file}{item.sourceFile.received ? `, received ${item.sourceFile.received}` : ''}. {item.wordCount.toLocaleString('en-ZA')} words.</p>
                 )}
             </article>
 
-            <ul className="grid gap-3 rounded-[10px] border border-parchment-400 bg-parchment-200 p-4 sm:grid-cols-2 lg:grid-cols-4" data-kp-noprint>
-                <li className="text-[0.75rem]"><VoiceBadge code={item.voice} full /><p className="mt-1 text-ink-600">{item.voiceLabel}: declared voice class for this item.</p></li>
+            <ul className="grid gap-3 rounded-[10px] border border-parchment-400 bg-parchment-200 p-4 sm:grid-cols-2" data-kp-noprint>
                 <li className="text-[0.75rem]"><ScopeBadge code={item.scope} /><p className="mt-1 text-ink-600">{item.scopeLabel} scope. Not legal, tax or professional advice for a specific country.</p></li>
                 <li className="text-[0.75rem]"><p className="font-bold text-ink-900">Professional Boundary</p><p className="text-ink-600">Review with qualified professionals for your specific circumstances.</p></li>
-                <li className="text-[0.75rem]"><p className="font-bold text-ink-900">AI Disclosure</p><p className="text-ink-600">{aiDisclosed ? 'The document discloses AI assistance. See the notes under the sources.' : 'The document does not disclose AI assistance.'}</p></li>
             </ul>
 
             {related.length > 0 && (

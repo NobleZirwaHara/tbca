@@ -6,6 +6,7 @@ use App\Models\Deliverables\Deliverable;
 use App\Models\Deliverables\PaymentLoop;
 use App\Models\Order;
 use App\Models\Sprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Throwable;
 
@@ -27,7 +28,44 @@ class DeliveryPlan
             return [];
         }
 
-        $items = Deliverable::forSprint($sprint);
+        return self::panelItems(Deliverable::forSprint($sprint));
+    }
+
+    /**
+     * Panel data for a product page: deliverables linked to these product codes, then
+     * those linked to every product of the type (marked shared).
+     *
+     * @param  array<string, list<string|null>>  $codes  product type => product codes
+     */
+    public static function forProducts(array $codes): array
+    {
+        if (! self::available() || ! Schema::hasTable('deliverable_products')) {
+            return [];
+        }
+
+        $links = DB::table('deliverable_products')
+            ->where(function ($w) use ($codes) {
+                foreach ($codes as $type => $list) {
+                    $list = array_values(array_filter($list));
+                    $w->orWhere(fn ($q) => $q->where('product_type', $type)->whereIn('product_code', [...$list, '*']));
+                }
+            })
+            ->get(['deliverable_ref', 'scope']);
+        if ($links->isEmpty()) {
+            return [];
+        }
+
+        $shared = $links->groupBy('deliverable_ref')->map(fn ($g) => $g->every(fn ($l) => $l->scope === 'all'));
+        $items = Deliverable::query()->whereIn('ref', $shared->keys())->orderBy('sort')->get()
+            ->sortBy(fn (Deliverable $d) => [$shared[$d->ref] ? 1 : 0, $d->sort])->values();
+
+        return array_map(fn ($item) => $item + ['shared' => $shared[$item['ref']]], self::panelItems($items));
+    }
+
+    /** @param  iterable<Deliverable>  $items */
+    private static function panelItems($items): array
+    {
+        $items = collect($items);
         Deliverable::withTexts($items, ['extent_premium', 'uplift_basic', 'uplift_standard', 'uplift_premium']);
 
         return $items->map(fn (Deliverable $d) => [
@@ -38,11 +76,7 @@ class DeliveryPlan
             'description' => $d->description,
             'keyIssues' => self::issues($d->key_issues),
             'pageUnit' => $d->page_unit,
-            'tiers' => collect(Deliverable::TIERS)->mapWithKeys(fn ($t) => [$t => [
-                'extent' => $d->text("extent_{$t}"),
-                'pages' => $d->getAttribute("pages_{$t}"),
-                'delivery' => $d->getAttribute("delivery_{$t}"),
-            ]])->all(),
+            'tiers' => ProductDeliverables::tiers($d),
         ])->values()->all();
     }
 

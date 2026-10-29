@@ -5,12 +5,8 @@
   "title": "Kenya's Fintech Boom: A New Growth Engine",
   "kicker": "KP THOUGHT LEADERSHIP / TECHNOLOGY & AI",
   "deck": "Kenya offers evidence of digital-finance scale and a reminder that access, financial health and consumer protection are different outcomes.",
-  "byline": [
-    "By The Business Clinic.Africa | 27 August 2026 | Article"
-  ],
   "date": "2026-08-27",
   "date_note": null,
-  "author": "The Business Clinic.Africa",
   "voice": "I",
   "scope": "AFR-G3",
   "themes": [
@@ -47,9 +43,7 @@
       "url": "https://www.gsma.com/sotir/"
     }
   ],
-  "notes": [
-    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
-  ],
+  "notes": [],
   "source": {
     "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
     "file": "kenyas-fintech-boom.docx",

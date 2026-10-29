@@ -66,6 +66,4 @@ Stop confusing immediate action with competent action. When the business is blee
 
 \[2\] US Small Business Administration (accessed 2026). [Manage your business: finance and cost-benefit analysis](https://www.sba.gov/counseling/manage-your-business/)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

@@ -63,5 +63,3 @@ At the annual strategy review, ask whether the organisation would remain valuabl
 \[3\] OECD, G20/OECD Principles of Corporate Governance 2023. [Primary source](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report.html)
 
 Editorial format: Editorial Q&A, not an interview transcript. No quotations or views are attributed to an actual interview participant.
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

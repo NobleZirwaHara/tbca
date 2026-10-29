@@ -36,6 +36,7 @@ interface Props {
     loop: { loop_id: string; family: string; task: string; owning_blueprint: string | null; sprints: number } | null;
     formatStandard: { code: string; format: string; basic: Text; standard: Text; premium: Text; unit: Text; consultingStandard: Text } | null;
     sprints: { code: string; name: Text; batch: Text; population: Text; status: string; match: string; href: string | null }[];
+    products: { product_type: string; typeLabel: string; product_code: string; product_name: Text; product_url: Text; scope: string; match_method: string; note: Text }[];
 }
 
 const TIER_LABEL = { basic: 'Basic', standard: 'Standard', premium: 'Premium' } as const;
@@ -54,7 +55,7 @@ function Bullets({ items }: { items: string[] }) {
     );
 }
 
-export default function DeliverableShow({ register: d, derived: x, columns, safeguards, missingSafeguards, loop, formatStandard, sprints }: Props) {
+export default function DeliverableShow({ register: d, derived: x, columns, safeguards, missingSafeguards, loop, formatStandard, sprints, products }: Props) {
     const csat = (v: number | null) => (v === null ? '' : `${Math.round(v * 1000) / 10}%`);
 
     return (
@@ -185,6 +186,29 @@ export default function DeliverableShow({ register: d, derived: x, columns, safe
                     />
                 </Panel>
             </div>
+
+            {products.length > 0 && (
+                <Panel title={`Other products in the app (${products.length})`} className="mt-5">
+                    <SimpleTable
+                        columns={['Product type', 'Code', 'Product', 'How it was matched']}
+                        rows={products.map((p) => [
+                            p.typeLabel,
+                            <span className="font-mono text-xs whitespace-nowrap">{p.product_code === '*' ? 'All' : p.product_code}</span>,
+                            p.product_url ? (
+                                <Link href={p.product_url} className="text-gold-700 hover:underline">
+                                    {p.product_name}
+                                </Link>
+                            ) : (
+                                p.product_name
+                            ),
+                            <span className="text-xs">
+                                {p.match_method}
+                                {p.note ? `: ${p.note}` : ''}
+                            </span>,
+                        ])}
+                    />
+                </Panel>
+            )}
 
             <Panel title={`Sprints in the crosswalk (${sprints.length})`} className="mt-5">
                 <SimpleTable

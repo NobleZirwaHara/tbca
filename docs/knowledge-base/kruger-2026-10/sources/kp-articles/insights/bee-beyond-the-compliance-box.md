@@ -57,5 +57,3 @@ Keep two dashboards: statutory B-BBEE performance and actual economic outcomes. 
 \[1\] Department of Trade, Industry and Competition, “B-BBEE Codes, Acts, Strategies & Policies” (statutory resource page; access date 07 June 2026). [\[Primary source\]](https://www.thedtic.gov.za/financial-and-non-financial-support/b-bbee/b-bbee-codes-b-bbee-acts-strategies-policies/)
 
 \[2\] B-BBEE Commission, “Annual Report on National Status and Trends on B-BBEE Shows Stagnation in Changing Ownership Patterns,” 2022 (2021 submissions). [\[Primary source\]](https://www.bbbeecommission.co.za/b-bbee-commission-annual-report-on-national-status-and-trends-on-b-bbee-show-stagnation-in-changing-ownership-patterns/)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

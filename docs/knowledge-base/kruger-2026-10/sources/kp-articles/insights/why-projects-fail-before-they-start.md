@@ -59,5 +59,3 @@ No final investment decision without a verified scope, rights matrix, independen
 \[2\] Auditor-General of South Africa, “Limited progress made by the outgoing local government administration,” 2026 (2024–25 municipal audit). [\[Primary source\]](https://www.agsa.co.za/news/limited-progress-made-outgoing-local-government-administration-strengthen-governance-and-improve-service-delivery-copy)
 
 \[3\] Project Management Institute, “The Future of Project Work: Pulse of the Profession 2024,” February 2024. [\[Primary source\]](https://www.pmi.org/learning/thought-leadership/future-of-project-work)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

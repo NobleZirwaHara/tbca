@@ -55,5 +55,3 @@ Reward providers for sustained, safe usage and improved financial outcomes, not 
 \[1\] World Bank, “Mobile-Phone Technology Powers Saving Surge in Developing Economies,” Global Findex 2025 news release, 16 July 2025 (2024 survey data). [\[Primary source\]](https://www.worldbank.org/en/news/press-release/2025/07/16/mobile-phone-technology-powers-saving-surge-in-developing-economies)
 
 \[2\] World Bank, “Global Findex Database 2025: Report,” 2025 (surveys conducted in 2024). [\[Primary source\]](https://www.worldbank.org/en/publication/globalfindex/report)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

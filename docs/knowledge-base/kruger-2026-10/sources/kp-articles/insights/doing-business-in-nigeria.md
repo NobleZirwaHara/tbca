@@ -55,5 +55,3 @@ Approve a Nigerian entry on verified local unit economics, tested compliance and
 \[1\] International Monetary Fund, “IMF Executive Board Concludes 2026 Article IV Consultation with Nigeria,” 9 June 2026. [\[Primary source\]](https://www.imf.org/en/news/articles/2026/06/09/pr26190-nigeria-imf-executive-board-concludes-2026-article-iv-consultation-with-nigeria)
 
 \[2\] World Bank, “Business Ready (B-READY) 2025,” published December 2025. [\[Primary source\]](https://www.worldbank.org/en/businessready/publications)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

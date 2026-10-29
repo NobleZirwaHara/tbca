@@ -72,6 +72,4 @@ A founder who cannot be replaced at any level has not yet built an enduring orga
 
 \[2\] OECD (2023). [G20/OECD Principles of Corporate Governance 2023, board responsibilities](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report/component-8.html)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

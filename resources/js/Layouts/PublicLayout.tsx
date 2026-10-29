@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Header, { type HeaderVariant } from '@/Components/Header';
 import Footer from '@/Components/Footer';
 import Flash from '@/Components/Flash';
+import ProductDeliverablesPanel from '@/Components/Sprints/ProductDeliverablesPanel';
 import Backdrop, { type BackdropVariant } from '@/Components/Backdrop';
 import { useT } from '@/lib/i18n';
 
@@ -32,6 +33,7 @@ export default function PublicLayout({
 
             <main id="main" className="flex-1">
                 {children}
+                <ProductDeliverablesPanel />
             </main>
 
             <Footer />

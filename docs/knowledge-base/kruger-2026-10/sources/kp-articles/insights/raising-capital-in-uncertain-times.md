@@ -61,5 +61,3 @@ A disciplined founder knows when not to accept money. A facility secured against
 \[2\] IFC, IFC and FirstRand partnership announcement, 18 September 2025. [Primary source](https://www.ifc.org/en/pressroom/2025/ifc-and-firstrand-bank-partner-to-widen-access-to-finance-for-small-businesses-in-)
 
 \[3\] IFC, MSME Finance, overview and institutional impact. [Primary source](https://www.ifc.org/en/what-we-do/sector-expertise/financial-institutions/msme-finance)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

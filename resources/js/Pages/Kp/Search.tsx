@@ -12,7 +12,6 @@ interface Result {
     summary: string;
     href: string;
     tags: string[];
-    author: string;
     meta: string;
 }
 
@@ -70,7 +69,7 @@ export default function Search({ screen, kpNav, q, types, sort, results, paginat
                 <>
                     <Box title="Search at a Glance">
                         <dl className="space-y-3">
-                            {[[L.FileText, glance.total, 'Total Results'], [L.User, glance.kp, 'Items by Kruger Phiri'], [L.Layers, glance.categories, 'Content Categories']].map(([I, v, l]) => {
+                            {[[L.FileText, glance.total, 'Total Results'], [L.User, glance.kp, 'KP Articles'], [L.Layers, glance.categories, 'Content Categories']].map(([I, v, l]) => {
                                 const Icon = I as typeof L.FileText;
                                 return <div key={l as string} className="flex items-center gap-3"><Icon className="size-6 text-ink-500" aria-hidden="true" /><span><dd className="text-lg font-bold text-ink-900">{v as number}</dd><dt className="text-[0.75rem] text-ink-500">{l as string}</dt></span></div>;
                             })}

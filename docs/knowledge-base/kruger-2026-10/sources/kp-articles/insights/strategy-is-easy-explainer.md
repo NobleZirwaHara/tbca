@@ -55,5 +55,3 @@ Ask every executive for three things: the strategic choice, the next proof point
 \[1\] Project Management Institute, “The Future of Project Work: Pulse of the Profession 2024,” February 2024. [\[Primary source\]](https://www.pmi.org/learning/thought-leadership/future-of-project-work)
 
 \[2\] Auditor-General of South Africa, “AG reports minimal progress, calls on government to double efforts to improve audit outcomes,” 26 March 2026 (2024–25 national and provincial audit). [\[Primary source\]](https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

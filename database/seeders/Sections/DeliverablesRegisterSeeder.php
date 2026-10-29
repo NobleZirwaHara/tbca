@@ -3,8 +3,12 @@
 namespace Database\Seeders\Sections;
 
 use App\Models\Deliverables\Deliverable;
+use App\Support\Deliverables\ProductCatalogue;
+use App\Support\Deliverables\ProductCodes;
+use App\Support\Deliverables\SprintDeliverableGenerator;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use RuntimeException;
 
 /**
@@ -41,12 +45,13 @@ class DeliverablesRegisterSeeder extends Seeder
         });
 
         $report += self::linkSprints();
+        $report += self::linkProducts();
         self::$report = $report;
 
         $this->command?->info(sprintf(
-            'Deliverables register: %d deliverables (%d shared texts); crosswalk %d codes, %d linked to Sprints by code, %d by register_id, %d unmatched; %d standards, %d safeguards, %d loops, %d integration elements, %d country cells.',
-            $report['deliverables'], $report['texts'], $report['crosswalk'], $report['matched_code'], $report['matched_register_id'],
-            $report['unmatched'], $report['standards'], $report['safeguards'], $report['loops'], $report['integration_specs'], $report['country_matrix'],
+            'Deliverables register: %d deliverables plus %d TBCA generated (%d shared texts); crosswalk %d codes, %d linked to Sprints by code, %d by register_id, %d unmatched; %d standards, %d safeguards, %d loops, %d integration elements, %d country cells; %d product links.',
+            $report['deliverables'], $report['generated'], $report['texts'], $report['crosswalk'], $report['matched_code'], $report['matched_register_id'],
+            $report['unmatched'], $report['standards'], $report['safeguards'], $report['loops'], $report['integration_specs'], $report['country_matrix'], $report['product_links'],
         ));
     }
 
@@ -74,46 +79,57 @@ class DeliverablesRegisterSeeder extends Seeder
         return json_decode((string) file_get_contents(self::path($file)), true, flags: JSON_THROW_ON_ERROR);
     }
 
+    /** The TBCA-generated deliverables for app Sprints the register does not cover (may be absent). */
+    public static function loadGenerated(): ?array
+    {
+        $path = self::path('generated.json');
+
+        return is_file($path) ? json_decode((string) file_get_contents($path), true, flags: JSON_THROW_ON_ERROR) : null;
+    }
+
     private function deliverables($now): array
     {
-        $doc = self::loadRegister();
-
-        // Shared texts: upsert by hash, then map the file index to the row id.
-        $hashes = array_map(fn ($t) => sha1($t), $doc['texts']);
-        $textRows = [];
-        foreach ($doc['texts'] as $i => $body) {
-            $textRows[$hashes[$i]] = ['hash' => $hashes[$i], 'body' => $body, 'created_at' => $now, 'updated_at' => $now];
-        }
-        foreach (array_chunk(array_values($textRows), 100) as $chunk) {
-            DB::table('deliverable_texts')->upsert($chunk, ['hash'], ['body']);
-        }
-        $idByHash = DB::table('deliverable_texts')->pluck('id', 'hash')->all();
-        $textId = fn ($index) => $index === null ? null : $idByHash[$hashes[$index]];
+        $docs = array_values(array_filter([self::loadRegister(), self::loadGenerated()]));
 
         $rows = [];
-        foreach ($doc['rows'] as $sort => $r) {
-            $route = $doc['texts'][$r['automation_route']] ?? '';
-            $trigger = $doc['texts'][$r['payment_trigger']] ?? '';
-
-            $row = [
-                'ref' => $r['ref'],
-                'sort' => $sort + 1,
-                'format_code' => $r['format_code'] ?? null,
-                'loop_id' => preg_match('/LOOP-PAY-[A-Z0-9-]+/', $trigger, $m) ? $m[0] : null,
-                'automation_family' => preg_match('/^(UP-\d+|P13[A-Z-]*)/', $route, $m) ? $m[1] : null,
-                'owner_blueprint' => preg_match('/owner ([^·]+)/u', $route, $m) ? trim($m[1]) : null,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-            foreach (array_keys(Deliverable::COLUMNS) as $field) {
-                if (in_array($field, Deliverable::POOLED, true)) {
-                    $row["{$field}_text_id"] = $textId($r[$field]);
-                } else {
-                    $v = $r[$field];
-                    $row[$field] = is_string($v) || $v === null || str_starts_with($field, 'csat_') ? $v : (string) $v;
-                }
+        $sort = 0;
+        foreach ($docs as $doc) {
+            // Shared texts: upsert by hash, then map the file index to the row id.
+            $hashes = array_map(fn ($t) => sha1($t), $doc['texts']);
+            $textRows = [];
+            foreach ($doc['texts'] as $i => $body) {
+                $textRows[$hashes[$i]] = ['hash' => $hashes[$i], 'body' => $body, 'created_at' => $now, 'updated_at' => $now];
             }
-            $rows[] = $row;
+            foreach (array_chunk(array_values($textRows), 100) as $chunk) {
+                DB::table('deliverable_texts')->upsert($chunk, ['hash'], ['body']);
+            }
+            $idByHash = DB::table('deliverable_texts')->pluck('id', 'hash')->all();
+            $textId = fn ($index) => $index === null ? null : $idByHash[$hashes[$index]];
+
+            foreach ($doc['rows'] as $r) {
+                $route = $doc['texts'][$r['automation_route']] ?? '';
+                $trigger = $doc['texts'][$r['payment_trigger']] ?? '';
+
+                $row = [
+                    'ref' => $r['ref'],
+                    'sort' => ++$sort,
+                    'format_code' => $r['format_code'] ?? null,
+                    'loop_id' => preg_match('/LOOP-PAY-[A-Z0-9-]+/', $trigger, $m) ? $m[0] : null,
+                    'automation_family' => preg_match('/^(UP-\d+|P13[A-Z-]*)/', $route, $m) ? $m[1] : null,
+                    'owner_blueprint' => preg_match('/owner ([^·]+)/u', $route, $m) ? trim($m[1]) : null,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+                foreach (array_keys(Deliverable::COLUMNS) as $field) {
+                    if (in_array($field, Deliverable::POOLED, true)) {
+                        $row["{$field}_text_id"] = $textId($r[$field]);
+                    } else {
+                        $v = $r[$field];
+                        $row[$field] = is_string($v) || $v === null || str_starts_with($field, 'csat_') ? $v : (string) $v;
+                    }
+                }
+                $rows[] = $row;
+            }
         }
 
         $columns = array_values(array_diff(array_keys($rows[0]), ['ref', 'created_at']));
@@ -134,7 +150,9 @@ class DeliverablesRegisterSeeder extends Seeder
         }
         DB::table('deliverable_texts')->whereNotIn('id', array_keys($used))->delete();
 
-        return ['deliverables' => count($rows), 'texts' => count($used), 'deliverables_removed' => $removed];
+        $generated = count(array_filter($rows, fn ($r) => str_starts_with($r['ref'], 'DEL-GEN-')));
+
+        return ['deliverables' => count($rows) - $generated, 'generated' => $generated, 'texts' => count($used), 'deliverables_removed' => $removed];
     }
 
     private function crosswalk($now): array
@@ -160,12 +178,26 @@ class DeliverablesRegisterSeeder extends Seeder
         }
         fclose($fh);
 
+        // TBCA-generated deliverables link to their app Sprint by its code.
+        foreach (self::loadGenerated()['rows'] ?? [] as $g) {
+            $rows[] = [
+                'sprint_code' => $g['linked_sprint_codes'],
+                'sprint_name' => $g['name'],
+                'batch' => 'APP',
+                'population' => 'APP SPRINT',
+                'deliverable_ref' => $g['ref'],
+                'status' => SprintDeliverableGenerator::SOURCE,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+
         foreach (array_chunk($rows, 200) as $chunk) {
             DB::table('deliverable_sprints')->upsert($chunk, ['sprint_code'], ['sprint_name', 'batch', 'population', 'deliverable_ref', 'status', 'updated_at']);
         }
         DB::table('deliverable_sprints')->whereNotIn('sprint_code', array_column($rows, 'sprint_code'))->delete();
 
-        return ['crosswalk' => count($rows)];
+        return ['crosswalk' => count($rows), 'crosswalk_generated' => count(self::loadGenerated()['rows'] ?? [])];
     }
 
     /**
@@ -202,6 +234,76 @@ class DeliverablesRegisterSeeder extends Seeder
         });
 
         return $counts;
+    }
+
+    /**
+     * Link register deliverables to app products from product_links.csv (written by
+     * `php artisan deliverables:map-products`). Products without a code get one first.
+     * A link follows its product by code, or by slug when the code has changed.
+     *
+     * @return array{product_links: int, product_links_skipped: int}
+     */
+    public static function linkProducts(): array
+    {
+        if (! Schema::hasTable('deliverable_products') || ! is_file(self::path('product_links.csv'))) {
+            return ['product_links' => 0, 'product_links_skipped' => 0];
+        }
+
+        ProductCodes::backfill();
+        $catalogue = ProductCatalogue::indexed();
+        $bySlug = [];
+        foreach ($catalogue as $type => $items) {
+            foreach ($items as $p) {
+                $bySlug[$type][$p['slug']][] = $p;
+            }
+        }
+
+        $now = now();
+        $rows = [];
+        $skipped = 0;
+        $fh = fopen(self::path('product_links.csv'), 'r');
+        $header = fgetcsv($fh, escape: '');
+        while (($r = fgetcsv($fh, escape: '')) !== false) {
+            if ($r === [null]) {
+                continue;
+            }
+            $r = array_combine($header, $r);
+            $type = $r['product_type'];
+            $product = $r['product_code'] === '*' ? null : ($catalogue[$type][$r['product_code']] ?? (count($bySlug[$type][$r['product_slug']] ?? []) === 1 ? $bySlug[$type][$r['product_slug']][0] : null));
+            if ($r['product_code'] !== '*' && $product === null) {
+                $skipped++;
+
+                continue;
+            }
+            $rows[] = [
+                'deliverable_ref' => $r['deliverable_ref'],
+                'product_type' => $type,
+                'product_code' => $product['code'] ?? '*',
+                'product_name' => $product['name'] ?? $r['product_name'],
+                'product_url' => $product['url'] ?? null,
+                'scope' => $r['scope'],
+                'match_method' => $r['match_method'],
+                'confidence' => $r['confidence'],
+                'note' => $r['note'] !== '' ? $r['note'] : null,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+        fclose($fh);
+
+        DB::transaction(function () use ($rows) {
+            foreach (array_chunk($rows, 100) as $chunk) {
+                DB::table('deliverable_products')->upsert($chunk, ['deliverable_ref', 'product_type', 'product_code'], ['product_name', 'product_url', 'scope', 'match_method', 'confidence', 'note', 'updated_at']);
+            }
+            $keep = array_flip(array_map(fn ($r) => "{$r['deliverable_ref']}|{$r['product_type']}|{$r['product_code']}", $rows));
+            $stale = DB::table('deliverable_products')->get(['id', 'deliverable_ref', 'product_type', 'product_code'])
+                ->filter(fn ($r) => ! isset($keep["{$r->deliverable_ref}|{$r->product_type}|{$r->product_code}"]))->pluck('id');
+            if ($stale->isNotEmpty()) {
+                DB::table('deliverable_products')->whereIn('id', $stale)->delete();
+            }
+        });
+
+        return ['product_links' => count($rows), 'product_links_skipped' => $skipped];
     }
 
     private function reference($now): array

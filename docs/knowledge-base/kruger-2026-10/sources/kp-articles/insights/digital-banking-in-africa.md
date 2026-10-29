@@ -63,5 +63,3 @@ Assign one management owner to each test, approve thresholds before the launch a
 \[3\] BIS / Basel Committee, Core Principles for Effective Banking Supervision, April 2024. [Primary source](https://www.bis.org/committees/bcbs/basel-framework/standard/bcp)
 
 \[4\] World Bank, Remittance Prices Worldwide, 2025 observations. [Primary source](https://remittanceprices.worldbank.org/)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

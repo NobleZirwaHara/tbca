@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Portal\Notice;
 use App\Support\Content\Navigation;
+use App\Support\Deliverables\ProductDeliverables;
 use App\Support\Platform\Basket;
 use App\Support\Platform\Fx;
 use Illuminate\Http\Request;
@@ -49,6 +50,9 @@ class HandleInertiaRequests extends Middleware
             'fx' => fn () => Fx::snapshot(),
 
             'trustBadges' => config('tbca.trust_badges'),
+
+            // "What you will receive" on product pages (Registry of Deliverables); null on every other page.
+            'productDeliverables' => fn () => ProductDeliverables::forRequest($request),
 
             'auth' => fn () => [
                 'user' => $request->user()?->only(['id', 'name', 'email', 'client_id', 'role', 'company', 'phone', 'country', 'client_type']),

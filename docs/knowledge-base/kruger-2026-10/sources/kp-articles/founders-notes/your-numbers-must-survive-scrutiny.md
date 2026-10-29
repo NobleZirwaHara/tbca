@@ -66,6 +66,4 @@ A defensible model is not the model with the highest return. It is the one whose
 
 \[2\] IFRS Foundation (2021). [IAS 7, Statement of Cash Flows (2021 issued edition)](https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2021/issued/part-a/ias-7-statement-of-cash-flows.pdf)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

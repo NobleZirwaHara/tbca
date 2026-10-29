@@ -15,6 +15,7 @@ use Database\Seeders\Sections\InsightsSeeder;
 use Database\Seeders\Sections\KpArticlesSeeder;
 use Database\Seeders\Sections\KpSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -107,9 +108,10 @@ class KpThoughtLeadershipTest extends TestCase
             $this->assertSame($body, $row->body, $meta['slug']);
             $this->assertNotEmpty($row->source['file'], $meta['slug']);
             $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]{25,}$/', $row->source['drive_id'], $meta['slug']);
-            // The byline is exactly what the document states.
-            $stated = preg_match('/^By (.+?)\s*\|/', $meta['byline'][0], $m) ? $m[1] : (str_contains(mb_strtolower(implode(' ', $meta['byline'])), 'kruger phiri') ? 'Kruger Phiri' : null);
-            $this->assertSame($stated, $row->author, $meta['slug']);
+            // No byline and no AI-assistance or approval note is stored or published.
+            $this->assertArrayNotHasKey('author', $meta, $meta['slug']);
+            $this->assertArrayNotHasKey('byline', $meta, $meta['slug']);
+            $this->assertStringNotContainsStringIgnoringCase('AI-assisted', json_encode($meta, JSON_UNESCAPED_UNICODE).$body, $meta['slug']);
             $this->assertGreaterThan(800, $row->word_count, $meta['slug']);
         }
 
@@ -118,11 +120,13 @@ class KpThoughtLeadershipTest extends TestCase
         $this->assertSame(['published'], collect(Kp::items())->pluck('status')->unique()->values()->all());
         $this->get(self::B.'/insights/not-a-kp-article')->assertNotFound();
 
-        // Insights carry the institutional byline of their documents; Founder's Notes and Resources are Kruger Phiri's.
-        $this->assertSame(0, KpArticle::where('category', 'insights')->where('author', 'Kruger Phiri')->count());
-        $this->assertSame(['I'], KpArticle::where('category', 'insights')->distinct()->pluck('voice')->all());
-        $this->assertSame(18, KpArticle::whereIn('category', ['founders-notes', 'resources'])->where('author', 'Kruger Phiri')->count());
-        $this->assertSame('The Business Clinic.Africa', KpArticle::where('slug', 'the-real-problem-isnt-capital')->value('author'));
+        $this->assertFalse(Schema::hasColumn('kp_articles', 'author'));
+        $this->assertFalse(Schema::hasColumn('kp_articles', 'byline'));
+        foreach ([KpArticles::dataPath(), base_path('docs/knowledge-base/kruger-2026-10/sources/kp-articles')] as $dir) {
+            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)) as $file) {
+                $this->assertStringNotContainsStringIgnoringCase('AI-assisted', (string) file_get_contents((string) $file), (string) $file);
+            }
+        }
 
         // The dates come from the documents; an article without one says so.
         $this->assertSame('16 October 2026', collect(Kp::items())->firstWhere('slug', 'bankability-is-earned')['date_label']);
@@ -135,11 +139,15 @@ class KpThoughtLeadershipTest extends TestCase
             $para = collect(preg_split('/\n\s*\n/', $a->body))->first(fn ($p) => ! str_starts_with(ltrim($p), '#') && ! str_starts_with(ltrim($p), '|') && ! str_starts_with(ltrim($p), '>') && str_word_count($p) > 12);
             $sentence = Str::limit(KpArticles::plain((string) $para), 60, '');
 
-            $this->get(KpArticles::href($a->category, $a->slug))->assertOk()->assertInertia(fn (Assert $p) => $p
+            $res = $this->get(KpArticles::href($a->category, $a->slug))->assertOk();
+            $this->assertNoBylineOrAiNote($res->getContent(), $a->slug);
+            $res->assertInertia(fn (Assert $p) => $p
                 ->component('Kp/Article')
                 ->where('screen.id', 'KP-SCR-006')
                 ->where('item.title', $a->title)
-                ->where('item.author', $a->author)
+                ->missing('item.author')
+                ->missing('item.byline')
+                ->missing('author')
                 ->where('item.html', fn ($html) => str_contains(html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5), $sentence))
                 ->has('item.sources', count($a->sources))
                 ->has('related'));
@@ -153,6 +161,23 @@ class KpThoughtLeadershipTest extends TestCase
         $this->get(self::B.'/resources/the-curse-of-sovereign-guarantees-in-africa')->assertInertia(fn (Assert $p) => $p
             ->where('item.html', fn ($h) => substr_count((string) $h, '<table>') === 2 && str_contains((string) $h, '<blockquote>'))
             ->where('item.toc', fn ($toc) => count($toc) === 14));
+    }
+
+    private function assertNoBylineOrAiNote(string $html, string $where): void
+    {
+        foreach (['AI-assisted', 'By Kruger Phiri', 'By The Business', 'By The BusinessClinic', '"author":"Kruger Phiri"', '&quot;author&quot;:&quot;Kruger Phiri&quot;'] as $text) {
+            $this->assertStringNotContainsString($text, $html, "$text on $where");
+        }
+    }
+
+    public function test_listings_and_search_show_no_byline_or_ai_note(): void
+    {
+        foreach (['/insights', '/founders-notes', '/resources', '/search?q=capital', '/topics/capital-funding', '/africa/kenya', '/african-business-clinic', ''] as $path) {
+            $res = $this->get(self::B.$path)->assertOk();
+            $this->assertNoBylineOrAiNote($res->getContent(), $path);
+        }
+        $this->get(self::B.'/insights')->assertInertia(fn (Assert $p) => $p->missing('items.0.author')->missing('voices'));
+        $this->get(self::B.'/search?q=capital')->assertInertia(fn (Assert $p) => $p->missing('results.0.author'));
     }
 
     public function test_sections_list_their_articles_and_search_reads_the_full_text(): void
@@ -179,7 +204,7 @@ class KpThoughtLeadershipTest extends TestCase
     {
         User::factory()->create(); // a database seeded before the articles existed
         KpArticle::query()->delete();
-        $migration = require database_path('migrations/2026_10_29_110000_load_kp_articles.php');
+        $migration = require database_path('migrations/2026_10_29_130000_reload_kp_articles.php');
         $migration->up();
         $this->assertSame(37, KpArticle::count());
 
@@ -190,7 +215,7 @@ class KpThoughtLeadershipTest extends TestCase
     public function test_insights_filter_by_type_theme_voice_and_keyword(): void
     {
         $this->get(self::B.'/insights?types[]=interview')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 1)->where('items.0.type', 'interview'));
-        $this->get(self::B.'/insights?theme=capital-funding&voice=I')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 5));
+        $this->get(self::B.'/insights?theme=capital-funding')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 5));
         $this->get(self::B.'/insights?q=nigeria')->assertInertia(fn (Assert $p) => $p->where('items', fn ($i) => collect($i)->pluck('slug')->contains('doing-business-in-nigeria')));
         $this->get(self::B.'/founders-notes')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 10));
         $this->get(self::B.'/search?q=execution&types[]=Topics')->assertInertia(fn (Assert $p) => $p->where('results.0.group', 'Topics'));

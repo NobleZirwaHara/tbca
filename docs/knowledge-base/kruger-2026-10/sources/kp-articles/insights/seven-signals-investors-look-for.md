@@ -55,5 +55,3 @@ Score each of the seven signals red, amber or green before fundraising. The most
 \[1\] International Finance Corporation (IFC), “IFC launches call for expression of interest for its new Catalytic First Loss Guarantee Facility,” 8 April 2025. [\[Primary source\]](https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar)
 
 \[2\] Project Management Institute, “The Future of Project Work: Pulse of the Profession 2024,” February 2024. [\[Primary source\]](https://www.pmi.org/learning/thought-leadership/future-of-project-work)
-
-Disclosure: AI-assisted draft. Institutional human review and approval required before publication.

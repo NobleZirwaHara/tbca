@@ -11,9 +11,11 @@ use App\Models\Deliverables\PaymentLoop;
 use App\Models\Deliverables\Safeguard;
 use App\Models\Deliverables\Standard;
 use App\Models\Sprint;
+use App\Support\Deliverables\ProductCatalogue;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -45,6 +47,7 @@ class AdminController extends Controller
                 'formatDetail' => $d->format_detail,
                 'loopId' => $d->loop_id,
                 'isNew' => str_starts_with((string) $d->v2_status, 'NEW'),
+                'isGenerated' => str_starts_with((string) $d->v2_status, 'TBCA generated'),
                 'pages' => $d->getAttribute("pages_{$filters['tier']}"),
                 'pageUnit' => $d->page_unit,
                 'delivery' => $d->getAttribute("delivery_{$filters['tier']}"),
@@ -52,6 +55,7 @@ class AdminController extends Controller
 
         $total = Deliverable::count();
         $new = Deliverable::where('v2_status', 'like', 'NEW%')->count();
+        $generated = Deliverable::where('v2_status', 'like', 'TBCA generated%')->count();
 
         return Inertia::render('Admin/Deliverables/Index', [
             'filters' => $filters,
@@ -66,8 +70,10 @@ class AdminController extends Controller
             ],
             'stats' => [
                 'deliverables' => $total,
-                'retained' => $total - $new,
+                'retained' => $total - $new - $generated,
                 'new' => $new,
+                'generated' => $generated,
+                'productLinks' => Schema::hasTable('deliverable_products') ? DB::table('deliverable_products')->distinct()->count('deliverable_ref') : 0,
                 'crosswalk' => DeliverableSprint::count(),
                 'matched' => DeliverableSprint::where('match', '!=', 'unmatched')->count(),
                 'safeguards' => Safeguard::count(),
@@ -119,6 +125,11 @@ class AdminController extends Controller
                 'premium' => $format->premium, 'unit' => $format->unit, 'consultingStandard' => $format->basis,
             ] : null,
             'sprints' => $sprints,
+            'products' => Schema::hasTable('deliverable_products')
+                ? DB::table('deliverable_products')->where('deliverable_ref', $d->ref)->orderBy('product_type')->orderBy('product_code')
+                    ->get(['product_type', 'product_code', 'product_name', 'product_url', 'scope', 'match_method', 'note'])
+                    ->map(fn ($p) => [...(array) $p, 'typeLabel' => ProductCatalogue::TYPES[$p->product_type] ?? $p->product_type])
+                : [],
         ]);
     }
 
@@ -169,7 +180,13 @@ class AdminController extends Controller
                 'sprintsWithout' => (clone $withoutDeliverable)->count(),
                 'statusNew' => DeliverableSprint::where('status', 'like', 'NEW%')->count(),
                 'statusLinked' => DeliverableSprint::where('status', 'like', 'LINKED%')->count(),
+                'statusGenerated' => DeliverableSprint::where('status', 'like', 'TBCA generated%')->count(),
             ],
+            'productLinks' => Schema::hasTable('deliverable_products')
+                ? DB::table('deliverable_products')->select('product_type', 'scope')->selectRaw('count(*) as n')->selectRaw('count(distinct deliverable_ref) as d')
+                    ->groupBy('product_type', 'scope')->orderBy('product_type')->get()
+                    ->map(fn ($r) => ['type' => ProductCatalogue::TYPES[$r->product_type] ?? $r->product_type, 'scope' => $r->scope, 'links' => (int) $r->n, 'deliverables' => (int) $r->d])
+                : [],
             'byPopulation' => $byPopulation,
             'rows' => $rows,
             'unmatched' => DeliverableSprint::query()->where('match', 'unmatched')->orderBy('sprint_code')->get(['sprint_code', 'sprint_name', 'population', 'deliverable_ref']),
@@ -252,14 +269,18 @@ class AdminController extends Controller
         return response()->streamDownload(function () use ($query) {
             $out = fopen('php://output', 'w');
             fwrite($out, "\xEF\xBB\xBF");
-            fputcsv($out, [...array_values(Deliverable::COLUMNS), 'Format code', 'Payment-trigger loop', 'Automation family', 'Owning blueprint', 'Linked app Sprints'], escape: '');
+            fputcsv($out, [...array_values(Deliverable::COLUMNS), 'Format code', 'Payment-trigger loop', 'Automation family', 'Owning blueprint', 'Linked app Sprints', 'Linked app products'], escape: '');
 
             $query->chunk(250, function ($chunk) use ($out) {
                 Deliverable::withTexts($chunk);
                 $linked = DeliverableSprint::query()->whereIn('deliverable_ref', $chunk->pluck('ref'))->where('match', '!=', 'unmatched')
                     ->selectRaw('deliverable_ref, count(*) as n')->groupBy('deliverable_ref')->pluck('n', 'deliverable_ref');
+                $products = Schema::hasTable('deliverable_products')
+                    ? DB::table('deliverable_products')->whereIn('deliverable_ref', $chunk->pluck('ref'))->get(['deliverable_ref', 'product_code'])->groupBy('deliverable_ref')
+                        ->map(fn ($g) => $g->pluck('product_code')->implode('; '))
+                    : collect();
                 foreach ($chunk as $d) {
-                    fputcsv($out, [...array_values($d->register()), $d->format_code, $d->loop_id, $d->automation_family, $d->owner_blueprint, (int) ($linked[$d->ref] ?? 0)], escape: '');
+                    fputcsv($out, [...array_values($d->register()), $d->format_code, $d->loop_id, $d->automation_family, $d->owner_blueprint, (int) ($linked[$d->ref] ?? 0), $products[$d->ref] ?? ''], escape: '');
                 }
             });
             fclose($out);
@@ -278,7 +299,7 @@ class AdminController extends Controller
             'format' => $str('format'),
             'loop' => $str('loop'),
             'tier' => Deliverable::normaliseTier($str('tier')),
-            'source' => in_array($str('source'), ['retained', 'new'], true) ? $str('source') : null,
+            'source' => in_array($str('source'), ['retained', 'new', 'generated'], true) ? $str('source') : null,
         ];
     }
 
@@ -296,7 +317,8 @@ class AdminController extends Controller
             ->when($f['format'], fn ($w) => $w->where('format_class', $f['format']))
             ->when($f['loop'], fn ($w) => $w->where('loop_id', $f['loop']))
             ->when($f['source'] === 'new', fn ($w) => $w->where('v2_status', 'like', 'NEW%'))
-            ->when($f['source'] === 'retained', fn ($w) => $w->where('v2_status', 'not like', 'NEW%'));
+            ->when($f['source'] === 'retained', fn ($w) => $w->where('v2_status', 'not like', 'NEW%')->where('v2_status', 'not like', 'TBCA generated%'))
+            ->when($f['source'] === 'generated', fn ($w) => $w->where('v2_status', 'like', 'TBCA generated%'));
     }
 
     /** Sprints whose code and register_id are both absent from the crosswalk. */

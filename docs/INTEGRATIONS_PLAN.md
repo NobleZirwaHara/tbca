@@ -1145,4 +1145,4 @@ n8n and PayFast are the client's proposals. Neither is connected; both need KP's
 }
 ```
 
-Order lines that are not Sprints (Due Diligence, digital products, retainer proposals) carry no plan yet, because the register's Issue 1.0 rows for those tabs have no product codes to match on.
+Order lines that are not Sprints (Due Diligence, digital products, retainer proposals) carry no plan yet. Issue 1.0 deliverables are now linked to those products by product code in `deliverable_products`; the plan can use those links once each checkout writes the product code (for example the Due Diligence family code `DDF-...` or the plan code `SUB-...`) on its order line. Sprints without a register entry have a TBCA-generated deliverable (`DEL-GEN-...`) with a loop taken from a comparable register deliverable, so every Sprint order carries a plan.

@@ -66,6 +66,4 @@ Stop asking banks to bless work that has not been done. Build a defensible case,
 
 \[2\] World Bank (2017). [Preparing bankable infrastructure projects](https://blogs.worldbank.org/en/ppps/preparing-bankable-infrastructure-projects)
 
-Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.
-
 Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions.

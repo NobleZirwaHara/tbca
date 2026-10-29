@@ -65,7 +65,7 @@ export default function Resources({ screen, kpNav, category, q, categories, tota
 
             {(category === 'all' || category === 'articles') && (
                 <section>
-                    <h2 className="font-serif text-[1.25rem] font-bold text-ink-900">Articles by Kruger Phiri</h2>
+                    <h2 className="font-serif text-[1.25rem] font-bold text-ink-900">Long-Form Articles</h2>
                     <p className="mb-3 text-[0.8125rem] text-ink-600">Long-form articles on Africa's economies, finance and institutions{q ? ` matching "${q}"` : ''}.</p>
                     {articles.length === 0 ? <Empty>No articles match.</Empty> : <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{articles.map((a) => <InsightCard key={a.slug} item={a} />)}</div>}
                 </section>

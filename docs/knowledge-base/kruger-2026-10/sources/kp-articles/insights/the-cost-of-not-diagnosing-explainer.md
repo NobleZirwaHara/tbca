@@ -63,5 +63,3 @@ The board should ask how many previously approved remedies achieved the outcomes
 \[1\] World Bank, Business Ready 2025 publications and methodology. [Primary source](https://www.worldbank.org/en/businessready/publications)
 
 \[2\] McKinsey & Company, The State of AI: How organizations are rewiring to capture value, 12 March 2025. [Primary source](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.

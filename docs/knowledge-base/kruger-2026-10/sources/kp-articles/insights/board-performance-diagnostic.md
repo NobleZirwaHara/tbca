@@ -59,5 +59,3 @@ Close with a short action register containing no more than the most material imp
 \[1\] OECD, G20/OECD Principles of Corporate Governance 2023. [Primary source](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report.html)
 
 \[2\] Bank for International Settlements / Basel Committee, Core Principles for Effective Banking Supervision, effective April 2024. [Primary source](https://www.bis.org/committees/bcbs/basel-framework/standard/bcp)
-
-Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice.
