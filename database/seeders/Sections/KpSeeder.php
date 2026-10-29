@@ -20,8 +20,8 @@ class KpSeeder extends Seeder
 
         $items = collect(Kp::items());
         $rows = [
-            'topics' => collect(Kp::themes())->map(fn ($t, $i) => [$t['slug'], $t['label'], $i < 7 ? 'Active' : 'Draft', 'Content Lead', $items->where('theme', $t['slug'])->count().' content items'])->all(),
-            'lifecycle' => $items->take(10)->values()->map(fn ($it, $i) => ['KP-CONT-'.str_pad((string) ($i + 1), 4, '0', STR_PAD_LEFT), $it['title'], $it['status'] === 'excerpt' ? 'Review' : 'Drafting', $it['author'], 'Awaiting full text from KP'])->all(),
+            'topics' => collect(Kp::themes())->map(fn ($t, $i) => [$t['slug'], $t['label'], $i < 7 ? 'Active' : 'Draft', 'Content Lead', $items->filter(fn ($it) => in_array($t['slug'], $it['themes'], true))->count().' content items'])->all(),
+            'lifecycle' => $items->take(10)->values()->map(fn ($it, $i) => ['KP-CONT-'.str_pad((string) ($i + 1), 4, '0', STR_PAD_LEFT), $it['title'], $it['status'] === 'published' ? 'Published' : 'Drafting', $it['author'], $it['status'] === 'published' ? 'Full text supplied by KP on 18 Oct 2026' : 'Awaiting full text from KP'])->all(),
             'voice' => $items->take(10)->values()->map(fn ($it, $i) => ['KP-CONT-'.str_pad((string) ($i + 1), 4, '0', STR_PAD_LEFT), $it['title'], $it['voice'], 'Editorial', Kp::voices()[$it['voice']][0]])->all(),
             'review' => [
                 ['REV-0041', "The Real Problem Isn't Capital. It's Readiness.", 'Reviewing', 'Independent Reviewer', 'Source dates to confirm'],

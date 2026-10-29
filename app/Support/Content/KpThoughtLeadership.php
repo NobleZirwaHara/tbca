@@ -2,6 +2,10 @@
 
 namespace App\Support\Content;
 
+use App\Models\Kp\KpArticle;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -15,10 +19,9 @@ use Illuminate\Support\Str;
  *  - Every content item carries a voice class (P, F, I, S, E, A), a freshness state and a
  *    geographic scope (Parts 5.3, 6.5, 10.1).
  *
- * Content states:
- *  - "published": full text supplied by KP (set 'body' => [paragraphs] and 'published' => date).
- *  - "excerpt":   only the text visible in KP's own page design; the full text is pending.
- *  - "pending":   title and summary from KP's design only.
+ * Articles: KP supplied his articles on 18 October 2026 (Drive folder
+ * "ARTICLES-KP THOT LEADERSHIP"). They replace the title-only placeholders taken from
+ * his page designs; see items() and KpArticles. Every article renders its full text.
  */
 class KpThoughtLeadership
 {
@@ -163,6 +166,7 @@ class KpThoughtLeadership
             'explainer' => ['Explainer', 'Explainers', 'lightbulb'],
             'case-perspective' => ['Case Perspective', 'Case Perspectives', 'briefcase'],
             'field-note' => ['Field Note', 'Field Notes', 'map'],
+            'long-read' => ['Long Read', 'Long Reads', 'book-open'],
         ];
     }
 
@@ -208,91 +212,89 @@ class KpThoughtLeadership
     /* ------------------------------------------------------------------ */
 
     /**
-     * Every insight entry. Titles and summaries are the text visible in KP's page designs.
-     * No body text is written for KP; only the excerpt visible on Page 6 is used.
+     * Every published KP article (Insights, Founder's Notes and Resources), newest first
+     * within each section. The texts are Kruger Phiri's own documents, loaded into
+     * kp_articles from the versioned files (see KpArticles). Nothing is written for KP:
+     * a title without a source document has no entry here.
+     *
+     * Items carry metadata only; find() adds the body, sources and notes.
      */
     public static function items(): array
     {
-        $rows = [
-            // Insights Home (Page 5) and Authority Landing latest insights (Page 3)
-            ['the-real-problem-isnt-capital', "The Real Problem Isn't Capital. It's Readiness.", 'Why capital follows capability, and the five pillars that make you investable.', 'article', 'capital-funding', 'F', 'AFR-G1', true],
-            ['why-projects-fail-before-they-start', 'Why Projects Fail Before They Start, and How to Stop It.', 'The most common pre-execution failures and how to build project immunity.', 'article', 'project-development', 'F', 'AFR-G1', true],
-            ['doing-business-in-nigeria', 'Doing Business in Nigeria: What the Data Actually Shows.', 'Evidence-based insights on opportunity, risk and regulatory reality.', 'article', 'markets-growth', 'I', 'AFR-G3', true],
-            ['three-questions-every-founder-must-outgrow', 'Three Questions Every Founder Must Outgrow.', 'The mindset shift that separates survival from significant impact.', 'founders-note', 'leadership-people', 'F', 'AFR-G0', true],
-            ['ai-wont-replace-you', "AI Won't Replace You. But Someone Using AI Will.", "A founder's guide to practical AI adoption without losing your judgement.", 'article', 'technology-ai', 'I', 'AFR-G0', false],
-            ['seven-signals-investors-look-for', 'The 7 Signals Investors Look For (But Rarely Say).', 'What serious investors look for before they even read your deck.', 'article', 'capital-funding', 'P', 'AFR-G0', false],
-            ['bee-beyond-the-compliance-box', 'Black Economic Empowerment: Beyond the Compliance Box.', 'From tick-box to transformation: what really creates value.', 'explainer', 'risk-compliance', 'P', 'AFR-G3', false],
-            ['building-for-impact-not-just-exit', 'Interview: Building for Impact, Not Just Exit.', 'A conversation with African builders creating lasting impact.', 'interview', 'leadership-people', 'E', 'AFR-G1', false],
-            // Founder's Notes (Page 7)
-            ['cash-flow-is-a-behaviour', 'Cash Flow Is a Behaviour, Not a Spreadsheet', 'Cash flow pressure is rarely a math problem. It is a discipline problem.', 'founders-note', 'capital-funding', 'F', 'AFR-G0', false],
-            ['strategy-is-easy-execution-is-unforgiving', 'Strategy Is Easy. Execution Is Unforgiving.', 'Plans do not fail on paper. They fail in people, process and leadership.', 'founders-note', 'strategy-execution', 'F', 'AFR-G0', false],
-            ['before-capital-moves', 'Before Capital Moves, Answer These Questions', 'Investors fund clarity, not chaos. Answer the hard questions first.', 'founders-note', 'capital-funding', 'F', 'AFR-G0', false],
-            ['projects-die-quietly', 'Projects Die Quietly, Before They Collapse', 'Most project failures start in preparation, not construction.', 'founders-note', 'project-development', 'F', 'AFR-G0', false],
-            ['the-cost-of-not-diagnosing', 'The Cost of Not Diagnosing the Real Problem', 'Treating symptoms keeps the business sick and expensive.', 'founders-note', 'strategy-execution', 'F', 'AFR-G0', false],
-            ['opportunities-do-not-mature', 'Opportunities Do Not Mature While You Wait', 'Speed to insight. Speed to test. Speed to decision.', 'founders-note', 'markets-growth', 'F', 'AFR-G0', false],
-            ['bankability-is-earned', 'Bankability Is Earned, Not Requested', 'A fundable project is the result of evidence, not a polite email.', 'founders-note', 'project-development', 'F', 'AFR-G0', false],
-            ['your-numbers-must-survive-scrutiny', 'Your Numbers Must Survive Scrutiny', 'If the numbers cannot be defended, the deal cannot be trusted.', 'founders-note', 'capital-funding', 'F', 'AFR-G0', false],
-            // African Business Clinic explainers (Page 8)
-            ['cash-flow-is-a-behaviour-explainer', 'Cash Flow is a Behaviour, Not a Spreadsheet.', 'The mindset and habits that create predictable cash flow.', 'explainer', 'capital-funding', 'E', 'AFR-G0', false],
-            ['strategy-is-easy-explainer', 'Strategy is Easy. Execution is Unforgiving.', 'Why execution discipline determines your results.', 'explainer', 'strategy-execution', 'E', 'AFR-G0', false],
-            ['the-cost-of-not-diagnosing-explainer', 'The Cost of Not Diagnosing the Real Problem.', 'Why treating symptoms keeps businesses sick and expensive.', 'explainer', 'strategy-execution', 'E', 'AFR-G0', false],
-            ['three-questions-explainer', 'Three Questions Every Founder Must Outgrow.', 'The mindset shift that separates survival from significant impact.', 'explainer', 'leadership-people', 'E', 'AFR-G0', false],
-            // Topic Hub latest (Page 14) and Search (Page 15)
-            ['the-5-pillars-of-execution', 'The 5 Pillars of Execution', 'A practical framework to help leaders turn strategy into measurable results.', 'framework', 'strategy-execution', 'P', 'AFR-G0', false],
-            ['why-execution-beats-ideas', 'Why Execution Beats Ideas Every Time', 'Thoughts from Kruger Phiri on focus, discipline and getting things done.', 'founders-note', 'strategy-execution', 'F', 'AFR-G0', false],
-            ['execution-excellence-in-african-businesses', 'Execution Excellence in African Businesses', 'Real conversations with African entrepreneurs on what it takes to execute.', 'case-perspective', 'strategy-execution', 'E', 'AFR-G1', false],
-            ['raising-capital-in-uncertain-times', 'Raising Capital in Uncertain Times', 'What changes when capital is scarce and investors are cautious.', 'article', 'capital-funding', 'P', 'AFR-G1', false],
-            ['board-performance-diagnostic', 'Board Performance Diagnostic', 'A structured look at how boards add or remove value.', 'framework', 'governance-boards', 'I', 'AFR-G0', false],
-            // Country and sector lenses (Pages 16, 17)
-            ['kenyas-fintech-boom', "Kenya's Fintech Boom: A New Growth Engine", 'How mobile money and fintech reshape opportunity in Kenya.', 'article', 'technology-ai', 'I', 'AFR-G3', false],
-            ['infrastructure-investment-kenya', "Infrastructure Investment: Building Kenya's Future", 'Commentary on infrastructure investment and delivery in Kenya.', 'field-note', 'project-development', 'I', 'AFR-G3', false],
-            ['digital-banking-in-africa', 'Digital Banking in Africa: The Next Leap', 'Where digital banking goes next across African markets.', 'article', 'technology-ai', 'I', 'AFR-G1', false],
-            ['financial-inclusion-closing-the-gap', 'Financial Inclusion: Closing the Gap', 'Commentary on closing the financial inclusion gap.', 'field-note', 'markets-growth', 'I', 'AFR-G1', false],
-        ];
-
-        $excerpt = [
-            'the-real-problem-isnt-capital' => [
-                'key_insight' => 'Investors, lenders and funders are not really buying your idea. They are buying your ability to execute, govern, measure and deliver results under pressure.',
-                'sections' => [
-                    ['The Truth Nobody Tells You', [
-                        'Most founders believe the main problem is access to capital. They spend months preparing pitch decks, looking for investors, or waiting for the right fund.',
-                        'The real problem is not capital. It is readiness. Capital goes to businesses that can absorb it, not to businesses that need it.',
-                    ]],
-                ],
-                'pillars' => [
-                    ['Clear Strategy', 'A focused strategy that solves a real problem for a real customer.', 'target'],
-                    ['Financial Discipline', 'Clean numbers, cash flow control and credible financial forecasts.', 'bar-chart-3'],
-                    ['Governance & Controls', 'Strong governance that protects capital and builds investor confidence.', 'shield-check'],
-                    ['Execution Capacity', 'The right team, processes, partners and operational capability.', 'users'],
-                    ['Evidence & Proof', 'Market proof, financial proof and operational proof that reduce risk for the investor.', 'file-check'],
-                ],
-                'closing' => 'When these five pillars are weak, more capital only creates a bigger problem.',
-                'sources' => [
-                    ['World Bank', 'Enterprise Surveys: Firm Performance Indicators (2023 Update)', 'current'],
-                    ['IMF', 'Financing for Development: Readiness Index (2024)', 'current'],
-                    ['AfDB', 'Project Preparation Report: Key Gaps in Readiness (2023)', 'review-due'],
-                    ['UNCTAD', 'Investment Readiness and Risk Indicators (2023)', 'current'],
-                ],
-                'read_minutes' => 8,
-            ],
-        ];
-
-        $out = [];
-        foreach ($rows as [$slug, $title, $summary, $type, $theme, $voice, $scope, $featured]) {
-            $out[] = [
-                'slug' => $slug, 'title' => $title, 'summary' => $summary, 'type' => $type, 'theme' => $theme, 'voice' => $voice,
-                'scope' => $scope, 'featured' => $featured, 'freshness' => 'current', 'status' => isset($excerpt[$slug]) ? 'excerpt' : 'pending',
-                'excerpt' => $excerpt[$slug] ?? null, 'body' => [], 'published' => null, 'read_minutes' => $excerpt[$slug]['read_minutes'] ?? null,
-                'author' => in_array($voice, ['F', 'P'], true) ? 'Kruger Phiri' : 'The Business Clinic.Africa',
-            ];
+        try {
+            $sig = DB::table('kp_articles')->selectRaw('count(*) as c, max(updated_at) as u')->first();
+        } catch (QueryException) {
+            return [];
+        }
+        $key = $sig->c.'|'.$sig->u;
+        if (self::$memo !== null && self::$memo[0] === $key) {
+            return self::$memo[1];
         }
 
-        return $out;
+        $order = array_flip(array_keys(KpArticles::CATEGORIES));
+        $items = KpArticle::query()
+            ->select(['slug', 'category', 'type', 'title', 'kicker', 'deck', 'published_on', 'date_note', 'author', 'voice', 'scope', 'theme', 'themes', 'countries', 'featured', 'read_minutes', 'word_count', 'source', 'sort'])
+            ->orderBy('sort')->get()
+            ->sortBy(fn (KpArticle $a) => sprintf('%d-%s', $order[$a->category] ?? 9, 99999999 - (int) ($a->published_on?->format('Ymd') ?? 0)))
+            ->map(fn (KpArticle $a) => self::item($a))
+            ->values()->all();
+
+        self::$memo = [$key, $items];
+
+        return $items;
     }
 
+    /** @var array{0: string, 1: array}|null */
+    private static ?array $memo = null;
+
+    private static function item(KpArticle $a): array
+    {
+        $reviewed = $a->source['received'] ?? null;
+        $age = $reviewed ? (int) Carbon::parse($reviewed)->diffInDays(now()) : 0;
+
+        return [
+            'slug' => $a->slug,
+            'category' => $a->category,
+            'categoryLabel' => KpArticles::CATEGORIES[$a->category][0] ?? 'Insights',
+            'title' => $a->title,
+            'summary' => (string) $a->deck,
+            'kicker' => $a->kicker,
+            'type' => $a->type,
+            'theme' => $a->theme,
+            'themes' => $a->themes,
+            'countries' => $a->countries,
+            'voice' => $a->voice,
+            'scope' => $a->scope,
+            'featured' => $a->featured,
+            'freshness' => $age <= 90 ? 'current' : ($age <= 180 ? 'review-due' : 'stale'),
+            'status' => 'published',
+            'published' => $a->published_on?->toDateString(),
+            'date_label' => KpArticles::dateLabel($a->published_on?->toDateString()),
+            'date_note' => $a->date_note,
+            'read_minutes' => $a->read_minutes,
+            'word_count' => $a->word_count,
+            'author' => $a->author,
+            'href' => KpArticles::href($a->category, $a->slug),
+        ];
+    }
+
+    /** One article with its full text, sources and notes, or null. */
     public static function find(string $slug): ?array
     {
-        return collect(self::items())->firstWhere('slug', $slug);
+        $item = collect(self::items())->firstWhere('slug', $slug);
+        if (! $item) {
+            return null;
+        }
+        $a = KpArticle::where('slug', $slug)->first();
+
+        return $item + [
+            'body' => (string) $a?->body,
+            'byline' => $a?->byline ?? [],
+            'sources_heading' => $a?->sources_heading,
+            'sources' => $a?->sources ?? [],
+            'notes' => $a?->notes ?? [],
+            'source' => $a?->source ?? [],
+        ];
     }
 
     /* ------------------------------------------------------------------ */

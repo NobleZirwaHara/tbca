@@ -1,0 +1,360 @@
+{
+ "title": "Deliverable design standards (control parameters) — Issue 2.0",
+ "subtitle": "Issue-1.0 parameters retained in full; Issue-2.0 additions follow",
+ "tiers": [
+  {
+   "parameter": "Best for",
+   "basic": "Early idea or small business; entry-level clarity",
+   "standard": "Active SME or team needing structure; stronger business use",
+   "premium": "Founder, board, investor or lender preparing for serious review",
+   "basis": "Sprint Blueprint §13"
+  },
+  {
+   "parameter": "Depth of issues",
+   "basic": "Priority issues only (about half the key-issue list, minimum 3)",
+   "standard": "All key issues analysed in full",
+   "premium": "All key issues + scenarios, benchmarks, roadmap, board summary",
+   "basis": "MP-DEL-1.0 rule D4"
+  },
+  {
+   "parameter": "Report pages (medium deliverable)",
+   "basic": "10–20",
+   "standard": "20–50",
+   "premium": "30–200",
+   "basis": "Sprint Blueprint §13"
+  },
+  {
+   "parameter": "Executive summary",
+   "basic": "Short (1 page)",
+   "standard": "Full",
+   "premium": "Board-ready",
+   "basis": "Sprint Blueprint §13"
+  },
+  {
+   "parameter": "Financial section",
+   "basic": "Basic assumptions",
+   "standard": "12-month snapshot",
+   "premium": "24-month forecast summary or full model",
+   "basis": "Sprint Blueprint §13"
+  },
+  {
+   "parameter": "Revisions",
+   "basic": "1 round",
+   "standard": "2 rounds",
+   "premium": "3 rounds",
+   "basis": "Sprint Blueprint §13 / Marketplace package comparison"
+  },
+  {
+   "parameter": "Human review",
+   "basic": "Standard review",
+   "standard": "Senior review",
+   "premium": "Senior + QA review (qualified partner where regulated)",
+   "basis": "Sprint Blueprint §13; Partner Services boundary"
+  },
+  {
+   "parameter": "Support",
+   "basic": "Email; WhatsApp basic",
+   "standard": "Email + call; WhatsApp included",
+   "premium": "Dedicated contact; WhatsApp priority; 30-day follow-up",
+   "basis": "Sprint Blueprint; Marketplace tiers"
+  },
+  {
+   "parameter": "Delivery (medium deliverable)",
+   "basic": "5 business days",
+   "standard": "7 business days",
+   "premium": "10 business days",
+   "basis": "Sprint Blueprint §13"
+  },
+  {
+   "parameter": "Delivery — instant digital items",
+   "basic": "Instant download",
+   "standard": "Instant + 1 clarification",
+   "premium": "Customised by TBCA (days)",
+   "basis": "Online Shop A2 Digital Product"
+  },
+  {
+   "parameter": "CSAT SLA (minimum)",
+   "basic": "98.0 %",
+   "standard": "98.5 %",
+   "premium": "99.0 %",
+   "basis": "Master Prompt mandate ≥ 98 %"
+  },
+  {
+   "parameter": "Portal delivery & retention",
+   "basic": "Portal; 12-month retention; unlimited re-download",
+   "standard": "Same",
+   "premium": "Same + evidence pack",
+   "basis": "Live product page: Delivery & Access"
+  }
+ ],
+ "tiers_v2": [
+  {
+   "parameter": "HeyGen video",
+   "basic": "90-second personalised briefing or how-to video, EN + 1 local language, captioned",
+   "standard": "3–4-minute branded briefing, chapters, up to 3 languages",
+   "premium": "6–8-minute executive briefing by consented digital-twin presenter, lip-synced translation; interactive avatar Q&A for 90 days",
+   "basis": "Brief §3; HeyGen API (video generate, translation, streaming avatar)"
+  },
+  {
+   "parameter": "Infogram visuals",
+   "basic": "3–5 branded charts (TBCA brand kit) in PDF/PNG",
+   "standard": "Interactive report, 8–15 charts or maps, private link + PDF, engagement analytics",
+   "premium": "Live-data dashboard (data connection/SQL), 12-month hosted link, monthly refresh, PDF/PNG/HTML export",
+   "basis": "Brief §3; Infogram Business; Bible Infogram spec (OSS-S12/S15)"
+  },
+  {
+   "parameter": "AI analyst Q&A on the deliverable",
+   "basic": "—",
+   "standard": "30 days, grounded only on the deliverable and its sources",
+   "premium": "90 days, grounded; plus alerts on watched topics",
+   "basis": "Brief §3; SG-04/SG-07"
+  },
+  {
+   "parameter": "Action tracker",
+   "basic": "30-day checklist in the portal",
+   "standard": "90-day plan with owners and WhatsApp nudges",
+   "premium": "12-month tracker synced to the portal with monthly status",
+   "basis": "Brief §2"
+  },
+  {
+   "parameter": "Independent evaluator rubric (minimum)",
+   "basic": "80 / 100",
+   "standard": "85 / 100",
+   "premium": "90 / 100",
+   "basis": "Bible LOOP-GEN-QA; SG-06"
+  },
+  {
+   "parameter": "Benchmark depth",
+   "basic": "Peer percentile where data exists",
+   "standard": "≥ 1 peer set from the TBCA Data Bank",
+   "premium": "≥ 2 peer sets + country comparison",
+   "basis": "Brief §2"
+  },
+  {
+   "parameter": "Release",
+   "basic": "Human release at L3 (NOW)",
+   "standard": "Senior human release",
+   "premium": "Senior + QA (+ partner where regulated)",
+   "basis": "Bible OSS-S14; SG-12/SG-14"
+  },
+  {
+   "parameter": "Delivery start",
+   "basic": "Automatic on EVT-006 Payment Confirmed; clock from intake completion",
+   "standard": "Same",
+   "premium": "Same",
+   "basis": "Brief §6; Bible OSS-S5/S8"
+  }
+ ],
+ "sizes": [
+  {
+   "code": "S",
+   "multiplier": 0.6,
+   "meaning": "Small / single-topic item"
+  },
+  {
+   "code": "M",
+   "multiplier": 1,
+   "meaning": "Medium — the blueprint reference"
+  },
+  {
+   "code": "L",
+   "multiplier": 1.5,
+   "meaning": "Large / multi-topic"
+  },
+  {
+   "code": "X",
+   "multiplier": 2.5,
+   "meaning": "Extra-large (feasibility, integrated DD, country pack)"
+  }
+ ],
+ "formats": [
+  {
+   "code": "RPT",
+   "format": "Report — Report",
+   "pages_basic": "10–20",
+   "pages_standard": "20–50",
+   "pages_premium": "50–250",
+   "unit": "pages",
+   "consulting_standard": "McKinsey SCR storyline + Pyramid Principle; action titles; MECE issue tree; every exhibit sourced (fact ID, date, grade)"
+  },
+  {
+   "code": "TPL",
+   "format": "Template — Template",
+   "pages_basic": "3–10",
+   "pages_standard": "10–20",
+   "pages_premium": "20–50",
+   "unit": "pages",
+   "consulting_standard": "Deloitte Digital design-system discipline: plug-and-play fields, guidance notes, worked example, version control"
+  },
+  {
+   "code": "ANL",
+   "format": "Analysis — Analysis",
+   "pages_basic": "10–20",
+   "pages_standard": "20–35",
+   "pages_premium": "35–50",
+   "unit": "pages",
+   "consulting_standard": "BCG hypothesis-driven analysis; 80/20 focus; 2x2 / matrix frameworks; so-what on every chart"
+  },
+  {
+   "code": "VAL",
+   "format": "Valuation — Valuation",
+   "pages_basic": "10–20",
+   "pages_standard": "20–50",
+   "pages_premium": "50–100",
+   "unit": "pages",
+   "consulting_standard": "IVS-aligned multi-method valuation; football-field reconciliation; explicit assumptions; not a regulated opinion"
+  },
+  {
+   "code": "INS",
+   "format": "Insight — Insight / Brief",
+   "pages_basic": "4–10",
+   "pages_standard": "10–20",
+   "pages_premium": "20–35",
+   "unit": "pages",
+   "consulting_standard": "McKinsey executive-brief format: answer first, three supporting messages, evidence grades, \"what this means for you\""
+  },
+  {
+   "code": "PIT",
+   "format": "Pitch — Pitch / Deck",
+   "pages_basic": "8–15",
+   "pages_standard": "15–25",
+   "pages_premium": "25–40",
+   "unit": "slides",
+   "consulting_standard": "McKinsey ghost-deck method: one message per slide, action titles, appendix for detail"
+  },
+  {
+   "code": "DSH",
+   "format": "Dashboard — Dashboard",
+   "pages_basic": "3–8",
+   "pages_standard": "8–15",
+   "pages_premium": "15–30",
+   "unit": "screens",
+   "consulting_standard": "Deloitte Digital human-centred design; KPI tree; mobile-first; RAG thresholds; data freshness stamp"
+  },
+  {
+   "code": "TLK",
+   "format": "Toolkit — Toolkit",
+   "pages_basic": "10–15",
+   "pages_standard": "20–35",
+   "pages_premium": "40–60",
+   "unit": "pages",
+   "consulting_standard": "Deloitte Digital toolkit standard: job-to-be-done, how-to guide, templates, checklists, examples"
+  },
+  {
+   "code": "FMD",
+   "format": "Financial Model — Financial model",
+   "pages_basic": "15–20",
+   "pages_standard": "20–50",
+   "pages_premium": "50–125",
+   "unit": "sheets",
+   "consulting_standard": "FAST modelling standard: separate inputs / calcs / outputs; checks sheet; scenario switch; model book"
+  },
+  {
+   "code": "DGP",
+   "format": "Digital Product — Digital product",
+   "pages_basic": "5–10",
+   "pages_standard": "12–20",
+   "pages_premium": "25–40",
+   "unit": "pages",
+   "consulting_standard": "Deloitte Digital product standard: versioned, licensed, accessible, mobile-ready"
+  },
+  {
+   "code": "CHK",
+   "format": "Other — Checklist",
+   "pages_basic": "2–3",
+   "pages_standard": "4–6",
+   "pages_premium": "8–12",
+   "unit": "pages",
+   "consulting_standard": "Big-4 checklist convention: requirement, evidence, status, owner, red-flag rule"
+  },
+  {
+   "code": "CAL",
+   "format": "Other — Calculator",
+   "pages_basic": "1–2",
+   "pages_standard": "3–4",
+   "pages_premium": "5–8",
+   "unit": "screens",
+   "consulting_standard": "Transparent formula, labelled inputs, scenario toggle, assumptions log (FAST)"
+  },
+  {
+   "code": "REG",
+   "format": "Other — Register / Tracker",
+   "pages_basic": "2–4",
+   "pages_standard": "5–8",
+   "pages_premium": "10–15",
+   "unit": "pages",
+   "consulting_standard": "Controlled register: unique IDs, owner, status, date, evidence link, audit trail"
+  },
+  {
+   "code": "CRT",
+   "format": "Other — Certificate / Statement",
+   "pages_basic": "1–2",
+   "pages_standard": "2–3",
+   "pages_premium": "3–5",
+   "unit": "pages",
+   "consulting_standard": "Controlled record: reference, parties, evidence, approval, checksum"
+  },
+  {
+   "code": "PLN",
+   "format": "Other — Plan / Roadmap",
+   "pages_basic": "3–5",
+   "pages_standard": "6–10",
+   "pages_premium": "12–18",
+   "unit": "pages",
+   "consulting_standard": "BCG roadmap convention: phases, gates, owners, KPIs, critical path"
+  },
+  {
+   "code": "MEM",
+   "format": "Other — Memo / Paper",
+   "pages_basic": "2–8",
+   "pages_standard": "8–15",
+   "pages_premium": "15–30",
+   "unit": "pages",
+   "consulting_standard": "McKinsey decision memo: recommendation first, options, trade-offs, decision required"
+  },
+  {
+   "code": "MAP",
+   "format": "Other — Map / GIS output",
+   "pages_basic": "1–2",
+   "pages_standard": "3–5",
+   "pages_premium": "6–10",
+   "unit": "maps",
+   "consulting_standard": "Cartographic standard: legend, scale, source and date per layer, evidence card per feature"
+  },
+  {
+   "code": "SUB",
+   "format": "Digital Product — Subscription cycle pack",
+   "pages_basic": "4–8",
+   "pages_standard": "8–120",
+   "pages_premium": "20–35",
+   "unit": "pages per cycle",
+   "consulting_standard": "Deloitte Digital service design: cadence promise, usage statement, longitudinal value; McKinsey brief format per cycle"
+  },
+  {
+   "code": "RET",
+   "format": "Other — Retainer monthly pack",
+   "pages_basic": "5–8",
+   "pages_standard": "10–15",
+   "pages_premium": "20–30",
+   "unit": "pages per month",
+   "consulting_standard": "BCG programme-management convention: allowance ledger, progress against KPIs, quarterly review"
+  },
+  {
+   "code": "EMB",
+   "format": "Other — Embedded service output",
+   "pages_basic": "1–1",
+   "pages_standard": "1–5",
+   "pages_premium": "2–10",
+   "unit": "pages",
+   "consulting_standard": "Native transaction-blueprint contract; EvidenceEvent per act (LAW 7)"
+  }
+ ],
+ "csat_rules": [
+  "Survey trigger: portal acceptance or 7 days after delivery, whichever first. Scale 1–5; CSAT = share of 4 and 5 scores.",
+  "Measurement unit: each deliverable × tier, rolling 90 days; minimum 10 responses before a breach is declared.",
+  "Breach: below the tier minimum → automatic root-cause review by QA within 5 business days and one free corrective revision for the client.",
+  "Two consecutive breaches → deliverable template frozen for re-design; family owner reports to the Head of Delivery.",
+  "Quality gates before release: named delivery owner, creation QA, human review sign-off, version control (live product page \"Quality\" block).",
+  "Issue 2.0: the CSAT survey is sent automatically by the aftercare loop (OSS-S16, LOOP-RATING: 3 nudges in 14 days); a breach also demotes the archetype to full human review (Bible recall rule)."
+ ]
+}

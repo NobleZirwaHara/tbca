@@ -56,6 +56,9 @@ class DatabaseSeeder extends Seeder
         // The industry aisle cross-listings read every Sprint, so they are built after the register.
         usort($sections, fn ($a, $b) => (basename($a) === 'ShopAisleListingsSeeder.php') <=> (basename($b) === 'ShopAisleListingsSeeder.php'));
 
+        // The Registry of Deliverables links its Sprint crosswalk to every Sprint, so it runs after all of them.
+        usort($sections, fn ($a, $b) => (basename($a) === 'DeliverablesRegisterSeeder.php') <=> (basename($b) === 'DeliverablesRegisterSeeder.php'));
+
         foreach ($sections as $file) {
             $this->call('Database\\Seeders\\Sections\\'.basename($file, '.php'));
         }

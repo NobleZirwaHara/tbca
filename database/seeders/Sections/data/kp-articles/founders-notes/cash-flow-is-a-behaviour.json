@@ -1,0 +1,50 @@
+{
+  "slug": "cash-flow-is-a-behaviour",
+  "category": "founders-notes",
+  "type": "founders-note",
+  "title": "Cash Flow Is a Behaviour, Not a Spreadsheet",
+  "kicker": null,
+  "deck": "Cash flow pressure is rarely a math problem. It is a discipline problem.",
+  "byline": [
+    "FOUNDER VOICE | KRUGER PHIRI | CAPITAL & FUNDING | 14 SEPTEMBER 2026"
+  ],
+  "date": "2026-09-14",
+  "date_note": null,
+  "author": "Kruger Phiri",
+  "voice": "F",
+  "scope": "AFR-G0",
+  "themes": [
+    "capital-funding"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "IFRS Foundation (2021). [IAS 7, Statement of Cash Flows (2021 issued edition)](https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2021/issued/part-a/ias-7-statement-of-cash-flows.pdf)",
+      "url": "https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2021/issued/part-a/ias-7-statement-of-cash-flows.pdf"
+    },
+    {
+      "n": "2",
+      "text": "IFC (2024). [IFC and C2FO Partner to Enhance Financing for Local Enterprises in Africa](https://www.ifc.org/en/pressroom/2024/ifc-and-c2fo-partner-to-enhance-financing-for-local-enterprises-in-africa)",
+      "url": "https://www.ifc.org/en/pressroom/2024/ifc-and-c2fo-partner-to-enhance-financing-for-local-enterprises-in-africa"
+    },
+    {
+      "n": "3",
+      "text": "US Small Business Administration (2025). [Financial Literacy Resources for America's Small Businesses](https://www.sba.gov/blog/2025/2025-04/financial-literacy-resources-americas-small-businesses/)",
+      "url": "https://www.sba.gov/blog/2025/2025-04/financial-literacy-resources-americas-small-businesses/"
+    }
+  ],
+  "notes": [
+    "Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.",
+    "Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / FOUNDERS NOTES",
+    "file": "cash-flow-is-a-behaviour.docx",
+    "drive_id": "1xDIDYh3DE-shstrrU0Xlb2CfnvnIQbPS",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}

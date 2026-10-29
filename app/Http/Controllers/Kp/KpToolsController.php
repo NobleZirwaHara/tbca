@@ -177,7 +177,7 @@ class KpToolsController extends Controller
                 $weight = ['published' => 95, 'excerpt' => 80, 'pending' => 55][$item['status']] ?? 50;
 
                 return ['n' => $i + 1, 'slug' => $slug, 'title' => $item['title'], 'typeLabel' => Kp::types()[$item['type']][0] ?? 'Article', 'voice' => $item['voice'], 'voiceLabel' => Kp::voices()[$item['voice']][0], 'freshness' => $item['freshness'], 'author' => $item['author'], 'scope' => $item['scope'],
-                    'evidence' => ['published' => 'Full text published', 'excerpt' => 'Excerpt from KP design', 'pending' => 'Title and summary only'][$item['status']] ?? 'Unknown', 'weight' => $weight, 'href' => Kp::BASE.'/insights/'.$slug, 'role' => $i === 0 ? 'Primary' : 'Supporting'];
+                    'evidence' => ['published' => 'Full text published', 'excerpt' => 'Excerpt from KP design', 'pending' => 'Title and summary only'][$item['status']] ?? 'Unknown', 'weight' => $weight, 'href' => $item['href'], 'role' => $i === 0 ? 'Primary' : 'Supporting'];
             }
             $r = collect(Kp::resources())->firstWhere(0, $slug);
 
@@ -226,7 +226,7 @@ class KpToolsController extends Controller
             'points' => collect($k['points'])->values()->map(fn ($p, $i) => ['title' => $p[0], 'icon' => $p[3], 'line' => $rows[$i][0] ?? $p[1], 'example' => $rows[$i][1] ?? null])->all(),
             'intro' => $level === '12' ? 'Turning a plan into real results needs five things working together.' : $k['intro'],
             'close' => $k['close'],
-            'sources' => collect($k['sources'])->map(fn ($s) => Kp::find($s) ? ['title' => Kp::find($s)['title'], 'href' => Kp::BASE.'/insights/'.$s] : null)->filter()->values(),
+            'sources' => collect($k['sources'])->map(fn ($s) => collect(Kp::items())->firstWhere('slug', $s))->filter()->map(fn ($i) => ['title' => $i['title'], 'href' => $i['href']])->values(),
         ]);
     }
 
@@ -529,7 +529,7 @@ class KpToolsController extends Controller
         abort_unless($item, 404);
 
         return $this->page('Kp/ActionPack', '027', [
-            'insight' => KpController::card($item) + ['excerpt' => $item['excerpt']],
+            'insight' => KpController::card($item) + ['excerpt' => null],
             'actions' => collect(T::actionPack())->map(fn ($a, $i) => ['n' => $i, 'title' => $a[0], 'body' => $a[1], 'priority' => $a[2], 'impact' => $a[3], 'when' => $a[4], 'owner' => $a[5], 'pillar' => $a[6]])->all(),
             'done' => array_values($request->session()->get("kp_pack.$slug", [])),
             'tools' => [['Capital Readiness Scorecard', Kp::BASE.'/tools/scorecards/capital-readiness', 'clipboard-check'], ['Diagnostic Questions', Kp::BASE.'/diagnostic-questions?topic=finance-funding', 'help'], ['Decision Checklist', Kp::BASE.'/tools/checklists/go-no-go', 'check'], ['Funder Readiness Interviewer', Kp::BASE.'/funder-readiness', 'users']],

@@ -1,0 +1,212 @@
+[
+ {
+  "code": "SG-01",
+  "name": "Payment authenticity",
+  "rule": "EVT-006 must come from a signed PayFast webhook with amount = invoice and a unique idempotency key; duplicates are ignored; no work starts on unsigned or mismatched events.",
+  "oss_stage": "OSS-S5",
+  "loop_control": "LOOP-CP-04"
+ },
+ {
+  "code": "SG-02",
+  "name": "Consent and lawful basis",
+  "rule": "POPIA fields, terms and PermissionKey must be complete before any work; cross-border transfer (Zoho EU) disclosed under s72.",
+  "oss_stage": "OSS-S4",
+  "loop_control": "LOOP-CP-08"
+ },
+ {
+  "code": "SG-03",
+  "name": "Input completeness",
+  "rule": "Schema-valid inputs only; bounded clarification loop (3 rounds / 2 business days); delivery clock starts at intake completion, not payment.",
+  "oss_stage": "OSS-S8",
+  "loop_control": "LOOP-INTAKE"
+ },
+ {
+  "code": "SG-04",
+  "name": "Source grounding",
+  "rule": "Every factual claim cites a permitted, licensed and fresh source with date and grade; faithfulness score at or above archetype threshold.",
+  "oss_stage": "OSS-S9–S10",
+  "loop_control": "LOOP-EVIDENCE"
+ },
+ {
+  "code": "SG-05",
+  "name": "Numeric integrity",
+  "rule": "All numbers come from deterministic calculators; totals reconcile; models pass FAST checks; no figure typed by a language model.",
+  "oss_stage": "OSS-S11",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-06",
+  "name": "Independent evaluation",
+  "rule": "A model from a different family scores the draft on the archetype rubric; maximum 3 generate–score cycles; exit when gain < 2 points.",
+  "oss_stage": "OSS-S12–S13",
+  "loop_control": "LOOP-GEN-QA"
+ },
+ {
+  "code": "SG-07",
+  "name": "Hallucination and contradiction detection",
+  "rule": "Claim-level detectors flag unsupported or conflicting statements; flagged text is removed or sourced before release.",
+  "oss_stage": "OSS-S13",
+  "loop_control": "LOOP-CP-06"
+ },
+ {
+  "code": "SG-08",
+  "name": "Originality and licence",
+  "rule": "Text and images are checked for copying; only licensed images, fonts and data are used.",
+  "oss_stage": "OSS-S13",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-09",
+  "name": "Brand compliance",
+  "rule": "TBCA brand kit (Infogram Business brand kit, document templates) applied; template lint passes.",
+  "oss_stage": "OSS-S12",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-10",
+  "name": "Accessibility",
+  "rule": "PDFs and web outputs meet WCAG 2.2 AA: tagged headings, alt text, contrast, captions on all HeyGen videos.",
+  "oss_stage": "OSS-S13",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-11",
+  "name": "Privacy and PII",
+  "rule": "Personal data minimised and redacted where not needed; video and chart content contain no third-party PII.",
+  "oss_stage": "OSS-S13",
+  "loop_control": "LOOP-CP-08"
+ },
+ {
+  "code": "SG-12",
+  "name": "Professional boundary",
+  "rule": "Legal, tax, audit, regulated valuation, EIA and engineering opinions are routed to a registered partner and signed; otherwise the output states it is not a regulated opinion.",
+  "oss_stage": "OSS-S14",
+  "loop_control": "OV-1 / UP-12"
+ },
+ {
+  "code": "SG-13",
+  "name": "Tier conformance",
+  "rule": "Automated check that every key issue, every tier element, the page range and the promised video and charts are present before release.",
+  "oss_stage": "OSS-S13",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-14",
+  "name": "Accountable human release",
+  "rule": "At NOW every order is released by a qualified person who sees all detector flags; the decision is an EvidenceEvent. L4 exception-based release only after BP-29 promotion.",
+  "oss_stage": "OSS-S14",
+  "loop_control": "LOOP-CP-06"
+ },
+ {
+  "code": "SG-15",
+  "name": "Version, hash and manifest",
+  "rule": "Each artefact is versioned, hashed (SHA-256) and listed in an evidence manifest delivered with it.",
+  "oss_stage": "OSS-S15",
+  "loop_control": "Robot"
+ },
+ {
+  "code": "SG-16",
+  "name": "Rights and watermark",
+  "rule": "Licence class (L1–L4) stamped; Basic/Standard watermarked with client name; redistribution rights stated.",
+  "oss_stage": "OSS-S15",
+  "loop_control": "Robot"
+ },
+ {
+  "code": "SG-17",
+  "name": "SLA protection",
+  "rule": "A breach predictor watches every job; at-risk jobs are escalated and the client is told before the promise is missed; compensation per CPA.",
+  "oss_stage": "OSS-S7–S15",
+  "loop_control": "LOOP-CP-05"
+ },
+ {
+  "code": "SG-18",
+  "name": "Video integrity (HeyGen)",
+  "rule": "Video scripts are generated only from the released deliverable; digital-twin avatars require recorded consent; no impersonation of third parties; captions and disclaimer frame.",
+  "oss_stage": "OSS-S12/S15",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-19",
+  "name": "Chart integrity (Infogram)",
+  "rule": "Charts are data-bound from the Artefact Factory (never hand-drawn); a copy per job; on Infogram failure the native renderer uses identical data.",
+  "oss_stage": "OSS-S12/S15",
+  "loop_control": "LOOP-CP-10"
+ },
+ {
+  "code": "SG-20",
+  "name": "Cost ceiling and kill switch",
+  "rule": "Per-job runtime cost ceiling; kill switch at eight levels; fail-closed on anomaly.",
+  "oss_stage": "All",
+  "loop_control": "LOOP-CP-09/13"
+ },
+ {
+  "code": "SG-21",
+  "name": "Satisfaction capture and remedy",
+  "rule": "CSAT survey at acceptance or day 7; scores below the tier minimum trigger root-cause review and a free corrective revision.",
+  "oss_stage": "OSS-S16",
+  "loop_control": "LOOP-RATING"
+ },
+ {
+  "code": "SG-22",
+  "name": "Correction and recall",
+  "rule": "Up to 2 revisions in the aftercare term; serious errors trigger recall within 24 hours, re-issue under full review and archetype demotion to L3.",
+  "oss_stage": "OSS-S16",
+  "loop_control": "LOOP-CORRECTION"
+ },
+ {
+  "code": "SG-23",
+  "name": "Freshness and expiry",
+  "rule": "Every data-based output shows an as-at date and an expiry; Premium includes a refresh trigger.",
+  "oss_stage": "OSS-S10/S15",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-24",
+  "name": "Fairness and tone",
+  "rule": "People-related outputs (HR, CVs, screening) are checked for bias and respectful language; automated decisions disclosed.",
+  "oss_stage": "OSS-S13",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-25",
+  "name": "File security",
+  "rule": "Files are malware-scanned; Excel is macro-free; links are private and expire.",
+  "oss_stage": "OSS-S15",
+  "loop_control": "Robot"
+ },
+ {
+  "code": "SG-26",
+  "name": "Model control",
+  "rule": "Production models are pinned; a new model is promoted only after shadow evaluation passes on every affected archetype; one-release rollback.",
+  "oss_stage": "All",
+  "loop_control": "BP-29"
+ },
+ {
+  "code": "SG-27",
+  "name": "No double charging",
+  "rule": "Reuse and freshness matrix prevents charging twice for the same evidence; credits applied automatically.",
+  "oss_stage": "OSS-S3/S5",
+  "loop_control": "LOOP-CP-04"
+ },
+ {
+  "code": "SG-28",
+  "name": "Value-for-money check",
+  "rule": "Release is blocked unless every beyond-benchmark element promised for the tier (video, interactive charts, AI Q&A, tracker) is present and working.",
+  "oss_stage": "OSS-S13",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-29",
+  "name": "Localisation",
+  "rule": "Language, currency, country rules and regulator names match the client context resolver.",
+  "oss_stage": "OSS-S12/S13",
+  "loop_control": "Validator"
+ },
+ {
+  "code": "SG-30",
+  "name": "Full audit trail",
+  "rule": "Every act writes an EvidenceEvent; UNKNOWN is never zero; missing evidence halts the job.",
+  "oss_stage": "All",
+  "loop_control": "LAW 5 / LAW 7"
+ }
+]

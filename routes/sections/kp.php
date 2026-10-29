@@ -25,6 +25,7 @@ Route::prefix('kp-thought-leadership')->name('kp.')->group(function () {
         Route::get('/insights', 'insights')->name('insights');
         Route::get('/insights/{slug}', 'article')->name('article');
         Route::get('/founders-notes', 'foundersNotes')->name('founders-notes');
+        Route::get('/founders-notes/{slug}', 'foundersNote')->name('founders-note');
         Route::get('/african-business-clinic', 'clinic')->name('clinic');
         Route::get('/topics', 'topics')->name('topics');
         Route::get('/topics/{slug}', 'topic')->name('topic');
@@ -38,6 +39,7 @@ Route::prefix('kp-thought-leadership')->name('kp.')->group(function () {
         Route::post('/speaking-media', 'storeSpeaking')->middleware('throttle:10,1')->name('speaking.store');
         Route::get('/resources', 'resources')->name('resources');
         Route::get('/resources/{slug}/download', 'downloadResource')->name('resources.download');
+        Route::get('/resources/{slug}', 'resourceArticle')->name('resources.article');
         Route::get('/africa/{slug?}', 'country')->name('country');
         Route::get('/sectors/{slug?}', 'sector')->name('sector');
         Route::get('/lens/{mode}/{slug}/brief', 'lensBrief')->whereIn('mode', ['country', 'sector'])->name('lens.brief');

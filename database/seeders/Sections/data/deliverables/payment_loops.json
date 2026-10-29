@@ -1,0 +1,125 @@
+{
+ "title": "Payment-triggered delivery loops — one per Universal Prompt family",
+ "subtitle": "EVT-006 Payment Confirmed → n8n → LOOP-PAY-{family}; full prompt text in the booklet §3",
+ "loops": [
+  {
+   "loop_id": "LOOP-PAY-UP-01",
+   "family": "Core advisory and service Sprints",
+   "task": "Resolve scope from the order; run intake; research and analyse the client problem; draft the deliverable to the tier extent; evaluate; render charts and briefing video; route to human release.",
+   "owning_blueprint": "BP-02 Services Resolver",
+   "sprints": 1184
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-02",
+   "family": "Zoho configuration Sprints",
+   "task": "Confirm the Zoho edition and scopes; configure modules, fields, workflows and roles in a sandbox; run test scripts; capture configuration evidence; prepare training; route to release.",
+   "owning_blueprint": "BP-24 Zoho One Estate",
+   "sprints": 641
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-03",
+   "family": "Digital products and toolkits",
+   "task": "Assemble the licensed product version; tailor it to the client profile for Standard/Premium; generate the walkthrough video; stamp licence and version; route to release.",
+   "owning_blueprint": "BP-06 Digital Products",
+   "sprints": 845
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-04",
+   "family": "Online Shop reports and instant products",
+   "task": "Bind the instant product to the buyer; generate the personalised layer (name, sector, country); run tier conformance; deliver to the portal.",
+   "owning_blueprint": "BP-03 Online Shop",
+   "sprints": 140
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-05",
+   "family": "Zoho specialised set-ups",
+   "task": "As UP-02, with extended integration and data-migration checks.",
+   "owning_blueprint": "BP-24 Zoho One Estate",
+   "sprints": 40
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-06",
+   "family": "Calculators and scored digital tools",
+   "task": "Validate inputs; run the deterministic formula; explain the result; render the result chart; deliver; offer the next Sprint.",
+   "owning_blueprint": "BP-06 Digital Products",
+   "sprints": 500
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-07",
+   "family": "Diagnostics",
+   "task": "Run the diagnostic question set; score deterministically against the rubric; benchmark against peers; draft findings and action plan; render scorecard and briefing video; route to release.",
+   "owning_blueprint": "BP-13 Diagnostics",
+   "sprints": 167
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-08",
+   "family": "Subscriptions",
+   "task": "Open the subscription cycle; refresh data; produce the cycle deliverable and usage statement; schedule the next cycle; monitor alerts.",
+   "owning_blueprint": "BP-07 Subscriptions",
+   "sprints": 591
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-09",
+   "family": "Retainers",
+   "task": "Open the retainer month; track allowance; produce the scheduled outputs and progress report; prepare the review pack; human lead presents.",
+   "owning_blueprint": "BP-08 Retainers",
+   "sprints": 755
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-10",
+   "family": "Technology implementation",
+   "task": "Confirm scope and licences; design the solution blueprint; configure and integrate; test (UAT); train; go live with hypercare; capture evidence at each gate.",
+   "owning_blueprint": "BP-12 Technology Solutions",
+   "sprints": 1106
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-11",
+   "family": "Project Advisory",
+   "task": "Confirm stage and gate; collect project evidence; run demand, technical and financial analysis; build or update the model; draft the stage deliverable; evaluate; senior human release; update gate status.",
+   "owning_blueprint": "BP-14 Project Advisory",
+   "sprints": 616
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-12",
+   "family": "Partner-delivered professional work",
+   "task": "Run conflict check; assemble the evidence pack; route to the registered partner with scope and deadline; track partner SLA; QA the partner report; release with partner sign-off.",
+   "owning_blueprint": "BP-10 Partner Services",
+   "sprints": 547
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-13",
+   "family": "Due Diligence",
+   "task": "Verify consent and lawful purpose; run identity, registry, screening and evidence checks via approved vendors; synthesise findings; human and partner review of hits; release the report with evidence manifest.",
+   "owning_blueprint": "BP-05 Due Diligence",
+   "sprints": 216
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-14",
+   "family": "AIIM intelligence",
+   "task": "Resolve country, sector and entitlement; pull AIIM registers with fact IDs and grades; generate the brief or data pack; render Infogram maps and charts; release; start watch-list alerts.",
+   "owning_blueprint": "BP-04 AIIM",
+   "sprints": 162
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-15",
+   "family": "Virtual Deal Room",
+   "task": "Confirm mandate and deal stage; provision or update the room; run the stage workflow (diligence, QoE, valuation, negotiation, legal, close); produce stage outputs; human release by the deal lead.",
+   "owning_blueprint": "BP-11 Virtual Deal Room",
+   "sprints": 9
+  },
+  {
+   "loop_id": "LOOP-PAY-UP-16",
+   "family": "Resources and learning",
+   "task": "Assemble the resource or course; personalise; render video and charts; deliver; schedule follow-up.",
+   "owning_blueprint": "BP-17 Resources",
+   "sprints": 27
+  },
+  {
+   "loop_id": "LOOP-PAY-P13",
+   "family": "Non-canonical embedded and internal objects",
+   "task": "Run under the parent service's transaction blueprint; write evidence events; raise exceptions to the parent workflow.",
+   "owning_blueprint": "Parent service blueprint",
+   "sprints": 43
+  }
+ ]
+}

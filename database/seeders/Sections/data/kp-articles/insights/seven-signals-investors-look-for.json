@@ -1,0 +1,52 @@
+{
+  "slug": "seven-signals-investors-look-for",
+  "category": "insights",
+  "type": "article",
+  "title": "The 7 Signals Investors Look For (But Rarely Say).",
+  "kicker": "KP THOUGHT LEADERSHIP / CAPITAL & FUNDING",
+  "deck": "The meeting may focus on your forecast, but the investment decision is often determined by the evidence around it.",
+  "byline": [
+    "By The Business Clinic.Africa | 08 October 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-10-08",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G0",
+  "themes": [
+    "capital-funding",
+    "governance-boards"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "International Finance Corporation (IFC), “IFC launches call for expression of interest for its new Catalytic First Loss Guarantee Facility,” 8 April 2025. [\\[Primary source\\]](https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar)",
+      "url": "https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar"
+    },
+    {
+      "n": "2",
+      "text": "Project Management Institute, “The Future of Project Work: Pulse of the Profession 2024,” February 2024. [\\[Primary source\\]](https://www.pmi.org/learning/thought-leadership/future-of-project-work)",
+      "url": "https://www.pmi.org/learning/thought-leadership/future-of-project-work"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "seven-signals-investors-look-for.docx",
+    "drive_id": "1F9ESehQOFYqwt2oH8o8C3EsmaY7j2svf",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Founders often believe investors judge ideas according to pr...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Four quieter signals. Signal four is governance quality. Cle...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Signal five is operating resilience. Investors ask whether c...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"In a pre-revenue venture, customer validation may consist of...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Create seven folders, one per signal. Put customer evidence ...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Score each of the seven signals red, amber or green before f...\""
+  ]
+}

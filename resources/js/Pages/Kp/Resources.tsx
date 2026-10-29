@@ -2,7 +2,7 @@ import { Link, router } from '@inertiajs/react';
 import * as L from 'lucide-react';
 import { useState } from 'react';
 import { BtnLink, btnClass } from '@/Components/Webinars/kit';
-import { BASE, Box, Empty, KpPage, ThemeCover, type KpResource, type KpShared } from '@/Components/Kp/kit';
+import { BASE, Box, Empty, InsightCard, KpPage, ThemeCover, type KpCard, type KpResource, type KpShared } from '@/Components/Kp/kit';
 import { cn } from '@/lib/cn';
 
 interface Props extends KpShared {
@@ -12,6 +12,7 @@ interface Props extends KpShared {
     total: number;
     featured: KpResource[];
     rows: KpResource[];
+    articles: KpCard[];
 }
 
 const ART: Record<string, string> = { framework: 'strategy-execution', report: 'markets-growth', tool: 'capital-funding', checklist: 'governance-boards', guide: 'project-development', template: 'leadership-people', media: 'technology-ai' };
@@ -19,7 +20,7 @@ const QUICK: [string, string][] = [['Capital Readiness Tools', `${BASE}/tools/sc
 const PER = 8;
 
 /** KP-SCR-013 KP Resources. Downloads are summary sheets until KP supplies the final files. */
-export default function Resources({ screen, kpNav, category, q, categories, total, featured, rows }: Props) {
+export default function Resources({ screen, kpNav, category, q, categories, total, featured, rows, articles }: Props) {
     const [query, setQuery] = useState(q);
     const [page, setPage] = useState(1);
     const pages = Math.max(1, Math.ceil(rows.length / PER));
@@ -62,6 +63,14 @@ export default function Resources({ screen, kpNav, category, q, categories, tota
                 ))}
             </div>
 
+            {(category === 'all' || category === 'articles') && (
+                <section>
+                    <h2 className="font-serif text-[1.25rem] font-bold text-ink-900">Articles by Kruger Phiri</h2>
+                    <p className="mb-3 text-[0.8125rem] text-ink-600">Long-form articles on Africa's economies, finance and institutions{q ? ` matching "${q}"` : ''}.</p>
+                    {articles.length === 0 ? <Empty>No articles match.</Empty> : <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{articles.map((a) => <InsightCard key={a.slug} item={a} />)}</div>}
+                </section>
+            )}
+
             {category === 'all' && !q && (
                 <section>
                     <h2 className="mb-3 font-serif text-[1.25rem] font-bold text-ink-900">Featured Resources</h2>
@@ -80,7 +89,7 @@ export default function Resources({ screen, kpNav, category, q, categories, tota
                 </section>
             )}
 
-            <section>
+            {category !== 'articles' && <section>
                 <h2 className="mb-3 font-serif text-[1.25rem] font-bold text-ink-900">Resource Library</h2>
                 {rows.length === 0 ? <Empty>No resources match.</Empty> : (
                     <div className="overflow-x-auto rounded-[10px] border border-parchment-400 bg-white">
@@ -105,7 +114,7 @@ export default function Resources({ screen, kpNav, category, q, categories, tota
                     <span>Showing {rows.length ? (page - 1) * PER + 1 : 0} to {Math.min(rows.length, page * PER)} of {rows.length} resources. Each download is a summary sheet until the final file is supplied.</span>
                     {pages > 1 && <span className="flex gap-1">{Array.from({ length: pages }, (_, i) => i + 1).map((p) => <button key={p} type="button" aria-current={p === page ? 'page' : undefined} onClick={() => setPage(p)} className={cn('size-8 rounded-[6px] border', p === page ? 'border-gold-500 bg-gold-500 font-bold text-ink-900' : 'border-parchment-500 bg-white')}>{p}</button>)}</span>}
                 </div>
-            </section>
+            </section>}
         </KpPage>
     );
 }

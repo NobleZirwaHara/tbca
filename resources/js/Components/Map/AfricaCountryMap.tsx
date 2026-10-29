@@ -33,6 +33,7 @@ export default function AfricaCountryMap({
     decorative = false,
     label = 'Map of Africa: select a country to open its Investor Cockpit',
     className,
+    tipFor,
 }: {
     selected?: string | null;
     highlighted?: string[];
@@ -44,6 +45,8 @@ export default function AfricaCountryMap({
     decorative?: boolean;
     label?: string;
     className?: string;
+    /** Optional richer hover text (several lines allowed); defaults to the country name. */
+    tipFor?: (country: AfricaCountryShape) => string;
 }) {
     const [hover, setHover] = useState<{ slug: string; name: string; x: number; y: number } | null>(null);
     const p = PALETTE[tone];
@@ -142,10 +145,10 @@ export default function AfricaCountryMap({
             {hover && !decorative && (
                 <span
                     role="tooltip"
-                    className={cn('pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded px-2 py-1 text-xs font-semibold whitespace-nowrap shadow', tone === 'dark' ? 'bg-parchment-100 text-ink-900' : 'bg-ink-900 text-parchment-100')}
+                    className={cn('pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded px-2 py-1 text-xs font-semibold shadow', tipFor ? 'w-max max-w-[240px] whitespace-pre-line' : 'whitespace-nowrap', tone === 'dark' ? 'bg-parchment-100 text-ink-900' : 'bg-ink-900 text-parchment-100')}
                     style={hover.x < 0 ? { left: '50%', top: '0.5rem', transform: 'translateX(-50%)' } : { left: hover.x, top: hover.y - 10 }}
                 >
-                    {hover.name}
+                    {tipFor ? tipFor(AFRICA_COUNTRIES.find((c) => c.slug === hover.slug) ?? AFRICA_COUNTRIES[0]) : hover.name}
                 </span>
             )}
         </div>

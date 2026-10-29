@@ -114,7 +114,7 @@ export default function Insights({ screen, kpNav, items, pagination, filters, sc
             </div>
 
             <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[10px] border border-parchment-400 bg-parchment-400 sm:grid-cols-5">
-                {[['Total Insights', stats.total, 'All registered insights'], ['Current', stats.current, '0 to 90 days'], ['Review Due', stats.reviewDue, '91 to 180 days'], ['Stale', stats.stale, '180+ days'], ['Text Available', stats.excerpt, 'Full text or excerpt']].map(([l, v, s]) => (
+                {[['Total Insights', stats.total, 'All registered insights'], ['Current', stats.current, '0 to 90 days'], ['Review Due', stats.reviewDue, '91 to 180 days'], ['Stale', stats.stale, '180+ days'], ['Full Text', stats.excerpt, 'Published in full']].map(([l, v, s]) => (
                     <div key={l as string} className="bg-white p-3">
                         <dt className="text-[0.6875rem] text-ink-500">{l}</dt>
                         <dd className="text-xl font-bold text-ink-900">{v}</dd>
@@ -132,7 +132,7 @@ export default function Insights({ screen, kpNav, items, pagination, filters, sc
             )}
 
             <div className="flex flex-col items-center gap-2">
-                <p className="text-[0.75rem] text-ink-500">Showing {pagination.shown} of {pagination.total} insights. Titles come from KP's designs; full texts publish when KP supplies them.</p>
+                <p className="text-[0.75rem] text-ink-500">Showing {pagination.shown} of {pagination.total} insights.</p>
                 {pagination.more && <button type="button" className={btnClass('outline')} onClick={() => go(f, pagination.page + 1)}>Load More Insights</button>}
             </div>
         </KpPage>

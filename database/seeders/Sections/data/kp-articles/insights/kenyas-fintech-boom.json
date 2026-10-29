@@ -1,0 +1,60 @@
+{
+  "slug": "kenyas-fintech-boom",
+  "category": "insights",
+  "type": "article",
+  "title": "Kenya's Fintech Boom: A New Growth Engine",
+  "kicker": "KP THOUGHT LEADERSHIP / TECHNOLOGY & AI",
+  "deck": "Kenya offers evidence of digital-finance scale and a reminder that access, financial health and consumer protection are different outcomes.",
+  "byline": [
+    "By The Business Clinic.Africa | 27 August 2026 | Article"
+  ],
+  "date": "2026-08-27",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G3",
+  "themes": [
+    "technology-ai",
+    "markets-growth"
+  ],
+  "countries": [
+    {
+      "slug": "kenya",
+      "name": "Kenya"
+    }
+  ],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "Central Bank of Kenya / KNBS / FSD Kenya, 2024 FinAccess Household Survey, December 2024. [Primary source](https://www.centralbank.go.ke/2024/12/13/10960/)",
+      "url": "https://www.centralbank.go.ke/2024/12/13/10960/"
+    },
+    {
+      "n": "2",
+      "text": "Communications Authority of Kenya, Q1 FY2025/26 Sector Statistics Report, September 2025. [Primary source](https://www.ca.go.ke/sites/default/files/2025-12/Sector%20Statistics%20Report%20Q1%202025-2026_0.pdf)",
+      "url": "https://www.ca.go.ke/sites/default/files/2025-12/Sector%20Statistics%20Report%20Q1%202025-2026_0.pdf"
+    },
+    {
+      "n": "3",
+      "text": "Central Bank of Kenya, Licensing of Digital Credit Providers, 14 July 2026. [Primary source](https://www.centralbank.go.ke/uploads/press_releases/1035898107_Press%20Release%20-%20Licensing%20of%20Digital%20Credit%20Providers%20-%20July%202026.pdf)",
+      "url": "https://www.centralbank.go.ke/uploads/press_releases/1035898107_Press%20Release%20-%20Licensing%20of%20Digital%20Credit%20Providers%20-%20July%202026.pdf"
+    },
+    {
+      "n": "4",
+      "text": "GSMA, State of the Industry Report on Mobile Money 2026. [Primary source](https://www.gsma.com/sotir/)",
+      "url": "https://www.gsma.com/sotir/"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "kenyas-fintech-boom.docx",
+    "drive_id": "1Kskwzrs6XPB6eCXGPgRMU908kDBW-MVM",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}

@@ -1,0 +1,52 @@
+{
+  "slug": "the-real-problem-isnt-capital",
+  "category": "insights",
+  "type": "article",
+  "title": "The Real Problem Isn’t Capital. It’s Readiness.",
+  "kicker": "KP THOUGHT LEADERSHIP / CAPITAL & FUNDING",
+  "deck": "Before asking who will finance the business, establish whether the business can responsibly absorb finance.",
+  "byline": [
+    "By The Business Clinic.Africa | 14 July 2026 | Pan-African business analysis"
+  ],
+  "date": "2026-07-14",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G1",
+  "themes": [
+    "capital-funding",
+    "project-development"
+  ],
+  "countries": [],
+  "featured": true,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "International Finance Corporation (IFC), “IFC launches call for expression of interest for its new Catalytic First Loss Guarantee Facility,” 8 April 2025. [\\[Primary source\\]](https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar)",
+      "url": "https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar"
+    },
+    {
+      "n": "2",
+      "text": "Auditor-General of South Africa, “AG reports minimal progress, calls on government to double efforts to improve audit outcomes,” 26 March 2026 (2024–25 national and provincial audit). [\\[Primary source\\]](https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes)",
+      "url": "https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "the-real-problem-isnt-capital.docx",
+    "drive_id": "1HjmsgYqTr3jMobuXEMSO9t3nc1JOtBHN",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Every funding season produces an impressive collection of pi...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"The first pillar is strategic clarity. Define one customer p...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"The second is financial discipline: a reliable opening balan...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"A simple readiness score can use five categories; each grade...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Week one: establish the truth. Reconcile twelve months of ba...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Before submitting a financing application, insist on five si...\""
+  ]
+}

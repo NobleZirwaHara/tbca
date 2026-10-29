@@ -1,0 +1,55 @@
+{
+  "slug": "digital-banking-in-africa",
+  "category": "insights",
+  "type": "article",
+  "title": "Digital Banking in Africa: The Next Leap",
+  "kicker": "KP THOUGHT LEADERSHIP / TECHNOLOGY & AI",
+  "deck": "The next advance will depend less on new apps and more on safe, interoperable, affordable and genuinely useful banking.",
+  "byline": [
+    "By The Business Clinic.Africa | 09 August 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-08-09",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G1",
+  "themes": [
+    "technology-ai",
+    "markets-growth"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "World Bank, Global Findex 2025 release and regional findings, 16 July 2025. [Primary source](https://www.worldbank.org/en/news/press-release/2025/07/16/mobile-phone-technology-powers-saving-surge-in-developing-economies)",
+      "url": "https://www.worldbank.org/en/news/press-release/2025/07/16/mobile-phone-technology-powers-saving-surge-in-developing-economies"
+    },
+    {
+      "n": "2",
+      "text": "GSMA, State of the Industry Report on Mobile Money 2026. [Primary source](https://www.gsma.com/sotir/)",
+      "url": "https://www.gsma.com/sotir/"
+    },
+    {
+      "n": "3",
+      "text": "BIS / Basel Committee, Core Principles for Effective Banking Supervision, April 2024. [Primary source](https://www.bis.org/committees/bcbs/basel-framework/standard/bcp)",
+      "url": "https://www.bis.org/committees/bcbs/basel-framework/standard/bcp"
+    },
+    {
+      "n": "4",
+      "text": "World Bank, Remittance Prices Worldwide, 2025 observations. [Primary source](https://remittanceprices.worldbank.org/)",
+      "url": "https://remittanceprices.worldbank.org/"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "digital-banking-in-africa.docx",
+    "drive_id": "1KYW0B-hf8NdlZFeUjVkWGNfAvYAYXljd",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}

@@ -7,6 +7,7 @@ use App\Models\Insights\Industry;
 use App\Models\Insights\Webinar;
 use App\Models\Kp\KpRecord;
 use App\Support\About\Content as AboutContent;
+use App\Support\Content\KpArticles;
 use App\Support\Content\KpThoughtLeadership as Kp;
 use App\Support\Content\KpTools;
 use App\Support\Webinars\WebinarPresenter;
@@ -100,25 +101,61 @@ class KpController extends Controller
     public function insights(Request $request): Response
     {
         $f = $this->insightFilters($request);
-        $all = collect(Kp::items())->where('type', '!=', 'founders-note');
+        $all = collect(Kp::items())->where('category', 'insights');
 
         return $this->page('Kp/Insights', '005', $this->listing($all, $f, 9) + [
             'voices' => collect(Kp::voices())->map(fn ($v, $k) => ['code' => $k, 'label' => $v[0], 'body' => $v[1]])->values(),
-            'typeCounts' => collect(Kp::types())->except('founders-note')->map(fn ($t, $k) => ['key' => $k, 'label' => $t[1], 'count' => $all->where('type', $k)->count()])->values(),
-            'stats' => ['total' => $all->count(), 'current' => $all->where('freshness', 'current')->count(), 'reviewDue' => $all->where('freshness', 'review-due')->count(), 'stale' => $all->where('freshness', 'stale')->count(), 'excerpt' => $all->whereIn('status', ['published', 'excerpt'])->count()],
+            'typeCounts' => collect(Kp::types())->except(['founders-note', 'long-read'])->map(fn ($t, $k) => ['key' => $k, 'label' => $t[1], 'count' => $all->where('type', $k)->count()])->filter(fn ($t) => $t['count'] > 0)->values(),
+            'stats' => ['total' => $all->count(), 'current' => $all->where('freshness', 'current')->count(), 'reviewDue' => $all->where('freshness', 'review-due')->count(), 'stale' => $all->where('freshness', 'stale')->count(), 'excerpt' => $all->where('status', 'published')->count()],
             'themes' => $this->themesWithCounts(),
         ]);
     }
 
-    public function article(string $slug): Response
+    /** Insight article. A Founder's Note or Resource opened here moves to its own section URL. */
+    public function article(string $slug): Response|RedirectResponse
+    {
+        return $this->showArticle('insights', $slug);
+    }
+
+    public function foundersNote(string $slug): Response|RedirectResponse
+    {
+        return $this->showArticle('founders-notes', $slug);
+    }
+
+    public function resourceArticle(string $slug): Response|RedirectResponse
+    {
+        return $this->showArticle('resources', $slug);
+    }
+
+    private function showArticle(string $category, string $slug): Response|RedirectResponse
     {
         $item = Kp::find($slug);
         abort_unless($item, 404);
+        if ($item['category'] !== $category) {
+            return redirect($item['href'], 301);
+        }
         $leader = AboutContent::findLeader('kruger-phiri') ?? [];
+        $doc = KpArticles::render($item['body']);
+        $all = collect(Kp::items())->where('slug', '!=', $slug);
+        $shared = fn ($i) => count(array_intersect($i['themes'], $item['themes']));
+        $related = $all->filter(fn ($i) => $shared($i) > 0)
+            ->sortBy(fn ($i) => [$i['category'] === $category ? 0 : 1, $i['theme'] === $item['theme'] ? 0 : 1, -$shared($i), -(int) str_replace('-', '', (string) $i['published'])])
+            ->take(3)->values();
 
         return $this->page('Kp/Article', '006', [
-            'item' => $this->card($item) + ['excerpt' => $item['excerpt'], 'body' => $item['body'], 'readMinutes' => $item['read_minutes']],
-            'related' => collect(Kp::items())->where('theme', $item['theme'])->where('slug', '!=', $slug)->take(3)->map(fn ($i) => $this->card($i))->values(),
+            'item' => $this->card($item) + [
+                'kicker' => $item['kicker'],
+                'byline' => $item['byline'],
+                'html' => $doc['html'],
+                'toc' => $doc['toc'],
+                'sourcesHeading' => $item['sources_heading'] ?: 'Sources',
+                'sources' => collect($item['sources'])->map(fn ($s) => ['n' => $s['n'], 'html' => KpArticles::inline($s['text']), 'url' => $s['url'], 'linked' => $s['url'] !== null && str_contains($s['text'], (string) $s['url'])])->values(),
+                'notes' => collect($item['notes'])->map(fn ($n) => KpArticles::inline($n))->values(),
+                'wordCount' => $item['word_count'],
+                'sourceFile' => ['folder' => $item['source']['drive_folder'] ?? null, 'file' => $item['source']['file'] ?? null, 'received' => isset($item['source']['received']) ? KpArticles::dateLabel($item['source']['received']) : null],
+            ],
+            'related' => $related->map(fn ($i) => $this->card($i)),
+            'section' => ['label' => KpArticles::CATEGORIES[$category][0], 'href' => Kp::BASE.KpArticles::CATEGORIES[$category][1]],
             'author' => ['name' => $leader['name'] ?? 'Kruger Phiri', 'role' => $leader['role'] ?? 'Founder'],
         ]);
     }
@@ -127,7 +164,7 @@ class KpController extends Controller
     {
         $f = $this->insightFilters($request);
 
-        return $this->page('Kp/FoundersNotes', '007', $this->listing(collect(Kp::items())->where('type', 'founders-note'), $f, 8) + [
+        return $this->page('Kp/FoundersNotes', '007', $this->listing(collect(Kp::items())->where('category', 'founders-notes'), $f, 8) + [
             'themes' => Kp::themes(),
         ]);
     }
@@ -139,7 +176,7 @@ class KpController extends Controller
         return $this->page('Kp/Clinic', '008', [
             'q' => (string) $request->query('q', ''),
             'hubs' => $this->themesWithCounts(),
-            'explainers' => $items->whereIn('type', ['explainer', 'article'])->take(6)->map(fn ($i) => $this->card($i))->values(),
+            'explainers' => $items->where('category', 'insights')->sortBy(fn ($i) => $i['type'] === 'explainer' ? 0 : 1)->take(6)->map(fn ($i) => $this->card($i))->values(),
             'diagnostics' => [
                 ['Business Health Check', 'Overall business performance', '/business-health-score'],
                 ['Capital Readiness Diagnostic', 'Are you ready for funding?', Kp::BASE.'/tools/scorecards/capital-readiness'],
@@ -160,7 +197,7 @@ class KpController extends Controller
             'q' => $q,
             'topics' => $themes,
             'all' => $this->themesWithCounts(),
-            'latest' => collect(Kp::items())->whereIn('type', ['framework', 'article'])->take(3)->map(fn ($i) => $this->card($i))->values(),
+            'latest' => collect(Kp::items())->sortByDesc('published')->take(3)->map(fn ($i) => $this->card($i))->values(),
             'current' => null,
         ]);
     }
@@ -169,7 +206,7 @@ class KpController extends Controller
     {
         $theme = collect($this->themesWithCounts())->firstWhere('slug', $slug);
         abort_unless($theme, 404);
-        $items = collect(Kp::items())->where('theme', $slug);
+        $items = collect(Kp::items())->filter(fn ($i) => in_array($slug, $i['themes'], true))->sortBy(fn ($i) => $i['theme'] === $slug ? 0 : 1);
 
         return $this->page('Kp/Topics', '014', [
             'q' => '',
@@ -322,14 +359,18 @@ class KpController extends Controller
         $q = Str::lower(trim((string) $request->query('q', '')));
         $all = collect(Kp::resources());
         $rows = $all->when($cat !== 'all', fn ($c) => $c->where(2, $cat))->when($q !== '', fn ($c) => $c->filter(fn ($r) => Str::contains(Str::lower($r[1].' '.$r[4].' '.$r[3]), $q)))->values();
+        $papers = collect(Kp::items())->where('category', 'resources');
+        $hits = $q === '' ? null : KpArticles::matching($q);
+        $shownPapers = in_array($cat, ['all', 'articles'], true) ? $papers->when($hits !== null, fn ($c) => $c->whereIn('slug', $hits)) : collect();
 
         return $this->page('Kp/Resources', '013', [
             'category' => $cat,
             'q' => $q,
-            'categories' => collect(Kp::resourceCategories())->map(fn ($l, $k) => ['key' => $k, 'label' => $l, 'count' => $all->where(2, $k)->count()])->values(),
-            'total' => $all->count(),
+            'categories' => collect(['articles' => 'Articles'] + Kp::resourceCategories())->map(fn ($l, $k) => ['key' => $k, 'label' => $l, 'count' => $k === 'articles' ? $papers->count() : $all->where(2, $k)->count()])->values(),
+            'total' => $all->count() + $papers->count(),
+            'articles' => $shownPapers->map(fn ($i) => $this->card($i))->values(),
             'featured' => $all->where(6, true)->map(fn ($r) => $this->resourceRow($r))->values(),
-            'rows' => $rows->map(fn ($r) => $this->resourceRow($r))->values(),
+            'rows' => $cat === 'articles' ? [] : $rows->map(fn ($r) => $this->resourceRow($r))->values(),
         ]);
     }
 
@@ -364,7 +405,7 @@ class KpController extends Controller
             'options' => DB::table('aiim_countries')->orderBy('name')->get(['slug', 'name'])->map(fn ($r) => ['value' => $r->slug, 'label' => $r->name])->all(),
             'facts' => $ind->map(fn ($v) => ['label' => $v['label'], 'value' => rtrim(rtrim(number_format((float) $v['value'], 1), '0'), '.').' '.$v['unit'], 'year' => $v['year'], 'source' => $v['source'], 'status' => $v['status'] ?? 'placeholder'])->values(),
             'sections' => ['Overview', 'Economy', 'Business Environment', 'Regulation & Tax', 'Sectors & Opportunities', 'Risks & Challenges', 'Insights & Commentary', 'Tools & Resources', 'Related Content'],
-            'insights' => collect(Kp::items())->where('scope', 'AFR-G3')->filter(fn ($i) => Str::contains(Str::lower($i['title']), Str::lower($c->name)))->map(fn ($i) => $this->card($i))->values(),
+            'insights' => collect(Kp::items())->filter(fn ($i) => in_array($c->slug, array_column($i['countries'], 'slug'), true))->map(fn ($i) => $this->card($i))->values(),
             'deepLink' => '/aiim/country/'.$c->slug,
         ]);
     }
@@ -495,7 +536,10 @@ class KpController extends Controller
             'slug' => $i['slug'], 'title' => $i['title'], 'summary' => $i['summary'], 'type' => $i['type'], 'typeLabel' => $t[0], 'icon' => $t[2],
             'theme' => $i['theme'], 'themeLabel' => Kp::themeLabel($i['theme']), 'voice' => $i['voice'], 'voiceLabel' => Kp::voices()[$i['voice']][0] ?? $i['voice'],
             'scope' => $i['scope'], 'scopeLabel' => Kp::scopes()[$i['scope']][0] ?? $i['scope'], 'freshness' => $i['freshness'], 'status' => $i['status'],
-            'featured' => $i['featured'], 'published' => $i['published'], 'author' => $i['author'], 'href' => Kp::BASE.'/insights/'.$i['slug'],
+            'featured' => $i['featured'], 'published' => $i['published'], 'author' => $i['author'], 'href' => $i['href'],
+            'category' => $i['category'], 'categoryLabel' => $i['categoryLabel'], 'dateLabel' => $i['date_label'], 'dateNote' => $i['date_note'], 'readMinutes' => $i['read_minutes'],
+            'topics' => collect($i['themes'])->map(fn ($t) => ['slug' => $t, 'label' => Kp::themeLabel($t), 'href' => Kp::BASE.'/topics/'.$t])->values()->all(),
+            'countries' => collect($i['countries'])->map(fn ($c) => $c + ['href' => $c['slug'] === 'china' ? Kp::BASE.'/search?q=China' : Kp::BASE.'/africa/'.$c['slug']])->values()->all(),
         ];
     }
 
@@ -510,7 +554,7 @@ class KpController extends Controller
         $res = collect(Kp::resources());
 
         return collect(Kp::themes())->map(fn ($t) => $t + [
-            'articles' => $items->where('theme', $t['slug'])->count(),
+            'articles' => $items->filter(fn ($i) => in_array($t['slug'], $i['themes'], true))->count(),
             'tools' => $res->filter(fn ($r) => Str::contains(Str::lower($t['label']), Str::lower($r[3])))->count(),
             'href' => Kp::BASE.'/topics/'.$t['slug'],
         ])->all();
@@ -532,14 +576,15 @@ class KpController extends Controller
 
     private function listing(Collection $all, array $f, int $per): array
     {
+        $hits = ($f['q'] ?? null) ? KpArticles::matching($f['q']) : [];
         $rows = $all
-            ->when($f['q'] ?? null, fn ($c, $q) => $c->filter(fn ($i) => Str::contains(Str::lower($i['title'].' '.$i['summary'].' '.Kp::themeLabel($i['theme']).' '.$i['author']), Str::lower(trim($q)))))
+            ->when($f['q'] ?? null, fn ($c, $q) => $c->filter(fn ($i) => in_array($i['slug'], $hits, true) || Str::contains(Str::lower($i['title'].' '.$i['summary'].' '.Kp::themeLabel($i['theme']).' '.$i['author']), Str::lower(trim($q)))))
             ->when(! empty($f['types']), fn ($c) => $c->whereIn('type', $f['types']))
-            ->when($f['theme'] ?? null, fn ($c, $t) => $c->where('theme', $t))
+            ->when($f['theme'] ?? null, fn ($c, $t) => $c->filter(fn ($i) => in_array($t, $i['themes'], true)))
             ->when($f['voice'] ?? null, fn ($c, $v) => $c->where('voice', $v))
             ->when($f['region'] ?? null, fn ($c, $r) => $c->where('scope', $r))
             ->when(! empty($f['freshness']), fn ($c) => $c->whereIn('freshness', $f['freshness']))
-            ->when(($f['sort'] ?? 'recent') === 'title', fn ($c) => $c->sortBy('title'))
+            ->when(($f['sort'] ?? 'recent') === 'title', fn ($c) => $c->sortBy('title'), fn ($c) => $c->sortByDesc(fn ($i) => (string) $i['published']))
             ->values();
         $page = (int) ($f['page'] ?? 1);
 
@@ -567,11 +612,14 @@ class KpController extends Controller
             return $s;
         };
         $out = collect();
+        $phrase = array_flip(KpArticles::matching($q));
         foreach (Kp::items() as $i) {
-            $group = match ($i['type']) {
-                'founders-note' => "Founder's Notes", 'explainer' => 'African Business Clinic', 'framework' => 'Tools & Frameworks', default => 'Insights & Articles'
+            $group = match (true) {
+                $i['category'] === 'founders-notes' => "Founder's Notes", $i['category'] === 'resources' => 'KP Resources',
+                $i['type'] === 'explainer' => 'African Business Clinic', $i['type'] === 'framework' => 'Tools & Frameworks', default => 'Insights & Articles'
             };
-            $out->push(['group' => $group, 'kind' => (Kp::types()[$i['type']][0] ?? 'Article'), 'title' => $i['title'], 'summary' => $i['summary'], 'href' => Kp::BASE.'/insights/'.$i['slug'], 'tags' => [Kp::themeLabel($i['theme'])], 'author' => $i['author'], 'meta' => $i['status'] === 'pending' ? 'Full text pending' : 'Excerpt available', 'score' => $score($i['title'].' '.$i['summary'].' '.Kp::themeLabel($i['theme']))]);
+            $s = $score($i['title'].' '.$i['summary'].' '.implode(' ', array_map([Kp::class, 'themeLabel'], $i['themes'])).' '.implode(' ', array_column($i['countries'], 'name')));
+            $out->push(['group' => $group, 'kind' => (Kp::types()[$i['type']][0] ?? 'Article'), 'title' => $i['title'], 'summary' => $i['summary'], 'href' => $i['href'], 'tags' => array_map([Kp::class, 'themeLabel'], $i['themes']), 'author' => $i['author'], 'meta' => $i['date_label'].' | '.$i['read_minutes'].' min read', 'score' => $s + (isset($phrase[$i['slug']]) ? 3 : 0)]);
         }
         foreach (Kp::resources() as $r) {
             $out->push(['group' => 'KP Resources', 'kind' => Kp::resourceCategories()[$r[2]] ?? 'Resource', 'title' => $r[1], 'summary' => $r[4], 'href' => Kp::BASE.'/resources?q='.urlencode($r[1]), 'tags' => [$r[3], $r[5]], 'author' => 'The Business Clinic.Africa', 'meta' => $r[5], 'score' => $score($r[1].' '.$r[4].' '.$r[3])]);

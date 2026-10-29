@@ -1,0 +1,56 @@
+{
+  "slug": "bee-beyond-the-compliance-box",
+  "category": "insights",
+  "type": "article",
+  "title": "Black Economic Empowerment: Beyond the Compliance Box.",
+  "kicker": "KP THOUGHT LEADERSHIP / RISK & COMPLIANCE",
+  "deck": "Transformation should build commercially capable ownership, management and suppliers, not merely produce a favourable certificate.",
+  "byline": [
+    "By The Business Clinic.Africa | 07 June 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-06-07",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G3",
+  "themes": [
+    "risk-compliance",
+    "leadership-people"
+  ],
+  "countries": [
+    {
+      "slug": "south-africa",
+      "name": "South Africa"
+    }
+  ],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "Department of Trade, Industry and Competition, “B-BBEE Codes, Acts, Strategies & Policies” (statutory resource page; access date 07 June 2026). [\\[Primary source\\]](https://www.thedtic.gov.za/financial-and-non-financial-support/b-bbee/b-bbee-codes-b-bbee-acts-strategies-policies/)",
+      "url": "https://www.thedtic.gov.za/financial-and-non-financial-support/b-bbee/b-bbee-codes-b-bbee-acts-strategies-policies/"
+    },
+    {
+      "n": "2",
+      "text": "B-BBEE Commission, “Annual Report on National Status and Trends on B-BBEE Shows Stagnation in Changing Ownership Patterns,” 2022 (2021 submissions). [\\[Primary source\\]](https://www.bbbeecommission.co.za/b-bbee-commission-annual-report-on-national-status-and-trends-on-b-bbee-show-stagnation-in-changing-ownership-patterns/)",
+      "url": "https://www.bbbeecommission.co.za/b-bbee-commission-annual-report-on-national-status-and-trends-on-b-bbee-show-stagnation-in-changing-ownership-patterns/"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "bee-beyond-the-compliance-box.docx",
+    "drive_id": "1yOz7G4WAvAk6X7zXkT9uHKJZVnqotR7X",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Broad-Based Black Economic Empowerment is both a policy fram...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"The starting point is to identify where transformation can r...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"A credible programme begins with a baseline. Record benefici...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Start with a clear three-year target beyond the score. For s...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Keep two dashboards: statutory B-BBEE performance and actual...\""
+  ]
+}

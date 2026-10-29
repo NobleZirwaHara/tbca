@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Sprints;
 use App\Http\Controllers\Controller;
 use App\Models\Sprint;
 use App\Models\Submission;
+use App\Support\Deliverables\DeliveryPlan;
 use App\Support\Platform\Reference;
 use App\Support\Shop\IndustryListings;
 use App\Support\Sprints\Catalogue;
@@ -64,6 +65,8 @@ class SprintController extends Controller
             'pricing' => SprintOffer::pricing(),
             // Online Shop aisles the Sprint appears in: its home aisle, then industry cross-listings.
             'listedIn' => IndustryListings::listedIn($sprint),
+            // "What you will receive": deliverables from the Registry of Deliverables, per tier.
+            'deliverables' => DeliveryPlan::forSprintPage($sprint),
             'meta' => [
                 'category_label' => $sprint->subcategory ?: ($category['label'] ?? null),
                 'category_href' => $sprint->category ? "/sprints/category/{$sprint->category}" : '/sprints',

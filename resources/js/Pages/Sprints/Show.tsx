@@ -1,6 +1,7 @@
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from 'react';
 import { Link } from '@inertiajs/react';
 import GenericSprint, { type GenericSprintProps } from '@/Components/Sprints/GenericSprint';
+import WhatYouWillReceive, { type ReceivedDeliverable } from '@/Components/Sprints/WhatYouWillReceive';
 import { cn } from '@/lib/cn';
 import type { SprintRecord } from '@/types';
 import type { AisleListing } from '@/types/shop';
@@ -64,8 +65,8 @@ function ListedIn({ aisles }: { aisles: AisleListing[] }) {
     );
 }
 
-export default function Show(props: GenericSprintProps & { listedIn?: AisleListing[] }) {
-    const { listedIn = [], ...rest } = props;
+export default function Show(props: GenericSprintProps & { listedIn?: AisleListing[]; deliverables?: ReceivedDeliverable[] }) {
+    const { listedIn = [], deliverables = [], ...rest } = props;
     const TypeComponent = props.sprint.attributes?.template === 'generic' ? null : templateFor(props.sprint.type);
 
     return (
@@ -78,6 +79,7 @@ export default function Show(props: GenericSprintProps & { listedIn?: AisleListi
             ) : (
                 <GenericSprint key={props.sprint.slug} {...rest} />
             )}
+            <WhatYouWillReceive key={`receive-${props.sprint.slug}`} deliverables={deliverables} selectedPackage={props.selectedPackage} />
         </>
     );
 }

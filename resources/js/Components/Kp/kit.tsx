@@ -43,6 +43,13 @@ export interface KpCard {
     published: string | null;
     author: string;
     href: string;
+    category: 'insights' | 'founders-notes' | 'resources';
+    categoryLabel: string;
+    dateLabel: string;
+    dateNote: string | null;
+    readMinutes: number;
+    topics: { slug: string; label: string; href: string }[];
+    countries: { slug: string; name: string; href: string }[];
 }
 
 export interface KpTheme {
@@ -124,12 +131,12 @@ export function KpPage({
         <div className="bg-parchment-100 pb-12">
             <Head title={`${head ?? (typeof title === 'string' ? title : screen?.title ?? 'KP Thought Leadership')} | KP Thought Leadership`} />
             <div className="container-tbca pt-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
                     <Crumbs items={[['Home', '/'], ['KP Thought Leadership', BASE], ...crumbs]} />
                     {screen && <ScreenChip id={screen.id} />}
                 </div>
                 {!hideNav && (
-                    <nav aria-label="KP Thought Leadership sections" className="mt-3 flex gap-1.5 overflow-x-auto pb-1">
+                    <nav aria-label="KP Thought Leadership sections" className="mt-3 flex gap-1.5 overflow-x-auto pb-1 print:hidden">
                         {kpNav.map(([label, href]) => {
                             const active = href === BASE ? path === BASE : path.startsWith(href.split('?')[0].replace(/\/kenya$/, ''));
                             return (
@@ -155,7 +162,7 @@ export function KpPage({
                 <div className={cn('mt-6 grid gap-6', left && rail ? 'lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,1fr)_19rem]' : left ? 'lg:grid-cols-[15rem_minmax(0,1fr)]' : rail ? 'xl:grid-cols-[minmax(0,1fr)_20rem]' : '')}>
                     {left && <aside className="min-w-0 space-y-4">{left}</aside>}
                     <div className="min-w-0 space-y-6">{children}</div>
-                    {rail && <aside className={cn('min-w-0 space-y-4', left && 'lg:col-span-2 xl:col-span-1')}>{rail}</aside>}
+                    {rail && <aside className={cn('min-w-0 space-y-4 print:hidden', left && 'lg:col-span-2 xl:col-span-1')}>{rail}</aside>}
                 </div>
             </div>
         </div>
@@ -332,6 +339,7 @@ export function InsightCard({ item, compact, bookmark = true }: { item: KpCard; 
                     {item.title}
                 </Link>
                 <p className="mt-1 text-[0.8125rem] leading-relaxed text-ink-600">{item.summary}</p>
+                <p className="mt-2 text-[0.6875rem] text-ink-500">{item.dateLabel} | {item.readMinutes} min read</p>
                 <div className="mt-auto flex items-center justify-between gap-2 pt-3 text-[0.6875rem] text-ink-500">
                     <span className="inline-flex items-center gap-1">
                         <Ico name={item.icon} className="size-3.5" /> {item.typeLabel} | {item.author}
@@ -356,6 +364,7 @@ export function InsightRow({ item }: { item: KpCard }) {
                     {item.title}
                 </Link>
                 <p className="text-[0.75rem] text-ink-500">{item.summary}</p>
+                <p className="text-[0.6875rem] text-ink-500">{item.dateLabel} | {item.readMinutes} min read | {item.typeLabel}</p>
                 <div className="mt-1 flex flex-wrap gap-1.5">
                     <VoiceBadge code={item.voice} />
                     <ContentStatus status={item.status} />

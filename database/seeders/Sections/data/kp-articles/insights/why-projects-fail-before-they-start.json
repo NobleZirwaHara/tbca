@@ -1,0 +1,57 @@
+{
+  "slug": "why-projects-fail-before-they-start",
+  "category": "insights",
+  "type": "article",
+  "title": "Why Projects Fail Before They Start, and How to Stop It.",
+  "kicker": "KP THOUGHT LEADERSHIP / PROJECT DEVELOPMENT",
+  "deck": "Most expensive project failures start with inexpensive decisions that nobody bothered to test.",
+  "byline": [
+    "By The BusinessClinic.Africa | 28 May 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-05-28",
+  "date_note": null,
+  "author": "The BusinessClinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G1",
+  "themes": [
+    "project-development",
+    "risk-compliance"
+  ],
+  "countries": [],
+  "featured": true,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "Auditor-General of South Africa, “AG reports minimal progress, calls on government to double efforts to improve audit outcomes,” 26 March 2026 (2024–25 national and provincial audit). [\\[Primary source\\]](https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes)",
+      "url": "https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes"
+    },
+    {
+      "n": "2",
+      "text": "Auditor-General of South Africa, “Limited progress made by the outgoing local government administration,” 2026 (2024–25 municipal audit). [\\[Primary source\\]](https://www.agsa.co.za/news/limited-progress-made-outgoing-local-government-administration-strengthen-governance-and-improve-service-delivery-copy)",
+      "url": "https://www.agsa.co.za/news/limited-progress-made-outgoing-local-government-administration-strengthen-governance-and-improve-service-delivery-copy"
+    },
+    {
+      "n": "3",
+      "text": "Project Management Institute, “The Future of Project Work: Pulse of the Profession 2024,” February 2024. [\\[Primary source\\]](https://www.pmi.org/learning/thought-leadership/future-of-project-work)",
+      "url": "https://www.pmi.org/learning/thought-leadership/future-of-project-work"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "why-projects-fail-before-they-start.docx",
+    "drive_id": "1l0keNIBDSVtBfEkNxZMBVN0FtqeUIPM6",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"A board approves a project. A photograph is taken. Somebody ...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Failure one is a weak problem definition. If the sponsor can...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Failure two is false cost confidence. A single point estimat...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Sponsors are sometimes willing to spend tens of millions on ...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Start with a pre-feasibility screen. Compare alternatives, i...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"No final investment decision without a verified scope, right...\""
+  ]
+}

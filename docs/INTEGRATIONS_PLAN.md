@@ -1,6 +1,6 @@
 # TBCA Integrations & AI Architecture Plan
 
-**Status:** Planning draft for client review, updated 13 October 2026. Sections 8 (VOVE ID), 11 (translation) and 18 (Zoho One) describe code that is now built; the rest is still a plan.
+**Status:** Planning draft for client review, updated 13 October 2026. Sections 8 (VOVE ID), 11 (translation), 18 (Zoho One) and 20 (Registry of Deliverables) describe code that is now built; the rest is still a plan.
 **Prepared:** 6 October 2026, in response to the client review of 5 October 2026.
 **Scope:** Third-party integrations and the "AI Council" (the AI that drives the WebApp) for The Business Clinic.Africa (TBCA). The app is Laravel 13 + Inertia + React on Laravel Cloud, with Postgres.
 
@@ -1098,3 +1098,51 @@ One template, with a style line per catalogue category. Fill `{title}` and `{reg
 
 To confirm by Noble: the exact model name and price per image for "ChatGPT Image 2.5" at 1600 x 900, and the expected regeneration rate. Total = 7,008 x price per image x (1 + regeneration rate), plus the test batches (240 images).
 
+
+---
+
+## 20. Registry of Deliverables: payment-trigger loops, safeguards, HeyGen and Infogram
+
+**Client brief (Kruger Phiri, 25 October 2026):** a registry of every deliverable from the WebApp, built from each tab, with what each one contains, its depth and page count, what triggers delivery and the possible workflow, compared with BCG, McKinsey and Deloitte, "useful for building your backend and automation". **Source:** *TBCA Deliverables Resources File MP-DEL-2.0* (`TBCA_Master_Register_Corrected.xlsx`). The register is loaded into the app (see `docs/IMPLEMENTATION_STATUS.md`, Registry of Deliverables). This section explains how its automation sheets map to the integration layer of section 18.
+
+### What the workbook proposes
+
+- **Trigger:** EVT-006 Payment Confirmed (a signed PayFast webhook, amount equal to the invoice, with an idempotency key) starts delivery with no manual step. The delivery clock starts when intake is complete (OSS-S8), not at payment.
+- **Orchestrator:** n8n receives EVT-006 and starts one loop per Universal Prompt family, `LOOP-PAY-UP-01` to `UP-16` plus `LOOP-PAY-P13` for embedded and internal objects (17 loops). Each loop runs the OSS-S6 to S17 path: entitle, provision, intake, evidence and calculation, generate (with Infogram and HeyGen), independent QA (up to 3 cycles), human release at L3, deliver, aftercare and CSAT, next offer.
+- **Safeguards:** 30 fail-closed rules (SG-01 to SG-30), each tied to an OSS stage and a loop or validator. Each deliverable lists the safeguards that apply to it.
+- **HeyGen and Infogram:** a briefing video and branded charts at every package, with a failure path that delivers without the video (and schedules it within 24 hours) or falls back to native charts with the same data.
+
+n8n and PayFast are the client's proposals. Neither is connected; both need KP's confirmation.
+
+### How it maps to what is built
+
+| Workbook | In the app now | Next step when the orchestrator is chosen |
+|---|---|---|
+| EVT-006 Payment Confirmed | The `order.payment_verified` ledger event, recorded once per order when it becomes paid (card checkout, free Sprint, EFT confirmed in Books). The ledger's idempotency key gives the same "duplicates are ignored" rule as SG-01. | A PayFast signed webhook marks the order paid through the existing checkout path, so the same event is recorded. |
+| Loop per family (`LOOP-PAY-*`) | The event payload now carries `delivery_plan`: for each Sprint line the package, the deliverables from the register (pages, delivery time, CSAT minimum, safeguard codes), the loop ID, its family and owning blueprint, and the workflow steps. Built by `app/Support/Deliverables/DeliveryPlan.php`. | The orchestrator starts the named loop with that plan. No lookup back into the workbook is needed. |
+| n8n orchestrator | Not connected. | Add n8n as a ledger consumer, like Zoho Flow in section 18: either a signed outbound webhook per event (an `N8N_WEBHOOK_URL` and secret, sent by the existing dispatcher with the same retries), or n8n polling a read-only ledger endpoint. n8n reports progress back through a signed inbound webhook (`loop.stage_completed`, `loop.released`, `loop.failed`), stored once per event id, so the automation measure in section 18 counts loop stages too. |
+| OSS-S14 human release (SG-14) | Not built. | Record the release decision as an inbound event with `handled_by = human`, as `review.decided` is today. |
+| Safeguards SG-01 to SG-30 | Stored per deliverable and listed at `/admin/deliverables/automation`. SG-01 (payment authenticity), SG-02 (consent, in Due Diligence and checkout terms) and SG-30 (audit trail, the ledger) already have equivalents in the app. | Each validator in a loop writes its result to the ledger; a failed safeguard stops the loop (fail-closed) and parks the event for a person. |
+| HeyGen and Infogram specification | Stored at `/admin/deliverables/automation` with the per-package video and chart layers on every deliverable. | HeyGen (video generate, translation, streaming avatar) and Infogram (copy, bind data, publish, export) are called by the loop at OSS-S12 and S15, never from a web request. Their completion webhooks come back through the same signed inbound route. Credits and plan levels need a quote first. |
+
+### Example payload
+
+```json
+"delivery_plan": {
+  "register": "MP-DEL-2.0",
+  "lines": [{
+    "item_code": "TBCA-4C-5288", "register_code": null, "tier": "premium",
+    "deliverables": [{
+      "ref": "DEL-SV-0562", "name": "Cash Crisis Premium Sprint", "format": "Report", "format_code": "RPT",
+      "pages": "52–68", "page_unit": "pages", "delivery": "1 day", "csat_min": 0.99,
+      "loop_id": "LOOP-PAY-UP-01", "owner_blueprint": "BP-02 Services Resolver",
+      "trigger": "EVT-006 Payment Confirmed (signed PayFast webhook; amount = invoice; idempotency key)",
+      "safeguards": ["SG-01", "SG-02", "..."]
+    }],
+    "loops": [{"loop_id": "LOOP-PAY-UP-01", "family": "Core advisory and service Sprints", "owning_blueprint": "BP-02 Services Resolver"}],
+    "workflow": ["n8n orchestrator", "LOOP-PAY-UP-01 loaded with Sprint code, tier, client context and this deliverable spec", "OSS-S6 entitle", "..."]
+  }]
+}
+```
+
+Order lines that are not Sprints (Due Diligence, digital products, retainer proposals) carry no plan yet, because the register's Issue 1.0 rows for those tabs have no product codes to match on.

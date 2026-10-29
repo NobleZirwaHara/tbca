@@ -1,0 +1,46 @@
+{
+  "slug": "your-numbers-must-survive-scrutiny",
+  "category": "founders-notes",
+  "type": "founders-note",
+  "title": "Your Numbers Must Survive Scrutiny",
+  "kicker": null,
+  "deck": "If the numbers cannot be defended, the deal cannot be trusted.",
+  "byline": [
+    "FOUNDER VOICE | KRUGER PHIRI | CAPITAL & FUNDING | 18 OCTOBER 2026"
+  ],
+  "date": "2026-10-18",
+  "date_note": null,
+  "author": "Kruger Phiri",
+  "voice": "F",
+  "scope": "AFR-G0",
+  "themes": [
+    "capital-funding",
+    "governance-boards"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "OECD (2023). [G20/OECD Principles of Corporate Governance: disclosure and transparency](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report/component-7.html)",
+      "url": "https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report/component-7.html"
+    },
+    {
+      "n": "2",
+      "text": "IFRS Foundation (2021). [IAS 7, Statement of Cash Flows (2021 issued edition)](https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2021/issued/part-a/ias-7-statement-of-cash-flows.pdf)",
+      "url": "https://www.ifrs.org/content/dam/ifrs/publications/pdf-standards/english/2021/issued/part-a/ias-7-statement-of-cash-flows.pdf"
+    }
+  ],
+  "notes": [
+    "Editorial disclosure: AI-assisted draft prepared for Kruger Phiri’s factual, stylistic and authorship approval before publication. Examples labelled illustrative are not reported transactions.",
+    "Professional boundary: Commentary only. Obtain qualified financial, legal, tax or regulatory advice for specific decisions."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / FOUNDERS NOTES",
+    "file": "your-numbers-must-survive-scrutiny.docx",
+    "drive_id": "1OaTUz0j_Zxil96NDlIZvBYpFnfaL-WeK",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}

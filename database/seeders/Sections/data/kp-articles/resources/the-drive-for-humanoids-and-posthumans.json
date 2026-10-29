@@ -1,0 +1,127 @@
+{
+  "slug": "the-drive-for-humanoids-and-posthumans",
+  "category": "resources",
+  "type": "long-read",
+  "title": "The Drive For Humanoids And Posthumans: What Future Is Africa Preparing For?",
+  "kicker": null,
+  "deck": "The next contest is not simply between humans and machines. It is between societies that decide how intelligence will be used and societies that allow others to decide for them.",
+  "byline": [
+    "KRUGER PHIRI",
+    "Founder & Managing Partner, The Business Clinic.Africa",
+    "KP Thought Leadership | Proposed publication date: 19 October 2026"
+  ],
+  "date": "2026-10-19",
+  "date_note": "Proposed publication date stated in the document",
+  "author": "Kruger Phiri",
+  "voice": "F",
+  "scope": "AFR-G1",
+  "themes": [
+    "technology-ai",
+    "leadership-people"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "SOURCE REGISTER AND VERIFICATION NOTES",
+  "sources": [
+    {
+      "n": "1",
+      "text": "Bernie Sanders, \"Don't Let Big Tech Dictate Humanity's Future,\" U.S. Senate office, 16 October 2026. [View primary source](https://www.sanders.senate.gov/op-eds/dont-let-big-tech-dictate-humanitys-future/)",
+      "url": "https://www.sanders.senate.gov/op-eds/dont-let-big-tech-dictate-humanitys-future/"
+    },
+    {
+      "n": "2",
+      "text": "International Federation of Robotics, \"Global Robot Demand in Factories Doubles Over 10 Years,\" 25 September 2025. [View primary source](https://ifr.org/ifr-press-releases/global-robot-demand-in-factories-doubles-over-10-years)",
+      "url": "https://ifr.org/ifr-press-releases/global-robot-demand-in-factories-doubles-over-10-years"
+    },
+    {
+      "n": "3",
+      "text": "International Federation of Robotics, \"Humanoid Robots: Vision and Reality,\" 14 August 2025. [View primary source](https://ifr.org/ifr-press-releases/news/humanoid-robots-vision-and-reality-paper-published-by-ifr)",
+      "url": "https://ifr.org/ifr-press-releases/news/humanoid-robots-vision-and-reality-paper-published-by-ifr"
+    },
+    {
+      "n": "4",
+      "text": "International Labour Organization, \"Generative AI and jobs: a 2025 update,\" 20 May 2025. [View primary source](https://www.ilo.org/publications/generative-ai-and-jobs-2025-update)",
+      "url": "https://www.ilo.org/publications/generative-ai-and-jobs-2025-update"
+    },
+    {
+      "n": "5",
+      "text": "Microsoft AI Economy Institute, \"Global AI Adoption in 2025: A Widening Digital Divide,\" 8 January 2026. [View primary source](https://www.microsoft.com/en-us/corporate-responsibility/topics/AI-Economy-Institute/reports/Global-AI-Adoption-2025/)",
+      "url": "https://www.microsoft.com/en-us/corporate-responsibility/topics/AI-Economy-Institute/reports/Global-AI-Adoption-2025/"
+    },
+    {
+      "n": "6",
+      "text": "GSMA, \"The Mobile Economy Africa 2025,\" 2025. [View primary source](https://www.gsma.com/solutions-and-impact/connectivity-for-good/mobile-economy/africa-2025/)",
+      "url": "https://www.gsma.com/solutions-and-impact/connectivity-for-good/mobile-economy/africa-2025/"
+    },
+    {
+      "n": "7",
+      "text": "World Bank et al., \"Tracking SDG7: The Energy Progress Report 2025,\" 25 June 2025. [View primary source](https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025)",
+      "url": "https://www.worldbank.org/en/topic/energy/publication/tracking-sdg-7-the-energy-progress-report-2025"
+    },
+    {
+      "n": "8",
+      "text": "African Union, \"Continental Artificial Intelligence Strategy,\" 9 August 2024. [View primary source](https://www.au.int/en/documents/20240809/continental-artificial-intelligence-strategy)",
+      "url": "https://www.au.int/en/documents/20240809/continental-artificial-intelligence-strategy"
+    },
+    {
+      "n": "9",
+      "text": "African Development Bank, \"Africa's AI Revolution: ... \\$1 trillion ... by 2035,\" 12 December 2025. [View primary source](https://www.afdb.org/en/news-and-events/press-releases/africas-ai-revolution-african-development-bank-report-projects-1-trillion-additional-gdp-2035-use-ai-enhance-productivity-89619)",
+      "url": "https://www.afdb.org/en/news-and-events/press-releases/africas-ai-revolution-african-development-bank-report-projects-1-trillion-additional-gdp-2035-use-ai-enhance-productivity-89619"
+    },
+    {
+      "n": "10",
+      "text": "Mrisho and colleagues, \"Accuracy of a Smartphone-Based Object Detection Model, PlantVillage Nuru,\" Frontiers in Plant Science, 18 December 2020, DOI 10.3389/fpls.2020.590889. [View primary source](https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.590889/full)",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2020.590889/full"
+    },
+    {
+      "n": "11",
+      "text": "World Health Organization, \"Use of computer-aided detection software for tuberculosis screening,\" 10 June 2025. [View primary source](https://www.who.int/publications/i/item/9789240110373)",
+      "url": "https://www.who.int/publications/i/item/9789240110373"
+    },
+    {
+      "n": "12",
+      "text": "UNESCO, \"Recommendation on the Ethics of Artificial Intelligence,\" adopted 23 November 2021. [View primary source](https://www.unesco.org/en/legal-affairs/recommendation-ethics-artificial-intelligence)",
+      "url": "https://www.unesco.org/en/legal-affairs/recommendation-ethics-artificial-intelligence"
+    },
+    {
+      "n": "13",
+      "text": "African Union, \"AU Data Policy Framework,\" 28 July 2022. [View primary source](https://www.au.int/en/documents/20220728/au-data-policy-framework)",
+      "url": "https://www.au.int/en/documents/20220728/au-data-policy-framework"
+    },
+    {
+      "n": "14",
+      "text": "International Energy Agency, \"Energy and AI: Energy demand from AI,\" 2025. [View primary source](https://www.iea.org/reports/energy-and-ai/energy-demand-from-aI)",
+      "url": "https://www.iea.org/reports/energy-and-ai/energy-demand-from-aI"
+    },
+    {
+      "n": "15",
+      "text": "International Labour Organization, \"New ILO data confirm women face higher workplace risks from generative AI than men,\" 5 March 2026. [View primary source](https://www.ilo.org/resource/news/new-ilo-data-confirm-women-face-higher-workplace-risks-generative-ai-men)",
+      "url": "https://www.ilo.org/resource/news/new-ilo-data-confirm-women-face-higher-workplace-risks-generative-ai-men"
+    },
+    {
+      "n": "16",
+      "text": "World Economic Forum, \"Future of Jobs Report 2025,\" 7 January 2025. [View primary source](https://www.weforum.org/media/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/)",
+      "url": "https://www.weforum.org/media/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/"
+    },
+    {
+      "n": "17",
+      "text": "Zipline, \"Bringing vaccines closer to home: A partnership to expand access in Rwanda,\" 21 January 2025. [View primary source](https://www.zipline.com/newsroom/bringing-vaccines-closer-to-home-a-partnership-to-expand-access-in-rwanda)",
+      "url": "https://www.zipline.com/newsroom/bringing-vaccines-closer-to-home-a-partnership-to-expand-access-in-rwanda"
+    },
+    {
+      "n": "18",
+      "text": "African Development Bank and UNDP, \"Advance AI 10 Billion Initiative to Turn Africa's AI Potential into Productivity,\" October 2026. [View primary source](https://www.afdb.org/en/news-and-events/press-releases/african-development-bank-undp-advance-ai-10-97520)",
+      "url": "https://www.afdb.org/en/news-and-events/press-releases/african-development-bank-undp-advance-ai-10-97520"
+    }
+  ],
+  "notes": [
+    "Editorial note: This is an opinion article. Statements about transhumanism and posthuman life describe ideas and proposals, not demonstrated scientific outcomes. Figures from Microsoft are estimates derived from its research method, not national censuses. Employment-impact and GDP figures describe exposure, projections or scenarios, not realised changes. The business example is explicitly hypothetical."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / RESOURCES",
+    "file": "TBCA_KP_Thought_Leadership_Humanoids_Posthumans.docx",
+    "drive_id": "1cD3_H409TVEwvTj_NEWFxow1TtDNg0zW",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}

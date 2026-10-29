@@ -373,22 +373,44 @@ The client's register is organised by service, so every Sprint's home aisle is a
 
 ### Industries
 
-- **What it does:** sector intelligence and industry-specific engagements for 17 industries.
-- **Features:**
-  - Industry pages, a diagnostic for each industry, and benchmarks (published only when a minimum threshold is met).
-  - Paid sector briefs, industry × country views, partners and industry services.
-  - Engagement workspace:
-    - 9 gates, with a ledger that can be exported.
-    - Verification evidence and reclassification notices.
-    - Abort ladder, engagement letter (with PDF) and split checkout.
-    - Partner route, specialist review, compliance calendar (`.ics`) and benchmark consent.
+Rebuilt on 29 Oct 2026 to match the client's published "TBCA Industries Prototype" (MP-INDUSTRIES-1.0, email "INDUSTRIES", 21 Oct 2026). Every one of the 17 industries is active in all 54 countries.
+
+- **What it does:** 17 industries and 56 sub-industries, each with its own pages, an intersection page for every industry and country (918 pages), Import and Export heat maps, an engagement journey with gates and a workspace, and a staff console.
+- **Sub-navigation:** Industries Home, Industry Selection, Diagnostics, Sector Intelligence, Benchmarks, Partners, Industry × Country Map, Client Workspace, Admin Console.
+- **Pages (prototype page numbers):**
+
+| Page | URL |
+|---|---|
+| P01 Industries landing | `/industries` |
+| P02 Industry selection | `/industries/select` (`?multi=1` for secondary industries) |
+| P03 Industry page, with the P04 and P05 variants (Deep, Thin, Below threshold, Highly regulated) | `/industries/{industry}` |
+| P04 Industry page instances | `/industries/instances` |
+| P06 Sector-adapted diagnostic (5 steps, 15 questions, live scoring) | `/industries/{industry}/diagnostic` |
+| P07 Benchmark preview | `/industries/{industry}/benchmarks` |
+| P08 Sector intelligence brief (9 tabs) | `/industries/{industry}/intelligence` |
+| P09 Industry and country intersection (8 tabs, 9 for Botswana) | `/industries/{industry}/country/{country}` |
+| Import and Export heat maps (4 views, industry HS groups only) | `/industries/{industry}/country/{country}/trade?view=1` to `4` |
+| P10 Partner directory | `/industries/{industry}/partners` |
+| P11 Industry selector component | `/industries/selector-component` |
+| P12 Blocked service explanation, P14 product page with limitation statement | `/industries/{industry}/sprint/{code}` |
+| P13 Mandatory add-on disclosure | `/industries/{industry}/sprint/{code}/addons` |
+| P15 Verification and evidence requests | `/industries/{industry}/verify`, `/industries/workspace/verify` |
+| P16 Re-classification notice | `/industries/{industry}/reclass`, `/industries/workspace/reclass` |
+| P17 Fee ledger, P18 Abort ladder | `/industries/workspace/ledger`, `/industries/workspace/abort` |
+| P19 Engagement letter, P20 Split checkout, P22 Gates G0 to G4 | `/industries/engage/letter`, `/industries/engage/checkout`, `/industries/engage/gates` |
+| P21 Workspace, P23 Partner route, P24 Specialist review, P25 Compliance calendar (ICS), P26 Benchmark consent | `/industries/workspace` and `/partner`, `/review`, `/calendar`, `/benchmark` |
+| P27 to P35 Admin console | `/admin/industries` and `/taxonomy`, `/classification`, `/margin`, `/blocked`, `/regulators`, `/misdeclaration`, `/benchmarks`, `/pipeline`, `/whatsapp` |
+| Deeper pages | `/industries/heatmap` (17 × 54), `/industries/{industry}/services`, `/countries`, `/chains`, `/opps`, `/commodities`, `/economics`, `/regulators`, `/limits` |
+
+- **Data:** loaded by `IndustriesSeeder` from `database/seeders/Sections/data/industries/` (the prototype's data files converted to plain rows, values unchanged): 17 industries, 56 sub-industries, 54 countries, 918 industry and country scores, the classification of 7,589 Sprints, 2,862 trade pairs and 5,343 rows from 24 Botswana and continental registers. Labels are carried over: Modelled, Reference, Placeholder and the source register name.
+- **Prices:** only from the app's Sprint records, matched by Sprint code. 7,450 of the 7,589 classified codes match an app Sprint (7,442 carry a price); the other 139 are listed as "Not in app catalogue" and are never priced or sold.
+- **Journey state:** signed-in users keep their engagement, diagnostic answers, consents and acknowledgements on their account (`ind_states`); guests keep them in their session. Payment in the split checkout is simulated: no order or charge is created.
 - **How to use:**
-  1. Open `/industries/select` and pick an industry, e.g. `/industries/agriculture-agro-industry`.
-  2. Run its diagnostic and view its benchmarks.
-  3. As the demo client, open `/industries/workspace`. It opens engagement `AGRI-2026-EGY-001`; look at its gates and ledger.
-- **URLs:** `/industries`, `/industries/{industry}`, `/industries/{industry}/diagnostic`, `/industries/{industry}/benchmarks`, `/industries/sector-intelligence/{industry}`, `/industries/workspace/{engagement}`
-- **Demo data:** engagement `AGRI-2026-EGY-001`.
-- **Admin:** `/admin/insights/industries` plus `taxonomy`, `classification`, `misdeclarations`, `blocked`, `benchmarks`, `regulators`, `margin`, `activation`, `whatsapp`
+  1. Open `/industries`, pick an industry, then a country on the map.
+  2. Run the worked example: `/industries/agriculture-agro-industry/engage?sub=AGR2&iso=BWA`, pass gates G0 to G4, accept the letter, pay (simulated) and open the workspace.
+  3. As admin, open `/admin/industries`.
+- **Earlier URLs:** `/industries/sector-intelligence/{industry}`, `/industries/workspace/{engagement}/...` and `/admin/insights/industries/...` redirect to the new pages.
+- **Production:** the migration `2026_10_29_100000_load_industries_prototype` runs `IndustriesSeeder` on deploy when the database already has Sprints.
 
 ### Resources
 
@@ -693,7 +715,10 @@ The client's register is organised by service, so every Sprint's home aisle is a
 - **Features (working):**
   - Landing, navigation handoff, legacy bridge, authority landing and Founder profile. The design's Founder statistics are hidden until evidence is approved; focus areas are shown instead (blueprint 12.5).
   - Insights, Founder's Notes, African Business Clinic, Topic Hub and Search, with filters by type, theme, voice, region and freshness. Every item carries a voice class (P, F, I, S, E, A), a freshness state and a geographic scope (AFR-G0 to G5).
-  - Article texts: none were supplied. 28 insights show title and summary from KP's designs; "The Real Problem Isn't Capital" shows the excerpt visible in the design. Nothing is written on KP's behalf.
+  - Articles: KP's 37 articles (Drive folder "ARTICLES-KP THOT LEADERSHIP", 18 Oct 2026) are published in full: 10 Founder's Notes, 19 Insights and 8 long reads in KP Resources ("Articles by Kruger Phiri"). Each page shows the full text with headings, tables and closing quotes, a contents list, the byline as the document states it (Kruger Phiri for Founder's Notes and Resources, The Business Clinic.Africa for Insights), the date from the document, reading time, topic and country chips, the document's sources and notes as written, share links (link, LinkedIn, X, WhatsApp, email), a print view without the site chrome, and related articles from the same section and topic. They replace the 29 title-only placeholders from KP's designs. Nothing is written on KP's behalf: only articles with a source document are listed.
+  - Article storage: the texts are versioned files in `database/seeders/Sections/data/kp-articles/<section>/<slug>.md`, with a `.json` file each for the title, standfirst, byline, date, sources, notes, topics, countries and the Drive file. `KpArticlesSeeder` loads them into the `kp_articles` table (idempotent, by slug). The migration `2026_10_29_110000_load_kp_articles` runs the seeder on a database that already has users, so production gets the articles from `migrate`. The Word documents were converted with pandoc; only conversion artefacts were fixed, and each article lists its fixes under `conversion_fixes`.
+  - Topics and countries: every article carries the KP topics, so topic pages and counts include it. Country articles show on the Africa Lens: Nigeria, Kenya (two), South Africa and Burkina Faso. The China curriculum article carries a China chip that opens search.
+  - Search: the Insights, Founder's Notes, KP Resources and site search look in the full text, sources and countries as well as titles.
   - Work With Kruger and Book Kruger: five offers with indicative fees in the selected currency. A booking form creates a request (not a booking); staff confirm the delivery mode (K1 to K4) and fee first.
   - Project Development Desk (brief form, and the demo client's projects), Speaking & Media (enquiry form), KP Resources (summary-sheet downloads), Country Lens (AIIM indicators, labelled as placeholders) and Sector Lens (Industries register).
   - KP Knowledge Assistant: grounded answers from the KP register with numbered sources and a confidence score, a Source & Confidence panel, export, feedback and reporting. It abstains without evidence, routes regulated questions to a professional and refuses to speak as Kruger. No generative model is used.
@@ -703,10 +728,12 @@ The client's register is organised by service, so every Sprint's home aisle is a
   - 22 governance consoles for staff (topics, lifecycle, voice, independent review, AI output approval, synthetic register, claim evidence, UTM, D023 funnel, customer value, Founder capacity, session pipeline, contested topics, duplication, knowledge graph, source freshness, Africa coverage, translation QA, Future Builders safety, AI agent control, corrections, experiments). Records move between the blueprint states with an audit trail. Hard rules are enforced: unevidenced claims cannot be approved, a hard review block cannot be overridden, and a booked or routed session needs a delivery mode.
 - **How to use:**
   1. Open `/kp-thought-leadership`, then Insights, an article, or Ask KP Assistant. Try "What are the 5 pillars of execution?" and open its sources.
-  2. Request a session at `/kp-thought-leadership/book`; the request appears in `/admin/kp/sessions`.
-  3. Try the tools from `/kp-thought-leadership/african-business-clinic` and the learner pages at `/kp-thought-leadership/future-builders`.
-  4. Sign in as the admin and open `/admin/kp` for the 72-screen register, work queues and consoles.
-- **URLs:** `/kp-thought-leadership` (+ `handoff`, `legacy-bridge`, `authority`, `about`, `insights`, `founders-notes`, `african-business-clinic`, `topics`, `search`, `work-with-kruger`, `book`, `project-development`, `speaking-media`, `resources`, `africa/{country}`, `sectors/{sector}`, `ask`, `explain`, `boardroom-challenger`, `funder-readiness`, `project-fatal-flaw`, `decision-sheet`, `corrections`, `action-pack/{slug}`, `diagnostic-questions`, `tools/scorecards/capital-readiness`, `tools/calculators/investment-case`, `tools/checklists/go-no-go`, `free-and-paid`, `related-route`, `standards/{component}`, `future-builders/...`, `events`, `newsletter`)
+  2. Read an article: `/kp-thought-leadership/insights/the-real-problem-isnt-capital`, `/kp-thought-leadership/founders-notes/bankability-is-earned` or `/kp-thought-leadership/resources/the-curse-of-sovereign-guarantees-in-africa`. Search for a word from the text, such as "forklift" in Founder's Notes.
+  3. Request a session at `/kp-thought-leadership/book`; the request appears in `/admin/kp/sessions`.
+  4. Try the tools from `/kp-thought-leadership/african-business-clinic` and the learner pages at `/kp-thought-leadership/future-builders`.
+  5. Sign in as the admin and open `/admin/kp` for the 72-screen register, work queues and consoles.
+- **URLs:** `/kp-thought-leadership` (+ `handoff`, `legacy-bridge`, `authority`, `about`, `insights`, `insights/{slug}`, `founders-notes`, `founders-notes/{slug}`, `african-business-clinic`, `topics`, `search`, `work-with-kruger`, `book`, `project-development`, `speaking-media`, `resources`, `resources/{slug}`, `africa/{country}`, `sectors/{sector}`, `ask`, `explain`, `boardroom-challenger`, `funder-readiness`, `project-fatal-flaw`, `decision-sheet`, `corrections`, `action-pack/{slug}`, `diagnostic-questions`, `tools/scorecards/capital-readiness`, `tools/calculators/investment-case`, `tools/checklists/go-no-go`, `free-and-paid`, `related-route`, `standards/{component}`, `future-builders/...`, `events`, `newsletter`)
+- **Content:** `KpArticlesSeeder`: KP's 37 articles from the versioned files.
 - **Demo data:** `KpSeeder`: 126 records for the consoles, five session requests, eight public corrections and three projects for the demo client (`amahle@agritechsa.co.za`).
 - **Admin:** `/admin/kp`, `/admin/kp/{console}`
 
@@ -729,6 +756,29 @@ The client's register is organised by service, so every Sprint's home aisle is a
   - Replies come from built-in intent matchers in `resources/js/lib/assistant.ts`. To connect the real AI agent, replace `getReply()`; `docs/INTEGRATIONS_PLAN.md` describes the plan.
   - The UI lives in `resources/js/Components/Assistant/`.
   - `/admin/portal/natasha` is the policy console for the portal assistant.
+
+### Registry of Deliverables
+
+- **What it does:** holds the client's register of every deliverable the WebApp sells (TBCA Deliverables Resources File MP-DEL-2.0, sent by KP on 25 October 2026). For each deliverable it records the description, key issues, extent of detail and page count per package, the trigger and workflow that start delivery, and the comparison with BCG, McKinsey and Deloitte standards.
+- **What was loaded:**
+  - 8,318 deliverables across 23 WebApp tabs and 11 format classes: 861 from Issue 1.0 and 7,457 new from the Sprint catalogue. Every register column (A to AW) is kept as written.
+  - The Sprint Crosswalk: 7,589 Sprint codes, each pointing to one deliverable.
+  - Design standards per package, page standards and consulting standard for 20 formats, size multipliers and customer satisfaction rules.
+  - 30 automated safeguards (SG-01 to SG-30), 17 payment-trigger loops, the HeyGen and Infogram specification and the country matrix (54 countries, 10 country deliverables each).
+- **Tables:** `deliverables`, `deliverable_texts` (long texts that repeat across rows, stored once), `deliverable_sprints`, `deliverable_standards`, `deliverable_safeguards`, `deliverable_payment_loops`, `deliverable_integration_specs`, `deliverable_country_matrix`.
+- **Data files:** `database/seeders/Sections/data/deliverables/`, written from the workbook by `python3 -I export_register.py <workbook>`. `DeliverablesRegisterSeeder` loads them, runs after the Sprint seeders and is safe to re-run. The migration `2026_10_29_120000_load_deliverables_register` loads them on deploy into a database that already has Sprints.
+- **Crosswalk match:** 7,577 of the 7,589 codes (99.8%) have an app Sprint: 7,450 by Sprint code and 127 by the Sprint's `register_id`. The 12 without one are internal operations (AAB-INT-001 to 012), which are not sold. The register counts 7,589 Sprints because it adds Batch 4D (569 embedded services and 12 internal operations) to the 7,008 catalogue Sprints of the Volume 11 register. 196 app Sprints have no deliverable in the register: the 99 SPR- Sprints of the original catalogue, 91 mockup pages (PDS-PG, DDA-PG, TIS-DP and similar codes) and 6 TBCA- codes that the register does not list.
+- **Sprint pages:** every Sprint page shows "What you will receive" below the page body: each linked deliverable with its format, description, key issues, extent of detail, length and delivery time for the selected package. It follows the package chosen on the page and the `?package=` link.
+- **Other product pages:** not linked. The register's Issue 1.0 rows for Due Diligence, Digital Products, Subscriptions, Retainers and Technology Solutions carry no product codes (for example `DD-IND-QC`, `DP-PLN-000123`, `SUB-ESS`, `RSV-001`), so they could only be matched by name. The catalogue Sprints of those tabs are Sprints and already show the panel.
+- **Paid orders:** when an order with a Sprint is paid, the `order.payment_verified` event in the integration ledger also carries `delivery_plan`: for each Sprint line, the package, the deliverables (pages, delivery time, safeguards), the payment-trigger loop and the workflow steps. Nothing is sent anywhere.
+- **Admin:** `/admin/deliverables` (register search with filters by tab, family, format, loop, source and package, plus CSV export of every column), `/admin/deliverables/{ref}` (detail with trigger, workflow, safeguards and benchmark), `/admin/deliverables/crosswalk`, `/admin/deliverables/automation` (safeguards, loops, HeyGen and Infogram) and `/admin/deliverables/standards` (standards and country matrix).
+- **Try:** `/sprints/growth-marketing-plan-sprint`, choose Premium, and scroll to "What you will receive". As admin, open `/admin/deliverables/DEL-SV-001`.
+- **Open questions for KP:**
+  1. The Control sheet says the client's yellow-highlighted revision of the Standards sheet had not been received in readable form. Send it when ready; the page standards will be reloaded from it.
+  2. Should the 196 app Sprints with no deliverable (listed at `/admin/deliverables/crosswalk`) get register entries, or be retired?
+  3. Codes for the Issue 1.0 deliverables of Due Diligence, Digital Products, Subscriptions, Retainers and Technology Solutions, so they can be shown on those product pages.
+  4. The register names n8n as the orchestrator and PayFast as the payment source of EVT-006. Confirm both before the loops are built.
+  5. The AIIM sheet uses "[Country] Investor Cockpit" where the Master Register says "Botswana Investor Cockpit" (4 rows), and the Resources sheet says "Company Profile" for "Company Profile (TBCA)". The Master Register wording is loaded.
 
 ### Admin hub
 

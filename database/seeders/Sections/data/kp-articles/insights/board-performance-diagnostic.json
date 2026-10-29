@@ -1,0 +1,47 @@
+{
+  "slug": "board-performance-diagnostic",
+  "category": "insights",
+  "type": "framework",
+  "title": "Board Performance Diagnostic",
+  "kicker": "KP THOUGHT LEADERSHIP / GOVERNANCE & BOARDS",
+  "deck": "A board that asks better questions improves capital allocation, risk oversight and management accountability.",
+  "byline": [
+    "By The BusinessClinic.Africa | 23 September2026 | Framework"
+  ],
+  "date": "2026-09-23",
+  "date_note": null,
+  "author": "The BusinessClinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G0",
+  "themes": [
+    "governance-boards",
+    "risk-compliance"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "OECD, G20/OECD Principles of Corporate Governance 2023. [Primary source](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report.html)",
+      "url": "https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report.html"
+    },
+    {
+      "n": "2",
+      "text": "Bank for International Settlements / Basel Committee, Core Principles for Effective Banking Supervision, effective April 2024. [Primary source](https://www.bis.org/committees/bcbs/basel-framework/standard/bcp)",
+      "url": "https://www.bis.org/committees/bcbs/basel-framework/standard/bcp"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "board-performance-diagnostic.docx",
+    "drive_id": "1uQ6yWZafwsXY8kRIG85jSkhXCmCAJiRR",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Byline date \"September2026\" read as 23 September 2026"
+  ]
+}

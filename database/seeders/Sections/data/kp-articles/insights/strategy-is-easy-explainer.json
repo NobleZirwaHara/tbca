@@ -1,0 +1,51 @@
+{
+  "slug": "strategy-is-easy-explainer",
+  "category": "insights",
+  "type": "explainer",
+  "title": "Strategy is Easy. Execution is Unforgiving.",
+  "kicker": "KP THOUGHT LEADERSHIP / STRATEGY & EXECUTION",
+  "deck": "A strategy becomes credible only when choices, resources, owners and customer outcomes meet in operating reality.",
+  "byline": [
+    "By The BusinessClinic.Africa | 13 September 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-09-13",
+  "date_note": null,
+  "author": "The BusinessClinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G0",
+  "themes": [
+    "strategy-execution",
+    "leadership-people"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "Project Management Institute, “The Future of Project Work: Pulse of the Profession 2024,” February 2024. [\\[Primary source\\]](https://www.pmi.org/learning/thought-leadership/future-of-project-work)",
+      "url": "https://www.pmi.org/learning/thought-leadership/future-of-project-work"
+    },
+    {
+      "n": "2",
+      "text": "Auditor-General of South Africa, “AG reports minimal progress, calls on government to double efforts to improve audit outcomes,” 26 March 2026 (2024–25 national and provincial audit). [\\[Primary source\\]](https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes)",
+      "url": "https://www.agsa.co.za/news/ag-reports-minimal-progress-calls-government-double-efforts-improve-audit-outcomes"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "strategy-is-easy-explainer.docx",
+    "drive_id": "1k8C4Pr6R5FNMO4YtcaaZnE7G1hSO6jt9",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Boardrooms produce strategies at astonishing speed. They con...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Build a portfolio of no more initiatives than the enterprise...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"A business may declare customer retention a strategic priori...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Weeks 1–2: list all initiatives, costs, owners and promised ...\"",
+    "Heading and paragraph joined by a line break split into heading \"Boardroom takeaway\" and its paragraph"
+  ]
+}

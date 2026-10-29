@@ -1,0 +1,51 @@
+{
+  "slug": "cash-flow-is-a-behaviour-explainer",
+  "category": "insights",
+  "type": "explainer",
+  "title": "Cash Flow is a Behaviour, Not a Spreadsheet.",
+  "kicker": "KP THOUGHT LEADERSHIP / CAPITAL & FUNDING",
+  "deck": "Cash-flow strength emerges from pricing, contract terms, invoicing and collection habits, not last-minute spreadsheet enthusiasm.",
+  "byline": [
+    "By The BusinessClinic.Africa | 15 October 2026 | Pan-African business analysis"
+  ],
+  "date": "2026-10-15",
+  "date_note": null,
+  "author": "The BusinessClinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G0",
+  "themes": [
+    "capital-funding",
+    "strategy-execution"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "Auditor-General of South Africa, “Limited progress made by the outgoing local government administration,” 2026 (2024–25 municipal audit). [\\[Primary source\\]](https://www.agsa.co.za/news/limited-progress-made-outgoing-local-government-administration-strengthen-governance-and-improve-service-delivery-copy)",
+      "url": "https://www.agsa.co.za/news/limited-progress-made-outgoing-local-government-administration-strengthen-governance-and-improve-service-delivery-copy"
+    },
+    {
+      "n": "2",
+      "text": "International Finance Corporation (IFC), “IFC launches call for expression of interest for its new Catalytic First Loss Guarantee Facility,” 8 April 2025. [\\[Primary source\\]](https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar)",
+      "url": "https://www.ifc.org/en/pressroom/2025/ifc-launches-call-for-expression-of-interest-for-its-new-catalytic-first-loss-guar"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "cash-flow-is-a-behaviour-explainer.docx",
+    "drive_id": "1N1jTjbEqNT0DW_49ZGKlxkXniwWEXG4l",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"An income statement can report a profitable quarter while th...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"First, price correctly. Gross margin must cover the real cos...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"A company can have temporary liquidity stress because a solv...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Sales teams should be rewarded on collectible contribution, ...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Publish cash conversion, aged receivables, overdue supplier ...\""
+  ]
+}

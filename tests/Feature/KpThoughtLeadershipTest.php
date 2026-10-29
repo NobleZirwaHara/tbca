@@ -4,14 +4,18 @@ namespace Tests\Feature;
 
 use App\Http\Controllers\Kp\KpToolsController;
 use App\Models\Kp\KpAnswer;
+use App\Models\Kp\KpArticle;
 use App\Models\Kp\KpRecord;
 use App\Models\User;
+use App\Support\Content\KpArticles;
 use App\Support\Content\KpThoughtLeadership as Kp;
 use App\Support\Content\Navigation;
 use Database\Seeders\Sections\AiimSeeder;
 use Database\Seeders\Sections\InsightsSeeder;
+use Database\Seeders\Sections\KpArticlesSeeder;
 use Database\Seeders\Sections\KpSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -24,7 +28,7 @@ class KpThoughtLeadershipTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed([InsightsSeeder::class, AiimSeeder::class, KpSeeder::class]);
+        $this->seed([InsightsSeeder::class, AiimSeeder::class, KpArticlesSeeder::class, KpSeeder::class]);
     }
 
     private function admin(): User
@@ -91,23 +95,103 @@ class KpThoughtLeadershipTest extends TestCase
         }
     }
 
-    public function test_no_article_body_is_invented_for_kp(): void
+    public function test_only_articles_with_a_kp_source_document_are_published(): void
     {
-        foreach (Kp::items() as $item) {
-            $this->assertSame([], $item['body'], $item['slug']);
-            $this->assertContains($item['status'], ['pending', 'excerpt']);
-        }
-        $this->assertSame(['the-real-problem-isnt-capital'], collect(Kp::items())->where('status', 'excerpt')->pluck('slug')->all());
+        // 37 articles from KP's Drive folder "ARTICLES-KP THOT LEADERSHIP" (18 Oct 2026).
+        $this->assertSame(37, KpArticle::count());
+        $this->assertSame(['founders-notes' => 10, 'insights' => 19, 'resources' => 8], KpArticle::query()->selectRaw('category, count(*) as n')->groupBy('category')->orderBy('category')->pluck('n', 'category')->map(fn ($n) => (int) $n)->all());
 
-        $this->get(self::B.'/insights/cash-flow-is-a-behaviour')->assertInertia(fn (Assert $p) => $p->where('item.status', 'pending')->where('item.excerpt', null)->where('item.body', []));
-        $this->get(self::B.'/insights/the-real-problem-isnt-capital')->assertInertia(fn (Assert $p) => $p->where('item.status', 'excerpt')->has('item.excerpt.pillars', 5)->where('item.voice', 'F'));
+        // Every article is loaded word for word from its source file and names its Drive document.
+        foreach (KpArticles::files() as [$meta, $body]) {
+            $row = KpArticle::where('slug', $meta['slug'])->firstOrFail();
+            $this->assertSame($body, $row->body, $meta['slug']);
+            $this->assertNotEmpty($row->source['file'], $meta['slug']);
+            $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]{25,}$/', $row->source['drive_id'], $meta['slug']);
+            // The byline is exactly what the document states.
+            $stated = preg_match('/^By (.+?)\s*\|/', $meta['byline'][0], $m) ? $m[1] : (str_contains(mb_strtolower(implode(' ', $meta['byline'])), 'kruger phiri') ? 'Kruger Phiri' : null);
+            $this->assertSame($stated, $row->author, $meta['slug']);
+            $this->assertGreaterThan(800, $row->word_count, $meta['slug']);
+        }
+
+        // No title-only or excerpt-only placeholder remains: every listed item has a source document.
+        $this->assertSame(KpArticle::orderBy('slug')->pluck('slug')->all(), collect(Kp::items())->pluck('slug')->sort()->values()->all());
+        $this->assertSame(['published'], collect(Kp::items())->pluck('status')->unique()->values()->all());
+        $this->get(self::B.'/insights/not-a-kp-article')->assertNotFound();
+
+        // Insights carry the institutional byline of their documents; Founder's Notes and Resources are Kruger Phiri's.
+        $this->assertSame(0, KpArticle::where('category', 'insights')->where('author', 'Kruger Phiri')->count());
+        $this->assertSame(['I'], KpArticle::where('category', 'insights')->distinct()->pluck('voice')->all());
+        $this->assertSame(18, KpArticle::whereIn('category', ['founders-notes', 'resources'])->where('author', 'Kruger Phiri')->count());
+        $this->assertSame('The Business Clinic.Africa', KpArticle::where('slug', 'the-real-problem-isnt-capital')->value('author'));
+
+        // The dates come from the documents; an article without one says so.
+        $this->assertSame('16 October 2026', collect(Kp::items())->firstWhere('slug', 'bankability-is-earned')['date_label']);
+        $this->assertSame('Date to be confirmed', KpArticles::dateLabel(null));
+    }
+
+    public function test_every_article_page_shows_its_title_and_text(): void
+    {
+        foreach (KpArticle::all() as $a) {
+            $para = collect(preg_split('/\n\s*\n/', $a->body))->first(fn ($p) => ! str_starts_with(ltrim($p), '#') && ! str_starts_with(ltrim($p), '|') && ! str_starts_with(ltrim($p), '>') && str_word_count($p) > 12);
+            $sentence = Str::limit(KpArticles::plain((string) $para), 60, '');
+
+            $this->get(KpArticles::href($a->category, $a->slug))->assertOk()->assertInertia(fn (Assert $p) => $p
+                ->component('Kp/Article')
+                ->where('screen.id', 'KP-SCR-006')
+                ->where('item.title', $a->title)
+                ->where('item.author', $a->author)
+                ->where('item.html', fn ($html) => str_contains(html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5), $sentence))
+                ->has('item.sources', count($a->sources))
+                ->has('related'));
+        }
+
+        // A Founder's Note or Resource opened under /insights moves to its own section.
+        $this->get(self::B.'/insights/cash-flow-is-a-behaviour')->assertRedirect(self::B.'/founders-notes/cash-flow-is-a-behaviour');
+        $this->get(self::B.'/insights/the-curse-of-sovereign-guarantees-in-africa')->assertRedirect(self::B.'/resources/the-curse-of-sovereign-guarantees-in-africa');
+
+        // Tables, pull quotes and headings come through from the documents.
+        $this->get(self::B.'/resources/the-curse-of-sovereign-guarantees-in-africa')->assertInertia(fn (Assert $p) => $p
+            ->where('item.html', fn ($h) => substr_count((string) $h, '<table>') === 2 && str_contains((string) $h, '<blockquote>'))
+            ->where('item.toc', fn ($toc) => count($toc) === 14));
+    }
+
+    public function test_sections_list_their_articles_and_search_reads_the_full_text(): void
+    {
+        $this->get(self::B.'/insights')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 19)->where('stats.excerpt', 19));
+        $this->get(self::B.'/founders-notes')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 10));
+        $this->get(self::B.'/resources')->assertInertia(fn (Assert $p) => $p->has('articles', 8)->where('categories.0.key', 'articles')->where('categories.0.count', 8));
+        $this->get(self::B.'/resources?category=articles')->assertInertia(fn (Assert $p) => $p->has('articles', 8)->has('rows', 0));
+
+        // Words that appear only in an article body.
+        $this->get(self::B.'/founders-notes?q=forklift')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 1)->where('items.0.slug', 'the-cost-of-not-diagnosing'));
+        $this->get(self::B.'/insights?q=FinAccess')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 1)->where('items.0.slug', 'kenyas-fintech-boom'));
+        $this->get(self::B.'/resources?q=sankofa')->assertInertia(fn (Assert $p) => $p->has('articles', 1)->where('articles.0.slug', 'the-curse-of-sovereign-guarantees-in-africa'));
+        $this->get(self::B.'/search?q=RAFFINOR')->assertInertia(fn (Assert $p) => $p->where('results.0.href', self::B.'/resources/burkina-faso-the-cancer-the-west-fears-most')->where('results.0.group', 'KP Resources'));
+
+        // Country and topic views.
+        $this->get(self::B.'/africa/nigeria')->assertInertia(fn (Assert $p) => $p->where('insights', fn ($i) => collect($i)->pluck('slug')->contains('doing-business-in-nigeria')));
+        $this->get(self::B.'/africa/kenya')->assertInertia(fn (Assert $p) => $p->where('insights', fn ($i) => collect($i)->pluck('slug')->sort()->values()->all() === ['infrastructure-investment-kenya', 'kenyas-fintech-boom']));
+        $this->get(self::B.'/africa/burkina-faso')->assertInertia(fn (Assert $p) => $p->has('insights', 1)->where('insights.0.slug', 'burkina-faso-the-cancer-the-west-fears-most'));
+        $this->get(self::B.'/topics/technology-ai')->assertInertia(fn (Assert $p) => $p->where('current.items', fn ($i) => collect($i)->pluck('slug')->contains('the-drive-for-humanoids-and-posthumans')));
+    }
+
+    public function test_the_data_migration_loads_the_articles_into_a_seeded_database(): void
+    {
+        User::factory()->create(); // a database seeded before the articles existed
+        KpArticle::query()->delete();
+        $migration = require database_path('migrations/2026_10_29_110000_load_kp_articles.php');
+        $migration->up();
+        $this->assertSame(37, KpArticle::count());
+
+        $migration->up(); // idempotent
+        $this->assertSame(37, KpArticle::count());
     }
 
     public function test_insights_filter_by_type_theme_voice_and_keyword(): void
     {
         $this->get(self::B.'/insights?types[]=interview')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 1)->where('items.0.type', 'interview'));
-        $this->get(self::B.'/insights?theme=capital-funding&voice=P')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 2));
-        $this->get(self::B.'/insights?q=nigeria')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 1)->where('items.0.slug', 'doing-business-in-nigeria'));
+        $this->get(self::B.'/insights?theme=capital-funding&voice=I')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 5));
+        $this->get(self::B.'/insights?q=nigeria')->assertInertia(fn (Assert $p) => $p->where('items', fn ($i) => collect($i)->pluck('slug')->contains('doing-business-in-nigeria')));
         $this->get(self::B.'/founders-notes')->assertInertia(fn (Assert $p) => $p->where('pagination.total', 10));
         $this->get(self::B.'/search?q=execution&types[]=Topics')->assertInertia(fn (Assert $p) => $p->where('results.0.group', 'Topics'));
     }

@@ -1,0 +1,112 @@
+{
+  "slug": "the-curse-of-sovereign-guarantees-in-africa",
+  "category": "resources",
+  "type": "long-read",
+  "title": "The Curse Of Sovereign Guarantees In Africa",
+  "kicker": "OPINION / PUBLIC FINANCE / AFRICAN INDUSTRIAL POLICY",
+  "deck": "Is a government's promise to pay a dangerous debt, an untapped development instrument, or a convenient excuse for not investing?",
+  "byline": [
+    "KRUGER PHIRI | FOUNDER & MANAGING PARTNER | 12 OCTOBER 2026"
+  ],
+  "date": "2026-10-12",
+  "date_note": null,
+  "author": "Kruger Phiri",
+  "voice": "F",
+  "scope": "AFR-G1",
+  "themes": [
+    "capital-funding",
+    "risk-compliance",
+    "project-development"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "SOURCE REGISTER | PRIMARY POLICY AND STANDARD-SETTING MATERIAL",
+  "sources": [
+    {
+      "n": "1",
+      "text": "**IMF.** Government Finance Statistics Manual 2014, chapter 7, paras. 7.251–7.260",
+      "url": "https://www.elibrary.imf.org/display/book/9781498343763/ch007.xml"
+    },
+    {
+      "n": "2",
+      "text": "**IPSASB staff.** Accounting for Contingencies and Financial Guarantees: Staff Q&A (February 2026; non-authoritative)",
+      "url": "https://ifacweb.blob.core.windows.net/publicfiles/2026-02/IPSASB%20Staff%20Q%26A%20-%20Contingencies%20and%20Guarantees%202026.pdf"
+    },
+    {
+      "n": "3",
+      "text": "**IMF.** Debt Limits Policy overview, 2021 framework",
+      "url": "https://www.imf.org/en/topics/sovereign-debt/debt-limits-policy"
+    },
+    {
+      "n": "4",
+      "text": "**IMF.** Guidance Note on Implementing the Debt Limits Policy in Fund-Supported Programs (2021)",
+      "url": "https://www.elibrary.imf.org/view/journals/007/2021/037/article-A001-en.xml"
+    },
+    {
+      "n": "5",
+      "text": "**IMF.** How to Strengthen the Management of Government Guarantees (2017)",
+      "url": "https://www.elibrary.imf.org/view/journals/061/2017/001/article-A001-en.xml"
+    },
+    {
+      "n": "6",
+      "text": "**World Bank.** South Africa’s Credit Guarantee Vehicle, fact sheet (5 March 2026)",
+      "url": "https://www.worldbank.org/en/news/factsheet/2026/03/05/south-africa-s-credit-guarantee-vehicle"
+    },
+    {
+      "n": "7",
+      "text": "**IMF.** Mozambique: 2024 Article IV and programme review, Debt Sustainability Analysis",
+      "url": "https://www.elibrary.imf.org/view/journals/002/2024/219/article-A003-en.xml"
+    },
+    {
+      "n": "8",
+      "text": "**IMF.** Mozambique: Selected Issues (2026), growth and hidden-debt discussion",
+      "url": "https://www.imf.org/-/media/files/publications/cr/2026/english/1mozea2026002-source-pdf.pdf"
+    },
+    {
+      "n": "9",
+      "text": "**World Bank Treasury.** Credit Enhancement: Guarantees",
+      "url": "https://documents.worldbank.org/en/about/unit/treasury/ibrd-financial-products/creditenhancement"
+    },
+    {
+      "n": "10",
+      "text": "**African Development Bank.** African Economic Outlook 2025, resource-backed lending discussion",
+      "url": "https://www.afdb.org/sites/default/files/documents/publications/afdb25-01_aeo_main_english_complete_0619.pdf"
+    },
+    {
+      "n": "11",
+      "text": "**CRIRSCO.** International Reporting Template: mineral resources and mineral reserves",
+      "url": "https://crirsco.com/documentation/crirsco-international-reporting-template/"
+    },
+    {
+      "n": "12",
+      "text": "**African Development Bank.** African Legal Support Facility: sovereign, infrastructure and extractives advisory",
+      "url": "https://www.afdb.org/en/topics-and-sectors/initiatives-partnerships/african-legal-support-facility"
+    },
+    {
+      "n": "13",
+      "text": "**IFRS Foundation.** IFRS 9, Financial Instruments, issued 2026 standards",
+      "url": "https://www.ifrs.org/content/dam/ifrs/publications/html-standards/english/2026/issued/ifrs9.html"
+    },
+    {
+      "n": "14",
+      "text": "**World Bank PPP.** Managing PPP Risks with a New Guide on Guarantees; Ghana Sankofa example",
+      "url": "https://ppp.worldbank.org/managing-ppp-risks-new-guide-guarantees"
+    },
+    {
+      "n": "15",
+      "text": "**IFC / World Bank.** Partial and Full Credit Guarantees for Loans and Bonds",
+      "url": "https://treasury.worldbank.org/en/about/unit/treasury/ifc-client-solutions/guarantees-for-approved-exposures"
+    }
+  ],
+  "notes": [
+    "References are numbered to match the bracketed source numbers in the article. Illustrative scenarios are labelled as hypothetical. This is policy commentary, not accounting, investment or legal advice for any specific transaction.",
+    "Editorial note: The originating sketch is Kruger Phiri’s “The Curse of Sovereign Guarantees in Africa.” Assertions about IMF motives are posed as policy questions rather than presented as unverified findings."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / RESOURCES",
+    "file": "TBCA_KP_Thought_Leadership_Curse_of_Sovereign_Guarantees.docx",
+    "drive_id": "1_gAPs4Cmn30gbHaZJblW3B7lqrUbdIld",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}

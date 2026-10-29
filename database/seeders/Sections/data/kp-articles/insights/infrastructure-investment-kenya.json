@@ -1,0 +1,60 @@
+{
+  "slug": "infrastructure-investment-kenya",
+  "category": "insights",
+  "type": "field-note",
+  "title": "Infrastructure Investment: Building Kenya's Future",
+  "kicker": "KP THOUGHT LEADERSHIP / PROJECT DEVELOPMENT",
+  "deck": "Kenya needs infrastructure that delivers services and survives scrutiny, not simply projects that reach a groundbreaking ceremony.",
+  "byline": [
+    "By The Business Clinic.Africa | 1 October 2026 | Field note"
+  ],
+  "date": "2026-10-01",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G3",
+  "themes": [
+    "project-development",
+    "capital-funding"
+  ],
+  "countries": [
+    {
+      "slug": "kenya",
+      "name": "Kenya"
+    }
+  ],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "Kenya PPP Directorate, Reports and publications, including 30 September 2026 pipeline update. [Primary source](https://pppkenya.go.ke/reports-publications/)",
+      "url": "https://pppkenya.go.ke/reports-publications/"
+    },
+    {
+      "n": "2",
+      "text": "Kenya PPP Directorate, Fourth Annual Report on the State of PPPs, FY2024/25. [Primary source](https://pppkenya.go.ke/wp-content/uploads/2020/07/4TH-ANNUAL-PPP-REPORT_Ver-14-3.pdf)",
+      "url": "https://pppkenya.go.ke/wp-content/uploads/2020/07/4TH-ANNUAL-PPP-REPORT_Ver-14-3.pdf"
+    },
+    {
+      "n": "3",
+      "text": "World Bank, Private Participation in Infrastructure database, 2024 global results. [Primary source](https://ppi.worldbank.org/en/ppi)",
+      "url": "https://ppi.worldbank.org/en/ppi"
+    },
+    {
+      "n": "4",
+      "text": "Kenya PPP Directorate, PPP frameworks and feasibility guidance. [Primary source](https://pppkenya.go.ke/reports-publications/)",
+      "url": "https://pppkenya.go.ke/reports-publications/"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "infrastructure-investment-kenya.docx",
+    "drive_id": "1aI-eMNG7lT-6kZY7GVgHKeA5vG3cTOW2",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}

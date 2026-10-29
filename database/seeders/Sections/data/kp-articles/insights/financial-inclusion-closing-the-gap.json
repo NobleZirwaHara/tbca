@@ -1,0 +1,51 @@
+{
+  "slug": "financial-inclusion-closing-the-gap",
+  "category": "insights",
+  "type": "article",
+  "title": "Financial Inclusion: Closing the Gap.",
+  "kicker": "KP THOUGHT LEADERSHIP / MARKETS & GROWTH",
+  "deck": "Real financial inclusion means services people can access, trust and use at a sustainable cost, not simply opening dormant accounts.",
+  "byline": [
+    "By The Business Clinic.Africa | 17 July 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-07-17",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G1",
+  "themes": [
+    "markets-growth",
+    "technology-ai"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "World Bank, “Mobile-Phone Technology Powers Saving Surge in Developing Economies,” Global Findex 2025 news release, 16 July 2025 (2024 survey data). [\\[Primary source\\]](https://www.worldbank.org/en/news/press-release/2025/07/16/mobile-phone-technology-powers-saving-surge-in-developing-economies)",
+      "url": "https://www.worldbank.org/en/news/press-release/2025/07/16/mobile-phone-technology-powers-saving-surge-in-developing-economies"
+    },
+    {
+      "n": "2",
+      "text": "World Bank, “Global Findex Database 2025: Report,” 2025 (surveys conducted in 2024). [\\[Primary source\\]](https://www.worldbank.org/en/publication/globalfindex/report)",
+      "url": "https://www.worldbank.org/en/publication/globalfindex/report"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "financial-inclusion-closing-the-gap.docx",
+    "drive_id": "1vUfOzkFJkb-_2OcDJUF17dkjeU7003FA",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"A bank account is useful. It is not the same as financial se...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"The first friction is identity and onboarding. People withou...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Account activity can increase without an improvement in hous...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Begin with a customer-journey map for distinct groups: infor...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Reward providers for sustained, safe usage and improved fina...\""
+  ]
+}

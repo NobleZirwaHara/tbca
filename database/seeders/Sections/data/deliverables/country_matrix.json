@@ -1,0 +1,1044 @@
+{
+ "title": "Country Matrix — 54 countries × country deliverable set",
+ "subtitle": "Wave and pack status from I2_Country_Activation (AIIM Botswana registers).",
+ "deliverables": [
+  "Country Profile",
+  "Country Investment Brief",
+  "Market Entry Memo",
+  "Investor Risk Snapshot",
+  "Trade Corridor Report",
+  "Import & Export Heat Map (4 views)",
+  "Sector Briefs (18)",
+  "Country Pack (full)",
+  "Country Comparison Report",
+  "Excel Country Data Pack"
+ ],
+ "countries": [
+  {
+   "iso3": "DZA",
+   "country": "Algeria",
+   "au_region": "North",
+   "wave": "4",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "EGY",
+   "country": "Egypt",
+   "au_region": "North",
+   "wave": "4",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "LBY",
+   "country": "Libya",
+   "au_region": "North",
+   "wave": "4",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "MRT",
+   "country": "Mauritania",
+   "au_region": "North",
+   "wave": "4",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "MAR",
+   "country": "Morocco",
+   "au_region": "North",
+   "wave": "4",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "TUN",
+   "country": "Tunisia",
+   "au_region": "North",
+   "wave": "4",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "BEN",
+   "country": "Benin",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "BFA",
+   "country": "Burkina Faso",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "CPV",
+   "country": "Cabo Verde",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "CIV",
+   "country": "Côte d'Ivoire",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "GMB",
+   "country": "Gambia",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "GHA",
+   "country": "Ghana",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "GIN",
+   "country": "Guinea",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "GNB",
+   "country": "Guinea-Bissau",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "LBR",
+   "country": "Liberia",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "MLI",
+   "country": "Mali",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "NER",
+   "country": "Niger",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "NGA",
+   "country": "Nigeria",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "SEN",
+   "country": "Senegal",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "SLE",
+   "country": "Sierra Leone",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "TGO",
+   "country": "Togo",
+   "au_region": "West",
+   "wave": "3",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "BDI",
+   "country": "Burundi",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "CMR",
+   "country": "Cameroon",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "CAF",
+   "country": "Central African Republic",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "TCD",
+   "country": "Chad",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "COG",
+   "country": "Congo",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "COD",
+   "country": "DR Congo",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "GNQ",
+   "country": "Equatorial Guinea",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "GAB",
+   "country": "Gabon",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "STP",
+   "country": "São Tomé and Príncipe",
+   "au_region": "Central",
+   "wave": "5",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "COM",
+   "country": "Comoros",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "DJI",
+   "country": "Djibouti",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "ERI",
+   "country": "Eritrea",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "ETH",
+   "country": "Ethiopia",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "KEN",
+   "country": "Kenya",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "MDG",
+   "country": "Madagascar",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "MUS",
+   "country": "Mauritius",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "RWA",
+   "country": "Rwanda",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "SYC",
+   "country": "Seychelles",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "SOM",
+   "country": "Somalia",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "SSD",
+   "country": "South Sudan",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "SDN",
+   "country": "Sudan",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "TZA",
+   "country": "Tanzania",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "UGA",
+   "country": "Uganda",
+   "au_region": "East",
+   "wave": "2",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "AGO",
+   "country": "Angola",
+   "au_region": "Southern",
+   "wave": "1",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "BWA",
+   "country": "Botswana",
+   "au_region": "Southern",
+   "wave": "1",
+   "pack_status": "Not started",
+   "deliverables": {
+    "Country Profile": "Full (BW-1.0)",
+    "Country Investment Brief": "Full (BW-1.0)",
+    "Market Entry Memo": "Full (BW-1.0)",
+    "Investor Risk Snapshot": "Full (BW-1.0)",
+    "Trade Corridor Report": "Full (BW-1.0)",
+    "Import & Export Heat Map (4 views)": "Full (BW-1.0)",
+    "Sector Briefs (18)": "Full (BW-1.0)",
+    "Country Pack (full)": "Full (BW-1.0)",
+    "Country Comparison Report": "Full (BW-1.0)",
+    "Excel Country Data Pack": "Full (BW-1.0)"
+   }
+  },
+  {
+   "iso3": "SWZ",
+   "country": "Eswatini",
+   "au_region": "Southern",
+   "wave": "1",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "LSO",
+   "country": "Lesotho",
+   "au_region": "Southern",
+   "wave": "1",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "MWI",
+   "country": "Malawi",
+   "au_region": "Southern",
+   "wave": "1 (replication test)",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "MOZ",
+   "country": "Mozambique",
+   "au_region": "Southern",
+   "wave": "1",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "NAM",
+   "country": "Namibia",
+   "au_region": "Southern",
+   "wave": "1",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "ZAF",
+   "country": "South Africa",
+   "au_region": "Southern",
+   "wave": "0 (model)",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "ZMB",
+   "country": "Zambia",
+   "au_region": "Southern",
+   "wave": "1 (model)",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  },
+  {
+   "iso3": "ZWE",
+   "country": "Zimbabwe",
+   "au_region": "Southern",
+   "wave": "2 (model)",
+   "pack_status": "Model pack",
+   "deliverables": {
+    "Country Profile": "Model pack",
+    "Country Investment Brief": "Model pack",
+    "Market Entry Memo": "Model pack",
+    "Investor Risk Snapshot": "Model pack",
+    "Trade Corridor Report": "Model pack",
+    "Import & Export Heat Map (4 views)": "Model pack",
+    "Sector Briefs (18)": "Model pack",
+    "Country Pack (full)": "Model pack",
+    "Country Comparison Report": "Model pack",
+    "Excel Country Data Pack": "Model pack"
+   }
+  }
+ ]
+}

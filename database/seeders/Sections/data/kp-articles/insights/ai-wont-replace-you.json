@@ -1,0 +1,46 @@
+{
+  "slug": "ai-wont-replace-you",
+  "category": "insights",
+  "type": "article",
+  "title": "AI Won’t Replace You. But Someone Using AI Will.",
+  "kicker": "KP THOUGHT LEADERSHIP / TECHNOLOGY & AI",
+  "deck": "AI should improve the quality and speed of work, with human judgement accountable for the result.",
+  "byline": [
+    "By The Business Clinic.Africa | 15 April 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-04-15",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G0",
+  "themes": [
+    "technology-ai",
+    "leadership-people"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "International Labour Organization, “Generative AI and Jobs: A Refined Global Index of Occupational Exposure,” 20 May 2025. [\\[Primary source\\]](https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure)",
+      "url": "https://www.ilo.org/publications/generative-ai-and-jobs-refined-global-index-occupational-exposure"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "ai-wont-replace-you.docx",
+    "drive_id": "1o64-6fQsXzcnfJfjNgY13A5Mlc6zLA8e",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"The title is deliberately provocative. It is not a labour-ma...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Select ten recurring tasks. Score each for frequency, time s...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Not every automated output needs the same control. Put low-r...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"In the first month, set a baseline. Count hours, defects and...\"",
+    "Heading and paragraph joined by a line break split into heading \"Boardroom takeaway\" and its paragraph"
+  ]
+}

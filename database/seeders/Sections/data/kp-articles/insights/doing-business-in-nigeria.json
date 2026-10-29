@@ -1,0 +1,56 @@
+{
+  "slug": "doing-business-in-nigeria",
+  "category": "insights",
+  "type": "article",
+  "title": "Doing Business in Nigeria: What the Data Actually Shows.",
+  "kicker": "KP THOUGHT LEADERSHIP / MARKETS & GROWTH",
+  "deck": "Nigeria offers genuine commercial scale, but success depends on unit economics, currency resilience and regulatory diligence.",
+  "byline": [
+    "By The Business Clinic.Africa | 02 October 2026 | Pan-African Business Analysis"
+  ],
+  "date": "2026-10-02",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G3",
+  "themes": [
+    "markets-growth",
+    "risk-compliance"
+  ],
+  "countries": [
+    {
+      "slug": "nigeria",
+      "name": "Nigeria"
+    }
+  ],
+  "featured": true,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "International Monetary Fund, “IMF Executive Board Concludes 2026 Article IV Consultation with Nigeria,” 9 June 2026. [\\[Primary source\\]](https://www.imf.org/en/news/articles/2026/06/09/pr26190-nigeria-imf-executive-board-concludes-2026-article-iv-consultation-with-nigeria)",
+      "url": "https://www.imf.org/en/news/articles/2026/06/09/pr26190-nigeria-imf-executive-board-concludes-2026-article-iv-consultation-with-nigeria"
+    },
+    {
+      "n": "2",
+      "text": "World Bank, “Business Ready (B-READY) 2025,” published December 2025. [\\[Primary source\\]](https://www.worldbank.org/en/businessready/publications)",
+      "url": "https://www.worldbank.org/en/businessready/publications"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted draft. Institutional human review and approval required before publication."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "doing-business-in-nigeria.docx",
+    "drive_id": "1MAXtAKdvJHB_8tkEWCyC2BDfvzsVhS-T",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": [
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Nigeria is an important African economy with a large consume...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"The World Bank’s Business Ready framework evaluates regulato...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"A national economic indicator is one layer of the investment...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Days 1–30: identify target customers, interview buyers and v...\"",
+    "Paragraph styled as a heading in the document rendered as a paragraph: \"Approve a Nigerian entry on verified local unit economics, t...\""
+  ]
+}

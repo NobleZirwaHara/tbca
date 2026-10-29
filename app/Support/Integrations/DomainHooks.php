@@ -8,6 +8,7 @@ use App\Models\Insights\WebinarRegistration;
 use App\Models\Order;
 use App\Models\Portal\Ticket;
 use App\Models\Submission;
+use App\Support\Deliverables\DeliveryPlan;
 use App\Support\DueDiligence\Identity\IdentityVerifications;
 use App\Support\Integrations\Zoho\Payloads;
 use Throwable;
@@ -28,7 +29,12 @@ class DomainHooks
         Order::saved(function (Order $order) {
             $becamePaid = $order->status === 'paid' && ($order->wasRecentlyCreated || $order->wasChanged('status'));
             if ($becamePaid) {
-                Ledger::record('order.payment_verified', 'order', $order->reference, Payloads::order($order), $order->user_id);
+                $payload = Payloads::order($order);
+                // What the backend must produce: deliverables and payment-trigger loop per Sprint line (Registry of Deliverables).
+                if ($plan = DeliveryPlan::forOrder($order)) {
+                    $payload['delivery_plan'] = $plan;
+                }
+                Ledger::record('order.payment_verified', 'order', $order->reference, $payload, $order->user_id);
             }
         });
 

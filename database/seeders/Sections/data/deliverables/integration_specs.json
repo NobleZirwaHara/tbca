@@ -1,0 +1,51 @@
+{
+ "title": "HeyGen and Infogram — integration specification",
+ "subtitle": "How the two APIs lift depth, breadth and branding of every deliverable",
+ "elements": [
+  {
+   "element": "Plan assumed",
+   "heygen": "Business plan (4K, up to 300-min videos, API access) — confirm credits per month against volume",
+   "infogram": "Business plan (brand kit, custom logo and fonts, iframe embeds, SQL connectors, analytics); Enterprise for API at scale"
+  },
+  {
+   "element": "API calls used",
+   "heygen": "Video generate (async, webhook on completion); video translation (lip-sync, 175+ languages); streaming/interactive avatar (WebRTC) for Premium Q&A",
+   "infogram": "copyProject (one copy per job), updateProjectEntities (bind data), publishProject, downloadProject (PNG/JPG/PDF), exportAsHTML; getTaskStatus polling"
+  },
+  {
+   "element": "OSS stages",
+   "heygen": "OSS-S12 script and render after QA-passed draft; OSS-S15 delivery; OSS-S16 aftercare Q&A",
+   "infogram": "OSS-S12 render; OSS-S15 publish (Bible Infogram spec)"
+  },
+  {
+   "element": "Inputs",
+   "heygen": "Script generated only from the released deliverable (SG-18); avatar ID; voice; language list; brand scene template",
+   "infogram": "Data tables exported by the Artefact Factory; TBCA brand kit theme; chart template per format"
+  },
+  {
+   "element": "Outputs per tier",
+   "heygen": "B: 90-s briefing · S: 3–4-min branded briefing, up to 3 languages · P: 6–8-min digital-twin briefing + interactive avatar for 90 days",
+   "infogram": "B: 3–5 branded charts · S: interactive report, 8–15 charts · P: live-data dashboard, 12-month hosted link"
+  },
+  {
+   "element": "Safeguards",
+   "heygen": "SG-18 consent and script fidelity; captions (SG-10); disclaimer frame; no third-party likeness",
+   "infogram": "SG-19 data binding; SG-09 brand kit; fallback to native renderer with identical data"
+  },
+  {
+   "element": "Failure path",
+   "heygen": "Render failure → retry 3× with backoff; then deliver without video and auto-schedule it within 24 h; client notified",
+   "infogram": "Export failure → native chart render (matplotlib / Zoho Analytics) with the same data (Bible)"
+  },
+  {
+   "element": "Brand",
+   "heygen": "TBCA presenter avatar and scenes; client co-mark at Premium",
+   "infogram": "TBCA brand kit; client co-mark at Premium"
+  },
+  {
+   "element": "Why it beats competitors",
+   "heygen": "Every client gets a personal briefing in their own language — most consultancies send a PDF",
+   "infogram": "Charts stay live and interactive — most consultancies send static images"
+  }
+ ]
+}

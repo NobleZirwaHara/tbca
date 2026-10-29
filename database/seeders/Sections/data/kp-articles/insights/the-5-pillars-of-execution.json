@@ -1,0 +1,45 @@
+{
+  "slug": "the-5-pillars-of-execution",
+  "category": "insights",
+  "type": "framework",
+  "title": "The 5 Pillars of Execution",
+  "kicker": "KP THOUGHT LEADERSHIP / STRATEGY & EXECUTION",
+  "deck": "Five operating disciplines that convert a management promise into evidence somebody can actually inspect.",
+  "byline": [
+    "By The Business Clinic.Africa | 18 September 2026 | Framework"
+  ],
+  "date": "2026-09-18",
+  "date_note": null,
+  "author": "The Business Clinic.Africa",
+  "voice": "I",
+  "scope": "AFR-G0",
+  "themes": [
+    "strategy-execution",
+    "governance-boards"
+  ],
+  "countries": [],
+  "featured": false,
+  "sources_heading": "Sources and verification",
+  "sources": [
+    {
+      "n": "1",
+      "text": "World Bank, Business Ready 2025, framework and 101-economy report. [Primary source](https://www.worldbank.org/en/businessready/publications)",
+      "url": "https://www.worldbank.org/en/businessready/publications"
+    },
+    {
+      "n": "2",
+      "text": "OECD, G20/OECD Principles of Corporate Governance 2023. [Primary source](https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report.html)",
+      "url": "https://www.oecd.org/en/publications/g20-oecd-principles-of-corporate-governance-2023_ed750b30-en/full-report.html"
+    }
+  ],
+  "notes": [
+    "Disclosure: AI-assisted editorial draft. Human institutional review, final fact-check and approval are required before publication. This is general strategic commentary, not transaction-specific legal, tax or financial advice."
+  ],
+  "source": {
+    "drive_folder": "ARTICLES-KP THOT LEADERSHIP / INSIGHTS / TBCA_19_Thought_Leadership_Articles",
+    "file": "the-5-pillars-of-execution.docx",
+    "drive_id": "1yaxTxB-9CkYRCGVgllLo80pc71xe4Ot3",
+    "received": "2026-10-18"
+  },
+  "conversion_fixes": []
+}
