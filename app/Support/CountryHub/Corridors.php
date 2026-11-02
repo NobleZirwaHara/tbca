@@ -48,7 +48,9 @@ class Corridors
             [$st, $items, $conf] = ['No Evidence', 0, 5 + ($o($a, 1) + $o($b, 1)) % 20];
         }
         $type = ['Trade', 'Investment', 'Capital Flow', 'Market Entry'][($o($a, 0) + $o($b, 2)) % 4];
-        $days = match ($st) { 'High Confidence' => '15–25', 'Evidence Available' => '20–30', 'Limited Evidence' => '30–45', default => '45–90' };
+        $days = match ($st) {
+            'High Confidence' => '15–25', 'Evidence Available' => '20–30', 'Limited Evidence' => '30–45', default => '45–90'
+        };
 
         return [
             'a' => $a, 'b' => $b, 'st' => $st, 'items' => $items, 'conf' => $conf, 'type' => $type, 'days' => $days, 'shared' => $shared,
@@ -81,5 +83,78 @@ class Corridors
     public static function sellableCount(): int
     {
         return once(fn () => count(array_filter(self::all(), fn ($p) => self::sellable($p))));
+    }
+
+    /** Corridor states in display order (prototype CHIP). */
+    public const STATES = ['High Confidence', 'Evidence Available', 'Limited Evidence', 'No Evidence'];
+
+    /** Count of pairs by evidence state (prototype countBy(allPairs(), 'st')). */
+    public static function counts(): array
+    {
+        return once(function () {
+            $out = array_fill_keys(self::STATES, 0);
+            foreach (self::all() as $p) {
+                $out[$p['st']]++;
+            }
+
+            return $out;
+        });
+    }
+
+    /**
+     * The 8 corridor Sprints (prototype corrSprints): first viable, published Sprint whose name starts
+     * with each key, in catalogue order. Prices are the app's entry prices (`ep`).
+     */
+    public static function corrSprints(): array
+    {
+        return once(function () {
+            $keys = ['Trade Partner Scan Sprint', 'Import/Export Risk Register Sprint', 'Export Document Pack Sprint', 'Country Market Brief Sprint', 'Market Entry Checklist Sprint', 'Country Launch Pack Sprint', 'Export Readiness Score Sprint', 'Distributor Prospectus Sprint'];
+            $out = [];
+            foreach ($keys as $k) {
+                foreach (CountryHub::sprints() as $s) {
+                    if (str_starts_with($s['name'], $k) && ($s['viable'] ?? false) && $s['pop'] === 'PUBLISHED') {
+                        $out[] = $s;
+                        break;
+                    }
+                }
+            }
+
+            return $out;
+        });
+    }
+
+    /**
+     * Six-ledger model-basis totals for a pair (prototype ledgerTotals): T is the sum of the corridor
+     * Sprints' entry prices; the other ledgers scale T by the LEDG shares and the evidence state.
+     *
+     * @return array<string, float>
+     */
+    public static function ledgerTotals(array $p): array
+    {
+        $T = (float) array_sum(array_map(fn ($s) => (int) ($s['ep'] ?? 0), self::corrSprints()));
+        $tot = $T / self::LEDG[0][3];
+        $k = match ($p['st']) {
+            'High Confidence' => 1.0, 'Evidence Available' => 1.15, default => 1.4
+        };
+        $out = [];
+        foreach (self::LEDG as [$l, , , $share]) {
+            $out[$l] = $l === 'T' ? $T : $tot * $share * $k;
+        }
+
+        return $out;
+    }
+
+    /** Country summary for a corridor endpoint. */
+    public static function endpoint(string $iso3): array
+    {
+        $c = CountryHub::countries()[$iso3];
+
+        return ['iso3' => $c['iso3'], 'iso2' => $c['iso2'], 'slug' => $c['slug'], 'name' => $c['name'], 'state' => $c['state'], 'region' => $c['region']];
+    }
+
+    /** A pair with its endpoint summaries (A, B) and the sellable flag, for the page props. */
+    public static function view(array $p): array
+    {
+        return $p + ['A' => self::endpoint($p['a']), 'B' => self::endpoint($p['b']), 'sellable' => self::sellable($p)];
     }
 }

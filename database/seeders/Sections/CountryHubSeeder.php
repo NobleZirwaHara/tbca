@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Schema;
  *  - pack-doc.json.gz       the Botswana Country Pack BW-1.0 text, block by block (Pack Reader)
  *  - coverage.json          the prototype's cell-by-cell check of the registers against the workbook
  *  - sprint-topics.json     the 1,814 country Sprints and the topic each one serves
+ *  - sprint-market.json     their catalogue market medians per tier (mb, ms, mp, ZAR ex VAT) and full
+ *                           archetype code, used for the "Price vs market" comparison
  *
  * Idempotent: register rows are replaced per register, documents are upserted by key.
  * Selling prices are never loaded here: pages price Sprints from the app's own Sprint records.
@@ -29,7 +31,7 @@ class CountryHubSeeder extends Seeder
 
     public const META = [
         'reg_index' => 'reg-index.json', 'geo_bw' => 'geo-bw.json.gz', 'pack_doc' => 'pack-doc.json.gz',
-        'coverage' => 'coverage.json', 'sprint_topics' => 'sprint-topics.json',
+        'coverage' => 'coverage.json', 'sprint_topics' => 'sprint-topics.json', 'sprint_market' => 'sprint-market.json',
     ];
 
     public function run(): void

@@ -161,6 +161,19 @@ class CountryHub
         });
     }
 
+    /**
+     * Catalogue market medians per tier (ZAR ex VAT) and the full archetype code of a country Sprint
+     * (prototype mb/ms/mp and arch). Reference figures for "Price vs market", never selling prices.
+     *
+     * @return array{Basic: ?float, Standard: ?float, Premium: ?float, arch: ?string}|null
+     */
+    public static function market(string $code): ?array
+    {
+        $m = (self::meta('sprint_market') ?? [])[$code] ?? null;
+
+        return $m ? ['Basic' => $m['mb'], 'Standard' => $m['ms'], 'Premium' => $m['mp'], 'arch' => $m['arch']] : null;
+    }
+
     public static function sprint(string $code): ?array
     {
         return self::sprints()[$code] ?? IndustryData::sprint($code);
