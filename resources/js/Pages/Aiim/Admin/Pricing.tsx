@@ -1,63 +1,48 @@
-import { Head, router } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Tags } from 'lucide-react';
-import { useState } from 'react';
-import { Chip } from '@/Components/Aiim/Chips';
-import { zar2 } from '@/Components/Aiim/format';
 import { ADMIN_NAV } from '@/Components/Aiim/Nav';
+import { Banner, Split, svcHref } from '@/Components/Aiim/ProtoDesk';
+import { csvHref } from '@/Components/CountryHub/IntelData';
+import { Card, Chip, DataTable, STable, useMoney } from '@/Components/Industries/Kit';
 import ConsoleLayout from '@/Layouts/ConsoleLayout';
-import { KpiTile, Panel } from '@/Components/ui/Kit';
-import { cn } from '@/lib/cn';
+import type { ServerTableData } from '@/types/industries';
 
-interface Code { code: string; name: string; description: string | null; category: string; fee_type: string; pricing_model: string; amount_zar: number; rate: number | null; basis: string | null; components: Record<string, number> | null; trigger: string | null; refund_policy: string | null; status: string; effective: string | null }
+type Row = Record<string, string | number | null>;
+interface FeeCode { code: string; name: string; category: string; fee_type: string; pricing_model: string; amount_zar: number; rate: number | null; status: string; effective: string | null }
+interface Props { book: ServerTableData<Row>; feeCodes: FeeCode[] }
 
-interface Props { codes: Code[]; categories: string[]; filters: { q: string; category: string } }
+const KEYS = ['Code', 'Service', 'Module', 'Authority', 'Benchmark', 'Bench Basic', 'Bench Std', 'Entry tier', 'Entry price'];
 
-export default function Pricing({ codes, categories, filters }: Props) {
-    const [sel, setSel] = useState<Code | null>(codes[0] ?? null);
-    const [q, setQ] = useState(filters.q);
-    const go = (next: Partial<Props['filters']>) => router.get('/admin/aiim/pricing', { ...filters, q, ...next }, { preserveState: true, preserveScroll: true });
-    const amount = (c: Code) => (c.rate !== null && c.amount_zar === 0 ? `${c.rate}%` : zar2(c.amount_zar));
+/**
+ * AIIM mock 81: Pricing Administration (prototype #pricing-admin): the Batch 4D v3 price book of the
+ * 581 embedded services, paged on the server. Entry prices are the app's Sprint prices; the
+ * benchmarks are the price book's reference figures.
+ */
+export default function Pricing({ book, feeCodes }: Props) {
+    const money = useMoney();
+    const fee = (c: FeeCode) => (c.rate !== null && Number(c.amount_zar) === 0 ? `${c.rate}%` : money(Number(c.amount_zar)));
     return (
-        <ConsoleLayout area="AIIM Admin Area" areaIcon={Tags} groups={ADMIN_NAV} crumbs={[{ label: 'Admin', href: '/admin' }, { label: 'AIIM', href: '/admin/aiim' }, { label: 'Pricing Administration' }]} title="Pricing Administration" description="Manage the AIIM pricing catalogue, fee codes, pricing components and commercial rules. All AIIM prices are computed from these codes." badge={<Chip tone="good">Pricing Version v2025.05.12 · Active</Chip>}>
+        <ConsoleLayout area="AIIM Admin Area" areaIcon={Tags} groups={ADMIN_NAV} crumbs={[{ label: 'Admin', href: '/admin' }, { label: 'AIIM', href: '/admin/aiim' }, { label: 'Pricing Administration' }]} title="Pricing Administration"
+            description={<><span className="block font-semibold text-gold-700">Page 81 · Batch 4D v3 price book</span>Price authority CC-07: inherited parent-family benchmark, cost-plus at the 60 % target margin, or type-donor parity. HOLD — controlled planning.</>}>
             <Head title="AIIM Pricing Administration" />
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                <KpiTile label="Active Fee Codes" value={codes.filter((c) => c.status === 'active').length} />
-                <KpiTile label="Categories" value={categories.length} />
-                <KpiTile label="VAT Rate" value="15%" />
-                <KpiTile label="External Admin Margin" value="25%" />
-            </div>
-            <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
-                <Panel title="Fee Catalogue" action={<div className="flex gap-2"><input aria-label="Search fee codes" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && go({ q })} placeholder="Search fee codes…" className="h-8 rounded border border-parchment-500 px-2 text-xs" /><select aria-label="Category" value={filters.category} onChange={(e) => go({ category: e.target.value })} className="h-8 rounded border border-parchment-500 px-2 text-xs"><option value="">All Categories</option>{categories.map((c) => <option key={c}>{c}</option>)}</select></div>}>
-                    <div className="overflow-x-auto">
-                        <table className="w-full min-w-[52rem] text-xs">
-                            <thead className="bg-parchment-200 text-ink-600"><tr>{['Fee Code', 'Fee Name / Description', 'Category', 'Fee Type', 'Pricing Model', 'Amount (ex VAT)', 'VAT', 'Total (incl VAT)', 'Status', 'Effective From'].map((h) => <th key={h} className="px-2 py-2 text-left">{h}</th>)}</tr></thead>
-                            <tbody className="divide-y divide-parchment-300">
-                                {codes.map((c) => (
-                                    <tr key={c.code} onClick={() => setSel(c)} className={cn('cursor-pointer hover:bg-parchment-100', sel?.code === c.code && 'bg-gold-50')}>
-                                        <td className="px-2 py-1.5"><Chip tone="purple">{c.code}</Chip></td>
-                                        <td className="px-2"><strong className="block">{c.name}</strong><span className="text-ink-500">{c.description}</span></td>
-                                        <td className="px-2">{c.category}</td><td className="px-2">{c.fee_type}</td><td className="px-2">{c.pricing_model}</td>
-                                        <td className="px-2 text-right">{amount(c)}</td><td className="px-2">15%</td>
-                                        <td className="px-2 text-right">{c.rate !== null && c.amount_zar === 0 ? `${((c.rate ?? 0) * 1.15).toFixed(2)}%` : zar2(c.amount_zar * 1.15)}</td>
-                                        <td className="px-2"><Chip tone={c.status === 'active' ? 'good' : 'dark'}>{c.status}</Chip></td><td className="px-2">{c.effective}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </Panel>
-                {sel && (
-                    <Panel title="Fee Breakdown Preview" action={<Chip tone="good">{sel.code}</Chip>}>
-                        <p className="font-semibold">{sel.name}</p>
-                        <p className="text-xs text-ink-500">{sel.fee_type} · {sel.basis ?? sel.pricing_model}</p>
-                        <p className="mt-1 text-xl font-bold">{amount(sel)} <span className="text-xs font-normal">ex VAT</span></p>
-                        {sel.components && Object.keys(sel.components).length > 0 && <><p className="mt-3 text-xs font-semibold">Pricing Components</p><dl className="space-y-1 text-xs">{Object.entries(sel.components).map(([k, v]) => <div key={k} className="flex justify-between"><dt>{k}</dt><dd>{zar2(v)}</dd></div>)}</dl></>}
-                        <dl className="mt-3 space-y-1 border-t border-parchment-300 pt-2 text-xs"><div className="flex justify-between"><dt>Subtotal (ex VAT)</dt><dd>{zar2(sel.amount_zar)}</dd></div><div className="flex justify-between"><dt>VAT (15%)</dt><dd>{zar2(sel.amount_zar * 0.15)}</dd></div><div className="flex justify-between rounded bg-gold-50 px-1 font-bold"><dt>Total (inc VAT)</dt><dd>{zar2(sel.amount_zar * 1.15)}</dd></div></dl>
-                        <dl className="mt-3 space-y-1 text-xs">{[['Fee Category', sel.category], ['Fee Trigger', sel.trigger ?? '—'], ['Payer', 'Client'], ['Refund Policy', sel.refund_policy ?? '—']].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><dt className="text-ink-500">{k}</dt><dd className="text-right">{v}</dd></div>)}</dl>
-                        <p className="mt-3 text-[0.65rem] text-ink-400">Editing fee codes (with pricing version and dual approval) is being connected.</p>
-                    </Panel>
-                )}
-            </div>
+            <Split>
+                <Banner>Entry prices are the app&apos;s selling prices from its Sprint records. Bench Basic and Bench Std are reference benchmarks from the price book, not selling prices. Codes without an app record show &quot;Not in the app catalogue yet&quot;.</Banner>
+                <Card>
+                    <DataTable<Row> name="aiim-price-book" server={book} only={['book']} filters={['Module', 'Authority', 'Entry tier']} csvHref={csvHref('/admin/aiim/pricing', book)}
+                        cols={KEYS.map((k) => ({
+                            k, l: k, num: /^(Bench |Entry price)/.test(k), clip: k === 'Service',
+                            r: k === 'Code' ? (r: Row) => <Link href={svcHref(String(r.Code))} className="font-mono font-semibold whitespace-nowrap text-controlled-700 hover:underline">{r.Code}</Link>
+                                : /^Bench /.test(k) ? (r: Row) => money(r[k] as number | null)
+                                    : k === 'Entry price' ? (r: Row) => (r[k] === null ? <span className="text-ink-400">Not in the app catalogue yet</span> : money(r[k] as number))
+                                        : undefined,
+                        }))} />
+                </Card>
+                <Card title="AIIM fee codes">
+                    <STable compact head={['Fee code', 'Name', 'Category', 'Fee type', 'Pricing model', 'Amount (ex VAT)', 'Status', 'Effective from']} rows={feeCodes.map((c) => [
+                        <span key="c" className="font-mono">{c.code}</span>, c.name, c.category, c.fee_type, c.pricing_model, fee(c), <Chip key="s" t={c.status} tone={c.status === 'active' ? 'ok' : 'grey'} />, c.effective ?? '—',
+                    ])} />
+                </Card>
+            </Split>
         </ConsoleLayout>
     );
 }

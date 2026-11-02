@@ -5,6 +5,8 @@ namespace App\Support\Aiim;
 use App\Models\Aiim\Corridor;
 use App\Models\Aiim\Organisation;
 use App\Models\Aiim\Project;
+use App\Models\Aiim\Province;
+use App\Models\Aiim\Sector;
 
 /**
  * Builds side-by-side comparisons from catalogue records and computes a weighted
@@ -15,7 +17,10 @@ use App\Models\Aiim\Project;
  */
 class ComparisonEngine
 {
-    public const MAX_ITEMS = 4;
+    public const MAX_ITEMS = 5;
+
+    /** Botswana opportunity templates (BW_Sweep Opp IDs) compared on the prototype's fields. */
+    public const TEMPLATE = 'template';
 
     public const WEIGHTS = ['irr' => 0.25, 'payback' => 0.15, 'risk' => 0.20, 'fit' => 0.20, 'confidence' => 0.10, 'alignment' => 0.10];
 
@@ -53,8 +58,8 @@ class ComparisonEngine
                 'size_value' => (float) $m->size_max_zar,
                 'size' => Catalogue::size($m->size_min_zar, $m->size_max_zar),
                 'stage' => $m->stage,
-                'sector' => \App\Models\Aiim\Sector::query()->where('slug', $m->sector_slug)->value('name'),
-                'province' => \App\Models\Aiim\Province::query()->where('slug', $m->province_slug)->value('name'),
+                'sector' => Sector::query()->where('slug', $m->sector_slug)->value('name'),
+                'province' => Province::query()->where('slug', $m->province_slug)->value('name'),
                 'confidence' => $m->confidence,
                 'updated' => $m->updated_at?->format('j M Y'),
             ],
@@ -180,6 +185,35 @@ class ComparisonEngine
         }
 
         return ['columns' => $columns, 'best' => $best, 'rows' => self::metricRows(), 'insights' => self::insights($columns)];
+    }
+
+    /**
+     * Template columns of a comparison (prototype compare-results): the BW_Sweep and BW_Priority
+     * rows merged, read on the prototype's comparison fields.
+     *
+     * @return list<array{id: string, name: string, sector: string, color: string, url: string, score: float, ra: float, fields: array<string, string>}>
+     */
+    public static function templates(array $items): array
+    {
+        $out = [];
+        foreach (array_slice($items, 0, self::MAX_ITEMS) as $item) {
+            if (($item['type'] ?? '') !== self::TEMPLATE || ! ($o = ProtoAccount::template((string) $item['key']))) {
+                continue;
+            }
+            $out[] = [
+                'id' => (string) $o['Opp ID'],
+                'name' => (string) $o['Opportunity'],
+                'sector' => (string) $o['Sector'],
+                'color' => ProtoAccount::SECTORS[$o['Sector']][1] ?? '#9a9aa5',
+                'url' => ProtoAccount::oppUrl((string) $o['Opp ID']),
+                'score' => (float) ($o['Score'] ?? 0),
+                'ra' => (float) ($o['RA'] ?? 0),
+                'tier' => (string) ($o['Tier'] ?? ''),
+                'fields' => collect(ProtoAccount::COMPARE_FIELDS)->mapWithKeys(fn ($f) => [$f => (string) ($o[$f] ?? '')])->all(),
+            ];
+        }
+
+        return $out;
     }
 
     private static function insights(array $columns): array

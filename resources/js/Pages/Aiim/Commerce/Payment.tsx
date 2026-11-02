@@ -1,99 +1,79 @@
 import { router } from '@inertiajs/react';
-import { CheckCircle2, Clock, CreditCard, Loader2, Lock } from 'lucide-react';
-import { useEffect } from 'react';
-import { Chip } from '@/Components/Aiim/Chips';
-import { zar2 } from '@/Components/Aiim/format';
-import AiimPage, { RailBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
-import { Stepper } from '@/Components/ui/Kit';
-import { ButtonLink } from '@/Components/ui/Button';
+import { useEffect, useState } from 'react';
+import { Flow, FlowSteps, SumBox } from '@/Components/Aiim/ProtoAccount';
+import { A, Card, Chip, Dl } from '@/Components/Industries/Kit';
+import { cn } from '@/lib/cn';
 import type { AiimPageProps } from '@/types/aiim';
-import { OrderSummary, type OrderProps } from './Checkout';
+import type { OrderProps } from './Checkout';
 
 interface Props extends AiimPageProps {
     order: OrderProps;
     paid: boolean;
-    payment: { reference: string; method: string; status: string; last4: string | null; reason: string | null } | null;
+    payment: { reference: string; method: string; status: string; reason: string | null } | null;
     next: { label: string; url: string };
-    entitlement: { reference: string; title: string; access: string; views: number | null; expires: string | null } | null;
+    ledgerUrl: string;
 }
 
-/** P31 Payment Processing (while unpaid) and P32 Payment Confirmation (once paid). */
-export default function Payment({ order, paid, payment, next, entitlement }: Props) {
-    // Poll the server while the gateway confirms the payment (external system).
+const STAGES = ['Payment request created', 'Authorising with provider', 'Recording invoice and receipt', 'Assigning entitlements'];
+
+/** Mock-ups 31 (Payment Processing, while unpaid) and 32 (Payment Confirmation, once paid). */
+export default function Payment({ order, paid, payment, next, ledgerUrl }: Props) {
+    const [tick, setTick] = useState(1);
     useEffect(() => {
         if (paid) return;
-        const t = window.setInterval(() => router.reload({ only: ['order', 'paid', 'payment', 'next', 'entitlement'] }), 5000);
-        return () => window.clearInterval(t);
+        const a = window.setInterval(() => setTick((t) => Math.min(2, t + 1)), 600);
+        const b = window.setInterval(() => router.reload({ only: ['order', 'paid', 'payment', 'next'] }), 5000);
+        return () => { window.clearInterval(a); window.clearInterval(b); };
     }, [paid]);
 
-    const method = payment ? (payment.method === 'card' ? `Card ending ${payment.last4 ?? '••••'}` : payment.method.toUpperCase()) : '—';
+    const side = (
+        <Card title="Order" act={<span className="font-mono text-[0.72rem] text-ink-400">{order.reference}</span>}>
+            <SumBox lines={order.items.map((i) => [i.name, i.amount])} vatAmount={order.vat} total={order.total} />
+            {order.fees > 0 && <p className="mt-1 text-[0.72rem] text-ink-400">Total includes payment charges.</p>}
+        </Card>
+    );
+
+    if (!paid) {
+        const failed = payment?.status === 'failed';
+        return (
+            <Flow title="Payment Processing" crumbs={[{ label: 'Secure Checkout', href: `/aiim/checkout/${order.reference}` }]} steps={<FlowSteps on={3} />} side={side}>
+                <section className="grid justify-items-center gap-4 rounded-[6px] border border-parchment-400 bg-white px-6 py-10">
+                    <ol className="grid min-w-[280px] gap-2" aria-live="polite">
+                        {STAGES.map((s, i) => {
+                            const done = !failed && i < tick;
+                            const on = !failed && i === tick;
+                            return (
+                                <li key={s} className={cn('flex items-center gap-2.5 text-[0.88rem]', done ? 'text-ink-900' : on ? 'font-semibold text-ink-900' : 'text-ink-400')}>
+                                    <span className={cn('grid size-5 place-items-center rounded-full border text-[0.65rem]', done ? 'border-verified-500 bg-verified-500 text-white' : on ? 'animate-pulse border-gold-500 bg-gold-100' : 'border-parchment-500')}>{done ? '✓' : ''}</span>
+                                    {s}
+                                </li>
+                            );
+                        })}
+                    </ol>
+                    {payment?.status === 'pending' && <p className="max-w-md text-center text-[0.8rem] text-ink-600">Waiting for the provider to confirm. For EFT, use the order reference {order.reference} as your payment reference; access unlocks on receipt. This page checks again every few seconds.</p>}
+                    {failed && <p role="alert" className="max-w-md text-center text-[0.8rem] text-risk-600">{payment?.reason ?? 'The payment did not go through.'}</p>}
+                    {(failed || !payment) && <A v="pri" sm href={`/checkout/${order.reference}`}>Return to payment options</A>}
+                </section>
+            </Flow>
+        );
+    }
 
     return (
-        <AiimPage
-            title={paid ? 'Payment Confirmation' : 'Payment Processing'}
-            crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: 'Secure Checkout' }, { label: paid ? 'Payment Confirmation' : 'Payment Processing' }]}
-            heading={paid ? <>Payment Confirmation <CheckCircle2 className="size-7 text-verified-500" /></> : <>Payment Processing <Loader2 className="size-7 animate-spin text-gold-500" /></>}
-            subtitle={paid ? 'Payment successful. Thank you for your purchase.' : 'Your payment is being processed securely.'}
-            description={paid ? 'Your premium intelligence is now being unlocked.' : 'Please do not close this page. This may take a few moments.'}
-            accent={paid ? 'green' : 'gold'}
-            rail={<><SelectionBox /><RailBox title="Important Information"><ul className="space-y-1.5 text-xs text-ink-300"><li>✓ Your payment is secure.</li><li>✓ We never store your card details.</li><li>✓ Entitlements unlock only on verified payment.</li></ul></RailBox></>}
-        >
-            <SectionCard className="mb-4"><Stepper steps={['Review Order', 'Billing Details', 'Payment', 'Confirmation']} current={paid ? 4 : 3} /></SectionCard>
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-                {paid ? (
-                    <div className="space-y-4">
-                        <SectionCard>
-                            <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
-                                <div className="flex gap-3"><CheckCircle2 className="size-14 shrink-0 text-verified-500" /><div><h2 className="text-lg font-semibold text-verified-700">Payment Successful</h2><p className="text-xs text-ink-600">Your payment has been completed successfully. A confirmation has been sent to your email.</p></div></div>
-                                <dl className="grid grid-cols-2 gap-3 text-xs">
-                                    {[['Order ID', order.reference], ['Date & Time', order.date], ['Payment Reference', payment?.reference ?? '—'], ['Amount Paid', `${zar2(order.total)} incl. VAT`], ['Payment Method', method], ['Payer', order.payer ?? '—']].map(([k, v]) => <div key={k}><dt className="text-ink-500">{k}</dt><dd className="font-semibold">{v}</dd></div>)}
-                                </dl>
-                            </div>
-                        </SectionCard>
-                        <div className="grid gap-4 md:grid-cols-2">
-                            <SectionCard title="What Happens Next?">
-                                <ol className="space-y-2 text-xs">
-                                    <li className="flex gap-2"><CheckCircle2 className="size-4 text-verified-500" /><span><strong className="block">Payment Received</strong>Your payment has been processed securely.</span></li>
-                                    <li className="flex gap-2"><CheckCircle2 className="size-4 text-verified-500" /><span><strong className="block">{entitlement ? 'Premium Access Unlocked' : 'Fulfilment Started'}</strong>{entitlement ? `Entitlement ${entitlement.reference} is active.` : 'Your order has been passed to fulfilment.'}</span></li>
-                                    <li className="flex gap-2"><Clock className="size-4 text-attested-500" /><span><strong className="block">Available in Your Workspace</strong>You will be notified when everything is ready.</span></li>
-                                </ol>
-                            </SectionCard>
-                            <SectionCard title="Delivery and Access">
-                                <Chip tone={entitlement ? 'good' : 'warn'}>{entitlement ? 'Unlocked' : 'Processing'}</Chip>
-                                <p className="mt-2 font-semibold">{entitlement?.title ?? order.label ?? order.title}</p>
-                                {entitlement && <dl className="mt-2 space-y-1 text-xs"><div className="flex justify-between"><dt>Access Type</dt><dd>{entitlement.access}</dd></div>{entitlement.views && <div className="flex justify-between"><dt>Views Included</dt><dd>{entitlement.views}</dd></div>}{entitlement.expires && <div className="flex justify-between"><dt>Expires</dt><dd>{entitlement.expires}</dd></div>}</dl>}
-                                <p className="mt-2 text-xs text-verified-700">You will be notified at {order.email}.</p>
-                            </SectionCard>
-                        </div>
-                    </div>
-                ) : (
-                    <SectionCard>
-                        <p className="text-xs font-bold tracking-wide text-risk-500 uppercase">Secure payment gateway</p>
-                        <div className="mt-3 flex flex-wrap items-center gap-6">
-                            <span className="flex size-28 items-center justify-center rounded-full border border-gold-300 bg-gold-50"><CreditCard className="size-12 text-ink-900" /><Lock className="-ml-4 mt-8 size-6" /></span>
-                            <div>
-                                <h2 className="text-xl font-semibold">Processing your payment…</h2>
-                                <p className="text-sm text-ink-600">We are securely confirming your payment with our trusted payment partner.</p>
-                                <ul className="mt-3 space-y-1.5 text-sm">
-                                    <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-gold-600" />Payment details received</li>
-                                    <li className="flex items-center gap-2"><CheckCircle2 className="size-4 text-gold-600" />Validating with your bank</li>
-                                    <li className="flex items-center gap-2"><Loader2 className="size-4 animate-spin text-gold-600" />Completing transaction</li>
-                                    <li className="flex items-center gap-2 text-ink-400"><Clock className="size-4" />Finalising your access</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p className="mt-4 rounded bg-controlled-50 p-2 text-xs text-controlled-700">{payment?.reason ?? 'This may take up to 30 seconds. You will be redirected automatically once payment is confirmed.'} This page refreshes every few seconds.</p>
-                        <ButtonLink href={`/checkout/${order.reference}`} variant="outline" size="sm" className="mt-3">Return to payment options</ButtonLink>
-                    </SectionCard>
-                )}
-                <SectionCard title="Order Summary" action={<span className="font-mono text-xs">{order.reference}</span>}><OrderSummary order={order} /><p className="mt-2 text-xs">Payment Method: <strong>{method}</strong></p></SectionCard>
-            </div>
-            {paid && (
-                <div className="mt-4 flex flex-wrap justify-between gap-3">
-                    <ButtonLink href="/aiim/workspace" variant="outline">Back to AIIM Workspace</ButtonLink>
-                    <ButtonLink href={next.url} trailingIcon="arrow-right">{next.label}</ButtonLink>
+        <Flow title="Payment Confirmation" crumbs={[{ label: 'Secure Checkout', href: '/aiim/workspace' }]} steps={<FlowSteps on={4} />} side={side}>
+            <Card title="Thank you">
+                <p className="mb-3 text-[0.88rem] text-ink-700">Your order is recorded in your account.</p>
+                <Dl rows={[
+                    ['Reference', <span key="r" className="font-mono">{order.reference}</span>],
+                    ['Items', String(order.items.length)],
+                    ['Status', <Chip key="s" t="Confirmed" tone="ok" />],
+                    ['Paid', `${order.date}${payment ? ` · ${payment.method === 'wallet' ? 'wallet credits' : payment.method.toUpperCase()}` : ''}`],
+                    ['Tax document', 'Invoice and receipt (AAB-EMB-233)'],
+                ]} />
+                <div className="mt-4 flex flex-wrap gap-2">
+                    <A v="pri" href={next.url}>{next.label}</A>
+                    <A href={ledgerUrl}>Ledger</A>
                 </div>
-            )}
-        </AiimPage>
+            </Card>
+        </Flow>
     );
 }

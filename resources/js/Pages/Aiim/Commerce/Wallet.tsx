@@ -1,113 +1,81 @@
 import { router, useForm } from '@inertiajs/react';
-import { BarChart3, Clock, Coins, CreditCard, History, Lock, Package, ShieldCheck, Wallet as WalletIcon } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
-import { Chip } from '@/Components/Aiim/Chips';
-import { zar2 } from '@/Components/Aiim/format';
-import AiimPage, { RailBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
-import { Field, Input } from '@/Components/ui/Form';
-import { Modal, SimpleTable } from '@/Components/ui/Kit';
-import { Button } from '@/Components/ui/Button';
+import { useState } from 'react';
+import { Banner, Flow, SvcRow } from '@/Components/Aiim/ProtoAccount';
+import { B, Card, Check, Field, inputCls, Kpi, Kpis, N, useMoney } from '@/Components/Industries/Kit';
+import { cn } from '@/lib/cn';
 import type { AiimPageProps } from '@/types/aiim';
 
 interface Props extends AiimPageProps {
-    summary: { balance: number; total: number; used: number; reserved: number; expiring: number };
-    wallet: { auto_recharge: boolean; auto_recharge_threshold_zar: number; auto_recharge_amount_zar: number };
+    summary: { balance: number; total: number; used: number };
+    wallet: { auto_recharge: boolean; auto_recharge_threshold_zar: number | null; auto_recharge_amount_zar: number | null };
     packs: { code: string; credits: number; price: number; label: string; saving?: string }[];
-    transactions: { reference: string; date: string; description: string; type: string; amount: number; balance: number }[];
-    usage: number;
+    count: number;
+    transactions: { reference: string; date: string; description: string; type: string; amount: number; related: string | null }[];
+    manifest: { count: number; total: number };
 }
 
-export default function Wallet({ summary, wallet, packs, transactions, usage }: Props) {
-    const [topUp, setTopUp] = useState(false);
-    const [auto, setAuto] = useState(false);
-    const top = useForm({ amount: 1000 });
-    const ar = useForm({ ...wallet });
-    const buyPack = (code: string) => router.post('/aiim/wallet/top-up', { pack: code });
-    const submitTop = (e: FormEvent) => { e.preventDefault(); top.post('/aiim/wallet/top-up'); };
-    const submitAuto = (e: FormEvent) => { e.preventDefault(); ar.post('/aiim/wallet/auto-recharge', { onSuccess: () => setAuto(false) }); };
+/** Mock-up 29: Wallet and Credits. */
+export default function Wallet({ summary, wallet, packs, count, transactions, manifest }: Props) {
+    const money = useMoney();
+    const [amount, setAmount] = useState('');
+    const auto = useForm({ auto_recharge: Boolean(wallet.auto_recharge), auto_recharge_threshold_zar: wallet.auto_recharge_threshold_zar ?? 1000, auto_recharge_amount_zar: wallet.auto_recharge_amount_zar ?? 5000 });
 
     return (
-        <AiimPage
+        <Flow
             title="Wallet and Credits"
-            crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: 'Wallet and Credits' }]}
-            heading={<>Wallet and Credits <WalletIcon className="size-7 text-risk-500" /></>}
-            subtitle="Manage your AIIM wallet, credits and transaction history."
-            description="Prepaid credits make unlocking premium intelligence simple and secure."
-            rail={
+            eyebrow="Prepaid credits (AAB-EMB-228)"
+            crumbs={[{ label: 'Workspace', href: '/aiim/workspace' }]}
+            side={
                 <>
-                    <SelectionBox />
-                    <RailBox title="Wallet Insights">
-                        <ul className="space-y-3 text-xs">{[[Coins, 'Save on every unlock', 'Credit packs give you the best value.'], [ShieldCheck, 'No hidden fees', 'All fees are shown upfront.'], [Lock, 'Flexible and secure', 'Credits are usable only for AIIM services.']].map(([I, t, d]) => { const Icon = I as typeof Coins; return <li key={t as string} className="flex gap-2"><Icon className="size-4 text-gold-500" /><span><strong className="block">{t as string}</strong><span className="text-ink-400">{d as string}</span></span></li>; })}</ul>
-                    </RailBox>
-                    <RailBox title="Need More Credits?"><Button type="button" size="sm" className="w-full" onClick={() => setTopUp(true)}>Add Funds</Button></RailBox>
+                    <Banner icon="cash">Credits are prepaid in ZAR through secure checkout, with VAT charged on the top-up. They pay for AIIM services only and are not a bank balance.</Banner>
+                    <Card title="Auto-recharge">
+                        <form onSubmit={(e) => { e.preventDefault(); auto.post('/aiim/wallet/auto-recharge', { preserveScroll: true }); }} className="grid gap-2.5">
+                            <Check checked={auto.data.auto_recharge} onChange={(v) => auto.setData('auto_recharge', v)}>Top up automatically when the balance runs low</Check>
+                            <Field label="When the balance falls below (ZAR)"><input type="number" className={inputCls} value={auto.data.auto_recharge_threshold_zar} onChange={(e) => auto.setData('auto_recharge_threshold_zar', Number(e.target.value))} /></Field>
+                            <Field label="Top up by (ZAR)"><input type="number" className={inputCls} value={auto.data.auto_recharge_amount_zar} onChange={(e) => auto.setData('auto_recharge_amount_zar', Number(e.target.value))} /></Field>
+                            {Object.values(auto.errors)[0] && <p role="alert" className="text-[0.75rem] text-risk-600">{Object.values(auto.errors)[0]}</p>}
+                            <B type="submit" sm disabled={auto.processing}>Save</B>
+                        </form>
+                    </Card>
                 </>
             }
         >
-            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-                <div className="space-y-4">
-                    <SectionCard title="Wallet Balance">
-                        <p className="text-3xl font-bold text-verified-700">{zar2(summary.balance)}</p>
-                        <p className="text-sm">Available Credits</p>
-                        <p className="mt-1 text-xs text-ink-500">This balance can be used to unlock premium intelligence objects.</p>
-                        <div className="mt-3 flex items-center justify-between border-t border-parchment-300 pt-2 text-xs">
-                            <span className="flex items-center gap-1"><Clock className="size-3.5" />Auto-recharge: {wallet.auto_recharge ? `On (below ${zar2(wallet.auto_recharge_threshold_zar)})` : 'Off'}</span>
-                            <button type="button" onClick={() => setAuto(true)} className="font-semibold text-risk-500 underline">Manage Auto-recharge</button>
-                        </div>
-                    </SectionCard>
-                    <SectionCard title="Quick Actions">
-                        <ul className="space-y-1 text-sm">
-                            <li><button type="button" onClick={() => setTopUp(true)} className="flex w-full items-center gap-3 rounded p-2 text-left hover:bg-parchment-200"><CreditCard className="size-5 text-gold-600" /><span><strong className="block">Add Funds</strong><span className="text-xs text-ink-500">Top up your wallet securely.</span></span></button></li>
-                            <li><a href="#packs" className="flex items-center gap-3 rounded p-2 hover:bg-parchment-200"><Package className="size-5 text-gold-600" /><span><strong className="block">Purchase Credit Pack</strong><span className="text-xs text-ink-500">Choose from prepaid credit bundles.</span></span></a></li>
-                            <li><a href="#history" className="flex items-center gap-3 rounded p-2 hover:bg-parchment-200"><History className="size-5 text-gold-600" /><span><strong className="block">Transaction History</strong><span className="text-xs text-ink-500">View all wallet and credit transactions.</span></span></a></li>
-                            <li className="flex items-center gap-3 p-2"><BarChart3 className="size-5 text-gold-600" /><span><strong className="block">Credits Usage Report</strong><span className="text-xs text-ink-500">{usage} paid unlocks/views to date.</span></span></li>
-                        </ul>
-                    </SectionCard>
+            <Kpis>
+                <Kpi l="Balance" v={money(summary.balance)} s={`${money(summary.total)} bought, ${money(summary.used)} used`} icon="cash" />
+                <Kpi l="Transactions" v={String(count)} icon="file" />
+                <Kpi l="Manifest" v={money(manifest.total)} s={`${manifest.count} items`} icon="cart" />
+            </Kpis>
+            <Card title="Top up">
+                <div className="grid gap-3 sm:grid-cols-3">
+                    {packs.map((p) => (
+                        <button key={p.code} type="button" onClick={() => router.post('/aiim/wallet/top-up', { pack: p.code })} className="grid gap-1 rounded-[6px] border border-parchment-400 bg-white p-3 text-left hover:border-gold-500">
+                            <span className="text-[0.7rem] font-bold tracking-wide text-ink-500 uppercase">{p.label}</span>
+                            <b className="font-mono text-[1.1rem] text-ink-900">{N(p.credits)} credits</b>
+                            <span className="text-[0.75rem] text-ink-500">ZAR-denominated · pay {money(p.price)} excl. VAT{p.saving ? ` · ${p.saving}` : ''}</span>
+                        </button>
+                    ))}
                 </div>
-                <div className="space-y-4">
-                    <SectionCard title="Credits Summary">
-                        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                            {[['Total Credits', summary.total], ['Used Credits', summary.used], ['Reserved Credits', summary.reserved], ['Expiring Soon', summary.expiring]].map(([k, v]) => <div key={k as string}><dt className="text-xs text-ink-500">{k}</dt><dd className="text-lg font-bold">{zar2(v as number)}</dd></div>)}
-                        </dl>
-                    </SectionCard>
-                    <SectionCard title="Credit Packs">
-                        <ul id="packs" className="grid gap-3 sm:grid-cols-3">
-                            {packs.map((p) => (
-                                <li key={p.code} className="rounded-[8px] border border-parchment-400 p-3 text-center">
-                                    <p className="font-semibold">{p.label}</p>
-                                    <p className="text-2xl font-bold text-gold-700">{p.credits.toLocaleString('en-ZA')}</p>
-                                    <p className="text-xs text-ink-500">credits for {zar2(p.price)} + VAT</p>
-                                    {p.saving && <Chip tone="good" className="mt-1">{p.saving}</Chip>}
-                                    <Button type="button" size="sm" className="mt-2 w-full" onClick={() => buyPack(p.code)}>Buy Pack</Button>
-                                </li>
-                            ))}
-                        </ul>
-                    </SectionCard>
-                    <SectionCard title="Recent Transactions">
-                        <div id="history">
-                            <SimpleTable
-                                columns={['Date', 'Description', 'Type', 'Amount (ZAR)', 'Balance (ZAR)']}
-                                rows={transactions.map((t) => [t.date, t.description, <Chip key="t" tone={t.type === 'debit' ? 'bad' : t.type === 'credit' ? 'info' : 'good'}>{t.type === 'top-up' ? 'Top-up' : t.type === 'debit' ? 'Debit' : 'Credit'}</Chip>, <span key="a" className={t.amount < 0 ? 'text-risk-500' : 'text-verified-700'}>{t.amount < 0 ? '-' : '+'} {zar2(Math.abs(t.amount))}</span>, zar2(t.balance)])}
-                                empty="No transactions yet."
+                <form onSubmit={(e) => { e.preventDefault(); router.post('/aiim/wallet/top-up', { amount: Number(amount) }); }} className="mt-3 flex flex-wrap items-end gap-2">
+                    <Field label="Other amount (ZAR, 500 to 100,000)" className="w-56"><input type="number" min={500} max={100000} className={inputCls} value={amount} onChange={(e) => setAmount(e.target.value)} /></Field>
+                    <B type="submit" disabled={!amount}>Top up</B>
+                </form>
+            </Card>
+            <Card title="Recent activity">
+                {transactions.length ? (
+                    <ul className="grid gap-2">
+                        {transactions.map((t) => (
+                            <SvcRow
+                                key={t.reference}
+                                title={t.description}
+                                meta={<><span className="font-mono">{t.related ?? t.reference}</span><span>{t.date}</span></>}
+                                right={<span className={cn('font-mono text-[0.85rem] font-bold', t.amount < 0 ? 'text-risk-600' : 'text-verified-700')}>{t.amount < 0 ? '−' : '+'}{money(Math.abs(t.amount))}</span>}
                             />
-                        </div>
-                    </SectionCard>
-                </div>
-            </div>
-
-            <Modal open={topUp} onClose={() => setTopUp(false)} title="Add Funds">
-                <form onSubmit={submitTop} className="space-y-3">
-                    <Field label="Amount (ZAR credits)" error={top.errors.amount} hint="Minimum R500. VAT and the disclosed platform fee are added at checkout.">{(id) => <Input id={id} type="number" min={500} step={100} value={top.data.amount} onChange={(e) => top.setData('amount', Number(e.target.value))} />}</Field>
-                    <Button type="submit" disabled={top.processing} className="w-full">Continue to Secure Payment</Button>
-                </form>
-            </Modal>
-            <Modal open={auto} onClose={() => setAuto(false)} title="Manage Auto-recharge">
-                <form onSubmit={submitAuto} className="space-y-3">
-                    <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={ar.data.auto_recharge} onChange={(e) => ar.setData('auto_recharge', e.target.checked)} className="accent-gold-600" />Enable auto-recharge</label>
-                    <Field label="Recharge when balance falls below (ZAR)" error={ar.errors.auto_recharge_threshold_zar}>{(id) => <Input id={id} type="number" value={ar.data.auto_recharge_threshold_zar} onChange={(e) => ar.setData('auto_recharge_threshold_zar', Number(e.target.value))} />}</Field>
-                    <Field label="Recharge amount (ZAR)" error={ar.errors.auto_recharge_amount_zar}>{(id) => <Input id={id} type="number" value={ar.data.auto_recharge_amount_zar} onChange={(e) => ar.setData('auto_recharge_amount_zar', Number(e.target.value))} />}</Field>
-                    <Button type="submit" disabled={ar.processing} className="w-full">Save Settings</Button>
-                </form>
-            </Modal>
-        </AiimPage>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="text-[0.85rem] text-ink-500">No activity yet.</p>
+                )}
+            </Card>
+        </Flow>
     );
 }

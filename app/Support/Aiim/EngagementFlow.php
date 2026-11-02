@@ -5,6 +5,7 @@ namespace App\Support\Aiim;
 use App\Models\Aiim\Engagement;
 use App\Models\Aiim\EngagementEvent;
 use DomainException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Staged lifecycle for custom intelligence, advisory and verification mandates
@@ -133,9 +134,24 @@ class EngagementFlow
         };
     }
 
-    /** Standard work items quoted for an engagement type. Advisors adjust before issue. */
+    /**
+     * Standard work items quoted for an engagement: the prototype's formal quotation lines
+     * (ProtoEngagement::QLINES), each priced from the app's Sprint record by code. Lines the
+     * app does not price are left out; when none is priced yet (for example while seeding,
+     * before the catalogue loads) the earlier hand-written template is used. Advisors adjust
+     * before issue.
+     */
     public static function quoteTemplate(string $type, ?string $focus = null): array
     {
+        // Only read the catalogue once the app holds these Sprint records, so seeding never caches an empty catalogue.
+        $ready = DB::table('sprints')->whereIn('code', ProtoEngagement::QLINES)->exists();
+        $lines = ! $ready ? [] : collect(ProtoEngagement::QLINES)->map(fn ($c) => ProtoEngagement::svc($c))->filter(fn ($s) => $s && $s['price'])
+            ->map(fn ($s) => ['code' => $s['code'], 'item' => $s['name'], 'description' => trim(($s['tier'] ? $s['tier'].' tier' : '').($s['delivery'] ? ', delivery '.$s['delivery'] : ''), ', '), 'deliverables' => $s['name'], 'amount' => $s['price']])
+            ->values()->all();
+        if ($lines) {
+            return $lines;
+        }
+
         $focus = $focus ?: 'investment';
 
         return $type === 'advisory'

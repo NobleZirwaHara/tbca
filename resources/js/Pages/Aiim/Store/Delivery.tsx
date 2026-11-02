@@ -1,49 +1,56 @@
-import { Link } from '@inertiajs/react';
-import { CheckCircle2, ChevronRight, Clock, Download, Eye, FileArchive, FileSpreadsheet, Info } from 'lucide-react';
-import { zar2 } from '@/Components/Aiim/format';
-import AiimPage, { SectionCard, SelectionBox, DeeperBox } from '@/Components/Aiim/Shell';
-import { Stepper } from '@/Components/ui/Kit';
-import { Button } from '@/Components/ui/Button';
+import { Hero, Panel, PillLink, ProtoFrame, SvcRail, type SvcCard } from '@/Components/Aiim/ProtoLibrary';
+import { Dl, useMoney } from '@/Components/Industries/Kit';
+import { cn } from '@/lib/cn';
 import type { AiimPageProps } from '@/types/aiim';
-import { ReportCard, type ReportProps } from './Quote';
+import type { ReportProps } from './Quote';
 
-export default function Delivery({ report: r }: AiimPageProps & { report: ReportProps }) {
-    const delivered = r.status === 'delivered';
-    const stage = { quoted: 2, paid: 3, in_production: 3, delivered: 4 }[r.status] ?? 2;
+export const STATUS_LABEL: Record<string, string> = {
+    draft: 'Draft', changes_requested: 'Changes requested', quoted: 'Quoted', paid: 'Paid', accepted: 'Accepted', in_production: 'In production', delivered: 'Delivered',
+};
+
+export function StatusPill({ status }: { status: string }) {
+    const tone = status === 'delivered' ? 'bg-verified-50 text-verified-700' : ['in_production', 'paid'].includes(status) ? 'bg-controlled-50 text-controlled-700' : 'bg-attested-50 text-attested-700';
+    return <span className={cn('rounded-full px-2 py-0.5 text-[0.72rem] font-semibold whitespace-nowrap', tone)}>{STATUS_LABEL[status] ?? status}</span>;
+}
+
+/** Delivery stages (prototype Page 38) with how far this report has gone. */
+export function Stages({ r }: { r: ReportProps }) {
+    const bw = r.scope.startsWith('Botswana');
+    const stages = ['Order confirmed', bw ? 'Agents draft from BW-1.0 registers' : 'Agents draft from the country registers', 'Analyst review (human)', 'Source manifest attached', 'Delivered to workspace and WhatsApp'];
+    const done = r.status === 'delivered' ? 5 : r.status === 'in_production' ? 1 : r.paid || r.status === 'paid' ? 1 : 0;
+    const on = r.status === 'delivered' ? -1 : r.status === 'in_production' ? 2 : r.paid ? 1 : 0;
     return (
-        <AiimPage
-            title="Report Delivery"
-            crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: 'Reports', href: '/aiim/workspace/reports' }, { label: r.reference }, { label: 'Report Delivery' }]}
-            heading={<>Report Delivery {delivered ? <CheckCircle2 className="size-7 text-verified-500" /> : <Clock className="size-7 text-attested-500" />}</>}
-            subtitle={delivered ? 'Your premium report is ready' : 'Your premium report is in production'}
-            description={delivered ? 'Your report has been generated and is available for download.' : `Payment ${r.paid ? 'confirmed' : 'pending'}. Estimated delivery ${r.deliveryEstimate} from payment.`}
-            accent={delivered ? 'green' : 'gold'}
-            notice={delivered ? <div className="rounded-[8px] border border-verified-500/40 bg-verified-50 p-3 text-xs"><p className="font-semibold text-verified-700">Delivered</p><p>Delivered On: {r.deliveredAt}</p><p>Delivered To: {r.delivery?.email}</p></div> : true}
-            rail={<><SelectionBox /><DeeperBox /></>}
-        >
-            {!delivered && <SectionCard className="mb-4"><Stepper steps={['Configure', 'Quote', 'Production', 'Delivery']} current={stage} /></SectionCard>}
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-                <SectionCard>
-                    <ReportCard r={r} badge={delivered ? 'Completed' : 'In Production'} />
-                    {delivered && r.delivery?.size && <p className="mt-2 text-xs text-ink-500">File Size: {r.delivery.size}</p>}
-                    <div className="mt-4 grid gap-2 sm:grid-cols-4">
-                        <Button type="button" variant="outline" disabled={!delivered} onClick={() => window.print()}><Eye className="size-4" />Preview Report</Button>
-                        <Button type="button" disabled={!delivered} onClick={() => window.print()}><Download className="size-4" />Download PDF</Button>
-                        <Button type="button" disabled={!delivered}><FileSpreadsheet className="size-4" />Download Excel</Button>
-                        <Button type="button" disabled={!delivered}><FileArchive className="size-4" />Download All (ZIP)</Button>
-                    </div>
-                </SectionCard>
-                <SectionCard title="Report Summary">
-                    <dl className="space-y-1.5 text-sm">{[['Report ID', r.reference], ['Quote ID', r.quoteReference], ['Fee Code', r.typeCode], ['Order', r.orderReference ?? '—'], ['Payment Status', r.paid ? 'Paid' : 'Pending'], ['Amount Paid', `${zar2(r.total)} incl. VAT`]].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><dt className="text-ink-500">{k}</dt><dd className="font-medium">{v}</dd></div>)}</dl>
-                    <p className="mt-3 flex gap-1.5 rounded bg-controlled-50 p-2 text-xs text-controlled-700"><Info className="size-4 shrink-0" />This report is generated using verified sources, human-reviewed intelligence and TBCA methodology. For terms of use, data policy and limitations, refer to the report documentation.</p>
-                </SectionCard>
+        <ol className="grid gap-0">
+            {stages.map((s, i) => (
+                <li key={s} className="relative flex items-center gap-3 py-2 ps-1 text-[0.86rem]">
+                    <span className={cn('grid size-6 shrink-0 place-items-center rounded-full border-2 text-[0.7rem] font-bold', i < done ? 'border-verified-500 bg-verified-500 text-white' : i === on ? 'border-gold-500 bg-gold-100 text-gold-800' : 'border-parchment-500 bg-white text-ink-400')}>{i < done ? '✓' : i + 1}</span>
+                    <span className={cn(i < done ? 'text-ink-800' : i === on ? 'font-semibold text-ink-900' : 'text-ink-400')}>{s}</span>
+                </li>
+            ))}
+        </ol>
+    );
+}
+
+/** Page 38: Report Delivery for one report. */
+export default function Delivery({ report: r, rail }: AiimPageProps & { report: ReportProps; rail: SvcCard[] }) {
+    const money = useMoney();
+    return (
+        <ProtoFrame title="Report Delivery" crumbs={[{ label: 'Workspace', href: '/aiim/workspace' }, { label: 'Reports', href: '/aiim/workspace/reports' }, { label: r.reference }]}>
+            <Hero eyebrow="Page 38" title="Report Delivery" lead={r.title} />
+            <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_21rem]">
+                <div className="grid content-start gap-4">
+                    <Panel title="Your report" right={<StatusPill status={r.status} />}>
+                        <Dl rows={[
+                            ['Report', <span key="r" className="font-mono">{r.reference}</span>], ['Quote', r.quoteReference ?? '—'], ['Format', `${r.typeName} (${r.typeCode})`],
+                            ['Scope', `${r.scope} · ${r.sectors}`], ['Includes', r.modules.join(' · ')], ['Order', r.orderReference ?? '—'],
+                            ['Payment', r.paid ? 'Paid' : 'Pending'], ['Amount', `${money(r.total)} incl. VAT`], ...(r.deliveredAt ? [['Delivered', `${r.deliveredAt}${r.delivery?.email ? ` to ${r.delivery.email}` : ''}`] as [string, string]] : []),
+                        ]} />
+                        {r.status === 'quoted' && <div className="mt-3"><PillLink href={`/aiim/reports/${r.reference}/quote`}>Open quotation</PillLink></div>}
+                    </Panel>
+                    <Panel title="Delivery stages"><Stages r={r} /></Panel>
+                </div>
+                <div className="grid content-start gap-4"><SvcRail title="After delivery" items={rail} /></div>
             </div>
-            <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-                <SectionCard title="What's Included"><ul className="grid gap-1 text-xs sm:grid-cols-2">{r.modules.map((m) => <li key={m} className="flex gap-1.5"><CheckCircle2 className="size-3.5 text-verified-500" />{m}</li>)}<li className="flex gap-1.5"><CheckCircle2 className="size-3.5 text-verified-500" />Appendices and data references</li></ul></SectionCard>
-                <SectionCard title="Next Steps">
-                    <ul className="space-y-1 text-sm">{[['Explore related opportunities', '/aiim/opportunities'], ['Compare with other regions', '/aiim/workspace/compare'], ['Request human advisor call', '/aiim/workspace/advisor-request'], ['Order another report', '/aiim/store']].map(([l, h]) => <li key={h}><Link href={h} className="flex items-center justify-between rounded p-1.5 hover:bg-parchment-200">{l}<ChevronRight className="size-4" /></Link></li>)}</ul>
-                </SectionCard>
-            </div>
-        </AiimPage>
+        </ProtoFrame>
     );
 }

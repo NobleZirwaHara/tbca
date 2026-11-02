@@ -7,6 +7,8 @@ import AiimPage from '@/Components/Aiim/Shell';
 import { CheckGroup, DarkSelect, FilterBar, Pagination, RefinePanel, ResultsHeader, SearchRail, type Filters } from '@/Components/Aiim/SearchKit';
 import type { AiimPageProps, Paginated, ProjectItem } from '@/types/aiim';
 import { useCompactPrice } from '@/Components/Aiim/Explorer/money';
+import { PackLoading } from '@/Components/Aiim/ProtoExplore';
+import { CountryBar, type CountryOpt } from '@/Components/Aiim/ProtoSearch';
 
 interface Props extends AiimPageProps {
     kind: 'opportunity' | 'project';
@@ -14,14 +16,20 @@ interface Props extends AiimPageProps {
     results: Paginated<ProjectItem>;
     options: { types: string[]; stages: string[]; sizes: [string, string][]; provinces: { slug: string; name: string }[]; sectors: { slug: string; name: string }[]; countries: { slug: string; name: string }[] };
     saved: string[];
+    country: string;
+    countryName: string;
+    countries: CountryOpt[];
+    packLoading: boolean;
 }
 
-export default function Search({ kind, filters, results, options, saved }: Props) {
+/** P7 / P9 for countries other than Botswana: the app's own opportunity and project records, filtered by country. */
+export default function Search({ kind, filters, results, options, saved, country, countryName, countries, packLoading }: Props) {
     const isProject = kind === 'project';
     const compact = useCompactPrice();
     // Screened project briefs carry ZAR amounts and follow the selected display currency.
     const size = (p: ProjectItem) => (p.screening ? compact(p.screening.capexZar) : p.size);
-    const path = isProject ? '/aiim/projects' : '/aiim/opportunities';
+    const base = isProject ? '/aiim/projects' : '/aiim/opportunities';
+    const path = `${base}?country=${country}`;
     const noun = isProject ? 'Projects' : 'Opportunities';
     const provinceName = options.provinces.find((p) => p.slug === filters.province)?.name ?? options.countries.find((c) => c.slug === filters.country)?.name;
     const sectorName = options.sectors.find((s) => s.slug === filters.sector)?.name;
@@ -36,11 +44,12 @@ export default function Search({ kind, filters, results, options, saved }: Props
             description={isProject ? 'Filter, compare and explore investment-ready projects with verified insights.' : `Use filters to narrow results or explore all ${results.total} active opportunities.`}
             rail={<SearchRail compareLabel={`Compare ${noun}`} />}
         >
+            <CountryBar path={base} country={country} countries={countries} />
+            {packLoading && <div className="mb-4"><PackLoading country={countryName} what={isProject ? 'Projects' : 'Opportunities'} /></div>}
             <FilterBar
                 path={path}
                 filters={filters}
                 labels={[
-                    { key: 'country', label: 'Country', display: (v) => options.countries.find((c) => c.slug === v)?.name ?? v },
                     { key: 'province', label: 'Location', display: (v) => options.provinces.find((p) => p.slug === v)?.name ?? v },
                     { key: 'sector', label: 'Sector', display: (v) => options.sectors.find((s) => s.slug === v)?.name ?? v },
                     { key: 'types', label: isProject ? 'Project Type' : 'Opportunity Type' },
@@ -52,7 +61,6 @@ export default function Search({ kind, filters, results, options, saved }: Props
                 <RefinePanel key={JSON.stringify(filters)} path={path} filters={filters} placeholder="e.g. data centre, fintech, cloud, AI">
                     {(d, set) => (
                         <>
-                            <DarkSelect label="Country" value={d.country as string} onChange={(v) => set('country', v)} options={options.countries.map((c) => [c.slug, c.name])} all="All Countries" />
                             <DarkSelect label="Location" value={d.province as string} onChange={(v) => set('province', v)} options={options.provinces.map((p) => [p.slug, p.name])} all="All Provinces" />
                             <CheckGroup label={isProject ? 'Project Type' : 'Opportunity Type'} options={options.types} value={d.types as string[]} onChange={(v) => set('types', v)} />
                             <DarkSelect label="Investment Size (ZAR)" value={d.size as string} onChange={(v) => set('size', v)} options={options.sizes} all="All Sizes" />

@@ -1,123 +1,84 @@
-import { router, useForm } from '@inertiajs/react';
-import { BadgeCheck, FileText, Lock, Search, ShieldCheck, UserCheck } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
-import { FeeSummary } from '@/Components/Aiim/FeeTable';
-import AiimPage, { RailBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
-import { Checkbox, Field, Select, Textarea } from '@/Components/ui/Form';
-import { Stepper } from '@/Components/ui/Kit';
-import { Button, ButtonLink } from '@/Components/ui/Button';
-import type { AiimPageProps, Totals } from '@/types/aiim';
+import { useForm } from '@inertiajs/react';
+import type { FormEvent } from 'react';
+import { Hero, Panel, PillLink, ProtoFrame, SumBox, pill, type SvcCard } from '@/Components/Aiim/ProtoLibrary';
+import { useMoney } from '@/Components/Industries/Kit';
+import type { AiimPageProps } from '@/types/aiim';
 
-type Opt = { slug?: string; value?: string; name?: string; label?: string; mode?: string };
+interface Config { type: string; sector: string; unit: string; language: string; currency: string; expedite: boolean; sources: boolean; country: string }
+type Opt = { value: string; label: string };
 
 interface Props extends AiimPageProps {
-    report: { reference: string; title: string; status: string; step: number; config: { type: string; nationwide: boolean; provinces: string[]; sectors: string[]; modules: string[]; delivery: string; format: string; notes?: string } };
-    estimate: Totals & { typeName: string; typeMode: string; pages: string; delivery: string };
-    options: { types: { value: string; label: string; mode: string }[]; provinces: { slug: string; name: string }[]; sectors: { slug: string; name: string }[]; modules: { value: string; label: string }[] };
+    report: { reference: string; title: string; status: string; sku: string | null; config: Config; country: string };
+    estimate: { unpriced: string[] };
+    options: { types: SvcCard[]; extras: { key: string; svc: SvcCard | null }[]; localise: boolean; sectors: Opt[]; units: Opt[]; unitsLabel: string };
 }
 
-function toggle(list: string[], v: string) {
-    return list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
-}
+const inputCls = 'h-10 w-full rounded-[8px] border border-parchment-500 bg-white px-3 text-[0.86rem]';
 
-export default function Configure({ report, estimate, options }: Props) {
+/** Page 36: Report Configuration. Posts to the existing report step and quotation actions. */
+export default function Configure({ report, options }: Props) {
+    const money = useMoney();
     const c = report.config;
-    const step = report.step;
-    const form = useForm({ step, draft: false, type: c.type, nationwide: c.nationwide, provinces: c.provinces, sectors: c.sectors, modules: c.modules, delivery: c.delivery, format: c.format, notes: c.notes ?? '' });
-    const [sectorQ, setSectorQ] = useState('');
-    const save = (draft: boolean) => (e?: FormEvent) => { e?.preventDefault(); form.transform((d) => ({ ...d, draft, step: report.step })); form.post(`/aiim/reports/${report.reference}/step`, { preserveScroll: true, preserveState: 'errors' }); };
-    const name = (list: Opt[], key: string) => list.find((o) => (o.slug ?? o.value) === key)?.name ?? list.find((o) => o.value === key)?.label ?? key;
+    const form = useForm({ kind: 'service', quote: false, type: c.type, sector: c.sector, unit: c.unit, language: c.language, currency: c.currency, expedite: c.expedite, sources: c.sources });
+    const d = form.data;
+    const extra = (k: string) => options.extras.find((x) => x.key === k)?.svc ?? null;
+    const type = options.types.find((t) => t.code === d.type) ?? options.types[0];
+
+    const lines: { label: string; amount: number }[] = [];
+    const missing: string[] = [];
+    const add = (s: SvcCard | null, label: string) => { if (!s) return; if (s.status === 'priced' && s.from !== null) lines.push({ label, amount: s.from }); else missing.push(`${label} (${s.code})`); };
+    add(type, type?.name ?? 'Report');
+    if (d.expedite) add(extra('expedite'), 'Expedite');
+    if (d.sources) add(extra('sources'), 'Source manifest');
+    if (d.language === 'tn') add(extra('localise'), 'Localisation');
+
+    const submit = (quote: boolean) => (e?: FormEvent) => { e?.preventDefault(); form.transform((x) => ({ ...x, quote })); form.post(`/aiim/reports/${report.reference}/step`, { preserveScroll: true }); };
+    const err = (k: keyof typeof d) => form.errors[k] && <p role="alert" className="mt-1 text-[0.75rem] text-risk-600">{form.errors[k]}</p>;
 
     return (
-        <AiimPage
-            title="Report Configuration"
-            crumbs={[{ label: 'Premium Intelligence' }, { label: 'Premium Brief Store', href: '/aiim/store' }, { label: 'Report Configuration' }]}
-            subtitle="Configure your premium report"
-            description="Customise the content, scope and delivery of your premium intelligence report."
-            accent="green"
-            badge={
-                <div className="flex items-center gap-3 rounded-[8px] border border-parchment-400 bg-white p-3 text-xs">
-                    <Lock className="size-6 text-gold-600" />
-                    <span><span className="block text-ink-500">Report Type</span><strong className="block text-sm">{estimate.typeName}</strong>{estimate.typeMode}</span>
-                </div>
-            }
-            rail={<><SelectionBox /><RailBox title="Need Help?"><p className="mb-3 text-xs text-ink-300">Our team is here to help you configure the right report for your decision.</p><ButtonLink href="/aiim/custom-intelligence" size="sm" className="w-full">Request Human Assistance</ButtonLink></RailBox></>}
-        >
-            <SectionCard className="mb-4"><Stepper steps={['Scope', 'Content', 'Delivery', 'Review']} current={step} /></SectionCard>
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_17rem]">
-                <form onSubmit={save(false)} noValidate>
-                    {step === 1 && (
-                        <div className="grid gap-4 lg:grid-cols-2">
-                            <SectionCard number={1} title="Report Type & Geographic Scope">
-                                <Field label="Report Type" error={form.errors.type}>{(id) => <Select id={id} value={form.data.type} onChange={(e) => form.setData('type', e.target.value)} options={options.types.map((t) => ({ value: t.value, label: `${t.label} — ${t.mode}` }))} />}</Field>
-                                <p className="mt-3 text-xs text-ink-500">Choose the regions to be included in your report.</p>
-                                <div className="mt-2 space-y-1.5">
-                                    <Checkbox checked={form.data.nationwide} onChange={(e) => form.setData('nationwide', e.target.checked)} label={<span><strong>South Africa (Nationwide)</strong> <span className="text-xs text-ink-400">All 9 provinces</span></span>} />
-                                    {options.provinces.map((p) => <Checkbox key={p.slug} checked={form.data.provinces.includes(p.slug)} onChange={() => form.setData('provinces', toggle(form.data.provinces, p.slug))} label={p.name} />)}
-                                </div>
-                                {form.errors.provinces && <p role="alert" className="mt-1 text-xs text-risk-500">{form.errors.provinces}</p>}
-                                <p className="mt-2 text-xs text-ink-500">{form.data.provinces.length} of 9 provinces selected · R400 per additional named province</p>
-                            </SectionCard>
-                            <SectionCard number={2} title="Select Sector Focus">
-                                <p className="mb-2 text-xs text-ink-500">Choose one or more sectors for deep analysis (R600 external data per sector).</p>
-                                <label className="mb-2 flex items-center rounded border border-parchment-500 px-2"><span className="sr-only">Search sectors</span><input value={sectorQ} onChange={(e) => setSectorQ(e.target.value)} placeholder="Search sectors…" className="h-9 flex-1 text-sm outline-none" /><Search className="size-4 text-ink-400" /></label>
-                                <div className="space-y-1.5">{options.sectors.filter((s) => s.name.toLowerCase().includes(sectorQ.toLowerCase())).map((s) => <Checkbox key={s.slug} checked={form.data.sectors.includes(s.slug)} onChange={() => form.setData('sectors', toggle(form.data.sectors, s.slug))} label={s.name} />)}</div>
-                                {form.errors.sectors && <p role="alert" className="mt-1 text-xs text-risk-500">{form.errors.sectors}</p>}
-                            </SectionCard>
-                        </div>
-                    )}
-                    {step === 2 && (
-                        <SectionCard number={3} title="Select Content Modules">
-                            <p className="mb-3 text-xs text-ink-500">Choose the modules to include in your report (R350 expert fee per module).</p>
-                            <div className="grid gap-2 sm:grid-cols-2">{options.modules.map((m) => <Checkbox key={m.value} checked={form.data.modules.includes(m.value)} onChange={() => form.setData('modules', toggle(form.data.modules, m.value))} label={m.label} />)}</div>
-                            {form.errors.modules && <p role="alert" className="mt-1 text-xs text-risk-500">{form.errors.modules}</p>}
-                        </SectionCard>
-                    )}
-                    {step === 3 && (
-                        <SectionCard number={4} title="Delivery Preferences">
+        <ProtoFrame title="Report Configuration" crumbs={[{ label: 'Premium Briefs', href: '/aiim/store' }, ...(report.sku ? [{ label: report.sku, href: `/aiim/store/${report.sku}` }] : []), { label: 'Report Configuration' }]}>
+            <Hero eyebrow={`Page 36 · Build a ${report.country} report`} title="Report Configuration" lead={<>{report.title} · <span className="font-mono">{report.reference}</span>{report.status === 'changes_requested' ? ' · changes requested' : ''}</>} />
+            <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_21rem]">
+                <form onSubmit={submit(true)} noValidate>
+                    <Panel title="Configure">
+                        <div className="grid gap-4">
+                            <label className="grid gap-1 text-[0.8rem] font-semibold text-ink-700">Report type
+                                <select className={inputCls} value={d.type} onChange={(e) => form.setData('type', e.target.value)}>
+                                    {options.types.map((s) => <option key={s.code} value={s.code}>{s.name} — {s.status === 'priced' && s.from !== null ? `from ${money(s.from)}` : 'not in the app catalogue yet'}</option>)}
+                                </select>{err('type')}
+                            </label>
                             <div className="grid gap-4 sm:grid-cols-2">
-                                <Field label="Delivery Speed" error={form.errors.delivery}>{(id) => <Select id={id} value={form.data.delivery} onChange={(e) => form.setData('delivery', e.target.value)} options={[{ value: 'standard', label: 'Standard' }, { value: 'express', label: 'Express (+25% expert fee, ~half the time)' }]} />}</Field>
-                                <Field label="Output Format" error={form.errors.format}>{(id) => <Select id={id} value={form.data.format} onChange={(e) => form.setData('format', e.target.value)} options={[{ value: 'pdf', label: 'PDF report' }, { value: 'pdf-excel', label: 'PDF + Excel data tables' }, { value: 'pdf-excel-dashboard', label: 'PDF + Excel + dashboard' }]} />}</Field>
-                                <Field label="Notes for the research team" className="sm:col-span-2" error={form.errors.notes}>{(id) => <Textarea id={id} value={form.data.notes} onChange={(e) => form.setData('notes', e.target.value)} maxLength={1000} />}</Field>
+                                <label className="grid gap-1 text-[0.8rem] font-semibold text-ink-700">Sector focus
+                                    <select className={inputCls} value={d.sector} onChange={(e) => form.setData('sector', e.target.value)}><option value="">All sectors</option>{options.sectors.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select>{err('sector')}
+                                </label>
+                                <label className="grid gap-1 text-[0.8rem] font-semibold text-ink-700">Unit focus
+                                    <select className={inputCls} value={d.unit} onChange={(e) => form.setData('unit', e.target.value)}><option value="">{options.unitsLabel}</option>{options.units.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select>{err('unit')}
+                                </label>
+                                <label className="grid gap-1 text-[0.8rem] font-semibold text-ink-700">Language
+                                    <select className={inputCls} value={d.language} onChange={(e) => form.setData('language', e.target.value)}><option value="en">English</option>{options.localise && <option value="tn">Setswana (AAB-EMB-191 localisation)</option>}</select>{err('language')}
+                                </label>
+                                <label className="grid gap-1 text-[0.8rem] font-semibold text-ink-700">Currency
+                                    <select className={inputCls} value={d.currency} onChange={(e) => form.setData('currency', e.target.value)}>{['BWP', 'USD', 'ZAR'].map((x) => <option key={x}>{x}</option>)}</select>{err('currency')}
+                                </label>
                             </div>
-                        </SectionCard>
-                    )}
-                    {step === 4 && (
-                        <SectionCard title="Review Your Configuration">
-                            <dl className="grid gap-3 text-sm sm:grid-cols-2">
-                                <div><dt className="text-xs text-ink-500">Report Type</dt><dd className="font-semibold">{estimate.typeName}</dd></div>
-                                <div><dt className="text-xs text-ink-500">Geographic Scope</dt><dd className="font-semibold">{[c.nationwide ? 'South Africa (Nationwide)' : null, ...c.provinces.map((p) => name(options.provinces, p))].filter(Boolean).join(' + ')}</dd></div>
-                                <div><dt className="text-xs text-ink-500">Sectors</dt><dd className="font-semibold">{c.sectors.map((s) => name(options.sectors, s)).join(', ')}</dd></div>
-                                <div><dt className="text-xs text-ink-500">Content Modules</dt><dd className="font-semibold">{c.modules.length} selected</dd></div>
-                                <div><dt className="text-xs text-ink-500">Delivery</dt><dd className="font-semibold capitalize">{c.delivery} · {c.format}</dd></div>
-                            </dl>
-                            <div className="mt-4 flex gap-3">
-                                <Button type="button" onClick={() => router.post(`/aiim/reports/${report.reference}/quote`)} trailingIcon="arrow-right">Request Formal Quotation</Button>
-                                <ButtonLink href={`/aiim/reports/${report.reference}/configure?step=1`} variant="outline">Edit Scope</ButtonLink>
+                            <label className="flex items-center gap-2 text-[0.86rem]"><input type="checkbox" className="size-4 accent-gold-600" checked={d.expedite} onChange={(e) => form.setData('expedite', e.target.checked)} />Expedite delivery (AAB-EMB-242)</label>
+                            <label className="flex items-center gap-2 text-[0.86rem]"><input type="checkbox" className="size-4 accent-gold-600" checked={d.sources} onChange={(e) => form.setData('sources', e.target.checked)} />Add source manifest and evidence appendix (AAB-EMB-203)</label>
+                            <div className="flex flex-wrap gap-2">
+                                <button type="submit" className={pill('gold', 'md')} disabled={form.processing}>Get quotation</button>
+                                <button type="button" className={pill('ghost', 'md')} disabled={form.processing} onClick={submit(false)}>Save draft</button>
+                                <PillLink href={report.sku ? `/aiim/store/${report.sku}` : '/aiim/store'} tone="ghost" size="md">Back</PillLink>
                             </div>
-                        </SectionCard>
-                    )}
-                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                        <div className="flex flex-wrap gap-3 rounded-[8px] bg-gold-50 p-3 text-xs">
-                            <strong>Data Assurances</strong>
-                            {[[BadgeCheck, 'Verified Sources'], [UserCheck, 'Human Review'], [FileText, 'Methodology Notes'], [ShieldCheck, 'Commercial Usage Licence']].map(([I, t]) => { const Icon = I as typeof BadgeCheck; return <span key={t as string} className="flex items-center gap-1"><Icon className="size-3.5" />{t as string}</span>; })}
                         </div>
-                        {step < 4 && (
-                            <div className="flex gap-2">
-                                {step > 1 && <ButtonLink href={`/aiim/reports/${report.reference}/configure?step=${step - 1}`} variant="outline">Back</ButtonLink>}
-                                <Button type="button" variant="outline" onClick={save(true)} disabled={form.processing}>Save as Draft</Button>
-                                <Button type="submit" disabled={form.processing} trailingIcon="arrow-right">Continue to {['', 'Content', 'Delivery', 'Review'][step]}</Button>
-                            </div>
-                        )}
-                    </div>
+                    </Panel>
                 </form>
-                <div className="space-y-4">
-                    <SectionCard title="Your Report Summary">
-                        <dl className="space-y-1.5 text-xs">{[['Report Type', estimate.typeName], ['Sectors', `${c.sectors.length} selected`], ['Content Modules', `${c.modules.length} selected`], ['Estimated Pages', estimate.pages], ['Estimated Delivery', estimate.delivery]].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><dt className="text-ink-500">{k}</dt><dd className="text-right font-medium">{v}</dd></div>)}</dl>
-                    </SectionCard>
-                    <SectionCard title="Estimated Investment"><FeeSummary {...estimate} /><p className="mt-2 text-[0.65rem] text-ink-400">Updates when you save each step.</p></SectionCard>
+                <div className="grid content-start gap-4">
+                    <Panel title="Live price">
+                        <SumBox lines={lines} />
+                        {missing.length > 0 && <p className="mt-2 text-[0.75rem] text-attested-700">Not in the app catalogue yet: {missing.join(', ')}.</p>}
+                        <p className="mt-2 text-[0.72rem] text-ink-400">Prices from the app's Sprint records, VAT-exclusive. The quotation is valid for 14 days (AAB-EMB-230).</p>
+                    </Panel>
                 </div>
             </div>
-        </AiimPage>
+        </ProtoFrame>
     );
 }

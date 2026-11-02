@@ -6,6 +6,8 @@ import AiimPage from '@/Components/Aiim/Shell';
 import { CheckGroup, DarkSelect, FilterBar, Pagination, RefinePanel, ResultsHeader, SearchRail, type Filters } from '@/Components/Aiim/SearchKit';
 import { ButtonLink } from '@/Components/ui/Button';
 import type { AiimPageProps, OrgItem, Paginated } from '@/types/aiim';
+import { PackLoading } from '@/Components/Aiim/ProtoExplore';
+import { CountryBar, type CountryOpt } from '@/Components/Aiim/ProtoSearch';
 
 interface Props extends AiimPageProps {
     kind: 'investor' | 'funder';
@@ -13,14 +15,20 @@ interface Props extends AiimPageProps {
     results: Paginated<OrgItem>;
     options: { types: string[]; stages: string[]; instruments: string[]; origins: string[]; tickets: [string, string][]; provinces: { slug: string; name: string }[]; sectors: { slug: string; name: string }[] };
     saved: string[];
+    country: string;
+    countryName: string;
+    countries: CountryOpt[];
+    packLoading: boolean;
 }
 
-export default function OrgSearch({ kind, filters, results, options, saved }: Props) {
+/** P11 / P13 for countries other than Botswana: the app's investor and funder records (the South Africa model data set). */
+export default function OrgSearch({ kind, filters, results, options, saved, country, countryName, countries, packLoading }: Props) {
     const investor = kind === 'investor';
-    const path = investor ? '/aiim/investors' : '/aiim/funders';
+    const base = investor ? '/aiim/investors' : '/aiim/funders';
+    const path = `${base}?country=${country}`;
     const noun = investor ? 'Investors' : 'Funders';
     const sectorName = options.sectors.find((s) => s.slug === filters.sector)?.name;
-    const href = (o: OrgItem) => `${path}/${o.slug}`;
+    const href = (o: OrgItem) => `${base}/${o.slug}`;
 
     return (
         <AiimPage
@@ -31,6 +39,8 @@ export default function OrgSearch({ kind, filters, results, options, saved }: Pr
             actions={<ButtonLink href={sectorName ? `/aiim/sector/${filters.sector}` : '/aiim/sectors'} size="sm" variant="outline">Back to Sector</ButtonLink>}
             rail={<SearchRail compareLabel={`Compare ${noun}`} />}
         >
+            <CountryBar path={base} country={country} countries={countries} note={country === 'south-africa' || country === 'all' ? 'Investor and funder records held in the app (South Africa model data set).' : undefined} />
+            {packLoading && <div className="mb-4"><PackLoading country={countryName} what={investor ? 'Investor profiles' : 'Funder profiles'} /></div>}
             <FilterBar
                 path={path}
                 filters={filters}

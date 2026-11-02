@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers\Aiim;
 
-use App\Models\Aiim\Advisor;
-use App\Models\Aiim\Alert;
 use App\Models\Aiim\Comparison;
-use App\Models\Aiim\Corridor;
 use App\Models\Aiim\Engagement;
-use App\Models\Aiim\EngagementEvent;
-use App\Models\Aiim\Organisation;
-use App\Models\Aiim\Project;
-use App\Models\Aiim\ReportRequest;
 use App\Models\Aiim\SavedItem;
 use App\Support\Aiim\Catalogue;
 use App\Support\Aiim\ComparisonEngine;
-use App\Support\Aiim\EngagementFlow;
-use App\Support\Aiim\WalletService;
+use App\Support\Aiim\ProtoAccount;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Response;
 
 /**
- * Stage 1 — shortlisting and comparison: client dashboard, saved items,
- * watchlists and the comparison builder.
+ * Shortlisting and comparison (mock-ups 21 to 24 and 77): client dashboard, saved items,
+ * watchlist and the comparison builder for Botswana opportunity templates.
  */
 class WorkspaceController extends AiimController
 {
@@ -31,38 +23,14 @@ class WorkspaceController extends AiimController
     {
         $this->sync($request);
         $user = $request->user();
-        $saved = SavedItem::query()->where('user_id', $user->id)->latest()->get();
-        $engagements = Engagement::query()->where('user_id', $user->id)->latest()->get();
-
-        $portfolio = $saved->where('list', 'saved')
-            ->map(fn ($s) => Catalogue::card($s->entity_type, $s->entity_key)['sector'] ?? 'Other')
-            ->map(fn ($s) => $s ?: 'Other')->countBy()->sortDesc()->map(fn ($n, $k) => ['label' => $k, 'value' => $n])->values();
-
-        $paid = $engagements->sum(fn ($e) => $e->deposit_paid_at ? $e->depositExVat() : 0) + $engagements->sum(fn ($e) => $e->balance_paid_at ? $e->feeExVat() - $e->depositExVat() : 0);
-        $value = $engagements->whereNotIn('status', ['draft', 'submitted', 'under_review', 'cancelled'])->sum(fn ($e) => $e->feeExVat());
+        $snap = $this->snapshot($user);
+        $latest = Engagement::query()->where('user_id', $user->id)->latest('id')->value('reference');
 
         return $this->render($request, 'Aiim/Workspace/Dashboard', [
-            'kpis' => [
-                'mandates' => $engagements->whereIn('status', ['in_progress', 'paused', 'delivered', 'accepted'])->count(),
-                'saved' => $saved->where('list', 'saved')->count(),
-                'comparisons' => Comparison::query()->where('user_id', $user->id)->count(),
-                'reports' => ReportRequest::query()->where('user_id', $user->id)->whereIn('status', ['paid', 'in_production', 'delivered'])->count(),
-                'introductions' => \App\Models\Aiim\Introduction::query()->whereIn('engagement_id', $engagements->pluck('id'))->count(),
-                'alerts' => Alert::query()->where(fn ($q) => $q->whereNull('user_id')->orWhere('user_id', $user->id))->where('status', 'new')->count(),
-            ],
-            'portfolio' => $portfolio,
-            'activity' => EngagementEvent::query()->whereIn('engagement_id', $engagements->pluck('id'))->latest('id')->take(6)->get()
-                ->map(fn ($e) => ['action' => $e->action, 'note' => $e->note ?? $engagements->firstWhere('id', $e->engagement_id)?->title, 'at' => $e->created_at->diffForHumans()]),
-            'mandates' => $engagements->map(fn ($e) => [
-                'reference' => $e->reference, 'mandate' => $e->mandate_reference, 'title' => $e->title, 'stage' => $e->stage ?? EngagementFlow::label($e->status),
-                'status' => EngagementFlow::label($e->status), 'rawStatus' => $e->status, 'progress' => $e->progress, 'end' => $e->end_date?->format('j M Y'),
-                'next' => EngagementFlow::nextAction($e),
-            ]),
-            'payment' => ['value' => $value, 'paid' => $paid, 'balance' => max(0, $value - $paid), 'wallet' => WalletService::balance($user)],
-            'savedRecent' => $saved->where('list', 'saved')->take(4)->map(fn ($s) => ['type' => Catalogue::typeLabel($s->entity_type), 'name' => $s->label, 'category' => Catalogue::card($s->entity_type, $s->entity_key)['sector'] ?? '—', 'saved' => $s->created_at->format('j M Y'), 'url' => Catalogue::card($s->entity_type, $s->entity_key)['url'] ?? '#'])->values(),
-            'watchlists' => $saved->where('list', 'watchlist')->groupBy('entity_type')->map(fn ($g, $t) => ['label' => Catalogue::typeLabel($t).'s', 'count' => $g->count()])->values(),
-            'advisor' => Advisor::query()->where('slug', 'sipho-maseko')->first()?->only(['name', 'title', 'email', 'phone']),
-            'lastLogin' => now()->format('j M Y, H:i'),
+            'kpis' => ['saved' => $snap['saved'], 'watchlist' => $snap['watchlist'], 'wallet' => $snap['wallet'], 'reports' => $snap['reports']],
+            'top' => ProtoAccount::top30(),
+            'alerts' => array_map(fn ($r) => ['status' => (string) $r['Status'], 'change' => (string) $r['Change'], 'instrument' => (string) $r['Instrument']], array_slice(ProtoAccount::regChange()['rows'], 0, 5)),
+            'ledgerUrl' => $latest ? "/aiim/workspace/engagements/{$latest}/ledger" : '/aiim/wallet',
         ], 'Client Dashboard');
     }
 
@@ -79,24 +47,28 @@ class WorkspaceController extends AiimController
     private function list(Request $request, string $list): Response
     {
         $user = $request->user();
-        $tab = $request->query('tab', 'all');
-        $q = trim((string) $request->query('q', ''));
-        $sort = $request->query('sort', 'newest');
+        $items = SavedItem::query()->where('user_id', $user->id)->where('list', $list)->latest('id')->get()
+            ->map(function ($s) {
+                $card = Catalogue::card($s->entity_type, $s->entity_key);
 
-        $items = SavedItem::query()->where('user_id', $user->id)->where('list', $list)->get()
-            ->map(fn ($s) => ($card = Catalogue::card($s->entity_type, $s->entity_key)) ? $card + ['id' => $s->id, 'type' => $s->entity_type, 'typeLabel' => Catalogue::typeLabel($s->entity_type), 'savedOn' => $s->created_at->format('j M Y'), 'savedTs' => $s->created_at->timestamp, 'alerts' => $s->alerts] : null)
-            ->filter();
-        $counts = ['all' => $items->count()] + $items->countBy('type')->all();
-        $items = $items
-            ->when($tab !== 'all', fn ($c) => $c->where('type', $tab))
-            ->when($q !== '', fn ($c) => $c->filter(fn ($i) => str_contains(strtolower($i['name'].' '.$i['summary'].' '.$i['location']), strtolower($q))))
-            ->sortBy(fn ($i) => match ($sort) { 'score' => -($i['score'] ?? 0), 'name' => $i['name'], 'oldest' => $i['savedTs'], default => -$i['savedTs'] })
-            ->values();
+                return [
+                    'id' => $s->id, 'type' => $s->entity_type, 'key' => $s->entity_key, 'typeLabel' => Catalogue::typeLabel($s->entity_type),
+                    'label' => $card['name'] ?? $s->label, 'url' => $card['url'] ?? null, 'savedOn' => $s->created_at->format('d/m/Y'), 'alerts' => (bool) $s->alerts,
+                ];
+            })->values();
 
-        return $this->render($request, 'Aiim/Workspace/Saved', [
-            'list' => $list, 'tab' => $tab, 'q' => $q, 'sort' => $sort, 'counts' => $counts, 'items' => $items,
-            'compareCount' => count($this->draft($user)->items),
-        ], $list === 'saved' ? 'Saved Items' : 'Watchlist');
+        $props = [
+            'list' => $list,
+            'items' => $items,
+            'services' => $list === 'saved'
+                ? ProtoAccount::rail(['AAB-EMB-094', 'AAB-EMB-200', 'AAB-EMB-218'], 3)
+                : ProtoAccount::rail(['AAB-EMB-113', 'AAB-EMB-172', 'AAB-EMB-173', 'AAB-EMB-174', 'AAB-EMB-175'], 5),
+        ];
+        if ($list === 'watchlist') {
+            $props['changes'] = ProtoAccount::regChange();
+        }
+
+        return $this->render($request, 'Aiim/Workspace/Saved', $props, $list === 'saved' ? 'Saved Items' : 'Watchlist');
     }
 
     /** Toggle an item in the saved list or watchlist. */
@@ -155,50 +127,58 @@ class WorkspaceController extends AiimController
                 $draft->update(['items' => $source->items]);
             }
         }
-
         $q = trim((string) $request->query('q', ''));
-        $type = $request->query('type', '');
-        $candidates = collect();
-        if ($request->query('tab', 'search') === 'saved') {
-            $candidates = SavedItem::query()->where('user_id', $user->id)->where('list', 'saved')->whereIn('entity_type', ['opportunity', 'project', 'investor', 'funder', 'corridor'])->get()
-                ->map(fn ($s) => Catalogue::card($s->entity_type, $s->entity_key))->filter();
-        } else {
-            if (! $type || in_array($type, ['opportunity', 'project'], true)) {
-                $candidates = $candidates->merge(Project::query()->when($q, fn ($w) => $w->where('name', 'like', "%{$q}%"))->when($request->query('sector'), fn ($w, $s) => $w->where('sector_slug', $s))->when($request->query('province'), fn ($w, $p) => $w->where('province_slug', $p))->orderByDesc('score')->take(8)->get()->map(fn ($p) => Catalogue::card($p->kind === 'project' ? 'project' : 'opportunity', $p->slug)));
-            }
-            if (! $type || in_array($type, ['investor', 'funder'], true)) {
-                $candidates = $candidates->merge(Organisation::query()->when($type, fn ($w) => $w->where('kind', $type))->when($q, fn ($w) => $w->where('name', 'like', "%{$q}%"))->orderByDesc('match_score')->take(6)->get()->map(fn ($o) => Catalogue::card($o->kind, $o->slug)));
-            }
-            if (! $type || $type === 'corridor') {
-                $candidates = $candidates->merge(Corridor::query()->when($q, fn ($w) => $w->where('name', 'like', "%{$q}%"))->take(4)->get()->map(fn ($c) => Catalogue::card('corridor', $c->slug)));
-            }
-        }
 
         return $this->render($request, 'Aiim/Workspace/CompareBuilder', [
-            'draft' => ['reference' => $draft->reference, 'count' => count($draft->items)] + ComparisonEngine::compare($draft->items),
+            'draft' => ['reference' => $draft->reference, 'items' => collect($draft->items)->map(fn ($i) => $this->selectedItem($i))->filter()->values()],
             'max' => ComparisonEngine::MAX_ITEMS,
-            'candidates' => $candidates->values(),
-            'filters' => ['q' => $q, 'type' => $type, 'tab' => $request->query('tab', 'search'), 'sector' => $request->query('sector', ''), 'province' => $request->query('province', '')],
-            'options' => ['sectors' => \App\Models\Aiim\Sector::query()->orderBy('sort')->get(['slug', 'name']), 'provinces' => \App\Models\Aiim\Province::query()->orderBy('rank')->get(['slug', 'name'])],
+            'q' => $q,
+            'candidates' => ProtoAccount::searchTemplates($q),
+            'services' => ProtoAccount::rail(['AAB-EMB-112', 'AAB-EMB-182', 'AAB-EMB-199'], 3),
         ], 'Comparison Builder');
+    }
+
+    /** A draft comparison item as shown in the "Selected" panel. */
+    private function selectedItem(array $i): ?array
+    {
+        if ($i['type'] === ComparisonEngine::TEMPLATE) {
+            $o = ProtoAccount::template($i['key']);
+
+            return $o ? ['type' => $i['type'], 'key' => $i['key'], 'name' => (string) $o['Opportunity'], 'tier' => (string) ($o['Tier'] ?? ''), 'url' => ProtoAccount::oppUrl($i['key'])] : null;
+        }
+        $card = Catalogue::card($i['type'], $i['key']);
+
+        return $card ? ['type' => $i['type'], 'key' => $i['key'], 'name' => $card['name'], 'tier' => null, 'url' => $card['url']] : null;
     }
 
     public function addItem(Request $request): RedirectResponse
     {
-        $data = $request->validate(['type' => ['required', Rule::in(['opportunity', 'project', 'investor', 'funder', 'corridor'])], 'key' => ['required', 'string']]);
-        $card = Catalogue::card($data['type'], $data['key']);
-        abort_unless($card, 404);
+        $data = $request->validate(['type' => ['required', Rule::in([ComparisonEngine::TEMPLATE, 'opportunity', 'project', 'investor', 'funder', 'corridor'])], 'key' => ['required', 'string']]);
+        if ($data['type'] === 'opportunity' && ProtoAccount::isTemplate($data['key'])) {
+            $data['type'] = ComparisonEngine::TEMPLATE; // Botswana opportunities compare as templates
+        }
+        if ($data['type'] === ComparisonEngine::TEMPLATE) {
+            $o = ProtoAccount::template($data['key']);
+            abort_unless($o, 404);
+            $name = (string) $o['Opportunity'];
+            $key = (string) $o['Opp ID'];
+        } else {
+            $card = Catalogue::card($data['type'], $data['key']);
+            abort_unless($card, 404);
+            $name = $card['name'];
+            $key = $card['key'];
+        }
         $draft = $this->draft($request->user());
         $items = collect($draft->items);
-        if ($items->contains(fn ($i) => $i['type'] === $data['type'] && $i['key'] === $card['key'])) {
-            return back()->with('success', "{$card['name']} is already in your comparison.");
+        if ($items->contains(fn ($i) => $i['type'] === $data['type'] && $i['key'] === $key)) {
+            return back()->with('success', "{$name} is already in your comparison.");
         }
         if ($items->count() >= ComparisonEngine::MAX_ITEMS) {
-            return back()->with('error', 'You can compare up to '.ComparisonEngine::MAX_ITEMS.' items. Remove one first.');
+            return back()->with('error', 'Five is the maximum. Remove one first.');
         }
-        $draft->update(['items' => $items->push(['type' => $data['type'], 'key' => $card['key']])->values()->all()]);
+        $draft->update(['items' => $items->push(['type' => $data['type'], 'key' => $key])->values()->all()]);
 
-        return back()->with('success', "{$card['name']} added to comparison (".($items->count()).' of '.ComparisonEngine::MAX_ITEMS.' slots used).');
+        return back()->with('success', "{$name} added to comparison (".($items->count() + 1).' of '.ComparisonEngine::MAX_ITEMS.').');
     }
 
     public function removeItem(Request $request): RedirectResponse
@@ -235,19 +215,32 @@ class WorkspaceController extends AiimController
         abort_unless($comparison->user_id === $request->user()->id, 403);
 
         return $this->render($request, 'Aiim/Workspace/CompareResults', [
-            'comparison' => ['reference' => $comparison->reference, 'generated' => $comparison->created_at->format('j M Y, H:i').' SAST', 'saved' => $comparison->saved] + ComparisonEngine::compare($comparison->items),
+            'comparison' => ['reference' => $comparison->reference, 'generated' => $comparison->created_at->format('j M Y, H:i')] + ComparisonEngine::compare($comparison->items),
+            'templates' => ComparisonEngine::templates($comparison->items),
+            'fields' => ProtoAccount::COMPARE_FIELDS,
+            'report' => ProtoAccount::service('AAB-EMB-199'),
         ], 'Comparison Results');
     }
 
     public function exportComparison(Request $request, Comparison $comparison)
     {
         abort_unless($comparison->user_id === $request->user()->id, 403);
+        $templates = ComparisonEngine::templates($comparison->items);
         $data = ComparisonEngine::compare($comparison->items);
-        $rows = [array_merge(['Metric'], array_map(fn ($c) => $c['card']['name'], $data['columns']))];
-        foreach ($data['rows'] as $row) {
-            $rows[] = array_merge([$row['label']], array_map(fn ($c) => $c['metrics'][$row['key']]['display'], $data['columns']));
+        $rows = [];
+        if ($templates) {
+            $rows[] = array_merge(['Field'], array_map(fn ($t) => $t['id'].' '.$t['name'], $templates));
+            foreach (ProtoAccount::COMPARE_FIELDS as $f) {
+                $rows[] = array_merge([$f], array_map(fn ($t) => $t['fields'][$f], $templates));
+            }
         }
-        $rows[] = array_merge(['Overall Score (Weighted)'], array_map(fn ($c) => $c['overall'], $data['columns']));
+        if ($data['columns']) {
+            $rows[] = array_merge(['Metric'], array_map(fn ($c) => $c['card']['name'], $data['columns']));
+            foreach ($data['rows'] as $row) {
+                $rows[] = array_merge([$row['label']], array_map(fn ($c) => $c['metrics'][$row['key']]['display'], $data['columns']));
+            }
+            $rows[] = array_merge(['Overall Score (Weighted)'], array_map(fn ($c) => $c['overall'], $data['columns']));
+        }
         $csv = collect($rows)->map(fn ($r) => collect($r)->map(fn ($v) => '"'.str_replace('"', '""', (string) $v).'"')->implode(','))->implode("\n");
 
         return response($csv, 200, ['Content-Type' => 'text/csv', 'Content-Disposition' => "attachment; filename=aiim-{$comparison->reference}.csv"]);

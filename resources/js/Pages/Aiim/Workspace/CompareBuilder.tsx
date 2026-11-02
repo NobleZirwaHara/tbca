@@ -1,100 +1,71 @@
-import { router } from '@inertiajs/react';
-import { Plus, Search, Trash2 } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
-import AiimIcon from '@/Components/Aiim/AiimIcon';
-import ComparisonTable from '@/Components/Aiim/ComparisonTable';
-import AiimPage, { DeeperBox, SelectionBox } from '@/Components/Aiim/Shell';
-import { Progress } from '@/Components/ui/Kit';
-import { Button } from '@/Components/ui/Button';
-import { cn } from '@/lib/cn';
-import type { AiimPageProps, Card, ComparisonData } from '@/types/aiim';
+import { Link, router } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
+import { btnGhost, btnGold, Flow, SvcRail, SvcRow, TierPill, type Svc } from '@/Components/Aiim/ProtoAccount';
+import { B, Card, inputCls } from '@/Components/Industries/Kit';
+import type { AiimPageProps } from '@/types/aiim';
+
+interface Selected { type: string; key: string; name: string; tier: string | null; url: string }
+interface Candidate { id: string; name: string; sector: string; sectorName: string; tier: string; band: string }
 
 interface Props extends AiimPageProps {
-    draft: ComparisonData & { reference: string; count: number };
+    draft: { reference: string; items: Selected[] };
     max: number;
-    candidates: Card[];
-    filters: { q: string; type: string; tab: string; sector: string; province: string };
-    options: { sectors: { slug: string; name: string }[]; provinces: { slug: string; name: string }[] };
+    q: string;
+    candidates: Candidate[];
+    services: Svc[];
 }
 
-export default function CompareBuilder({ draft, max, candidates, filters, options }: Props) {
-    const [f, setF] = useState(filters);
-    const search = (next: Partial<typeof filters> = {}) => router.get('/aiim/workspace/compare', { ...f, ...next }, { preserveScroll: true, preserveState: true });
-    const submit = (e: FormEvent) => { e.preventDefault(); search(); };
-    const inDraft = (c: Card) => draft.columns.some((col) => col.card.key === c.key && col.card.type === c.type);
-    const full = draft.count >= max;
+/** Mock-up 23: Comparison Builder. */
+export default function CompareBuilder({ draft, max, q, candidates, services }: Props) {
+    const [search, setSearch] = useState(q);
+    const first = useRef(true);
+    useEffect(() => {
+        if (first.current) { first.current = false; return; }
+        const t = window.setTimeout(() => router.get('/aiim/workspace/compare', search ? { q: search } : {}, { preserveScroll: true, preserveState: true, replace: true, only: ['candidates', 'q'] }), 250);
+        return () => window.clearTimeout(t);
+    }, [search]);
+    const chosen = new Set(draft.items.filter((i) => i.type === 'template').map((i) => i.key));
+    const add = (id: string) => router.post('/aiim/workspace/compare/items', { type: 'template', key: id }, { preserveScroll: true });
+    const remove = (i: Selected) => router.delete('/aiim/workspace/compare/items', { data: { type: i.type, key: i.key }, preserveScroll: true });
 
     return (
-        <AiimPage
+        <Flow
             title="Comparison Builder"
-            crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: 'Comparison Builder' }]}
-            subtitle={`Compare up to ${max} items side-by-side across key investment metrics.`}
-            description="Add items from your saved list or search to build a custom comparison."
-            rail={<><SelectionBox /><DeeperBox /></>}
+            eyebrow="Compare up to five templates"
+            lead="Pick opportunities to compare side by side on score, risk, downturn tier, band, persona, citizen rules and time to revenue."
+            crumbs={[{ label: 'Opportunities', href: '/aiim/opportunities' }]}
+            side={<SvcRail services={services} title="Comparison services" />}
         >
-            <div className="grid gap-4 lg:grid-cols-[17rem_minmax(0,1fr)]">
-                <aside className="space-y-3 rounded-[8px] bg-ink-950 p-4 text-parchment-100" aria-label="Add items to compare">
-                    <h2 className="font-semibold">Add Items to Compare</h2>
-                    <p className="text-xs text-ink-400">Select up to {max} items</p>
-                    <div className="grid grid-cols-2 gap-1 rounded bg-ink-900 p-1 text-xs">
-                        {[['search', 'Search'], ['saved', 'From Saved']].map(([k, l]) => (
-                            <button key={k} type="button" aria-pressed={f.tab === k} onClick={() => { setF({ ...f, tab: k }); search({ tab: k }); }} className={cn('rounded py-1.5', f.tab === k ? 'bg-gold-500 font-semibold text-ink-900' : 'text-ink-200')}>{l}</button>
+            <Card
+                title={`Selected (${draft.items.length}/${max})`}
+                act={<B v="pri" sm disabled={draft.items.length < 2} onClick={() => router.post('/aiim/workspace/compare/generate')}>Compare now</B>}
+            >
+                {draft.items.length ? (
+                    <ul className="grid gap-2">
+                        {draft.items.map((i) => (
+                            <SvcRow key={i.type + i.key} title={<Link href={i.url} className="hover:text-gold-700">{i.name}</Link>} meta={<><span className="font-mono">{i.key}</span>{i.tier !== null && <TierPill tier={i.tier} />}</>} right={<button type="button" className={btnGhost} onClick={() => remove(i)}>Remove</button>} />
                         ))}
-                    </div>
-                    {f.tab === 'search' && (
-                        <form onSubmit={submit} className="space-y-2 text-xs">
-                            <label className="flex items-center rounded border border-ink-600 bg-ink-900 px-2">
-                                <span className="sr-only">Search</span>
-                                <input value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} placeholder="Search opportunities, projects, investors…" className="h-9 flex-1 bg-transparent outline-none" />
-                                <Search className="size-4 text-ink-400" />
-                            </label>
-                            {[['type', 'Type', [['opportunity', 'Opportunities'], ['project', 'Projects'], ['investor', 'Investors'], ['funder', 'Funders'], ['corridor', 'Trade Corridors']]], ['sector', 'Sector', options.sectors.map((s) => [s.slug, s.name])], ['province', 'Province', options.provinces.map((s) => [s.slug, s.name])]].map(([k, l, opts]) => (
-                                <label key={k as string} className="block">
-                                    <span className="text-ink-300">{l as string}</span>
-                                    <select value={f[k as keyof typeof f]} onChange={(e) => setF({ ...f, [k as string]: e.target.value })} className="mt-1 h-9 w-full rounded border border-ink-600 bg-ink-900 px-2">
-                                        <option value="">All</option>
-                                        {(opts as string[][]).map(([v, t]) => <option key={v} value={v}>{t}</option>)}
-                                    </select>
-                                </label>
-                            ))}
-                            <button type="submit" className="h-9 w-full rounded border border-gold-600 text-gold-300">Search</button>
-                        </form>
-                    )}
-                    <ul className="max-h-80 space-y-1.5 overflow-y-auto">
-                        {candidates.map((c) => (
-                            <li key={`${c.type}-${c.key}`} className="flex items-center gap-2 rounded border border-ink-800 p-2 text-xs">
-                                <span className="text-gold-500"><AiimIcon name={c.icon} className="size-4" /></span>
-                                <span className="min-w-0 flex-1"><span className="block truncate font-medium">{c.name}</span><span className="text-ink-400">{c.type}</span></span>
-                                <button type="button" disabled={inDraft(c) || full} onClick={() => router.post('/aiim/workspace/compare/items', { type: c.type, key: c.key }, { preserveScroll: true })} aria-label={`Add ${c.name}`} className="rounded bg-gold-500 p-1 text-ink-900 disabled:opacity-30">
-                                    <Plus className="size-3.5" />
-                                </button>
-                            </li>
-                        ))}
-                        {candidates.length === 0 && <li className="text-xs text-ink-400">No matching items.</li>}
                     </ul>
-                    <div>
-                        <p className="mb-1 text-xs">{draft.count} of {max} slots used</p>
-                        <Progress value={(draft.count / max) * 100} />
-                    </div>
-                </aside>
-
-                <section className="min-w-0 rounded-[8px] border border-parchment-400 bg-white">
-                    <header className="flex flex-wrap items-center justify-between gap-2 border-b border-parchment-400 bg-ink-950 px-4 py-3 text-parchment-100">
-                        <h2 className="text-sm font-semibold">Comparing {draft.count} Items</h2>
-                        <div className="flex gap-2">
-                            <button type="button" onClick={() => router.post('/aiim/workspace/compare/clear', {}, { preserveScroll: true })} className="flex items-center gap-1 text-xs text-gold-400 hover:underline"><Trash2 className="size-3.5" />Clear All</button>
-                        </div>
-                    </header>
-                    {draft.count === 0 ? (
-                        <p className="p-10 text-center text-sm text-ink-500">Add at least two items from the panel to start comparing.</p>
-                    ) : (
-                        <ComparisonTable data={draft} removable />
-                    )}
-                    <div className="flex justify-end border-t border-parchment-400 p-3">
-                        <Button type="button" disabled={draft.count < 2} onClick={() => router.post('/aiim/workspace/compare/generate')} trailingIcon="arrow-right">Generate Comparison Results</Button>
-                    </div>
-                </section>
-            </div>
-        </AiimPage>
+                ) : (
+                    <p className="text-[0.85rem] text-ink-500">None yet. Add from the list below.</p>
+                )}
+                {draft.items.length === 1 && <p className="mt-2 text-[0.75rem] text-ink-500">Add at least one more template to compare.</p>}
+            </Card>
+            <Card title="Add templates">
+                <label className="sr-only" htmlFor="cmp-q">Search 321 templates</label>
+                <input id="cmp-q" type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search 321 templates" className={inputCls} />
+                <ul className="mt-3 grid max-h-[420px] gap-2 overflow-auto pr-1">
+                    {candidates.map((o) => (
+                        <SvcRow
+                            key={o.id}
+                            title={o.name}
+                            meta={<><span className="font-mono">{o.id}</span><TierPill tier={o.tier} /><span>{o.band}</span></>}
+                            right={chosen.has(o.id) ? <span className="text-[0.72rem] font-semibold text-verified-700">Added</span> : <button type="button" className={btnGold} disabled={draft.items.length >= max} onClick={() => add(o.id)}>Add</button>}
+                        />
+                    ))}
+                    {candidates.length === 0 && <li className="text-[0.85rem] text-ink-500">No template matches.</li>}
+                </ul>
+            </Card>
+        </Flow>
     );
 }

@@ -702,6 +702,14 @@ Rebuilt on 2 Nov 2026 from the Countries part of the same prototype (MP-COUNTRIE
 
 ### AIIM (Africa Investment Intelligence)
 
+Rebuilt on 2 Nov 2026 to match the client's "TBCA AIIM Botswana" prototype page for page (AIIM mock-ups 1 to 82 plus its extra pages). The site header, the AIIM menu bar and the workspace and admin console menus are unchanged; only the page content follows the prototype. Botswana shows the full BW-1.0 pack; every other country uses the same templates with its loaded data or a "country pack loading" state.
+
+- **Pages added from the prototype:** map view `/aiim/country/{slug}/map`, town profiles `/towns/{id}`, economics, ranked leads `/leads` and `/leads/{id}`, HS code mapper `/hs`, investor and trader questions, country pack reader `/pack`, data room `/registers` and `/registers/{sheet}`, coverage check `/coverage`; and `/aiim/services` (581-service catalogue), `/aiim/services/{code}`, `/aiim/one-stop-shop`, `/aiim/prompts`, `/aiim/sitemap` (every prototype page with its app URL).
+- **Botswana objects:** opportunity templates (`/aiim/opportunities/BW-ENR-S01`), hotspot and precedent projects (`/aiim/projects/H0`, `/P-02`), investor personas (`/aiim/investors/CORP`), funders (`/aiim/funders/CEDA`), corridors (`/aiim/corridors/KAZ`) and units (`/aiim/province/GA`). They can be saved, watched, compared (as templates) and added to the fee manifest. A Botswana template's full record unlocks with wallet credits (AAB-EMB-139); locked values never leave the server.
+- **Services:** "Add" buttons put the service into the AIIM fee manifest at the app's Sprint entry price; 569 of the 581 prototype services exist in the app catalogue, the rest show "Not in the app catalogue yet".
+- **Data:** the prototype's registers, geometry and pack are the Countries tab data; its service catalogue and prompt pack load through the migration `2026_11_02_120000_load_aiim_botswana_prototype`.
+- **Engagement final balance:** after acceptance, an unpaid balance can be paid from the Delivery Acceptance page (`/aiim/workspace/engagements/{ref}/delivery`).
+
 - **What it does:** trade and investment intelligence for Africa. Users search opportunities, projects, investors and funders, buy briefs and unlock data.
 - **Features (working):**
   - Explore Africa: pick any of the 54 countries to open its Investor Cockpit (`/aiim/country/{slug}`, e.g. `/aiim/country/nigeria`).

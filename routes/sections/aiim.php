@@ -6,6 +6,9 @@ use App\Http\Controllers\Aiim\CommerceController;
 use App\Http\Controllers\Aiim\DeskController;
 use App\Http\Controllers\Aiim\EngagementController;
 use App\Http\Controllers\Aiim\ExploreController;
+use App\Http\Controllers\Aiim\GeoController;
+use App\Http\Controllers\Aiim\IntelController;
+use App\Http\Controllers\Aiim\LibraryController;
 use App\Http\Controllers\Aiim\MandateController;
 use App\Http\Controllers\Aiim\SearchController;
 use App\Http\Controllers\Aiim\StoreController;
@@ -23,6 +26,28 @@ Route::prefix('aiim')->name('aiim.')->group(function () {
     Route::get('/country/{slug}', [ExploreController::class, 'country'])->name('country');
     Route::get('/country/{slug}/provinces', [ExploreController::class, 'provinces'])->name('provinces');
     Route::get('/province/{province}', [ExploreController::class, 'province'])->name('province');
+
+    /* --- Pages of the client's "TBCA AIIM Botswana" prototype with no AIIM mock-up number ------- */
+    Route::prefix('country/{slug}')->group(function () {
+        Route::get('/map', [GeoController::class, 'map'])->name('map');
+        Route::get('/towns/{id}', [GeoController::class, 'town'])->name('town');
+        Route::get('/economics', [GeoController::class, 'economics'])->name('economics');
+        Route::get('/leads', [IntelController::class, 'leads'])->name('leads');
+        Route::get('/leads/{id}', [IntelController::class, 'lead'])->name('lead');
+        Route::get('/hs', [IntelController::class, 'hs'])->name('hs');
+        Route::get('/hs/{product}', [IntelController::class, 'product'])->name('hs.product');
+        Route::get('/investor-questions', [IntelController::class, 'investorQuestions'])->name('investor-questions');
+        Route::get('/trader-questions', [IntelController::class, 'traderQuestions'])->name('trader-questions');
+        Route::get('/pack', [LibraryController::class, 'pack'])->name('pack');
+        Route::get('/registers', [LibraryController::class, 'registers'])->name('registers');
+        Route::get('/registers/{sheet}', [LibraryController::class, 'sheet'])->where('sheet', '[A-Za-z0-9_]+')->name('registers.sheet');
+        Route::get('/coverage', [LibraryController::class, 'coverage'])->name('coverage');
+    });
+    Route::get('/services', [LibraryController::class, 'services'])->name('services');
+    Route::get('/services/{code}', [LibraryController::class, 'service'])->where('code', '[A-Za-z0-9-]+')->name('service');
+    Route::get('/one-stop-shop', [LibraryController::class, 'onestop'])->name('onestop');
+    Route::get('/prompts', [LibraryController::class, 'prompts'])->name('prompts');
+    Route::get('/sitemap', [LibraryController::class, 'sitemap'])->name('sitemap');
     Route::get('/sectors', [ExploreController::class, 'sectors'])->name('sectors');
     Route::get('/sector/{sector}', [ExploreController::class, 'sector'])->name('sector');
     Route::get('/risk', [ExploreController::class, 'risk'])->name('risk');

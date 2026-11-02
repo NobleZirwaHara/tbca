@@ -29,22 +29,27 @@ export default function CountryExplorer({
     initialTab,
     initialUnit,
     overview,
+    hideOverview = false,
 }: {
     intel: CountryIntel;
     countryName: string;
     activation: CountryActivation;
     initialTab: string;
     initialUnit: string | null;
-    overview: ReactNode;
+    overview?: ReactNode;
+    /** The page shows its own overview: open on the map and leave the Overview tab out. */
+    hideOverview?: boolean;
 }) {
-    const [tab, setTab] = useState<TabKey>((TAB_KEYS as readonly string[]).includes(initialTab) ? (initialTab as TabKey) : 'overview');
+    const first: TabKey = hideOverview ? 'map' : 'overview';
+    const [tab, setTab] = useState<TabKey>((TAB_KEYS as readonly string[]).includes(initialTab) && !(hideOverview && initialTab === 'overview') ? (initialTab as TabKey) : first);
     const [unitId, setUnitId] = useState<number | null>(intel.units.find((u) => u.slug === initialUnit)?.id ?? null);
     const [sector, setSector] = useState<string | null>(null);
     const [lang, setLang] = useState('en');
 
     useEffect(() => {
+        if (hideOverview && tab === 'map' && !unitId) return;
         syncUrl(tab, intel.units.find((u) => u.id === unitId)?.slug ?? null);
-    }, [tab, unitId, intel.units]);
+    }, [tab, unitId, intel.units, hideOverview]);
 
     const openOnMap = (id: number | null) => {
         setUnitId(id);
@@ -54,7 +59,7 @@ export default function CountryExplorer({
 
     const c = intel.coverage;
     const tabs = [
-        { key: 'overview', label: 'Overview' },
+        ...(hideOverview ? [] : [{ key: 'overview', label: 'Overview' }]),
         { key: 'map', label: 'Map' },
         { key: 'opportunities', label: 'Opportunities', count: c.projects + c.opportunities },
         { key: 'places', label: 'Places', count: c.units },

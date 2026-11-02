@@ -3,41 +3,54 @@
 namespace App\Http\Controllers\Aiim;
 
 use App\Models\Aiim\Advisor;
+use App\Models\Aiim\CaseFile;
 use App\Models\Aiim\Country;
 use App\Models\Aiim\Engagement;
+use App\Models\Aiim\Introduction;
 use App\Models\Aiim\Province;
 use App\Models\Aiim\Sector;
 use App\Models\Booking;
 use App\Support\Aiim\EngagementFlow;
 use App\Support\Aiim\Fulfilment;
+use App\Support\Aiim\ProtoEngagement as P;
 use App\Support\Aiim\Refs;
+use App\Support\Aiim\SectorCodes;
 use App\Support\Platform\Checkout;
+use Carbon\CarbonImmutable;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Response;
 
 /**
- * Stages 4–6: custom intelligence and advisor requests, discovery booking (via the
- * shared POST /bookings), discovery outcome, formal quotation, engagement letter,
- * typed electronic signature and deposit payment, then the mandate workspace.
+ * Stages 4–6 of the prototype's advisory journey (mock-ups 39 to 49): custom
+ * intelligence request and its review, advisor request, discovery booking (via the
+ * shared POST /bookings), discovery confirmation and outcome, formal quotation,
+ * engagement letter, electronic signature and deposit, then the custom intelligence
+ * report / mandate workspace. POST /engagements/{ref}/message also carries the
+ * mandate-stage actions (see action()).
  */
 class EngagementController extends AiimController
 {
-    public const CATEGORIES = ['Market Entry Intelligence', 'Opportunity Scan', 'Sector Deep Dive', 'Investor & Funder Mapping', 'Regulatory & Policy Brief', 'Risk Assessment', 'Custom Dataset or Dashboard'];
+    /** Discovery call slots of the prototype's booking page (CAT, UTC+2). */
+    public const SLOTS = ['09:00', '11:00', '14:00', '16:00'];
 
-    public const AREAS = ['Investment strategy & structuring', 'Market entry & expansion', 'Project due diligence support', 'Regulatory & policy navigation', 'Fundraising & capital access', 'Stakeholder & partner introductions', 'Transaction support', 'Other (please specify)'];
+    /** Mandate-stage actions posted through the message endpoint, with the case type each one files. */
+    public const CASES = ['refund' => ['refund', 'RFD', 'Refund request'], 'dispute' => ['dispute', 'DSP', 'Dispute case'], 'pause' => ['pause', 'PSE', 'Pause request'], 'restart' => ['restart', 'RST', 'Restart request'], 'cancel' => ['cancellation', 'CNL', 'Cancellation request']];
 
-    public const DEPTHS = ['standard' => ['Standard', 'High-level overview with key insights', '2 – 3 business days'], 'advanced' => ['Advanced', 'Detailed analysis with data and insights', '5 – 7 business days'], 'expert' => ['Expert', 'In-depth research with expert validation', '7 – 10 business days']];
+    public const SCOPE_SERVICES = ['AAB-EMB-171', 'AAB-EMB-168', 'AAB-EMB-211', 'AAB-EMB-123'];
 
-    /* ------------------------------------------------------ request wizards */
+    /* ------------------------------------------------------ request forms */
 
+    /** Page 39 Custom Intelligence Request; after submission the same URL shows page 40 Custom Request Review. */
     public function customRequest(Request $request): Response|RedirectResponse
     {
         return $this->wizard($request, 'custom-intelligence');
     }
 
+    /** Page 41 Advisor Request. */
     public function advisorRequest(Request $request): Response|RedirectResponse
     {
         return $this->wizard($request, 'advisory');
@@ -45,105 +58,138 @@ class EngagementController extends AiimController
 
     private function wizard(Request $request, string $type): Response|RedirectResponse
     {
-        $e = $request->query('ref') ? $this->find($request, $request->query('ref')) : null;
+        $e = $request->query('ref') ? $this->find($request, (string) $request->query('ref')) : null;
         abort_if($e && $e->type !== $type, 404);
+        if ($e && $type === 'custom-intelligence' && in_array($e->status, ['submitted', 'under_review', 'discovery_booked', 'discovery_completed', 'quoted'], true)) {
+            return $this->review($request, $e);
+        }
         if ($e && $e->status !== 'draft') {
-            // Already submitted: the wizard is read-only from here, continue in the engagement.
             return redirect(EngagementFlow::nextAction($e)['url'] ?? "/aiim/workspace/engagements/{$e->reference}");
         }
-        $prefill = Country::query()->where('slug', (string) $request->query('country'))->value('slug');
+
+        $country = P::countryBySlug((string) ($request->query('country') ?: ($e?->request['countries'][0] ?? 'botswana'))) ?? P::countryBySlug('botswana');
+        $user = $request->user();
 
         return $this->render($request, 'Aiim/Engagement/RequestWizard', [
             'type' => $type,
-            'engagement' => $e ? ['reference' => $e->reference, 'status' => $e->status, 'step' => $e->step, 'request' => $e->request ?? []] : null,
-            // Never skip ahead of the last saved step; a fresh request always starts at step 1.
-            'step' => max(1, min(5, (int) $request->query('step', $e?->step ?? 1), $e?->step ?? 1)),
-            'prefill' => ['countries' => $prefill ? [$prefill] : []],
+            'engagement' => $e ? ['reference' => $e->reference, 'request' => $e->request ?? []] : null,
+            'country' => $country,
             'options' => [
-                'categories' => self::CATEGORIES, 'areas' => self::AREAS,
-                'depths' => collect(self::DEPTHS)->map(fn ($d, $k) => ['value' => $k, 'label' => $d[0], 'description' => $d[1], 'time' => $d[2]])->values(),
-                'countries' => Country::options(),
-                'provinces' => Province::query()->orderBy('rank')->get(['slug', 'name']),
-                'sectors' => Sector::query()->orderBy('sort')->get(['slug', 'name']),
-                'seniority' => ['Partner', 'Director', 'Senior Manager', 'Any'],
-                'timelines' => ['Less than 1 month', '1–3 months', '3–6 months', '6+ months'],
-                'engagementTypes' => ['Virtual advisory (online)', 'In-person meeting (in-country)', 'Ongoing advisory retainer'],
-                'formats' => ['PDF report', 'PDF report plus advisory call', 'Dataset (Excel / CSV)', 'Interactive dashboard'],
+                'countries' => Country::query()->orderBy('name')->get(['slug', 'name'])->map(fn ($c) => ['value' => $c->slug, 'label' => $c->name])->values(),
+                'sectors' => P::sectors($country),
+                'units' => P::units($country),
+                'tickets' => P::TICKETS,
+                'desks' => P::DESKS,
+                'channels' => P::CHANNELS,
             ],
+            'user' => $user ? ['name' => $user->name, 'email' => $user->email] : null,
+            'rail' => $type === 'advisory'
+                ? P::rail(['AAB-EMB-204', 'AAB-EMB-205', 'AAB-EMB-238', 'AAB-EMB-240'], 'Advisory', 4)
+                : P::rail(['AAB-EMB-123', 'AAB-EMB-243', 'AAB-EMB-190'], 'Likely services', 3),
         ], $type === 'advisory' ? 'Advisor Request' : 'Custom Intelligence Request');
     }
 
-    /** Save one wizard step; step 5 submits the request (G7 review gate). */
+    /** Page 40: analyst triage of a submitted custom intelligence request. */
+    private function review(Request $request, Engagement $e): Response
+    {
+        $country = P::country($e);
+        $sector = $e->request['sector_code'] ?? null;
+        $bw = $country && $country['isBw'];
+
+        return $this->render($request, 'Aiim/Engagement/CustomReview', [
+            'engagement' => self::props($e),
+            'country' => $country,
+            'sectorName' => P::sectorName($sector, $country),
+            'coverage' => $bw ? P::coverage($sector) : null,
+            'gaps' => $bw ? P::reg('BW_DataGaps') : [],
+            'rail' => P::rail(['AAB-EMB-204', 'AAB-EMB-243'], 'Next', 2),
+        ], 'Custom Request Review');
+    }
+
+    /** Submit the request form (pages 39 and 41). The request goes straight to TBCA review (G7). */
     public function saveRequest(Request $request): RedirectResponse
     {
         $type = $request->validate(['type' => ['required', Rule::in(['custom-intelligence', 'advisory'])]])['type'];
-        $step = (int) $request->input('step', 1);
-        $e = $request->input('ref') ? $this->find($request, $request->input('ref')) : null;
+        $e = $request->input('ref') ? $this->find($request, (string) $request->input('ref')) : null;
         abort_if($e && $e->status !== 'draft', 409, 'This request has already been submitted.');
 
-        $rules = $this->rules($type, $step);
-        $data = $rules ? $request->validate($rules, ['terms.accepted' => 'Please confirm the information is accurate and accept the review terms.']) : [];
+        $country = ['country' => ['required', 'exists:aiim_countries,slug']];
+        $data = $type === 'custom-intelligence'
+            ? $request->validate($country + [
+                'question' => ['required', 'string', 'min:10', 'max:2000'],
+                'sector' => ['required', Rule::in(array_keys(SectorCodes::CODES))],
+                'unit' => ['nullable', 'string', 'max:120'],
+                'ticket' => ['required', Rule::in(P::TICKETS)],
+                'needed_by' => ['nullable', 'date', 'after:today'],
+            ], ['question.required' => 'Tell us your question.'])
+            : $request->validate($country + [
+                'name' => ['required', 'string', 'max:120'],
+                'email' => ['required', 'email', 'max:190'],
+                'desk' => ['required', Rule::in(P::DESKS)],
+                'channel' => ['required', Rule::in(P::CHANNELS)],
+                'topic' => ['required', 'string', 'min:10', 'max:2000'],
+            ], ['topic.required' => 'Tell us what you would like to discuss.']);
+
+        $req = $type === 'custom-intelligence'
+            ? [
+                'title' => Str::limit($data['question'], 90), 'detail' => $data['question'], 'questions' => $data['question'],
+                'countries' => [$data['country']], 'sector_code' => $data['sector'], 'sectors' => [SectorCodes::slug($data['sector'])],
+                'unit' => $data['unit'] ?? null, 'ticket' => $data['ticket'], 'required_by' => $data['needed_by'] ?? null,
+                'purpose' => Str::limit($data['question'], 180),
+            ]
+            : [
+                'title' => 'Advisor request: '.$data['desk'], 'summary' => $data['topic'], 'purpose' => Str::limit($data['topic'], 180),
+                'countries' => [$data['country']], 'desk' => $data['desk'], 'channel' => $data['channel'],
+                'contact' => ['name' => $data['name'], 'email' => $data['email']],
+            ];
 
         if (! $e) {
             $e = Engagement::create([
                 'reference' => Refs::make('ENG'), 'user_id' => $request->user()->id, 'type' => $type, 'status' => 'draft',
-                'title' => $data['title'] ?? ($type === 'advisory' ? 'Advisor Request' : 'Custom Intelligence Request'), 'request' => [],
+                'title' => $req['title'], 'request' => [],
             ]);
             EngagementFlow::log($e, 'client', 'Draft created');
         }
-        $req = array_merge($e->request ?? [], collect($data)->except('terms')->all());
-        $title = $req['title'] ?? ($type === 'advisory' ? 'Advisory: '.collect($req['areas'] ?? [])->first() : $e->title);
+        $e->update(['request' => array_merge($e->request ?? [], $req), 'title' => $req['title'], 'step' => 5]);
+        EngagementFlow::transition($e, 'submitted', 'client', 'Submitted for TBCA expert review (G7).', ['stage' => 'Expert Review']);
 
-        if ($step >= 5) {
-            $e->update(['request' => $req, 'title' => $title ?: $e->title, 'step' => 5]);
-            EngagementFlow::transition($e, 'submitted', 'client', 'Submitted for TBCA expert review (G7).', ['stage' => 'Expert Review']);
-
-            return redirect("/aiim/workspace/engagements/{$e->reference}/discovery")->with('success', "Request {$e->reference} submitted. A TBCA expert will review it within 1 business day. Book your discovery session below.");
-        }
-
-        $next = $request->boolean('draft') ? $step : $step + 1;
-        $e->update(['request' => $req, 'title' => $title ?: $e->title, 'step' => $next]);
-        $base = $type === 'advisory' ? '/aiim/workspace/advisor-request' : '/aiim/custom-intelligence';
-
-        return redirect("{$base}?ref={$e->reference}&step={$next}")->with('success', $request->boolean('draft') ? 'Draft saved.' : null);
-    }
-
-    private function rules(string $type, int $step): array
-    {
-        $sectors = ['sectors' => ['required', 'array', 'min:1'], 'sectors.*' => ['exists:aiim_sectors,slug']];
-        if ($type === 'custom-intelligence') {
-            return match ($step) {
-                1 => ['title' => ['required', 'string', 'max:160'], 'detail' => ['required', 'string', 'min:20', 'max:2000'], 'category' => ['required', Rule::in(self::CATEGORIES)], 'subcategory' => ['nullable', 'string', 'max:80'], 'countries' => ['required', 'array', 'min:1'], 'countries.*' => ['exists:aiim_countries,slug'], 'provinces' => ['array'], 'provinces.*' => ['exists:aiim_provinces,slug'], 'depth' => ['required', Rule::in(array_keys(self::DEPTHS))]] + $sectors,
-                2 => ['questions' => ['required', 'string', 'max:1000'], 'outputs' => ['required', 'array', 'min:1']],
-                3 => ['background' => ['required', 'string', 'min:20', 'max:2000'], 'decision' => ['required', 'string', 'max:200']],
-                4 => ['format' => ['required', 'string', 'max:80'], 'required_by' => ['nullable', 'date', 'after:today'], 'channel' => ['required', 'string', 'max:80']],
-                default => ['terms' => ['accepted']],
-            };
-        }
-
-        return match ($step) {
-            1 => ['areas' => ['required', 'array', 'min:1'], 'areas.*' => [Rule::in(self::AREAS)], 'other' => ['nullable', 'required_if:areas.*,Other (please specify)', 'string', 'max:200'], 'summary' => ['required', 'string', 'min:20', 'max:2000']],
-            2 => ['expertise' => ['required', 'array', 'min:1'], 'seniority' => ['nullable', 'string'], 'advisor' => ['nullable', 'exists:aiim_advisors,slug']] + $sectors,
-            3 => ['background' => ['required', 'string', 'min:20', 'max:2000'], 'provinces' => ['array'], 'provinces.*' => ['exists:aiim_provinces,slug']],
-            4 => ['engagement_type' => ['required', 'string', 'max:80'], 'timeline' => ['required', 'string', 'max:40'], 'start_date' => ['nullable', 'date', 'after_or_equal:today']],
-            default => ['terms' => ['accepted']],
-        };
+        return $type === 'custom-intelligence'
+            ? redirect("/aiim/custom-intelligence?ref={$e->reference}")->with('success', "Request {$e->reference} submitted. A TBCA analyst reviews it within 1 business day.")
+            : redirect("/aiim/workspace/engagements/{$e->reference}/discovery")->with('success', "Advisor request {$e->reference} submitted. Pick a discovery call slot below.");
     }
 
     /* ------------------------------------------------------------ discovery */
 
+    /** Page 42 Booking Discovery: a 30-minute call on one of the next five weekdays. */
     public function discovery(Request $request, string $ref): Response|RedirectResponse
     {
         $e = $this->find($request, $ref);
         if (! in_array($e->status, ['submitted', 'under_review', 'discovery_completed'], true)) {
             return redirect(EngagementFlow::nextAction($e)['url'] ?? "/aiim/workspace/engagements/{$e->reference}");
         }
+        $days = [];
+        $d = CarbonImmutable::today();
+        while (count($days) < 5) {
+            $d = $d->addDay();
+            if (! $d->isWeekend()) {
+                $days[] = $d;
+            }
+        }
+        $taken = Booking::query()->where('status', '!=', 'cancelled')
+            ->whereBetween('starts_at', [$days[0]->startOfDay(), end($days)->endOfDay()])->get()
+            ->map(fn ($b) => $b->starts_at->format('Y-m-d H:i'))->all();
+        $advisor = $e->advisor ?? Advisor::query()->orderBy('id')->first();
 
         return $this->render($request, 'Aiim/Engagement/Discovery', [
-            'engagement' => $this->props($e),
-            'advisors' => Advisor::query()->get()->map(fn ($a) => $a->only(['slug', 'name', 'title', 'years', 'strengths'])),
+            'engagement' => self::props($e),
+            'days' => collect($days)->map(fn ($x) => [
+                'date' => $x->toDateString(), 'label' => $x->format('D j M'),
+                'slots' => collect(self::SLOTS)->map(fn ($t) => ['time' => $t, 'taken' => in_array($x->toDateString().' '.$t, $taken, true)])->all(),
+            ])->all(),
+            'advisor' => $advisor?->slug,
             'user' => $request->user()->only(['name', 'email', 'phone', 'company']),
-        ], 'Discovery Booking');
+            'rail' => P::rail(['AAB-EMB-204', 'AAB-EMB-240'], 'Booking', 2),
+        ], 'Booking Discovery');
     }
 
     /** Return hook from POST /bookings: attach the booking and advance to discovery_booked. */
@@ -166,6 +212,7 @@ class EngagementController extends AiimController
         return redirect("/aiim/workspace/engagements/{$e->reference}/discovery/confirmed");
     }
 
+    /** Page 43 Discovery Confirmation. */
     public function confirmed(Request $request, string $ref): Response|RedirectResponse
     {
         $e = $this->find($request, $ref);
@@ -173,10 +220,16 @@ class EngagementController extends AiimController
         if (! $booking) {
             return redirect("/aiim/workspace/engagements/{$e->reference}/discovery");
         }
+        $channel = ['video' => 'Video (link sent by email and WhatsApp)', 'phone' => 'Phone', 'in-person' => 'In person'][$booking->channel] ?? $booking->channel;
 
         return $this->render($request, 'Aiim/Engagement/DiscoveryConfirmed', [
-            'engagement' => $this->props($e),
-            'booking' => ['reference' => $booking->reference, 'date' => $booking->starts_at->format('l, j F Y'), 'time' => $booking->starts_at->format('H:i').' – '.$booking->starts_at->copy()->addMinutes($booking->duration_minutes)->format('H:i').' SAST (GMT+2)', 'duration' => $booking->duration_minutes, 'channel' => $booking->channel, 'status' => $booking->status, 'topic' => $booking->topic, 'meta' => $booking->meta, 'ics' => $booking->starts_at->format('Ymd\THis')],
+            'engagement' => self::props($e),
+            'booking' => [
+                'reference' => $booking->reference, 'when' => $booking->starts_at->format('D j M Y H:i').' CAT', 'duration' => $booking->duration_minutes,
+                'with' => ($e->advisor?->name ? $e->advisor->name.', ' : '').'TBCA Advisor',
+                'channel' => $channel, 'status' => $booking->status, 'topic' => $booking->topic,
+                'ics' => $booking->starts_at->format('Ymd\THis'), 'icsEnd' => $booking->starts_at->copy()->addMinutes($booking->duration_minutes)->format('Ymd\THis'),
+            ],
             'canChange' => $booking->starts_at->isAfter(now()->addDay()) && $e->status === 'discovery_booked',
         ], 'Discovery Confirmation');
     }
@@ -196,18 +249,34 @@ class EngagementController extends AiimController
             ->with('success', $request->boolean('reschedule') ? 'Previous session released. Choose a new date and time.' : 'Discovery session cancelled.');
     }
 
+    /** Page 44 Discovery Outcome, as recorded by the advisor. */
     public function outcome(Request $request, string $ref): Response|RedirectResponse
     {
         $e = $this->find($request, $ref);
         if (! $e->outcome) {
             return redirect(EngagementFlow::nextAction($e)['url'] ?? '/aiim/workspace')->with('error', 'The discovery outcome will be available once your advisor has recorded it.');
         }
+        $o = $e->outcome;
+        $join = fn ($v) => is_array($v) ? implode('; ', array_filter($v, 'is_string')) : (string) $v;
+        $constraints = $o['constraints'] ?? collect($o['assessment'] ?? [])->map(fn ($a) => "{$a[0]}: {$a[2]}")->implode('; ');
 
-        return $this->render($request, 'Aiim/Engagement/Outcome', ['engagement' => $this->props($e)], 'Discovery Outcome');
+        return $this->render($request, 'Aiim/Engagement/Outcome', [
+            'engagement' => self::props($e),
+            'rows' => array_values(array_filter([
+                ['Need', $o['need'] ?? $join($o['objectives'] ?? []) ?: $e->title],
+                ['Evidence', $o['evidence'] ?? $join($o['points'] ?? [])],
+                ['Constraints', $constraints],
+                ['Recommended', $o['recommended'] ?? implode(' → ', $o['next'] ?? [])],
+                ['Priority', $o['priority'] ?? null],
+            ], fn ($r) => filled($r[1]))),
+            'opportunity' => $o['opportunity'] ?? null,
+            'rail' => P::rail(['AAB-EMB-195', 'AAB-EMB-210', 'AAB-EMB-197'], 'Recommended', 3),
+        ], 'Discovery Outcome');
     }
 
     /* ------------------------------------------------- quote, letter, sign */
 
+    /** Page 45 Formal Quotation. */
     public function quote(Request $request, string $ref): Response|RedirectResponse
     {
         $e = $this->find($request, $ref);
@@ -215,7 +284,7 @@ class EngagementController extends AiimController
             return redirect(EngagementFlow::nextAction($e)['url'] ?? '/aiim/workspace')->with('error', 'Your formal quotation has not been issued yet.');
         }
 
-        return $this->render($request, 'Aiim/Engagement/Quote', ['engagement' => $this->props($e)], 'Formal Quotation');
+        return $this->render($request, 'Aiim/Engagement/Quote', ['engagement' => self::props($e)], 'Formal Quotation');
     }
 
     public function acceptQuote(Request $request, string $ref): RedirectResponse
@@ -229,6 +298,7 @@ class EngagementController extends AiimController
         return $this->step($e, 'quote_accepted', 'Quote line items accepted (hash '.substr(hash('sha256', json_encode($e->quote)), 0, 10).').', ['quote_accepted_at' => now(), 'stage' => 'Engagement Letter'], "/aiim/workspace/engagements/{$e->reference}/letter");
     }
 
+    /** Page 46 Engagement Letter Review. */
     public function letter(Request $request, string $ref): Response|RedirectResponse
     {
         $e = $this->find($request, $ref);
@@ -236,7 +306,7 @@ class EngagementController extends AiimController
             return redirect(EngagementFlow::nextAction($e)['url'] ?? '/aiim/workspace');
         }
 
-        return $this->render($request, 'Aiim/Engagement/Letter', ['engagement' => $this->props($e), 'mode' => 'review'], 'Engagement Letter Review');
+        return $this->render($request, 'Aiim/Engagement/Letter', ['engagement' => self::props($e), 'mode' => 'review', 'country' => P::country($e)], 'Engagement Letter Review');
     }
 
     public function acceptLetter(Request $request, string $ref): RedirectResponse
@@ -247,11 +317,12 @@ class EngagementController extends AiimController
 
             return $this->step($e, 'declined', 'Letter declined: '.$request->input('reason'), [], '/aiim/workspace');
         }
-        $request->validate(['accept' => ['accepted']], ['accept.accepted' => 'You must accept the terms to proceed.']);
+        $request->validate(['accept' => ['accepted']], ['accept.accepted' => 'Confirm you have read the scope and fee terms and accept the data protection terms.']);
 
         return $this->step($e, 'letter_accepted', 'Engagement letter accepted.', ['letter_accepted_at' => now(), 'stage' => 'Electronic Signature'], "/aiim/workspace/engagements/{$e->reference}/sign");
     }
 
+    /** Page 47 Electronic Signature. */
     public function sign(Request $request, string $ref): Response|RedirectResponse
     {
         $e = $this->find($request, $ref);
@@ -259,30 +330,33 @@ class EngagementController extends AiimController
             return redirect(EngagementFlow::nextAction($e)['url'] ?? '/aiim/workspace');
         }
 
-        return $this->render($request, 'Aiim/Engagement/Letter', ['engagement' => $this->props($e), 'mode' => 'sign'], 'Electronic Signature');
+        return $this->render($request, 'Aiim/Engagement/Letter', ['engagement' => self::props($e), 'mode' => 'sign', 'country' => P::country($e)], 'Electronic Signature');
     }
 
-    /** Typed-name electronic signature: the typed name must match the account holder. */
+    /** Typed-name electronic signature: the typed name must match the account holder; a drawn mark is hashed into the record. */
     public function applySignature(Request $request, string $ref): RedirectResponse
     {
         $e = $this->find($request, $ref);
         $data = $request->validate([
             'signature' => ['required', 'string', 'max:120'],
-            'title' => ['required', 'string', 'max:120'],
+            'title' => ['nullable', 'string', 'max:120'],
+            'drawn' => ['nullable', 'string', 'max:400000'],
             'agree' => ['accepted'],
-        ], ['agree.accepted' => 'Please confirm you have read and agree to the engagement letter.']);
+        ], ['agree.accepted' => 'Please confirm that this electronic signature is binding.']);
         $norm = fn ($s) => preg_replace('/\s+/', ' ', mb_strtolower(trim($s)));
         if ($norm($data['signature']) !== $norm($request->user()->name)) {
             return back()->withErrors(['signature' => 'Type your full name exactly as it appears on your account ('.$request->user()->name.').']);
         }
+        $title = $data['title'] ?? null ?: ($request->user()->job_title ?? 'Authorised signatory');
 
-        return $this->step($e, 'signed', "Signed electronically by {$data['signature']} ({$data['title']}).", [
-            'signature_name' => $data['signature'], 'signature_title' => $data['title'], 'signed_at' => now(), 'signature_ip' => $request->ip(),
-            'signature_hash' => hash('sha256', $e->reference.'|'.json_encode($e->quote).'|'.$data['signature'].'|'.now()->toIso8601String()),
+        return $this->step($e, 'signed', "Signed electronically by {$data['signature']} ({$title}).", [
+            'signature_name' => $data['signature'], 'signature_title' => $title, 'signed_at' => now(), 'signature_ip' => $request->ip(),
+            'signature_hash' => hash('sha256', $e->reference.'|'.json_encode($e->quote).'|'.$data['signature'].'|'.hash('sha256', (string) ($data['drawn'] ?? '')).'|'.now()->toIso8601String()),
             'stage' => 'Deposit Payment',
         ], "/aiim/workspace/engagements/{$e->reference}/pay");
     }
 
+    /** Page 48 Deposit Payment. */
     public function pay(Request $request, string $ref): Response|RedirectResponse
     {
         $this->sync($request);
@@ -291,7 +365,7 @@ class EngagementController extends AiimController
             return redirect(EngagementFlow::nextAction($e)['url'] ?? '/aiim/workspace');
         }
 
-        return $this->render($request, 'Aiim/Engagement/Deposit', ['engagement' => $this->props($e)], 'Deposit Payment');
+        return $this->render($request, 'Aiim/Engagement/Deposit', ['engagement' => self::props($e)], 'Deposit Payment');
     }
 
     public function payDeposit(Request $request, string $ref): RedirectResponse
@@ -320,10 +394,11 @@ class EngagementController extends AiimController
         $this->sync($request);
 
         return $this->render($request, 'Aiim/Engagement/Index', [
-            'engagements' => Engagement::query()->where('user_id', $request->user()->id)->latest('id')->get()->map(fn ($e) => $this->props($e, false)),
+            'engagements' => Engagement::query()->where('user_id', $request->user()->id)->latest('id')->get()->map(fn ($e) => self::props($e, false)),
         ], 'My Mandates');
     }
 
+    /** Page 49 Custom Intelligence Report: the mandate's deliverable, built from the country pack. */
     public function show(Request $request, string $ref): Response|RedirectResponse
     {
         $this->sync($request);
@@ -331,17 +406,129 @@ class EngagementController extends AiimController
         if (! in_array($e->status, ['in_progress', 'paused', 'delivered', 'accepted', 'closed', 'cancelled'], true)) {
             return redirect(EngagementFlow::nextAction($e)['url'] ?? '/aiim/workspace');
         }
+        $country = P::country($e);
+        $sector = $e->request['sector_code'] ?? null;
+        $unit = $e->request['unit'] ?? null;
+        $unitCode = $unit && $country && $country['isBw'] ? collect(P::units($country))->firstWhere('name', $unit)['code'] ?? null : null;
 
-        return $this->render($request, 'Aiim/Engagement/Mandate', ['engagement' => $this->props($e)], 'Active Mandate');
+        return $this->render($request, 'Aiim/Engagement/Mandate', [
+            'engagement' => self::props($e),
+            'country' => $country,
+            'report' => $country && $country['isBw'] && $sector ? P::report($sector, $unitCode) : null,
+            'brief' => P::svc('AAB-EMB-193'),
+            'rail' => P::rail(['AAB-EMB-197', 'AAB-EMB-208', 'AAB-EMB-171'], 'Next', 3),
+        ], 'Custom Intelligence Report');
     }
 
+    /**
+     * Messages to the advisor, and the mandate-stage actions of the prototype pages that
+     * have no route of their own yet (field `action`): verification scope (50) and
+     * external-cost approval (51), introduction consent (58) and room messages (59),
+     * delivery acceptance (63), scope change (64) and the case forms (65–69).
+     */
     public function message(Request $request, string $ref): RedirectResponse
     {
         $e = $this->find($request, $ref);
+        $action = (string) $request->input('action', '');
+        if ($action !== '') {
+            return $this->action($request, $e, $action);
+        }
         $data = $request->validate(['message' => ['required', 'string', 'max:1000']]);
         EngagementFlow::log($e, 'client', 'Message to advisor', null, null, $data['message']);
 
         return back()->with('success', 'Message sent to '.($e->advisor?->name ?? 'your advisor').'.');
+    }
+
+    private function action(Request $request, Engagement $e, string $action): RedirectResponse
+    {
+        $base = "/aiim/workspace/engagements/{$e->reference}";
+
+        switch ($action) {
+            case 'verify-scope':
+                $data = $request->validate(['hotspot' => ['nullable', 'integer', 'min:0'], 'place' => ['nullable', 'string', 'max:190'], 'checks' => ['array'], 'checks.*' => ['string', 'max:40']]);
+                $e->update(['verification' => array_merge($e->verification ?? [], ['scope' => ['hotspot' => $data['hotspot'] ?? null, 'place' => $data['place'] ?? null, 'checks' => array_values($data['checks'] ?? [])], 'scoped_at' => now()->toDateTimeString()])]);
+                EngagementFlow::log($e, 'client', 'Verification scope set', null, null, 'Checks: '.implode(', ', $data['checks'] ?? []));
+
+                return redirect("{$base}/verification/costs")->with('success', 'Verification scope saved. Approve the external cost caps next.');
+
+            case 'ext-cost':
+                $data = $request->validate(['caps' => ['required', 'array'], 'caps.*' => ['nullable', 'numeric', 'min:0', 'max:10000000'], 'approve' => ['accepted']], ['approve.accepted' => 'Confirm you approve pass-through costs up to the caps entered.']);
+                $caps = collect($data['caps'])->map(fn ($v) => round((float) $v, 2))->all();
+                $e->update(['verification' => array_merge($e->verification ?? [], ['caps' => $caps, 'approved_external' => array_sum($caps), 'approved_at' => now()->toDateString()])]);
+                EngagementFlow::log($e, 'client', 'External costs approved (G9)', null, null, 'Caps total R '.number_format(array_sum($caps), 2));
+
+                return redirect("{$base}/verification/progress")->with('success', 'External cost caps approved. Verification can start.');
+
+            case 'consent':
+                $request->validate(['share' => ['accepted'], 'verified' => ['accepted']], ['share.accepted' => 'Confirm TBCA may share your teaser.', 'verified.accepted' => 'Confirm the counterparty check.']);
+                $intro = $e->introduction ?? Introduction::create([
+                    'reference' => Refs::dated('INT'), 'engagement_id' => $e->id, 'project_name' => $e->title,
+                    'sharing' => [['key' => 'name', 'label' => 'Name and organisation', 'share' => true], ['key' => 'teaser', 'label' => 'Project teaser', 'share' => true], ['key' => 'ticket', 'label' => 'Ticket band', 'share' => true], ['key' => 'contact', 'label' => 'Contact details (after both parties accept)', 'share' => false]],
+                    'status' => 'awaiting_consent', 'activity' => [],
+                ]);
+                $intro->update(['client_consented_at' => $intro->client_consented_at ?? now(), 'consent_name' => $request->user()->name, 'status' => $intro->status === 'awaiting_consent' ? 'awaiting_counterparty' : $intro->status,
+                    'activity' => array_merge($intro->activity ?? [], [['who' => 'TBCA', 'text' => 'Introduction requested and counterparty notified.', 'at' => now()->format('j M Y, H:i')]])]);
+                EngagementFlow::log($e, 'client', 'Introduction consent given (G10)');
+
+                return redirect("{$base}/introductions/room")->with('success', 'Introduction request sent. Contact details stay private until both parties accept.');
+
+            case 'intro-message':
+                $data = $request->validate(['message' => ['required', 'string', 'max:1000']]);
+                $intro = $e->introduction;
+                abort_unless($intro, 404);
+                $intro->update(['activity' => array_merge($intro->activity ?? [], [['who' => $request->user()->name, 'text' => $data['message'], 'at' => now()->format('j M Y, H:i')]])]);
+
+                return back()->with('success', 'Message posted to the introduction room.');
+
+            case 'acceptance':
+                $data = $request->validate(['received' => ['accepted'], 'comments' => ['nullable', 'string', 'max:1000']], ['received.accepted' => 'Confirm all deliverables were received and reviewed.']);
+                if ($e->status !== 'delivered') {
+                    return back()->with('error', 'Delivery acceptance opens once your advisor marks the deliverables as delivered.');
+                }
+                EngagementFlow::transition($e, 'accepted', 'client', 'Deliverables accepted; acceptance certificate issued (AAB-EMB-236).'.($data['comments'] ? ' Comments: '.$data['comments'] : ''), ['stage' => 'Final Balance']);
+                $balance = (int) round($e->feeExVat() - $e->depositExVat());
+                if ($balance <= 0) {
+                    return redirect("{$base}/ledger")->with('success', 'Deliverables accepted.');
+                }
+                $order = Checkout::createOrder(
+                    [['item_type' => 'aiim-balance', 'item_code' => 'AIIM-PAY-S14-001', 'name' => "Final balance — {$e->title}", 'unit_zar' => $balance]],
+                    $request->user(), 'aiim', ['title' => 'AIIM engagement balance', 'aiim' => ['kind' => 'balance', 'engagement' => $e->reference, 'label' => $e->title]],
+                );
+                $order->update(['meta' => $order->meta + ['return_url' => "/aiim/checkout/{$order->reference}/success"]]);
+
+                return redirect()->route('checkout.show', $order)->with('success', 'Deliverables accepted. Pay the final balance to close the mandate.');
+
+            case 'change':
+                $data = $request->validate(['what' => ['required', 'string', 'min:5', 'max:1000'], 'service' => ['required', Rule::in(self::SCOPE_SERVICES)], 'approve' => ['accepted']], ['approve.accepted' => 'Confirm you approve the revised fee and timeline.']);
+                $svc = P::svc($data['service']);
+                if (! $svc || ! $svc['price']) {
+                    return back()->with('error', 'That service is not in the app catalogue yet. Ask your advisor to quote it.');
+                }
+                $case = CaseFile::create(['reference' => Refs::make('CHG'), 'engagement_id' => $e->id, 'user_id' => $request->user()->id, 'type' => 'scope-change', 'status' => 'approved_awaiting_payment',
+                    'payload' => ['what' => $data['what'], 'service' => $svc['code'], 'serviceName' => $svc['name']], 'amount_zar' => $svc['price']]);
+                EngagementFlow::log($e, 'client', 'Scope change approved (AAB-EMB-235)', null, null, "{$case->reference}: {$data['what']}");
+                $order = Checkout::createOrder([['item_type' => 'sprint', 'item_code' => $svc['code'], 'name' => "Scope change — {$svc['name']}", 'variant' => $svc['tier'], 'unit_zar' => $svc['price']]],
+                    $request->user(), 'aiim', ['title' => 'AIIM scope change', 'aiim' => ['kind' => 'scope-change', 'case' => $case->reference, 'engagement' => $e->reference]]);
+                $order->update(['meta' => $order->meta + ['return_url' => "/aiim/checkout/{$order->reference}/success"]]);
+
+                return redirect()->route('checkout.show', $order)->with('success', "Scope change {$case->reference} approved. Pay the revised fee to add it to the mandate.");
+
+            default:
+                abort_unless(isset(self::CASES[$action]), 404);
+                [$type, $prefix, $label] = self::CASES[$action];
+                $data = $request->validate([
+                    'order' => ['nullable', 'string', 'max:120'],
+                    'reason' => [$action === 'pause' || $action === 'restart' ? 'nullable' : 'required', 'string', 'max:200'],
+                    'details' => [in_array($action, ['refund', 'dispute'], true) ? 'required' : 'nullable', 'string', 'max:2000'],
+                    'date' => [in_array($action, ['pause', 'restart'], true) ? 'required' : 'nullable', 'date', 'after_or_equal:today'],
+                    'flag' => [$action === 'cancel' ? 'accepted' : 'nullable'],
+                ], ['flag.accepted' => 'Confirm you understand work completed to date is billable.', 'date.required' => 'Pick a date.']);
+                $case = CaseFile::create(['reference' => Refs::make($prefix), 'engagement_id' => $e->id, 'user_id' => $request->user()->id, 'type' => $type, 'status' => 'submitted',
+                    'payload' => collect($data)->except('flag')->all() + ['flag' => (bool) ($data['flag'] ?? false)]]);
+                EngagementFlow::log($e, 'client', "{$label} submitted", null, null, "{$case->reference}: ".($data['reason'] ?? '').' '.($data['details'] ?? ''));
+
+                return redirect("{$base}/ledger")->with('success', "{$label} {$case->reference} submitted. We acknowledge it within 1 business day.");
+        }
     }
 
     /* ------------------------------------------------------------ helpers */
@@ -365,7 +552,7 @@ class EngagementController extends AiimController
         return redirect($redirect);
     }
 
-    /** Shared engagement props for every staged screen (header strip, snapshot, quote, letter). */
+    /** Shared engagement props for every staged screen. Quote items carry their embedded-service code when quoted from the catalogue. */
     public static function props(Engagement $e, bool $full = true): array
     {
         $u = $e->user;
