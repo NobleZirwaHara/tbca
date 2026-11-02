@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import * as L from 'lucide-react';
 import { useState } from 'react';
 import { CtaBand, DataMeta, Grid, Hero, PackLoading, Rich, SecIcon, Section } from '@/Components/Aiim/ProtoExplore';
-import { BuyBtn, BwFrame, cHref, CTable, SvcRail, type IntelBase, type RailP, type Row, type SvcP } from '@/Components/Aiim/ProtoSearch';
+import { BuyBtn, BwFrame, CTable, hsHref, SvcRail, type IntelBase, type RailP, type Row, type SvcP } from '@/Components/Aiim/ProtoSearch';
 import { cn } from '@/lib/cn';
 
 interface Product { Group: string; Product: string; 'Setswana [VERIFY]': string; 'HS 2022': string; Sector: string; Note: string }
@@ -44,7 +44,7 @@ export default function Hs({ lead, groups, commodities, mapper, landed, rail, bw
                         <Section key={g.group} title={g.group} sub={`${g.products.length} products`}>
                             <Grid cols={4}>
                                 {g.products.map((p) => (
-                                    <Link key={p.Product} href={cHref(c.slug, `hs/${encodeURIComponent(p.Product)}`)} className="grid content-start gap-1.5 rounded-[12px] border border-parchment-400 bg-white p-3.5 transition-colors hover:border-gold-500">
+                                    <Link key={p.Product} href={hsHref(c.slug, p.Product)} className="grid content-start gap-1.5 rounded-[12px] border border-parchment-400 bg-white p-3.5 transition-colors hover:border-gold-500">
                                         <div className="flex items-center justify-between gap-2"><span className="font-mono font-semibold text-gold-700">{p['HS 2022']}</span><SecIcon code={p.Sector} size={24} /></div>
                                         <h4 className="leading-snug font-semibold text-ink-900">{tn ? p['Setswana [VERIFY]'] : p.Product}</h4>
                                         <span className="text-[0.75rem] text-ink-500">{tn ? p.Product : p['Setswana [VERIFY]']}</span>

@@ -17,7 +17,7 @@ export default function Quote({ engagement: e }: AiimPageProps & { engagement: E
     ];
     return (
         <Flow title="Formal Quotation" eyebrow={`Page 45 · ${q.engagement_type ?? 'Market entry'} engagement`} steps={{ list: ADV, on: 2 }} crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }]}
-            side={<Banner>Amounts are ZAR excluding VAT, priced from the TBCA catalogue. {q.deposit_percent} % deposit on signature; balance on acceptance of deliverables.</Banner>}>
+            side={<Banner>Amounts exclude VAT and are priced in ZAR from the TBCA catalogue. {q.deposit_percent} % deposit on signature; balance on acceptance of deliverables.</Banner>}>
             <Panel title="Quotation">
                 <div className="mb-3">
                     <Dl rows={[

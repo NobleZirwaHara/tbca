@@ -121,7 +121,7 @@ class SearchTest extends TestCase
         $this->get('/aiim/country/kenya/leads')->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/Intel/Leads')->where('bw', false)->where('c.name', 'Kenya'));
         $this->get('/aiim/country/kenya/leads/BW-HL-0001')->assertOk()->assertInertia(fn (Assert $p) => $p->where('lead', null));
         $this->get('/aiim/country/kenya/hs')->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/Intel/Hs')->where('bw', false)->has('groups', 0)->has('commodities', 85));
-        $this->get('/aiim/country/kenya/hs/'.rawurlencode('Maize (white/yellow)'))->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/Intel/HsProduct')->where('product', null)->has('rows'));
+        $this->get('/aiim/country/kenya/hs/'.str_replace('%2F', '%252F', rawurlencode('Maize (white/yellow)')))->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/Intel/HsProduct')->where('product', null)->has('rows'));
         $this->get('/aiim/country/kenya/investor-questions')->assertOk()->assertInertia(fn (Assert $p) => $p->where('bw', false)->where('bwRows', null)->where('i2Rows.total', 4600));
         $this->get('/aiim/country/kenya/trader-questions')->assertOk()->assertInertia(fn (Assert $p) => $p->where('bw', false)->where('bwRows', null)->where('i2Rows.total', 3523));
         $this->get('/aiim/country/atlantis/leads')->assertNotFound();

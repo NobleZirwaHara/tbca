@@ -154,6 +154,9 @@ class WorkspaceController extends AiimController
     public function addItem(Request $request): RedirectResponse
     {
         $data = $request->validate(['type' => ['required', Rule::in([ComparisonEngine::TEMPLATE, 'opportunity', 'project', 'investor', 'funder', 'corridor'])], 'key' => ['required', 'string']]);
+        if ($data['type'] === 'opportunity' && ProtoAccount::isTemplate($data['key'])) {
+            $data['type'] = ComparisonEngine::TEMPLATE; // Botswana opportunities compare as templates
+        }
         if ($data['type'] === ComparisonEngine::TEMPLATE) {
             $o = ProtoAccount::template($data['key']);
             abort_unless($o, 404);

@@ -698,7 +698,7 @@ class ProtoSearch
         return self::base('product', (string) $name, (string) $name, [
             'summary' => $p ? ($p['Setswana [VERIFY]'].' · '.$p['Note']) : (string) $c['SA model anchor / note'], 'icon' => SectorCodes::icon($sec), 'sector' => self::secName($sec),
             'province' => $p ? $p['Group'] : $c['Group'], 'metricLabel' => 'HS 2022', 'metric' => (string) $hs, 'stageLabel' => 'Group', 'stage' => $p ? $p['Group'] : $c['Group'],
-            'url' => '/aiim/country/'.self::COUNTRY.'/hs/'.rawurlencode((string) $name), 'confidence' => 70,
+            'url' => '/aiim/country/'.self::COUNTRY.'/hs/'.str_replace('%2F', '%252F', rawurlencode((string) $name)), 'confidence' => 70,
             'facts' => [['HS 2022', $hs], ['Sector', self::secName($sec)], ['Group', $p ? $p['Group'] : $c['Group']]],
         ]);
     }

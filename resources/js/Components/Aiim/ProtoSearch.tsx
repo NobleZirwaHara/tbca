@@ -37,6 +37,8 @@ export interface IntelBase { facts: Record<string, Fact>; saved: string[]; bw: b
 export const lnk = 'text-controlled-700 underline decoration-dotted underline-offset-2 hover:text-gold-700';
 export const BW = 'botswana';
 export const cHref = (slug: string, path: string) => `/aiim/country/${slug}/${path}`;
+/** HS product page; a slash in a product name is encoded twice so the route segment keeps it. */
+export const hsHref = (slug: string, name: string) => cHref(slug, `hs/${encodeURIComponent(name).replace(/%2F/g, '%252F')}`);
 
 /* ------------------------------------------------------------------ frame with the fact drawer */
 export function BwFrame({ title, crumbs, facts, children }: { title: string; crumbs?: PCrumb[]; facts?: Record<string, Fact>; children: ReactNode }) {
@@ -180,7 +182,7 @@ export function cellFor(k: string, slug = BW): ((v: Cell, r: Row) => ReactNode) 
     if (k === 'Sector') return (v) => (/^[A-Z]{3}$/.test(String(v ?? '')) ? <Link href={P.sector(String(v))} className={lnk}>{String(v)}</Link> : <Text v={v} />);
     if (k === 'Place') return (v, r) => (r['Place ID'] ? <Link href={P.town(String(r['Place ID']))} className={lnk}>{String(v)}</Link> : <Rich t={v} />);
     if (k === 'Unit code') return (v) => (v ? <Link href={P.unit(String(v))} className={lnk}>{String(v)}</Link> : null);
-    if (k === 'Product' || k === 'Commodity') return (v) => (v ? <Link href={cHref(slug, `hs/${encodeURIComponent(String(v))}`)} className={lnk}>{String(v)}</Link> : null);
+    if (k === 'Product' || k === 'Commodity') return (v) => (v ? <Link href={hsHref(slug, String(v))} className={lnk}>{String(v)}</Link> : null);
     if (k === 'Citizen-reserved') return (v) => (String(v ?? '').toLowerCase().startsWith('y') || String(v ?? '').toLowerCase() === 'no' ? <YnPill v={v} yes="Reserved" /> : <Rich t={v} />);
     if (k === 'FX earner') return (v) => (/^(y|no)/i.test(String(v ?? '')) ? <YnPill v={v} yes="FX" ok /> : <Rich t={v} />);
     if (/^tier|downturn tier/i.test(k)) return (v) => (/^(A|B|C)/.test(String(v ?? '')) ? <TierPill t={v} /> : <Rich t={v} />);

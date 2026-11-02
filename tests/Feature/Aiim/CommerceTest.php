@@ -110,7 +110,10 @@ class CommerceTest extends TestCase
             $this->post('/aiim/workspace/compare/items', ['type' => 'template', 'key' => $id])->assertRedirect();
         }
         $this->post('/aiim/workspace/compare/items', ['type' => 'template', 'key' => 'BW-XXX-S99'])->assertNotFound();
-        $this->get('/aiim/workspace/compare')->assertInertia(fn (Assert $a) => $a->has('draft.items', 2)->where('draft.items.0.tier', 'A+'));
+        // A Botswana opportunity added from elsewhere compares as a template.
+        $this->post('/aiim/workspace/compare/items', ['type' => 'opportunity', 'key' => 'BW-ENR-S02'])->assertRedirect();
+        $this->get('/aiim/workspace/compare')->assertInertia(fn (Assert $a) => $a->has('draft.items', 3)->where('draft.items.0.tier', 'A+')->where('draft.items.2.type', 'template'));
+        $this->delete('/aiim/workspace/compare/items', ['type' => 'template', 'key' => 'BW-ENR-S02'])->assertRedirect();
 
         $this->post('/aiim/workspace/compare/generate')->assertRedirect();
         $cmp = Comparison::query()->where('user_id', $user->id)->latest('id')->firstOrFail();

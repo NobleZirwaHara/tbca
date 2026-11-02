@@ -48,7 +48,7 @@ export interface Crumb {
 
 export const eng = (ref: string, path = '') => `/aiim/workspace/engagements/${ref}${path}`;
 export const svcHref = (code: string) => `/aiim/services/${code}`;
-export const oppHref = (id: string) => `/aiim/opportunities?q=${encodeURIComponent(id)}`;
+export const oppHref = (id: string) => `/aiim/opportunities/${encodeURIComponent(id)}`;
 export const townHref = (slug: string, id: string) => `/aiim/country/${slug}/towns/${encodeURIComponent(id)}`;
 export const leadHref = (slug: string, id: string) => `/aiim/country/${slug}/leads/${encodeURIComponent(id)}`;
 

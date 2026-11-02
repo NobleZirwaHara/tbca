@@ -103,6 +103,9 @@ class CommerceController extends AiimController
     public function addFeeItem(Request $request): RedirectResponse
     {
         $data = $request->validate(['type' => ['required', Rule::in(self::FEE_TYPES)], 'key' => ['required', 'string', 'max:120'], 'ctx' => ['nullable', 'string', 'max:190']]);
+        if ($data['type'] === 'opportunity' && ProtoAccount::isTemplate($data['key'])) {
+            $data['type'] = 'template'; // a Botswana opportunity's premium object is its full record
+        }
         $resolved = $this->resolveItem($data);
         if (! $resolved && in_array($data['type'], ['service', 'template'], true)) {
             return back()->with('error', 'This service is not in the app catalogue yet.');
