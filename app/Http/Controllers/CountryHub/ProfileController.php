@@ -54,9 +54,10 @@ class ProfileController extends Controller
             return $this->countryPage($c, 'Profile/Service', ['code' => $code, 's' => null, 'related' => []]);
         }
         $pub = (string) $s['pub'];
+        $market = CountryHub::market($s['code']) ?? [];
         $tiers = [];
         foreach (['Basic' => 'b', 'Standard' => 's', 'Premium' => 'p'] as $tier => $letter) {
-            $tiers[] = ['tier' => $tier, 'price' => $s['tiers'][$tier] ?? null, 'pub' => str_contains($pub, $letter)];
+            $tiers[] = ['tier' => $tier, 'price' => $s['tiers'][$tier] ?? null, 'pub' => str_contains($pub, $letter), 'med' => $market[$tier] ?? null];
         }
         $related = [];
         foreach (CountryHub::sprints() as $x) {
@@ -72,7 +73,7 @@ class ProfileController extends Controller
             'code' => $code,
             's' => [
                 'code' => $s['code'], 'name' => $s['name'], 'type' => $s['type'], 'topic' => $s['topic'], 'topicLabel' => CountryHub::TOPICS[$s['topic']] ?? $s['topic'],
-                'up' => $s['up'], 'pop' => $s['pop'], 'viable' => $s['viable'], 'entry' => $s['entry'], 'ep' => $s['ep'], 'nTiers' => strlen($pub), 'tiers' => $tiers,
+                'up' => $s['up'], 'arch' => $market['arch'] ?? null, 'pop' => $s['pop'], 'viable' => $s['viable'], 'entry' => $s['entry'], 'ep' => $s['ep'], 'nTiers' => strlen($pub), 'tiers' => $tiers,
             ],
             'live' => self::LIVE && $s['viable'],
             'vat' => CountryHub::isBW($c) ? 0.14 : 0.15,

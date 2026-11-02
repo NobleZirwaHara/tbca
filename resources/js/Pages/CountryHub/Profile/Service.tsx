@@ -1,13 +1,13 @@
 /* P07 Service Detail (prototype pages-profile.js #/c/{ISO}/service/{code}). */
 import { router } from '@inertiajs/react';
 import type { ReactNode } from 'react';
-import { A, B, Card, Chip, Cols, Ic, Kpi, Kpis, Note, STable, TagP, useMoney, useToast } from '@/Components/Industries/Kit';
+import { A, B, Card, Chip, Cols, Ic, Kpi, Kpis, N, Note, STable, TagP, useMoney, useToast } from '@/Components/Industries/Kit';
 import { cHref, CountryPage, SprintGrid } from '@/Components/CountryHub/Layout';
 import type { ProfileProps } from '@/Components/CountryHub/Profile';
 import type { HubSprint } from '@/types/countryHub';
 
-interface Tier { tier: string; price: number | null; pub: boolean }
-interface Svc { code: string; name: string; type: string | null; topic: string; topicLabel: string; up: string | null; pop: string | null; viable: boolean; entry: string | null; ep: number | null; nTiers: number; tiers: Tier[] }
+interface Tier { tier: string; price: number | null; pub: boolean; med: number | null }
+interface Svc { code: string; name: string; type: string | null; topic: string; topicLabel: string; up: string | null; arch: string | null; pop: string | null; viable: boolean; entry: string | null; ep: number | null; nTiers: number; tiers: Tier[] }
 interface Props extends ProfileProps { code: string; s: Svc | null; live?: boolean; vat?: number; related: HubSprint[] }
 
 const PROCESS = ['Eligibility Check — Country Resolver validates all dependencies', 'Scoping & evidence pull — country registers and sources attached', 'Delivery — AI agents draft, robots execute, analysts assemble', 'Human review — subject-matter expert sign-off', 'Release — deliverable + evidence pack to Client Workspace', 'Change & re-resolution window'];
@@ -37,7 +37,7 @@ export default function Service({ base, code, s, live = false, vat = 0.15, relat
                 <div className="min-w-0 flex-1 basis-[22rem]">
                     <div className="text-[0.72rem] font-semibold tracking-[0.14em] text-gold-700 uppercase">Service Catalogue › Service Detail · Mock-up P07</div>
                     <h1 className="mt-1 text-[1.5rem] leading-tight font-bold text-ink-900 sm:text-[1.75rem]">{s.name}</h1>
-                    <p className="mt-1.5 font-mono text-[0.78rem] text-ink-500">Service Code: {s.code} · Category: {s.topicLabel} · Type: {s.type} · Archetype {s.up}</p>
+                    <p className="mt-1.5 font-mono text-[0.78rem] text-ink-500">Service Code: {s.code} · Category: {s.topicLabel} · Type: {s.type} · Archetype {s.arch ?? '—'} ({s.up})</p>
                 </div>
                 <A href={cHref(c, 'catalogue')}><Ic n="back" /> Back to Service Catalogue</A>
             </div>
@@ -55,7 +55,8 @@ export default function Service({ base, code, s, live = false, vat = 0.15, relat
                         <b key="t">{t.tier}</b>,
                         show ? <b key="p">{money(t.price)}</b> : <span key="p" className="text-ink-400">Price suppressed</span>,
                         show ? money(Math.round((t.price ?? 0) * (1 + vat))) : '—',
-                        '—', '—',
+                        t.med ? money(t.med) : '—',
+                        t.price && t.med ? `${N(t.price / t.med, 2)}×` : '—',
                         t.pub ? <Chip key="u" t="Yes" tone="ok" /> : <Chip key="u" t="No" />,
                         show ? <A key="a" sm v="pri" href={cHref(c, 'quote', `?sprint=${enc}&tier=${t.tier}`)}>Select</A> : '',
                     ];

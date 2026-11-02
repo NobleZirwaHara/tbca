@@ -47,7 +47,7 @@ class ProfileTest extends TestCase
                 $this->get("/countries/{$slug}/{$path}")->assertOk()->assertInertia(fn (Assert $p) => $p->component('CountryHub/Profile/'.$page)->where('base.c.iso3', $iso));
             }
             $this->get("/countries/{$slug}/service/TBCA-G-0002")->assertOk()->assertInertia(fn (Assert $p) => $p->component('CountryHub/Profile/Service')
-                ->where('s.code', 'TBCA-G-0002')->where('s.ep', 1220)->where('s.tiers.2.price', 3660)->where('live', true)->where('vat', $iso === 'BWA' ? 0.14 : 0.15));
+                ->where('s.code', 'TBCA-G-0002')->where('s.ep', 1220)->where('s.tiers.2.price', 3660)->where('s.arch', 'AAB-UP07-NONE-RUBRIC')->where('s.tiers.0.med', 1683.81)->where('live', true)->where('vat', $iso === 'BWA' ? 0.14 : 0.15));
         }
         $this->get('/countries/kenya/service/NOT-A-CODE')->assertOk()->assertInertia(fn (Assert $p) => $p->component('CountryHub/Profile/Service')->where('s', null)->where('code', 'NOT-A-CODE'));
         $this->get('/countries/atlantis')->assertNotFound();
