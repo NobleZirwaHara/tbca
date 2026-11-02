@@ -4,6 +4,8 @@ namespace App\Support\Aiim;
 
 use App\Models\Aiim\FeeCode;
 use App\Models\Aiim\Project;
+use App\Models\Aiim\VerificationItem;
+use App\Support\Industries\IndustryData;
 
 /**
  * Every AIIM price is computed from the fee-code catalogue (Pricing
@@ -174,11 +176,68 @@ class Pricing
         ];
     }
 
+    /** Report options priced as embedded services (prototype Page 36): option => [service code, label]. */
+    public const REPORT_OPTIONS = [
+        'expedite' => ['AAB-EMB-242', 'Expedite'],
+        'sources' => ['AAB-EMB-203', 'Source manifest'],
+        'localise' => ['AAB-EMB-191', 'Localisation'],
+    ];
+
+    /** Entry-tier selling price of an embedded service from the app's Sprint record (ZAR ex VAT), or null. */
+    public static function service(string $code): ?float
+    {
+        $s = IndustryData::sprint($code);
+        if (! $s || ! $s['app'] || ! $s['tiers']) {
+            return null;
+        }
+
+        return (float) min($s['tiers']);
+    }
+
+    /**
+     * Report quotation for a configuration built from the embedded report services (AIIM services
+     * 192 to 203) plus expedite, source manifest and localisation. Prices come only from the app's
+     * Sprint records; a line whose service has no app price is listed in `unpriced`.
+     *
+     * @param  array{type: string, expedite?: bool, sources?: bool, language?: string}  $config
+     */
+    public static function serviceReport(array $config): array
+    {
+        $type = ProtoLibrary::service((string) ($config['type'] ?? '')) ?? ProtoLibrary::service('AAB-EMB-192');
+        $want = [[$type['code'], $type['name'], 'Report format']];
+        if ($config['expedite'] ?? false) {
+            $want[] = [...self::REPORT_OPTIONS['expedite'], 'Expedite delivery'];
+        }
+        if ($config['sources'] ?? false) {
+            $want[] = [...self::REPORT_OPTIONS['sources'], 'Source manifest and evidence appendix'];
+        }
+        if (($config['language'] ?? 'en') === 'tn') {
+            $want[] = [...self::REPORT_OPTIONS['localise'], 'Setswana localisation'];
+        }
+        $lines = [];
+        $unpriced = [];
+        foreach ($want as [$code, $label, $desc]) {
+            $amount = self::service($code);
+            if ($amount === null) {
+                $unpriced[] = $code;
+
+                continue;
+            }
+            $lines[] = ['code' => $code, 'label' => $label, 'description' => $desc, 'amount' => $amount];
+        }
+
+        return self::totals($lines) + [
+            'typeCode' => $type['code'], 'typeName' => $type['name'], 'typeMode' => 'Embedded report service',
+            'pages' => '—', 'delivery' => ($config['expedite'] ?? false) ? 'Expedited' : ($type['db'] ?? '—'),
+            'unpriced' => $unpriced,
+        ];
+    }
+
     /**
      * Verification scope summary. Expert fees per selected item, platform fee at 18%
      * of expert, external supplier estimate and a 25% administration margin on it.
      *
-     * @param  iterable<\App\Models\Aiim\VerificationItem>  $items
+     * @param  iterable<VerificationItem>  $items
      */
     public static function verification(iterable $items, bool $approvedOnly = false): array
     {

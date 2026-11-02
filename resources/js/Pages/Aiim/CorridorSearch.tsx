@@ -7,12 +7,18 @@ import AiimPage from '@/Components/Aiim/Shell';
 import { CheckGroup, DarkSelect, FilterBar, Pagination, RefinePanel, ResultsHeader, SearchRail, type Filters } from '@/Components/Aiim/SearchKit';
 import { ButtonLink } from '@/Components/ui/Button';
 import type { AiimPageProps, CorridorItem, Paginated } from '@/types/aiim';
+import { PackLoading } from '@/Components/Aiim/ProtoExplore';
+import { CountryBar, type CountryOpt } from '@/Components/Aiim/ProtoSearch';
 
 interface Props extends AiimPageProps {
     filters: Filters & { q: string; types: string[]; mode: string; agreement: string; region: string; infrastructure: string; minScore: string; sort: string; view: string };
     results: Paginated<CorridorItem>;
     options: { types: string[]; agreements: string[]; regions: string[]; infrastructure: string[]; modes: string[] };
     saved: string[];
+    country: string;
+    countryName: string;
+    countries: CountryOpt[];
+    packLoading: boolean;
 }
 
 export function ModeIcons({ modes }: { modes: string[] }) {
@@ -29,8 +35,10 @@ export function ModeIcons({ modes }: { modes: string[] }) {
 
 const typeTone = (t: string) => (t === 'SADC' ? 'good' : t === 'Global' ? 'info' : t === 'Emerging' ? 'purple' : 'gold') as 'good' | 'info' | 'purple' | 'gold';
 
-export default function CorridorSearch({ filters, results, options, saved }: Props) {
-    const path = '/aiim/corridors';
+/** P15 for countries other than Botswana: the app's corridor records that pass through the country. */
+export default function CorridorSearch({ filters, results, options, saved, country, countryName, countries, packLoading }: Props) {
+    const base = '/aiim/corridors';
+    const path = `${base}?country=${country}`;
     return (
         <AiimPage
             title="Trade Corridor Search"
@@ -40,6 +48,8 @@ export default function CorridorSearch({ filters, results, options, saved }: Pro
             actions={<ButtonLink href="/aiim/sectors" size="sm" variant="outline">Back to Sector</ButtonLink>}
             rail={<SearchRail compareLabel="Compare Corridors" />}
         >
+            <CountryBar path={base} country={country} countries={countries} />
+            {packLoading && <div className="mb-4"><PackLoading country={countryName} what="Trade corridors" /></div>}
             <FilterBar
                 path={path}
                 filters={filters}

@@ -1,51 +1,57 @@
-import { CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
-import { BarList, Columns, Gauge } from '@/Components/Aiim/Charts';
-import { Chip, riskTone } from '@/Components/Aiim/Chips';
-import { MandateFrame } from '@/Components/Aiim/EngagementKit';
-import { SectionCard } from '@/Components/Aiim/Shell';
+import { BriefCta, Btn, Flow, PackLoading, Panel, SvcRail, eng, inputCls, type Country, type Rail, type Svc } from '@/Components/Aiim/ProtoEngagement';
+import { DataTable, Kpi, Kpis } from '@/Components/Industries/Kit';
 import type { AiimPageProps, Engagement } from '@/types/aiim';
 
-interface Data {
-    sector: string; province: string; marketSize: string; cagr: string; drivers: string; outlook: string;
-    forecast: [string, number][]; insights: string[]; attractiveness: [string, number][];
-    opportunities: [string, string, string, string, string][]; risks: [string, string][]; sources: string;
+interface Sector {
+    code: string; name: string; slug: string; templates: number; tierA: number; facts: number; shock: number | string | null;
+    chain: { n: string | number; question: string; types: string; map: string; evidence: string; institution: string }[];
 }
 
-const TABS = ['Executive Summary', 'Market Overview', 'Sector Analysis', 'Demand & Supply', 'Investment Landscape', 'Regulatory Environment', 'Risks & Mitigation', 'SWOT Analysis', 'Sources & Evidence'];
+interface Props extends AiimPageProps {
+    engagement: Engagement;
+    country: Country | null;
+    sectors: Sector[];
+    initial: string;
+    brief: Svc | null;
+    rail: Rail;
+}
 
-export default function DeepDive({ engagement: e, data: d }: AiimPageProps & { engagement: Engagement; data: Data }) {
-    const [tab, setTab] = useState(TABS[0]);
-    const score = Math.round(d.attractiveness.reduce((s, [, v]) => s + v, 0) / d.attractiveness.length);
+/** Page 54 Market and Sector Deep Dive. */
+export default function DeepDive({ engagement: e, country, sectors, initial, brief, rail }: Props) {
+    const [code, setCode] = useState(sectors.some((s) => s.code === initial) ? initial : sectors[0]?.code ?? '');
+    const s = sectors.find((x) => x.code === code);
     return (
-        <MandateFrame
-            e={e}
-            title="Market and Sector Deep Dive"
-            description="Comprehensive market analysis and sector intelligence for informed investment decision-making."
-            guidance="This deep dive provides strategic insights, market dynamics, growth outlook and investment considerations for your selected sector and province."
-            stage="Deep Dive & Analysis"
-            tabs={TABS}
-            tab={tab}
-            onTab={setTab}
-        >
-            {tab === 'Executive Summary' || tab === 'Market Overview' ? (
+        <Flow title="Market and Sector Deep Dive" eyebrow="Page 54" crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: e.mandate ?? e.reference, href: eng(e.reference) }, { label: 'Sectors', href: '/aiim/sectors' }]}
+            lead="Pick a sector to see everything BW-1.0 holds on it, then commission a deep dive."
+            side={<>
+                <BriefCta title="Commissioned sector deep dive" sub="40-section uniform sector profile with analyst review" s={brief} label="Commission" context={e.title} />
+                <SvcRail rail={rail} context="Sector deep dive" />
+            </>}>
+            {sectors.length ? (
                 <>
-                    <div className="grid gap-4 xl:grid-cols-[14rem_minmax(0,1fr)_minmax(0,1fr)]">
-                        <SectionCard title="At a Glance"><dl className="space-y-2 text-xs">{[['Sector', d.sector], ['Province', d.province], ['Market Size (2024)', d.marketSize], ['CAGR (2024–2030)', d.cagr], ['Key Growth Drivers', d.drivers], ['Investment Outlook', d.outlook]].map(([k, v]) => <div key={k}><dt className="text-ink-500">{k}</dt><dd className="font-semibold">{v}</dd></div>)}</dl></SectionCard>
-                        <SectionCard title="Market Size & Growth Forecast (ZAR Billion)"><Columns data={d.forecast} highlight="2024" /><p className="mt-2 text-[0.65rem] text-ink-500">Source: {d.sources} · Confidence: High</p></SectionCard>
-                        <SectionCard title="Key Market Insights"><ul className="space-y-2 text-xs">{d.insights.map((i) => <li key={i} className="flex gap-1.5"><CheckCircle2 className="size-3.5 shrink-0 text-verified-500" />{i}</li>)}</ul></SectionCard>
-                    </div>
-                    <div className="mt-4 grid gap-4 xl:grid-cols-3">
-                        <SectionCard title="Sector Attractiveness"><Gauge dark={false} value={score} label="High Attractiveness" /><div className="mt-3"><BarList data={d.attractiveness.map(([label, value]) => ({ label, value }))} /></div></SectionCard>
-                        <SectionCard title="Top Investment Opportunities"><table className="w-full text-xs"><thead className="text-ink-500"><tr><th className="text-left">Opportunity</th><th>Type</th><th>Est. Investment</th><th>IRR Potential</th></tr></thead><tbody className="divide-y divide-parchment-300">{d.opportunities.map(([n, t, , inv, irr]) => <tr key={n}><td className="py-1.5">{n}</td><td className="text-center">{t}</td><td className="text-center">{inv}</td><td className="text-center">{irr}</td></tr>)}</tbody></table></SectionCard>
-                        <SectionCard title="Risks Snapshot"><ul className="space-y-1.5 text-xs">{d.risks.map(([r, l]) => <li key={r} className="flex justify-between"><span>{r}</span><Chip tone={riskTone(l)}>{l}</Chip></li>)}</ul></SectionCard>
-                    </div>
+                    <label className="grid max-w-md gap-1.5 text-[0.82rem] font-semibold text-ink-800">Sector
+                        <select className={inputCls} value={code} onChange={(ev) => setCode(ev.target.value)}>{sectors.map((x) => <option key={x.code} value={x.code}>{x.name}</option>)}</select>
+                    </label>
+                    {s && (
+                        <>
+                            <Kpis>
+                                <Kpi l="Templates" v={s.templates} icon="layers" />
+                                <Kpi l="Tier A" v={s.tierA} icon="star" />
+                                <Kpi l="Facts" v={s.facts} icon="file" />
+                                <Kpi l="Shock index" v={s.shock ?? '—'} icon="alert" />
+                            </Kpis>
+                            <Panel title="Investor chain answered">
+                                <DataTable key={s.code} name={`investor-chain-${s.code}`} size={10} rows={s.chain} cols={[
+                                    { k: 'n', l: '#', num: true }, { k: 'question', l: 'Question', clip: true }, { k: 'types', l: 'Information types', clip: true },
+                                    { k: 'map', l: 'Map behaviour', clip: true }, { k: 'evidence', l: 'Evidence', clip: true }, { k: 'institution', l: 'Institution/role', clip: true },
+                                ]} />
+                            </Panel>
+                            <div><Btn href={`/aiim/sector/${s.slug}`} v="ghost" size="sm">Open full sector page</Btn></div>
+                        </>
+                    )}
                 </>
-            ) : (
-                <SectionCard title={tab}>
-                    <p className="text-sm text-ink-600">The {tab.toLowerCase()} section of this deep dive is delivered in the full report for {d.sector} in {d.province}. Sources: {d.sources}.</p>
-                </SectionCard>
-            )}
-        </MandateFrame>
+            ) : <PackLoading country={country} what="The sector deep dive" />}
+        </Flow>
     );
 }

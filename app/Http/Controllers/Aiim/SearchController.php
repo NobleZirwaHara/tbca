@@ -11,15 +11,22 @@ use App\Models\Aiim\Sector;
 use App\Support\Aiim\Catalogue;
 use App\Support\Aiim\Grades;
 use App\Support\Aiim\Pricing;
+use App\Support\Aiim\ProtoSearch;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
 /**
  * Server-side search and filtering for opportunities, projects, investors,
  * funders and trade corridors, plus their preview pages.
+ *
+ * The search pages are global with a country filter that defaults to Botswana: Botswana shows the
+ * client's "TBCA AIIM Botswana" prototype records from the BW-1.0 registers (BotswanaSearch), any
+ * other country (or "all") shows the app's own records for that country.
  */
 class SearchController extends AiimController
 {
+    use BotswanaSearch;
+
     private const PER_PAGE = 10;
 
     private const SIZE_BANDS = [
@@ -28,12 +35,48 @@ class SearchController extends AiimController
 
     public function opportunities(Request $request): Response
     {
-        return $this->projects($request, 'opportunity');
+        return $this->isBw($request) ? $this->bwOpps($request) : $this->appProjects($request, 'opportunity');
     }
 
-    public function projects(Request $request, string $kind = 'project'): Response
+    public function projects(Request $request): Response
+    {
+        return $this->isBw($request) ? $this->bwProjects($request) : $this->appProjects($request, 'project');
+    }
+
+    /** Country filter value: a country slug, "all", or Botswana by default. */
+    protected function countryParam(Request $request): string
+    {
+        $c = strtolower(trim((string) $request->query('country', ProtoSearch::COUNTRY)));
+
+        return in_array($c, ['', 'bw', 'bwa'], true) ? ProtoSearch::COUNTRY : $c;
+    }
+
+    protected function isBw(Request $request): bool
+    {
+        return $this->countryParam($request) === ProtoSearch::COUNTRY && ProtoSearch::ready();
+    }
+
+    /** Country filter props shared by every search page. */
+    protected function countryProps(Request $request): array
+    {
+        $c = $this->countryParam($request);
+        $name = $c === 'all' ? 'All countries' : (Country::query()->where('slug', $c)->value('name') ?? ucwords(str_replace('-', ' ', $c)));
+        if ($c !== 'all') {
+            $this->select($request, ['country' => $name]);
+        }
+
+        return [
+            'country' => $c,
+            'countryName' => $name,
+            'countries' => Country::query()->orderBy('name')->get(['slug', 'name']),
+        ];
+    }
+
+    private function appProjects(Request $request, string $kind): Response
     {
         $f = $this->filters($request, ['types' => [], 'size' => '', 'stage' => '', 'country' => '']);
+        $c = $this->countryParam($request);
+        $f['country'] = $c === 'all' ? '' : $c;
         $q = Project::query()->whereIn('kind', [$kind, 'both']);
         $this->common($q, $f, ['name', 'summary', 'location']);
         if ($f['country']) {
@@ -65,23 +108,40 @@ class SearchController extends AiimController
                 'countries' => Country::query()->whereIn('iso2', (clone $base)->whereNotNull('country_iso2')->distinct()->pluck('country_iso2'))->orderBy('name')->get(['slug', 'name']),
             ] + $this->geo(),
             'saved' => $this->savedKeys($request->user()),
-        ], $kind === 'project' ? 'Project Search' : 'Opportunity Search');
+            'packLoading' => $page->total() === 0 && $f['country'] !== '' && ! $this->hasFilters($f),
+        ] + $this->countryProps($request), $kind === 'project' ? 'Project Search' : 'Opportunity Search');
     }
 
     public function investors(Request $request): Response
     {
-        return $this->organisations($request, 'investor');
+        return $this->isBw($request) ? $this->bwInvestors($request) : $this->organisations($request, 'investor');
     }
 
     public function funders(Request $request): Response
     {
-        return $this->organisations($request, 'funder');
+        return $this->isBw($request) ? $this->bwFunders($request) : $this->organisations($request, 'funder');
+    }
+
+    private function hasFilters(array $f): bool
+    {
+        foreach ($f as $k => $v) {
+            if (! in_array($k, ['sort', 'view', 'country'], true) && $v !== '' && $v !== []) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function organisations(Request $request, string $kind): Response
     {
         $f = $this->filters($request, ['types' => [], 'stage' => '', 'instrument' => '', 'minTicket' => '', 'origin' => '']);
         $q = Organisation::query()->where('kind', $kind);
+        // The app's investor and funder records are the South Africa model data set.
+        $c = $this->countryParam($request);
+        if (! in_array($c, ['all', 'south-africa'], true)) {
+            $q->whereRaw('1 = 0');
+        }
         if ($f['q']) {
             $q->where(fn ($w) => $w->where('name', 'like', "%{$f['q']}%")->orWhere('summary', 'like', "%{$f['q']}%")->orWhere('type', 'like', "%{$f['q']}%")->orWhere('focus', 'like', "%{$f['q']}%"));
         }
@@ -105,11 +165,13 @@ class SearchController extends AiimController
         }
         $this->sort($q, $f['sort'], ['score' => ['match_score', 'desc'], 'ticket' => ['ticket_max_zar', 'desc'], 'added' => ['added_on', 'desc'], 'name' => ['name', 'asc']]);
         $base = Organisation::query()->where('kind', $kind);
+        $page = $q->paginate(self::PER_PAGE)->withQueryString();
 
         return $this->render($request, 'Aiim/OrgSearch', [
             'kind' => $kind,
             'filters' => $f,
-            'results' => $q->paginate(self::PER_PAGE)->withQueryString()->through(fn ($o) => Catalogue::organisation($o)),
+            'packLoading' => $page->total() === 0 && ! in_array($c, ['all', 'south-africa'], true),
+            'results' => $page->through(fn ($o) => Catalogue::organisation($o)),
             'options' => [
                 'types' => (clone $base)->distinct()->orderBy('type')->pluck('type'),
                 'stages' => (clone $base)->pluck('stages')->flatten()->unique()->sort()->values(),
@@ -118,13 +180,20 @@ class SearchController extends AiimController
                 'tickets' => [['1000000', 'R1M+'], ['10000000', 'R10M+'], ['100000000', 'R100M+'], ['1000000000', 'R1B+']],
             ] + $this->geo(),
             'saved' => $this->savedKeys($request->user()),
-        ], $kind === 'investor' ? 'Investor Search' : 'Funder Search');
+        ] + $this->countryProps($request), $kind === 'investor' ? 'Investor Search' : 'Funder Search');
     }
 
     public function corridors(Request $request): Response
     {
+        if ($this->isBw($request)) {
+            return $this->bwCorridors($request);
+        }
         $f = $this->filters($request, ['types' => [], 'mode' => '', 'agreement' => '', 'region' => '', 'infrastructure' => '', 'minScore' => '']);
         $q = Corridor::query();
+        $cp = $this->countryProps($request);
+        if ($cp['country'] !== 'all') {
+            $q->where('countries', 'like', '%'.$cp['countryName'].'%');
+        }
         if ($f['q']) {
             $q->where(fn ($w) => $w->where('name', 'like', "%{$f['q']}%")->orWhere('route', 'like', "%{$f['q']}%")->orWhere('agreement', 'like', "%{$f['q']}%")->orWhere('countries', 'like', "%{$f['q']}%"));
         }
@@ -146,9 +215,12 @@ class SearchController extends AiimController
         }
         $this->sort($q, $f['sort'], ['score' => ['score', 'desc'], 'volume' => ['volume_zar', 'desc'], 'added' => ['added_on', 'desc'], 'name' => ['name', 'asc']]);
 
+        $page = $q->paginate(self::PER_PAGE)->withQueryString();
+
         return $this->render($request, 'Aiim/CorridorSearch', [
             'filters' => $f,
-            'results' => $q->paginate(self::PER_PAGE)->withQueryString()->through(fn ($c) => Catalogue::corridor($c)),
+            'packLoading' => $page->total() === 0 && $cp['country'] !== 'all' && ! $this->hasFilters($f),
+            'results' => $page->through(fn ($c) => Catalogue::corridor($c)),
             'options' => [
                 'types' => Corridor::query()->distinct()->orderBy('type')->pluck('type'),
                 'agreements' => Corridor::query()->distinct()->orderBy('agreement')->pluck('agreement'),
@@ -157,17 +229,25 @@ class SearchController extends AiimController
                 'modes' => ['road', 'rail', 'sea', 'air'],
             ],
             'saved' => $this->savedKeys($request->user()),
-        ], 'Trade Corridor Search');
+        ] + $cp, 'Trade Corridor Search');
     }
 
-    public function opportunity(Request $request, Project $project): Response
+    public function opportunity(Request $request, string $project): Response
     {
-        return $this->showProject($request, $project, 'opportunity');
+        if (ProtoSearch::ready() && ProtoSearch::opp($project)) {
+            return $this->bwOpp($request, $project);
+        }
+
+        return $this->showProject($request, Project::query()->where('slug', $project)->firstOrFail(), 'opportunity');
     }
 
-    public function project(Request $request, Project $project): Response
+    public function project(Request $request, string $project): Response
     {
-        return $this->showProject($request, $project, 'project');
+        if (ProtoSearch::ready() && ($bw = $this->bwProject($request, $project))) {
+            return $bw;
+        }
+
+        return $this->showProject($request, Project::query()->where('slug', $project)->firstOrFail(), 'project');
     }
 
     private function showProject(Request $request, Project $project, string $as): Response
@@ -189,14 +269,22 @@ class SearchController extends AiimController
         ], $as === 'project' ? 'Project Overview' : 'Opportunity Preview');
     }
 
-    public function investor(Request $request, Organisation $organisation): Response
+    public function investor(Request $request, string $organisation): Response
     {
-        return $this->showOrg($request, $organisation, 'investor');
+        if (ProtoSearch::ready() && ($c = ProtoSearch::persona($organisation))) {
+            return $this->bwInvestor($request, $c);
+        }
+
+        return $this->showOrg($request, Organisation::query()->where('slug', $organisation)->firstOrFail(), 'investor');
     }
 
-    public function funder(Request $request, Organisation $organisation): Response
+    public function funder(Request $request, string $organisation): Response
     {
-        return $this->showOrg($request, $organisation, 'funder');
+        if (ProtoSearch::ready() && ($c = ProtoSearch::funder($organisation))) {
+            return $this->bwFunder($request, $c);
+        }
+
+        return $this->showOrg($request, Organisation::query()->where('slug', $organisation)->firstOrFail(), 'funder');
     }
 
     private function showOrg(Request $request, Organisation $org, string $kind): Response
@@ -213,8 +301,12 @@ class SearchController extends AiimController
         ], $kind === 'investor' ? 'Investor Preview' : 'Funder Preview');
     }
 
-    public function corridor(Request $request, Corridor $corridor): Response
+    public function corridor(Request $request, string $corridor): Response
     {
+        if (ProtoSearch::ready() && ($c = ProtoSearch::corridor($corridor))) {
+            return $this->bwCorridor($request, $c);
+        }
+        $corridor = Corridor::query()->where('slug', $corridor)->firstOrFail();
         $this->select($request, ['item' => $corridor->name]);
 
         return $this->render($request, 'Aiim/CorridorShow', [

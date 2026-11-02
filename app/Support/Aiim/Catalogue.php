@@ -18,7 +18,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Catalogue
 {
-    public const TYPES = ['opportunity', 'project', 'investor', 'funder', 'corridor', 'report', 'source', 'sector'];
+    /**
+     * Item types. Botswana prototype objects use the same types with their register keys
+     * (opportunity BW-ENR-S01 or an Issue 2.0 Opp ID, project H{n} hotspot or P-nn precedent,
+     * investor persona code, funder code, corridor code) plus place (town ID), unit (unit code),
+     * lead (lead ID) and product (HS product or commodity name). See ProtoSearch::card().
+     */
+    public const TYPES = ['opportunity', 'project', 'investor', 'funder', 'corridor', 'report', 'source', 'sector', 'place', 'unit', 'lead', 'product'];
 
     public static function zarShort(int|float $zar): string
     {
@@ -216,6 +222,9 @@ class Catalogue
      */
     public static function card(string $type, string $key): ?array
     {
+        if ($bw = ProtoSearch::card($type, $key)) {
+            return $bw;
+        }
         $m = self::find($type, $key);
         if (! $m) {
             return null;
@@ -274,6 +283,7 @@ class Catalogue
         return [
             'opportunity' => 'Opportunity', 'project' => 'Project', 'investor' => 'Investor', 'funder' => 'Funder',
             'corridor' => 'Trade Corridor', 'report' => 'Report', 'source' => 'Source', 'sector' => 'Sector',
+            'place' => 'Place', 'unit' => 'District or Council', 'lead' => 'Lead', 'product' => 'Product',
         ][$type] ?? ucfirst($type);
     }
 }

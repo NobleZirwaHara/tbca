@@ -1,75 +1,73 @@
 import { useForm } from '@inertiajs/react';
-import { Lock, ShieldCheck } from 'lucide-react';
 import type { FormEvent } from 'react';
-import { Chip } from '@/Components/Aiim/Chips';
-import { zar2 } from '@/Components/Aiim/format';
-import AiimPage, { DeeperBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
-import { Field, Input, Select } from '@/Components/ui/Form';
-import { Stepper } from '@/Components/ui/Kit';
-import { Button } from '@/Components/ui/Button';
+import { Banner, Flow, FlowSteps, SumBox } from '@/Components/Aiim/ProtoAccount';
+import { B, Card, Check, Field, Ic, inputCls, useMoney } from '@/Components/Industries/Kit';
+import { cn } from '@/lib/cn';
 import type { AiimPageProps } from '@/types/aiim';
 
 export interface OrderProps {
     reference: string; title: string; kind: string | null; label: string | null; status: string;
     items: { name: string; code: string; amount: number }[];
-    subtotal: number; vat: number; fees: number; total: number; date: string; payer: string | null; email: string | null;
-}
-
-export function OrderSummary({ order }: { order: OrderProps }) {
-    return (
-        <dl className="text-sm">
-            {order.items.map((i) => <div key={i.code + i.name} className="flex justify-between gap-3 border-b border-parchment-300 py-1.5"><dt className="text-ink-600">{i.name}</dt><dd className="whitespace-nowrap">{zar2(i.amount)}</dd></div>)}
-            <div className="flex justify-between py-1.5 font-semibold"><dt>Subtotal (excl. VAT)</dt><dd>{zar2(order.subtotal)}</dd></div>
-            <div className="flex justify-between py-1"><dt className="text-ink-600">VAT (15%)</dt><dd>{zar2(order.vat)}</dd></div>
-            <div className="flex justify-between py-1"><dt className="text-ink-600">Platform &amp; bank charges</dt><dd>{zar2(order.fees)}</dd></div>
-            <div className="mt-1 flex justify-between rounded bg-gold-50 px-2 py-2 text-base font-bold"><dt>Total (incl. VAT)</dt><dd className="text-risk-500">{zar2(order.total)}</dd></div>
-        </dl>
-    );
+    subtotal: number; vat: number; fees: number; total: number; date: string;
 }
 
 interface Props extends AiimPageProps {
     order: OrderProps;
-    billing: Record<string, string | null>;
+    billing: { company: string | null; vat_number: string | null };
+    wallet: number;
+    walletAllowed: boolean;
 }
 
-export default function Checkout({ order, billing }: Props) {
-    const form = useForm({ name: billing.name ?? '', email: billing.email ?? '', country: billing.country ?? 'South Africa', company: billing.company ?? '', vat_number: billing.vat_number ?? '', phone: billing.phone ?? '' });
+/** Mock-up 30: Secure Checkout. */
+export default function Checkout({ order, billing, wallet, walletAllowed }: Props) {
+    const money = useMoney();
+    const walletOk = walletAllowed && wallet >= order.subtotal;
+    const form = useForm({ method: 'card', company: billing.company ?? '', vat_number: billing.vat_number ?? '', terms: false });
     const submit = (e: FormEvent) => { e.preventDefault(); form.post(`/aiim/checkout/${order.reference}`); };
+    const methods: [string, string, string, boolean][] = [
+        ['card', 'Card via payment provider', 'You will be passed to the provider’s secure page', true],
+        ['eft', 'EFT / bank transfer', 'Invoice with reference; unlock on receipt', true],
+        ['wallet', 'Wallet credits', walletAllowed ? `Debit your prepaid balance (${money(wallet)})` : 'Not available for a wallet top-up', walletOk],
+    ];
+    const err = (k: string) => (form.errors as Record<string, string | undefined>)[k];
+
     return (
-        <AiimPage
+        <Flow
             title="Secure Checkout"
-            crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: 'Secure Checkout' }]}
-            heading={<>Secure Checkout <Lock className="size-6 text-gold-600" /></>}
-            subtitle="Complete your payment securely."
-            description="Your payment is protected with bank-grade security."
-            rail={<><SelectionBox /><DeeperBox /></>}
+            eyebrow="Pay for your manifest"
+            crumbs={[{ label: 'Fee Manifest', href: '/aiim/fees/discover' }]}
+            steps={<FlowSteps on={3} />}
+            side={
+                <>
+                    <Card title="Order" act={<span className="font-mono text-[0.72rem] text-ink-400">{order.reference}</span>}>
+                        {order.items.length ? <SumBox lines={order.items.map((i) => [i.name, i.amount])} vatAmount={order.vat} total={order.subtotal + order.vat} /> : <p className="text-[0.85rem] text-ink-500">Manifest empty. Add a brief first.</p>}
+                        <p className="mt-2 text-[0.72rem] text-ink-400">Payment provider fees, if any, are shown on the provider’s page before you pay.</p>
+                    </Card>
+                    <Banner>Amounts are ZAR VAT-exclusive from the TBCA service catalogue, with VAT at 15 % added at payment.</Banner>
+                    <p className="flex items-center gap-2 text-[0.75rem] text-ink-500"><Ic n="lock" /> ISO 27001 aligned · POPIA · bank-grade TLS</p>
+                </>
+            }
         >
-            <SectionCard className="mb-4"><Stepper steps={['Review Order', 'Billing Details', 'Payment', 'Confirmation']} current={2} /></SectionCard>
-            <form onSubmit={submit} className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_18rem]" noValidate>
-                <SectionCard title="Items in Your Order">
-                    <Chip tone="gold">{(order.kind ?? 'order').replace('-', ' ').toUpperCase()}</Chip>
-                    <p className="mt-2 font-semibold">{order.label ?? order.title}</p>
-                    <ul className="mt-2 space-y-1 text-xs text-ink-600">{order.items.map((i) => <li key={i.code + i.name} className="flex justify-between"><span>{i.name}</span><span>{zar2(i.amount)}</span></li>)}</ul>
-                    <p className="mt-2 text-xs text-ink-400">Order {order.reference}</p>
-                    <div className="mt-4 flex gap-3 rounded bg-gold-50 p-3 text-xs"><ShieldCheck className="size-6 shrink-0 text-gold-600" /><span><strong className="block">Your payment is safe with us</strong>We use 256-bit SSL encryption and secure payment gateways (PCI DSS, Visa, Mastercard SecureCode, Instant EFT).</span></div>
-                </SectionCard>
-                <SectionCard title="Billing Details">
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        <Field label="Full Name" error={form.errors.name} required>{(id) => <Input id={id} value={form.data.name} onChange={(e) => form.setData('name', e.target.value)} autoComplete="name" />}</Field>
-                        <Field label="Email Address" error={form.errors.email} required>{(id) => <Input id={id} type="email" value={form.data.email} onChange={(e) => form.setData('email', e.target.value)} autoComplete="email" />}</Field>
-                        <Field label="Country" error={form.errors.country} required>{(id) => <Select id={id} value={form.data.country} onChange={(e) => form.setData('country', e.target.value)} options={['South Africa', 'Botswana', 'Namibia', 'Kenya', 'Nigeria', 'Other']} />}</Field>
-                        <Field label="Company (Optional)" error={form.errors.company}>{(id) => <Input id={id} value={form.data.company} onChange={(e) => form.setData('company', e.target.value)} autoComplete="organization" />}</Field>
-                        <Field label="VAT Number (Optional)" error={form.errors.vat_number}>{(id) => <Input id={id} value={form.data.vat_number} onChange={(e) => form.setData('vat_number', e.target.value)} />}</Field>
-                        <Field label="Phone Number" error={form.errors.phone} required>{(id) => <Input id={id} type="tel" value={form.data.phone} onChange={(e) => form.setData('phone', e.target.value)} placeholder="+27" autoComplete="tel" />}</Field>
-                    </div>
-                    <p className="mt-3 text-xs text-ink-400">We respect your privacy and never share your details.</p>
-                </SectionCard>
-                <div className="space-y-3">
-                    <SectionCard title="Order Summary"><OrderSummary order={order} /><p className="mt-2 rounded bg-controlled-50 p-2 text-xs text-controlled-700">All amounts are in ZAR. VAT is calculated at 15% and applied at checkout.</p></SectionCard>
-                    <Button type="submit" disabled={form.processing} className="w-full" icon="lock" trailingIcon="arrow-right">Pay Securely {zar2(order.total)}</Button>
-                    <p className="text-center text-xs text-ink-400">You will be redirected to our secure payment partner.</p>
+            <form onSubmit={submit} noValidate className="grid gap-3 rounded-[6px] border border-parchment-400 bg-white p-4">
+                <h3 className="text-[0.95rem] font-semibold text-ink-900">Payment method</h3>
+                <div className="grid gap-3 sm:grid-cols-3" role="radiogroup">
+                    {methods.map(([v, t, s, ok]) => (
+                        <label key={v} className={cn('grid cursor-pointer gap-1 rounded-[6px] border p-3', form.data.method === v ? 'border-gold-500 bg-gold-50' : 'border-parchment-400', !ok && 'cursor-not-allowed opacity-60')}>
+                            <span className="flex items-center gap-2"><input type="radio" name="pm" value={v} checked={form.data.method === v} disabled={!ok} onChange={() => form.setData('method', v)} className="accent-gold-600" /><b className="text-[0.85rem]">{t}</b></span>
+                            <span className="text-[0.75rem] text-ink-500">{s}</span>
+                        </label>
+                    ))}
+                </div>
+                {form.data.method === 'wallet' && <p className="text-[0.75rem] text-ink-500">Credits are bought with VAT included, so the wallet is debited {money(order.subtotal)}.</p>}
+                <Field label="Invoice to (organisation)"><input className={inputCls} value={form.data.company} onChange={(e) => form.setData('company', e.target.value)} placeholder="Organisation name" autoComplete="organization" /></Field>
+                <Field label="VAT / tax number (optional)"><input className={inputCls} value={form.data.vat_number} onChange={(e) => form.setData('vat_number', e.target.value)} /></Field>
+                <Check checked={form.data.terms} onChange={(v) => form.setData('terms', v)}>I accept the Terms of Sale and the refund policy.</Check>
+                {(err('terms') || err('method')) && <p role="alert" className="text-[0.75rem] text-risk-600">{err('terms') ?? err('method')}</p>}
+                <div className="flex flex-wrap gap-2">
+                    <B v="pri" type="submit" disabled={form.processing}>Pay {money(form.data.method === 'wallet' ? order.subtotal : order.subtotal + order.vat)}</B>
+                    <B onClick={() => window.history.back()}>Back</B>
                 </div>
             </form>
-        </AiimPage>
+        </Flow>
     );
 }

@@ -1,136 +1,165 @@
-import { Link } from '@inertiajs/react';
-import { BadgeCheck, CheckCircle2, Circle, Clock, Download, FileText, Info, XCircle } from 'lucide-react';
-import { Donut } from '@/Components/Aiim/Charts';
-import { Chip, levelTone } from '@/Components/Aiim/Chips';
-import { MandateFrame } from '@/Components/Aiim/EngagementKit';
-import { FeeSummary } from '@/Components/Aiim/FeeTable';
-import { zar2 } from '@/Components/Aiim/format';
-import { SectionCard } from '@/Components/Aiim/Shell';
-import { Button } from '@/Components/ui/Button';
-import { cn } from '@/lib/cn';
-import type { AiimPageProps, Engagement, Totals } from '@/types/aiim';
+import { Link, useForm } from '@inertiajs/react';
+import type { FormEvent } from 'react';
+import { Banner, Btn, Chk, Dl, Fld, Flow, FormPanel, PackLoading, Panel, Pill, SumBox, SvcRail, TierPill, Timeline, VER, eng, inputCls, leadHref, townHref, type Country, type Rail, type Svc, type TiState } from '@/Components/Aiim/ProtoEngagement';
+import { N } from '@/Components/Industries/Kit';
+import type { AiimPageProps, Engagement } from '@/types/aiim';
 
-interface Item {
-    code: string; name: string; description: string; recommendation: string; selected: boolean; supplier: string; purpose: string; basis: string;
-    supplier_cost_zar: number; expert_fee_zar: number; timeline: string; cost_approved: boolean; status: string; owner: string; confidence: string | null; material_issues: number; started: string | null; eta: string | null;
+interface Hotspot {
+    i: number; name: string; place: string; placeId: string; unit: string; fact: string; status: string; match: string; gateway: string | null; gatewayKm: number | string | null;
+    leads: { id: string; opportunity: string; template: string; due: string; tier: string; score: number; next: string; institution: string }[];
 }
 
 interface Props extends AiimPageProps {
     engagement: Engagement;
+    country: Country | null;
     view: 'scope' | 'costs' | 'progress' | 'report';
-    items: Item[];
-    scope: Totals & { count: number; external: number };
-    approved: Totals & { count: number; external: number };
-    adminRate: number;
-    tolerance: number;
+    hotspots: { i: number; name: string; place: string }[];
+    hotspot: Hotspot | null;
+    scope: { hotspot: number | null; place: string | null; checks: string[] } | null;
+    caps: number[] | null;
+    approvedAt: string | null;
+    approvedExternal: number;
+    estimate: { base: Svc | null; counterparty: Svc | null; sanctions: Svc | null; esg: Svc | null };
+    items: { code: string; name: string; status: string; selected: boolean; supplier: string; eta: string | null }[];
+    rail: Rail;
 }
 
-const VIEWS: [Props['view'], string][] = [['scope', 'Verification Scope'], ['costs', 'External Cost Approval'], ['progress', 'Verification Progress'], ['report', 'Verification Report']];
+const CHECKS: [string, string, boolean][] = [
+    ['gps', 'P1 GPS point and photographs', true], ['tenure', 'Land tenure (Land Boards / Department of Lands)', true], ['citizen', 'Citizen-rule check (reserved activities, Economic Inclusion Act)', true],
+    ['counterparty', 'Counterparty verification (AAB-EMB-158)', false], ['sanctions', 'Sanctions and PEP screening (AAB-EMB-157)', false], ['esg', 'ESG and community screen (AAB-EMB-159)', false],
+];
+const COSTS = ['Road travel', 'Accommodation', 'Land Board search fees', 'Translator (Setswana)'];
 
-function ViewNav({ r, view }: { r: string; view: string }) {
+/** Pages 50 Verification Scope, 51 External Cost Approval, 52 Verification Progress and 53 Verification Report. */
+export default function Verification(p: Props) {
+    if (p.view === 'scope') return <Scope {...p} />;
+    if (p.view === 'costs') return <Costs {...p} />;
+    if (p.view === 'report') return <Report {...p} />;
+    return <Progress {...p} />;
+}
+
+const crumbs = (e: Engagement) => [{ label: 'My Workspace', href: '/aiim/workspace' }, { label: e.mandate ?? e.reference, href: eng(e.reference) }];
+
+function Scope({ engagement: e, country, hotspots, hotspot, scope, estimate }: Props) {
+    const form = useForm({
+        action: 'verify-scope', hotspot: (hotspot?.i ?? null) as number | null, place: scope?.place ?? '',
+        checks: scope?.checks ?? CHECKS.filter((c) => c[2]).map((c) => c[0]),
+    });
+    const has = (k: string) => form.data.checks.includes(k);
+    const toggle = (k: string, v: boolean) => form.setData('checks', v ? [...form.data.checks, k] : form.data.checks.filter((x) => x !== k));
+    const lines: [string, number | null][] = [['Field verification and site visit', estimate.base?.price ?? null]];
+    if (has('counterparty')) lines.push(['Counterparty verification', estimate.counterparty?.price ?? null]);
+    if (has('sanctions')) lines.push(['Sanctions & PEP', estimate.sanctions?.price ?? null]);
+    if (has('esg')) lines.push(['ESG screen', estimate.esg?.price ?? null]);
+    const submit = (ev: FormEvent) => { ev.preventDefault(); form.post(eng(e.reference, '/message')); };
     return (
-        <nav className="mb-4 flex flex-wrap gap-2" aria-label="Verification stages">
-            {VIEWS.map(([k, l], i) => <Link key={k} href={`/aiim/workspace/engagements/${r}/verification/${k}`} className={cn('rounded-full border px-3 py-1 text-xs font-medium', view === k ? 'border-referenced-500 bg-referenced-500 text-white' : 'border-parchment-400 bg-white')}>{i + 1}. {l}</Link>)}
-        </nav>
+        <Flow title="Verification Scope" eyebrow="Page 50 · Field verification and site visit" steps={{ list: VER, on: 0 }} crumbs={[...crumbs(e), { label: 'Projects', href: '/aiim/projects' }]}
+            side={<Panel title="Estimate"><SumBox lines={lines} /></Panel>}>
+            <FormPanel title="What should we verify?" submit="Estimate costs" onSubmit={submit} processing={form.processing} back={eng(e.reference)}>
+                {country?.isBw && hotspots.length ? (
+                    <Fld label="Hotspot or place">
+                        <select className={inputCls} value={form.data.hotspot ?? 0} onChange={(ev) => form.setData('hotspot', Number(ev.target.value))}>
+                            {hotspots.map((h) => <option key={h.i} value={h.i}>{h.name} — {h.place}</option>)}
+                        </select>
+                    </Fld>
+                ) : (
+                    <>
+                        <Fld label="Site or place" error={(form.errors as Record<string, string>).place}><input className={inputCls} value={form.data.place} onChange={(ev) => form.setData('place', ev.target.value)} placeholder="Name the site, town or project to verify" /></Fld>
+                        <PackLoading country={country} what="The list of evidence hotspots" />
+                    </>
+                )}
+                <div className="grid gap-2 sm:grid-cols-2">
+                    {CHECKS.map(([k, l]) => <Chk key={k} checked={has(k)} onChange={(v) => toggle(k, v)}>{l}</Chk>)}
+                </div>
+            </FormPanel>
+        </Flow>
     );
 }
 
-export default function Verification({ engagement: e, view, items, scope, approved, adminRate, tolerance }: Props) {
-    const sel = items.filter((i) => i.selected);
-    const count = (s: string) => sel.filter((i) => i.status === s).length;
-    const done = sel.filter((i) => ['completed', 'verified'].includes(i.status)).length;
-    const pct = sel.length ? Math.round(((done + count('in_progress') * 0.5) / sel.length) * 100) : 0;
-    const allDone = sel.length > 0 && done === sel.length;
-    const title = VIEWS.find((v) => v[0] === view)![1];
-    const guidance = {
-        scope: 'Select the verification items that are relevant to your project and risk profile. You can refine scope at any time before external cost approval.',
-        costs: 'External costs are charges by third-party authorities and data providers. TBCA does not profit from these costs beyond the disclosed administration margin. Approve only those you authorise.',
-        progress: 'Verification is underway. You will be notified as each item is completed or if additional information is required.',
-        report: 'Verification is complete. Review the findings and use the report for decision-making and transaction preparation.',
-    }[view];
-
+function Costs({ engagement: e, hotspot, scope, caps, approvedAt, approvedExternal }: Props) {
+    const form = useForm({ action: 'ext-cost', caps: caps ?? COSTS.map(() => 0), approve: false });
+    const submit = (ev: FormEvent) => { ev.preventDefault(); form.post(eng(e.reference, '/message')); };
+    const site = hotspot?.name ?? scope?.place ?? 'site';
+    const err = form.errors as Record<string, string>;
     return (
-        <MandateFrame
-            e={e}
-            title={title}
-            description={{ scope: 'Define the verification scope and select the checks required for this engagement.', costs: 'Review and approve external supplier costs required for verification.', progress: 'Track the status of verification activities as tasks are completed by TBCA experts and external authorities.', report: 'Comprehensive report of verification activities completed for this engagement.' }[view]}
-            guidance={guidance}
-            stage="Verification & Validation"
-            statusLabel={view === 'report' && allDone ? 'Completed' : 'In Progress'}
-            progress={view === 'report' && allDone ? 100 : pct}
-            footer={
-                view === 'scope' ? <><p className="text-xs text-ink-500">Verification follows TBCA Verification Standards and POPIA compliant processes.</p><div className="flex gap-2"><Button type="button" size="sm" variant="outline" disabled>Save Scope Draft</Button><Link href={`/aiim/workspace/engagements/${e.reference}/verification/costs`} className="rounded bg-gold-500 px-3 py-2 text-xs font-semibold text-ink-900">Continue to External Cost Approval →</Link></div></>
-                : view === 'costs' ? <><p className="text-xs text-ink-500">External costs stop at the approved total; overruns above {tolerance * 100}% need re-approval (G9).</p><div className="flex gap-2"><Button type="button" size="sm" variant="outline" disabled>Request Changes / Clarification</Button><Button type="button" size="sm" disabled>Approve Selected Costs</Button></div></>
-                : undefined
-            }
-        >
-            <ViewNav r={e.reference} view={view} />
-            {view === 'scope' && (
-                <div className="grid gap-4 xl:grid-cols-3">
-                    <SectionCard number={1} title="Select Verification Items">
-                        <table className="w-full text-xs"><thead className="text-ink-500"><tr><th className="text-left">Verification Item</th><th>Recommended</th><th>Select</th></tr></thead>
-                            <tbody className="divide-y divide-parchment-300">{items.map((i) => <tr key={i.code}><td className="py-1.5"><strong className="block">{i.name}</strong><span className="text-ink-500">{i.description}</span></td><td className="text-center"><Chip tone={i.recommendation === 'High' ? 'bad' : i.recommendation === 'Medium' ? 'warn' : 'good'}>{i.recommendation}</Chip></td><td className="text-center"><input type="checkbox" checked={i.selected} readOnly aria-label={`Select ${i.name}`} className="accent-referenced-500" /></td></tr>)}</tbody>
-                        </table>
-                        <p className="mt-2 text-[0.65rem] text-ink-500">High = Strongly recommended · Medium = Recommended · Low = Optional</p>
-                    </SectionCard>
-                    <SectionCard number={2} title="Basis of Verification">
-                        <ul className="space-y-2 text-xs">{Array.from(new Set(items.map((i) => i.basis))).map((b) => <li key={b} className="rounded border border-parchment-300 p-2"><strong className="block">{b}</strong><span className="text-ink-500">Source: {items.filter((i) => i.basis === b).map((i) => i.supplier).join(', ')}</span></li>)}</ul>
-                    </SectionCard>
-                    <SectionCard number={3} title="Scope Summary">
-                        <p className="mb-2 text-sm">Selected Items: <strong>{scope.count}</strong></p>
-                        <FeeSummary {...scope} totalLabel="Estimated Total (incl. VAT)" />
-                        <p className="mt-2 flex gap-1 text-xs text-ink-500"><Clock className="size-3.5" />Estimated turnaround: 5 to 20 business days from approval of external costs and data receipt.</p>
-                    </SectionCard>
+        <Flow title="External Cost Approval" eyebrow="Page 51 · Pass-through costs need your approval" steps={{ list: VER, on: 1 }} crumbs={crumbs(e)}
+            side={<Banner>Pass-through costs are charged at receipted actual cost, never above the caps you approve. {approvedAt ? `Caps approved on ${approvedAt} (total R ${N(approvedExternal, 2)}).` : ''}</Banner>}>
+            <FormPanel title={`External costs for ${site}`} submit="Approve and start" onSubmit={submit} processing={form.processing} back={eng(e.reference, '/verification/scope')}>
+                <Dl rows={[
+                    ['Site', hotspot?.place ?? scope?.place ?? ''],
+                    ['Nearest gateway', hotspot?.gateway ? `${hotspot.gateway} · ${N(hotspot.gatewayKm)} km straight line` : '—'],
+                    ['Cost basis', 'Actual cost, receipted (AAB-EMB-237 proof-of-cost pack)'],
+                ]} />
+                <div className="max-w-full overflow-x-auto rounded-[10px] border border-parchment-400">
+                    <table className="w-full text-[0.82rem]">
+                        <thead className="bg-parchment-200 text-left text-[0.7rem] tracking-wide text-ink-600 uppercase"><tr><th className="px-3 py-2">Item</th><th className="px-3 py-2">Basis</th><th className="px-3 py-2">Cap (enter)</th></tr></thead>
+                        <tbody>
+                            {COSTS.map((c, i) => (
+                                <tr key={c} className="border-t border-parchment-300">
+                                    <td className="px-3 py-2">{c}</td><td className="px-3 py-2">Receipted actual</td>
+                                    <td className="px-3 py-2"><input type="number" min={0} step={100} aria-label={`${c} cap`} className={`${inputCls} w-32`} value={form.data.caps[i] ?? 0}
+                                        onChange={(ev) => form.setData('caps', form.data.caps.map((x, j) => (j === i ? Number(ev.target.value) : x)))} /></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
+                <Chk checked={form.data.approve} onChange={(v) => form.setData('approve', v)} error={err.approve}>I approve pass-through costs up to the caps entered.</Chk>
+            </FormPanel>
+        </Flow>
+    );
+}
+
+function Progress({ engagement: e, hotspot, scope, approvedAt, items }: Props) {
+    const tl: [string, TiState][] = items.length
+        ? items.filter((i) => i.selected).map((i) => [`${i.name}${i.eta ? ` · due ${i.eta}` : ''}`, i.status === 'completed' ? 'done' : i.status === 'in_progress' ? 'on' : ''])
+        : [
+            ['Desk review against BW-1.0 evidence', scope ? 'done' : 'on'],
+            ['Scout assigned', approvedAt ? 'done' : scope ? 'on' : ''],
+            ['P1 GPS point and photos', approvedAt ? 'on' : ''],
+            ['Land tenure check', ''], ['Citizen-rule check', ''], ['Verified badge decision', ''],
+        ];
+    return (
+        <Flow title="Verification Progress" eyebrow={`Page 52${hotspot ? ` · ${hotspot.name}` : ''}`} steps={{ list: VER, on: 2 }} crumbs={crumbs(e)}
+            side={<><Btn href={eng(e.reference, '/verification/report')}>View report (sample)</Btn><Btn href={eng(e.reference, '/verification/scope')} v="ghost">Change scope</Btn></>}>
+            <Panel title="Checks"><Timeline items={tl} /></Panel>
+            {hotspot && (
+                <Panel title="Evidence on file">
+                    <Dl rows={[['Status', <Pill s={hotspot.status} />], ['Fact', hotspot.fact], ['Leads', String(hotspot.leads.length)]]} />
+                </Panel>
             )}
-            {view === 'costs' && (
-                <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_17rem]">
-                    <SectionCard title="External Supplier Cost Breakdown">
-                        <div className="overflow-x-auto">
-                            <table className="w-full min-w-[44rem] text-xs">
-                                <thead className="text-ink-500"><tr>{['#', 'Verification Item', 'Supplier / Authority', 'Purpose', 'Supplier Cost (ex. VAT)', 'VAT (15%)', 'Total (incl. VAT)', 'Expected Timeline', 'Approve'].map((h) => <th key={h} className="px-2 py-1 text-left">{h}</th>)}</tr></thead>
-                                <tbody className="divide-y divide-parchment-300">
-                                    {sel.map((i, n) => <tr key={i.code}><td className="px-2 py-1.5">{n + 1}</td><td className="px-2">{i.name}</td><td className="px-2">{i.supplier}</td><td className="px-2">{i.purpose}</td><td className="px-2 text-right">{zar2(i.supplier_cost_zar)}</td><td className="px-2 text-right">{zar2(i.supplier_cost_zar * 0.15)}</td><td className="px-2 text-right">{zar2(i.supplier_cost_zar * 1.15)}</td><td className="px-2">{i.timeline}</td><td className="px-2 text-center">{i.cost_approved ? <CheckCircle2 className="mx-auto size-4 text-verified-500" /> : <Circle className="mx-auto size-4 text-ink-300" />}</td></tr>)}
-                                    <tr className="bg-referenced-50 font-semibold"><td colSpan={4} className="px-2 py-1.5">Total External Supplier Costs</td><td className="px-2 text-right">{zar2(scope.external)}</td><td className="px-2 text-right">{zar2(scope.external * 0.15)}</td><td className="px-2 text-right">{zar2(scope.external * 1.15)}</td><td colSpan={2} /></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </SectionCard>
-                    <SectionCard title="Cost Summary (Indicative)">
-                        <FeeSummary {...approved} totalLabel="Estimated Total (incl. VAT)" />
-                        <p className="mt-2 rounded bg-attested-50 p-2 text-xs text-attested-700">TBCA administration on external costs is a disclosed {adminRate * 100}% margin. External supplier costs are payable directly to suppliers once approved.</p>
-                    </SectionCard>
-                </div>
+        </Flow>
+    );
+}
+
+function Report({ engagement: e, country, hotspot, rail }: Props) {
+    const slug = country?.slug ?? 'botswana';
+    return (
+        <Flow title="Verification Report" eyebrow="Page 53" steps={{ list: VER, on: 3 }} crumbs={crumbs(e)} side={<SvcRail rail={rail} context="Verification report" />}>
+            <Panel title={`Findings${hotspot ? ` — ${hotspot.name}` : ''}`}>
+                {hotspot ? (
+                    <Dl rows={[
+                        ['Location', <Link href={townHref(slug, hotspot.placeId)} className="text-controlled-700 hover:underline">{hotspot.place}</Link>],
+                        ['Status in pack', <Pill s={hotspot.status} />],
+                        ['Evidence', hotspot.fact],
+                        ['Listing rule', 'Scout confirmation, P1 point, land-tenure and citizen-rule checks, then a Verified badge'],
+                    ]} />
+                ) : <PackLoading country={country} what="The site evidence" />}
+                <div className="mt-3"><Banner>Sample layout. Field results appear here once the scout files them.</Banner></div>
+            </Panel>
+            {hotspot && (
+                <Panel title={`Leads at this site (${hotspot.leads.length})`}>
+                    <div className="grid gap-2">
+                        {hotspot.leads.map((l) => (
+                            <Link key={l.id} href={leadHref(slug, l.id)} className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 rounded-[10px] border border-parchment-400 p-3 hover:border-gold-500">
+                                <div className="min-w-0"><b className="text-[0.85rem]">{l.opportunity}</b><div className="flex flex-wrap gap-x-2.5 text-[0.72rem] text-ink-500"><span className="font-mono">{l.id}</span><span>{l.template}</span><span>due {l.due}</span></div></div>
+                                <div className="text-right"><TierPill t={l.tier} /><div className="font-mono text-[0.72rem]">score {l.score}</div></div>
+                            </Link>
+                        ))}
+                    </div>
+                    {hotspot.leads[0] && <div className="mt-3"><Banner>Next action: {hotspot.leads[0].next}</Banner></div>}
+                </Panel>
             )}
-            {view === 'progress' && (
-                <div className="grid gap-4 xl:grid-cols-[16rem_minmax(0,1fr)]">
-                    <SectionCard title="Verification Progress Overview">
-                        <Donut centre={`${pct}%`} sub="Overall Progress" data={[{ label: `Completed (${done}/${sel.length})`, value: done }, { label: `In Progress (${count('in_progress')})`, value: count('in_progress') }, { label: `Pending (${count('pending')})`, value: count('pending') }, { label: `Blocked (${count('blocked')})`, value: count('blocked') }]} size={120} />
-                    </SectionCard>
-                    <SectionCard title="Verification Items Status">
-                        <div className="overflow-x-auto">
-                            <table className="w-full min-w-[40rem] text-xs"><thead className="text-ink-500"><tr>{['#', 'Verification Item', 'Status', 'Source / Authority', 'Started', 'ETA', 'Owner'].map((h) => <th key={h} className="px-2 py-1 text-left">{h}</th>)}</tr></thead>
-                                <tbody className="divide-y divide-parchment-300">{items.map((i, n) => <tr key={i.code}><td className="px-2 py-1.5">{n + 1}</td><td className="px-2">{i.name}</td><td className="px-2"><Chip tone={levelTone(i.selected ? i.status : 'not selected')}>{i.selected ? i.status.replace('_', ' ') : 'not selected'}</Chip></td><td className="px-2">{i.supplier}</td><td className="px-2">{i.started ?? '–'}</td><td className="px-2">{i.eta ?? '–'}</td><td className="px-2">{i.owner}</td></tr>)}</tbody>
-                            </table>
-                        </div>
-                    </SectionCard>
-                </div>
-            )}
-            {view === 'report' && (
-                <div className="grid gap-4 xl:grid-cols-3">
-                    <SectionCard title="Executive Summary">
-                        <dl className="space-y-1.5 text-xs">{[['Overall Verification Outcome', allDone ? 'VERIFIED' : 'IN PROGRESS'], ['Verification Items Completed', `${done} of ${sel.length}`], ['Overall Confidence Level', 'High'], ['Material Issues Identified', String(sel.reduce((s, i) => s + i.material_issues, 0))], ['Items Requiring Monitoring', String(sel.filter((i) => i.confidence === 'Medium').length)], ['Report Reference', `VRPT-${e.mandate ?? e.reference}`]].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><dt className="text-ink-500">{k}</dt><dd className="font-semibold">{v}</dd></div>)}</dl>
-                        <p className="mt-3 rounded bg-attested-50 p-2 text-[0.65rem] text-attested-700">This report is based on information provided by the client, third-party authorities and data providers. It does not constitute legal or investment advice.</p>
-                    </SectionCard>
-                    <SectionCard title="Verification Items Summary">
-                        <ul className="space-y-1.5 text-xs">{sel.map((i) => <li key={i.code} className="flex items-center justify-between gap-2"><span>{i.name}</span><span className="flex items-center gap-1.5">{['completed', 'verified'].includes(i.status) ? <Chip tone="good">Verified</Chip> : <Chip tone="warn">{i.status.replace('_', ' ')}</Chip>}<Chip tone={i.confidence === 'High' ? 'good' : 'warn'}>{i.confidence}</Chip>{i.material_issues ? <XCircle className="size-4 text-risk-500" /> : <BadgeCheck className="size-4 text-verified-500" />}</span></li>)}</ul>
-                    </SectionCard>
-                    <SectionCard title="Report Documents">
-                        <ul className="space-y-1.5 text-xs">{['Executive Summary', 'Detailed Findings Report', 'Evidence Index', 'Certificate of Verification', 'Verification Methodology', 'Data Source Appendix'].map((d) => <li key={d} className="flex items-center justify-between rounded border border-parchment-300 p-1.5"><span className="flex items-center gap-1.5"><FileText className="size-3.5 text-referenced-500" />{d}</span><button type="button" disabled={!allDone} onClick={() => window.print()} aria-label={`Download ${d}`} className="disabled:opacity-30"><Download className="size-4" /></button></li>)}</ul>
-                        <p className="mt-3 flex gap-1 rounded bg-controlled-50 p-2 text-xs text-controlled-700"><Info className="size-4 shrink-0" />{allDone ? 'All verification activities are complete. You may proceed with transaction preparation or handover.' : 'Documents unlock when all selected items are verified.'}</p>
-                    </SectionCard>
-                </div>
-            )}
-        </MandateFrame>
+        </Flow>
     );
 }

@@ -1,59 +1,49 @@
-import { Link } from '@inertiajs/react';
-import { CheckCircle2, Lock, Shield } from 'lucide-react';
-import { useState } from 'react';
-import { Donut } from '@/Components/Aiim/Charts';
-import { Chip } from '@/Components/Aiim/Chips';
-import { Avatar, MandateFrame } from '@/Components/Aiim/EngagementKit';
-import { SectionCard } from '@/Components/Aiim/Shell';
+import { useForm } from '@inertiajs/react';
+import type { FormEvent, ReactNode } from 'react';
+import { Btn, DEAL, Fld, Flow, FormPanel, Panel, QuickLinks, SvcRail, Timeline, eng, inputCls, type Country, type Rail, type TiState } from '@/Components/Aiim/ProtoEngagement';
 import type { AiimPageProps, Engagement } from '@/types/aiim';
 import type { Intro } from './IntroConsent';
 
-const TABS = ['Room Overview', 'Participants', 'Shared Information', 'Conversations', 'Meetings & Calls', 'Requests', 'Activity Log', 'Documents'];
+interface Props extends AiimPageProps {
+    engagement: Engagement;
+    country: Country | null;
+    intro: Intro | null;
+    rail: Rail | null;
+}
 
-export default function IntroRoom({ engagement: e, intro }: AiimPageProps & { engagement: Engagement; intro: Intro | null }) {
-    const [tab, setTab] = useState(TABS[0]);
-    const open = intro?.roomOpen ?? false;
-    const parties = (intro?.parties ?? []).filter((p) => p.selected);
-    const shared = intro?.sharing.filter((s) => s.share) ?? [];
+/** Page 59 Introduction Room: shared space for both parties. */
+export default function IntroRoom({ engagement: e, intro, rail }: Props) {
+    const form = useForm({ action: 'intro-message', message: '' });
+    const submit = (ev: FormEvent) => { ev.preventDefault(); form.post(eng(e.reference, '/message'), { preserveScroll: true, onSuccess: () => form.reset('message') }); };
+    const crumbs = [{ label: 'My Workspace', href: '/aiim/workspace' }, { label: e.mandate ?? e.reference, href: eng(e.reference) }];
+    const side = <>
+        {rail && <SvcRail rail={rail} context="Introduction room" />}
+        <QuickLinks links={[['Due diligence hand-off', eng(e.reference, '/handoff/dd')], ['Virtual deal room', eng(e.reference, '/handoff/vdr')], ['Project advisory', eng(e.reference, '/handoff/project-advisory')]]} />
+    </>;
+    if (!intro?.consented) {
+        return (
+            <Flow title="Introduction Room" eyebrow="Page 59 · Shared space for both parties" steps={{ list: DEAL, on: 2 }} crumbs={crumbs} side={side}>
+                <Panel title="Thread">
+                    <p className="text-[0.88rem] text-ink-600">The room opens once you give consent to introduce.</p>
+                    <div className="mt-3"><Btn href={eng(e.reference, '/introductions')}>Give consent</Btn></div>
+                </Panel>
+            </Flow>
+        );
+    }
+    const posts = intro.activity.filter((a) => a.text);
+    const waiting = intro.parties.some((p) => p.consent_status === 'pending') || !intro.parties.length;
+    const items: [ReactNode, TiState][] = [
+        ...posts.map((a, i): [ReactNode, TiState] => [<span key={i}><b>{a.who ?? 'TBCA'}</b> — {a.text}{a.at && <span className="text-ink-500"> · {a.at}</span>}</span>, 'done']),
+        ...intro.parties.map((p): [ReactNode, TiState] => [<span key={p.name}><b>{p.name}</b> — {p.consent_status === 'accepted' ? `Accepted.${p.contact ? ` Contact: ${p.contact}` : ''}` : p.consent_status === 'declined' ? 'Declined.' : 'Awaiting response.'}</span>, p.consent_status === 'pending' ? 'on' : 'done']),
+    ];
+    if (!intro.parties.length) items.push([<span key="cp"><b>Counterparty</b> — Awaiting response.</span>, 'on']);
     return (
-        <MandateFrame
-            e={e}
-            title="Introduction Room"
-            description="A secure, moderated space for initial engagement and information exchange between you and the introduced investors."
-            guidance="Use this room to share executive information and schedule meetings. TBCA moderates all communications."
-            stage="Introduction"
-            statusLabel={open ? 'Active' : 'Locked'}
-            progress={open ? 25 : 0}
-            tabs={TABS}
-            tab={tab}
-            onTab={setTab}
-        >
-            {!open ? (
-                <SectionCard>
-                    <div className="flex flex-wrap items-center gap-4">
-                        <Lock className="size-10 text-gold-600" />
-                        <div className="flex-1">
-                            <h2 className="font-semibold">The room opens once both parties consent</h2>
-                            <p className="text-sm text-ink-600">Client consent: <strong>{intro?.consented ? `granted ${intro.consented}` : 'not yet granted'}</strong>. Counterparty acceptances: <strong>{parties.filter((p) => p.consent_status === 'accepted').length}</strong> of {parties.length}. Contact details stay hidden until each counterparty accepts.</p>
-                        </div>
-                        <Link href={`/aiim/workspace/engagements/${e.reference}/introductions`} className="rounded bg-gold-500 px-3 py-2 text-sm font-semibold text-ink-900">Review Introduction Consent</Link>
-                    </div>
-                </SectionCard>
-            ) : (
-                <div className="grid gap-4 xl:grid-cols-[15rem_minmax(0,1fr)_16rem]">
-                    <div className="space-y-4">
-                        <SectionCard title="Introduction Summary"><dl className="space-y-1 text-xs">{[['Introduction ID', intro!.reference], ['Introduced By', `TBCA (${e.advisor?.name ?? 'Advisor'})`], ['Investors Introduced', String(parties.length)], ['Responses Received', `${parties.filter((p) => p.responded).length} of ${parties.length}`], ['Confidentiality', 'ACTIVE'], ['Room Status', 'OPEN']].map(([k, v]) => <div key={k} className="flex justify-between gap-2"><dt className="text-ink-500">{k}</dt><dd className="font-medium">{v}</dd></div>)}</dl></SectionCard>
-                        <SectionCard title="Room Guidelines"><ul className="space-y-1.5 text-xs">{['All communications are confidential.', 'Share only information listed as approved.', 'No pricing or sensitive data without approval.', 'TBCA moderates all interactions.', 'All actions are logged and auditable.'].map((t) => <li key={t} className="flex gap-1.5"><Shield className="size-3.5 text-referenced-500" />{t}</li>)}</ul></SectionCard>
-                    </div>
-                    <SectionCard title="Introduced Investors">
-                        <ul className="grid gap-3 sm:grid-cols-3">{parties.map((p) => <li key={p.id} className="rounded border border-parchment-400 p-3 text-xs"><div className="flex items-center gap-2"><Avatar name={p.name} size="sm" /><span><strong className="block">{p.name}</strong>{p.type}</span></div><p className="mt-1 text-ink-500">{p.location}</p><Chip tone={p.consent_status === 'accepted' ? 'good' : 'warn'} className="mt-2">{p.engagement_status ?? p.consent_status}</Chip>{p.contact ? <p className="mt-1 text-verified-700">{p.contact}</p> : <p className="mt-1 flex items-center gap-1 text-ink-400"><Lock className="size-3" />Contact hidden until accepted</p>}</li>)}</ul>
-                    </SectionCard>
-                    <SectionCard title="Information Sharing Status">
-                        <Donut centre={String(intro!.sharing.length)} sub="Information Packs" data={[{ label: 'Shared', value: shared.length }, { label: 'Not Shared', value: intro!.sharing.length - shared.length }]} size={110} />
-                        <ul className="mt-3 space-y-1 text-xs">{intro!.sharing.map((s) => <li key={s.key} className="flex justify-between"><span>{s.label}</span>{s.share ? <CheckCircle2 className="size-3.5 text-verified-500" /> : '—'}</li>)}</ul>
-                    </SectionCard>
-                </div>
-            )}
-        </MandateFrame>
+        <Flow title="Introduction Room" eyebrow={`Page 59 · Shared space for both parties · ${intro.reference}`} steps={{ list: DEAL, on: 2 }} crumbs={crumbs} side={side}>
+            <Panel title="Thread"><Timeline items={items} /></Panel>
+            <FormPanel title="Message" submit="Send" onSubmit={submit} processing={form.processing} disabled={!form.data.message.trim()}>
+                <Fld label="Write a message" error={form.errors.message}><textarea rows={4} className={inputCls} value={form.data.message} onChange={(ev) => form.setData('message', ev.target.value)} /></Fld>
+                {waiting && <p className="text-[0.75rem] text-ink-500">Messages are kept in the room record. Contact details are released only after both parties accept.</p>}
+            </FormPanel>
+        </Flow>
     );
 }

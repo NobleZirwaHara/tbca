@@ -12,6 +12,7 @@ use App\Models\Aiim\Quote;
 use App\Models\Aiim\ReportRequest;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -129,6 +130,26 @@ class Fulfilment
                 continue;
             }
             $brief = Brief::query()->where('sku', $line->item_code)->first();
+            if (! $brief && ProtoLibrary::isBwBrief((string) $line->item_code)) {
+                // Botswana premium brief (BW_Premium), priced through its embedded service.
+                Entitlement::firstOrCreate(
+                    ['order_id' => $order->id, 'order_line_key' => 'brief:'.$line->item_code],
+                    [
+                        'reference' => Refs::make('ENT'),
+                        'user_id' => $order->user_id,
+                        'object_type' => 'brief',
+                        'object_key' => $line->item_code,
+                        'title' => $line->name,
+                        'product_type' => 'Premium Brief',
+                        'access_type' => 'permanent',
+                        'amount_zar' => (float) $line->line_zar,
+                        'payment_method' => self::method($order),
+                        'meta' => ['licence' => $line->variant ?? 'Standard Access', 'country' => 'botswana'],
+                    ],
+                );
+
+                continue;
+            }
             if (! $brief) {
                 continue;
             }
@@ -241,7 +262,7 @@ class Fulfilment
 
     public static function workplan(\DateTimeInterface $start): array
     {
-        $s = \Illuminate\Support\Carbon::instance($start);
+        $s = Carbon::instance($start);
 
         return [
             ['key' => 'setup', 'label' => 'Mandate Setup', 'status' => 'completed', 'date' => $s->format('j M Y')],

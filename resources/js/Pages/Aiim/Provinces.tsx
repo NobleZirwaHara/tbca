@@ -1,73 +1,82 @@
-import { Link, router } from '@inertiajs/react';
-import { ArrowRight, MousePointerClick, Search, Zap } from 'lucide-react';
-import AiimIcon from '@/Components/Aiim/AiimIcon';
-import { Chip, levelTone } from '@/Components/Aiim/Chips';
-import { AdvisoryBox, CurrentStateBox, WorkspaceSnapshotBox } from '@/Components/Aiim/RailBoxes';
-import AiimPage, { SectionCard } from '@/Components/Aiim/Shell';
-import SaMap from '@/Components/Aiim/SaMap';
-import { ButtonLink } from '@/Components/ui/Button';
+/* AIIM-003 District & Council Selector (prototype #units). Botswana: 16 units; South Africa: 9 provinces; others: loaded areas. */
+import { Link } from '@inertiajs/react';
+import LegacyProvinces, { type Props as SaProps } from '@/Components/Aiim/Explorer/LegacyProvinces';
+import { Btn, CtaBand, DataMeta, Frame, Grid, Hero, P, PackLoading, Panel, Rich, Section, SheetTable, TagRow, VBars, type Sheet } from '@/Components/Aiim/ProtoExplore';
+import { useUsdM } from '@/Components/Industries/Kit';
 import type { AiimPageProps } from '@/types/aiim';
 
+interface UnitCard { code: string; name: string; kind: string; pop: number; share: number; env: number; templates: number; tierA: number; tags: string[] }
 interface Props extends AiimPageProps {
-    sort: string;
-    glance: [string, string][];
-    provinces: { slug: string; name: string; rank: number; score: number; label: string; sectors: { slug: string; icon: string }[] }[];
+    country: { slug: string; name: string; flag: string; regionName: string };
+    mode: 'bw' | 'sa' | 'units' | 'none';
+    bw: { lead: string; cards: UnitCard[]; units: Sheet; envNote: string; envelopes: Sheet; institutions: Sheet } | null;
+    sa: Omit<SaProps, keyof AiimPageProps> | null;
+    units: { slug: string; name: string; kind: string; population: number | null; source: string | null }[];
 }
 
-export default function Provinces({ sort, glance, provinces }: Props) {
-    return (
-        <AiimPage
-            title="Select a Province"
-            crumbs={[{ label: 'Africa', href: '/aiim#explore-africa' }, { label: 'South Africa', href: '/aiim/country/south-africa' }, { label: 'Province Selector' }]}
-            subtitle="Explore investment opportunities across South Africa's 9 provinces"
-            description="Choose a province to view detailed investment intelligence, priority sectors, key projects, investors, infrastructure, and risk insights."
-            actions={<ButtonLink href="/aiim/country/south-africa" size="sm" variant="outline">Back to Cockpit</ButtonLink>}
-            rail={<><WorkspaceSnapshotBox /><CurrentStateBox /><AdvisoryBox /></>}
-        >
-            <div className="grid gap-5 lg:grid-cols-12">
-                <SectionCard title="How to use this page" className="lg:col-span-3">
-                    <ol className="space-y-3 text-xs text-ink-600">
-                        <li className="flex gap-2"><MousePointerClick className="size-4 shrink-0 text-gold-600" /><span><strong className="block text-ink-900">1. Select a province</strong>Click any province to view its profile and opportunities.</span></li>
-                        <li className="flex gap-2"><Search className="size-4 shrink-0 text-gold-600" /><span><strong className="block text-ink-900">2. Explore insights</strong>Access sectors, projects, investors, infrastructure and risk.</span></li>
-                        <li className="flex gap-2"><Zap className="size-4 shrink-0 text-gold-600" /><span><strong className="block text-ink-900">3. Take action</strong>Save, compare, or generate reports for deeper analysis.</span></li>
-                    </ol>
-                </SectionCard>
-                <div className="rounded-[8px] bg-ink-950 p-3 lg:col-span-5"><SaMap provinces={provinces} /></div>
-                <SectionCard title="South Africa at a Glance" className="lg:col-span-4">
-                    <dl className="divide-y divide-parchment-300 text-xs">
-                        {glance.map(([k, v]) => <div key={k} className="flex justify-between py-1.5"><dt className="text-ink-500">{k}</dt><dd className="font-semibold text-ink-900">{v}</dd></div>)}
-                    </dl>
-                    <p className="mt-3 text-xs text-ink-500">Next: explore sectors, opportunities, projects, investors, infrastructure, corridors and risk.</p>
-                    <Link href="/aiim/sectors" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-gold-700">View All Sectors <ArrowRight className="size-3" /></Link>
-                </SectionCard>
-            </div>
+export default function Provinces(props: Props) {
+    if (props.mode === 'sa' && props.sa) return <LegacyProvinces {...(props as unknown as SaProps)} {...props.sa} />;
+    if (props.mode === 'bw' && props.bw) return <BotswanaUnits bw={props.bw} />;
+    return <OtherUnits country={props.country} units={props.units} />;
+}
 
-            <SectionCard
-                title="Provinces Overview"
-                className="mt-5"
-                action={
-                    <label className="flex items-center gap-2 text-xs text-ink-500">
-                        Sort by:
-                        <select value={sort} onChange={(e) => router.get('/aiim/country/south-africa/provinces', { sort: e.target.value }, { preserveScroll: true })} className="h-8 rounded border border-parchment-500 px-2 text-xs">
-                            <option value="score">Opportunity Score</option>
-                            <option value="name">Name (A–Z)</option>
-                        </select>
-                    </label>
-                }
-            >
-                <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
-                    {provinces.map((p) => (
-                        <li key={p.slug} className="rounded-[8px] border border-ink-700 bg-ink-950 p-3 text-parchment-100">
-                            <p className="flex items-center gap-2 text-sm font-semibold"><span className="flex size-6 items-center justify-center rounded-full border border-gold-500 text-xs text-gold-400">{p.rank}</span>{p.name}</p>
-                            <p className="mt-2 text-2xl font-bold">{p.score}<span className="text-xs text-ink-400"> /100</span></p>
-                            <Chip tone={levelTone(p.label)}>{p.label}</Chip>
-                            <p className="mt-2 text-[0.65rem] text-ink-400">Key Sectors</p>
-                            <div className="mt-1 flex gap-2 text-gold-500">{p.sectors.map((s) => <AiimIcon key={s.slug} name={s.icon} className="size-4" />)}</div>
-                            <Link href={`/aiim/province/${p.slug}`} className="mt-3 flex items-center justify-between rounded border border-gold-700/60 px-2 py-1.5 text-xs text-gold-300 hover:bg-gold-500 hover:text-ink-900">View Province <ArrowRight className="size-3.5" /></Link>
-                        </li>
+function BotswanaUnits({ bw }: { bw: NonNullable<Props['bw']> }) {
+    const usdM = useUsdM();
+    return (
+        <Frame title="District & Council Selector" crumbs={[{ label: 'Botswana', href: P.cockpit }, { label: 'Units' }]}>
+            <Hero eyebrow="District & Council Selector" title="16 administrative units" lead={<Rich t={bw.lead} />} right={<Btn href={P.map} tone="gold">Open on map</Btn>} meta={<DataMeta />} />
+            <Grid cols={4} className="mt-4">
+                {bw.cards.map((u) => (
+                    <Link key={u.code} href={P.unit(u.code)} className="flex min-w-0 flex-col gap-3 rounded-[12px] border border-parchment-400 bg-white p-4 hover:border-gold-500">
+                        <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0"><div className="font-mono text-[0.7rem] text-ink-500">{u.code} · {u.kind}</div><h3 className="text-[1.02rem] font-semibold text-ink-900">{u.name}</h3></div>
+                            <span className="rounded-full bg-gold-100 px-2 py-0.5 text-[0.7rem] font-bold text-gold-800">{u.share.toFixed(1)} %</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-1.5 text-[0.78rem]">
+                            <div><div className="text-ink-500">Population</div><b className="tabular-nums">{u.pop.toLocaleString('en-US')}</b></div>
+                            <div><div className="text-ink-500">Envelope</div><b className="tabular-nums">{usdM(u.env)}</b></div>
+                            <div><div className="text-ink-500">Templates</div><b>{u.templates}</b></div>
+                            <div><div className="text-ink-500">Tier A</div><b>{u.tierA}</b></div>
+                        </div>
+                        <TagRow tags={u.tags} />
+                    </Link>
+                ))}
+            </Grid>
+            <Section title="Units register (D-1)" sub="All columns from BW_Units."><SheetTable sheet={bw.units} size={25} filters={[]} /></Section>
+            <Section title="Unit investment envelopes (G-5)" sub={<Rich t={bw.envNote} />}>
+                <div className="grid gap-4 lg:grid-cols-2">
+                    <Panel title="Weighted vs equal split (US$ m)"><VBars items={bw.envelopes.rows.map((e) => ({ n: String(e.Unit), v: Number(e['Envelope US$ m (weighted)']) }))} fmt={(v) => v.toFixed(1)} /></Panel>
+                    <SheetTable sheet={bw.envelopes} size={25} filters={[]} />
+                </div>
+            </Section>
+            <Section title="Institutions (D-5)" sub="50 roles mapped to Botswana institutions."><SheetTable sheet={bw.institutions} size={10} /></Section>
+            <CtaBand />
+        </Frame>
+    );
+}
+
+function OtherUnits({ country, units }: { country: Props['country']; units: Props['units'] }) {
+    const total = units.reduce((s, u) => s + (u.population ?? 0), 0);
+    return (
+        <Frame title="District & Council Selector" crumbs={[{ label: country.name, href: `/aiim/country/${country.slug}` }, { label: 'Units' }]}>
+            <Hero eyebrow="District & Council Selector" title={`${units.length || 'No'} first-level areas`} lead={`First-level administrative areas of ${country.name} as loaded in AIIM. Open an area on the country map for its towns, projects and opportunity records.`}
+                right={<Btn href={`/aiim/country/${country.slug}/map`} tone="gold">Open on map</Btn>} />
+            {units.length ? (
+                <Grid cols={4} className="mt-4">
+                    {units.map((u) => (
+                        <Link key={u.slug} href={`/aiim/country/${country.slug}?tab=map&unit=${u.slug}`} className="flex min-w-0 flex-col gap-2 rounded-[12px] border border-parchment-400 bg-white p-4 hover:border-gold-500">
+                            <div className="flex items-start justify-between gap-2">
+                                <div><div className="text-[0.72rem] text-ink-500">{u.kind}</div><h3 className="text-[1.02rem] font-semibold text-ink-900">{u.name}</h3></div>
+                                {u.population && total ? <span className="rounded-full bg-gold-100 px-2 py-0.5 text-[0.7rem] font-bold text-gold-800">{((100 * u.population) / total).toFixed(1)} %</span> : null}
+                            </div>
+                            <div className="text-[0.78rem]"><span className="text-ink-500">Population </span><b>{u.population ? u.population.toLocaleString('en-US') : 'Not loaded'}</b>{u.source && <div className="text-[0.7rem] text-ink-400">{u.source}</div>}</div>
+                        </Link>
                     ))}
-                </ul>
-            </SectionCard>
-        </AiimPage>
+                </Grid>
+            ) : (
+                <div className="mt-4"><PackLoading country={country.name} what="Districts, councils and their profiles"><Btn href={`${P.custom}?country=${country.slug}`} tone="gold">Request regional intelligence</Btn></PackLoading></div>
+            )}
+            <CtaBand text={`Speak to a TBCA Advisor for tailored market entry, verification, partner mapping and deal advisory in ${country.name}.`} />
+        </Frame>
     );
 }

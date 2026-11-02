@@ -1,65 +1,72 @@
-import { Link, useForm } from '@inertiajs/react';
-import { Info } from 'lucide-react';
-import type { FormEvent } from 'react';
-import { StatusPill, ReferenceChip } from '@/Components/ui/Kit';
-import { Checkbox } from '@/Components/ui/Form';
-import { FeeManifestTable, FeeSummary } from '@/Components/Aiim/FeeTable';
-import AiimPage, { DeeperBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
-import { Button, ButtonLink } from '@/Components/ui/Button';
+import { Link, router } from '@inertiajs/react';
+import { Banner, Empty, Flow, FlowSteps, SumBox } from '@/Components/Aiim/ProtoAccount';
+import { A, B, Card, useMoney } from '@/Components/Industries/Kit';
 import type { AiimPageProps, FeeLine } from '@/types/aiim';
 
 interface Props extends AiimPageProps {
-    quote: { reference: string; issued: string; validUntil: string; daysLeft: number; status: string; items: { type: string; key: string; label: string }[]; lines: FeeLine[]; subtotal: number; vat: number; total: number; hash: string; order: string | null };
+    quote: {
+        reference: string; issued: string; validUntil: string; status: string; items: { type: string; key: string; label: string; context?: string }[];
+        lines: (FeeLine & { name?: string })[]; subtotal: number; vat: number; total: number; hash: string; order: string | null;
+    };
+    wallet: number;
 }
 
-export default function FeeManifest({ quote }: Props) {
-    const form = useForm({ accept: false });
-    const submit = (e: FormEvent) => { e.preventDefault(); form.post(`/aiim/fees/${quote.reference}/checkout`); };
+/** Mock-up 26: Fee Manifest. */
+export default function FeeManifest({ quote, wallet }: Props) {
+    const money = useMoney();
     const open = quote.status === 'pending';
+    const pay = (method: 'checkout' | 'wallet') => router.post(`/aiim/fees/${quote.reference}/checkout`, { method });
+    const walletShort = wallet < quote.subtotal;
+
     return (
-        <AiimPage
+        <Flow
             title="Fee Manifest"
-            crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: 'Fee Discovery', href: '/aiim/fees/discover' }, { label: 'Fee Manifest' }]}
-            subtitle="Transparent, itemised fees for your selected intelligence and outputs."
-            description="Review the full fee breakdown before you pay."
-            rail={<><SelectionBox /><DeeperBox /></>}
+            eyebrow="Review before you approve"
+            lead="Line items, context, delivery time and VAT."
+            crumbs={[{ label: 'Fee Discovery', href: '/aiim/fees/discover' }]}
+            steps={<FlowSteps on={1} />}
+            side={
+                quote.lines.length ? (
+                    <>
+                        <Card title="Summary"><SumBox lines={quote.lines.map((l) => [l.code, l.amount])} vatAmount={quote.vat} total={quote.total} /></Card>
+                        {open ? (
+                            <>
+                                <B v="pri" block onClick={() => pay('checkout')}>Secure checkout</B>
+                                <B block onClick={() => pay('wallet')} disabled={walletShort}>Pay with wallet credits</B>
+                                <p className="text-[0.75rem] text-ink-500">Wallet balance {money(wallet)}. Credits are debited the amount before VAT ({money(quote.subtotal)}).{walletShort && <> <Link href="/aiim/wallet" className="font-semibold text-gold-700 underline">Top up</Link></>}</p>
+                            </>
+                        ) : quote.status === 'paid' ? (
+                            <A v="pri" block href={quote.order ? `/aiim/checkout/${quote.order}/success` : '/aiim/workspace/entitlements'}>See what is unlocked</A>
+                        ) : (
+                            <A v="pri" block href="/aiim/fees/discover">Request a new manifest</A>
+                        )}
+                        <Banner>Manifest {quote.reference}, issued {quote.issued}, valid until {quote.validUntil}. Version {quote.hash}. Prices are ZAR VAT-exclusive from the TBCA service catalogue.</Banner>
+                    </>
+                ) : undefined
+            }
         >
-            <section className="mb-4 grid gap-3 rounded-[8px] border border-parchment-400 bg-white p-4 text-xs sm:grid-cols-3 lg:grid-cols-7">
-                <div className="lg:col-span-2"><p className="text-ink-500">Quote ID</p><ReferenceChip value={quote.reference} /></div>
-                <div><p className="text-ink-500">Date Issued</p><p className="font-semibold">{quote.issued}</p></div>
-                <div><p className="text-ink-500">Valid Until</p><p className="font-semibold text-gold-700">{quote.validUntil} ({quote.daysLeft} days)</p></div>
-                <div><p className="text-ink-500">Scope</p><p className="font-semibold">{quote.items.length} items selected</p></div>
-                <div><p className="text-ink-500">Payment Trigger</p><p className="font-semibold">On payment</p></div>
-                <div><p className="text-ink-500">Payment Status</p><StatusPill status={quote.status} /></div>
-            </section>
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_18rem]">
-                <section className="min-w-0 rounded-[8px] border border-parchment-400 bg-white">
-                    <h2 className="border-b border-parchment-400 px-4 py-2.5 text-sm font-semibold">Fee Breakdown by Category</h2>
-                    <FeeManifestTable lines={quote.lines} subtotal={quote.subtotal} vat={quote.vat} total={quote.total} />
-                    <p className="flex items-center gap-1.5 px-4 py-2 text-xs text-ink-500"><Info className="size-3.5" />All fees are shown in ZAR. VAT is calculated at 15%. Version hash {quote.hash}. The shared checkout adds the disclosed platform and bank charges before payment.</p>
-                    <div className="border-t border-parchment-300 px-4 py-3 text-xs">
-                        <p className="mb-1 font-semibold">Items in scope</p>
-                        <ul className="list-disc pl-5">{quote.items.map((i) => <li key={i.key}>{i.label} <span className="text-ink-400">({i.type})</span></li>)}</ul>
-                    </div>
-                </section>
-                <div className="space-y-4">
-                    <SectionCard dark title="Payment Summary"><div className="rounded bg-white p-2 text-ink-900"><FeeSummary lines={[]} subtotal={quote.subtotal} vat={quote.vat} total={quote.total} /></div></SectionCard>
-                    <SectionCard title="What Happens Next?">
-                        <ol className="space-y-2 text-xs">{[['Proceed to Secure Checkout', 'Complete payment securely online.'], ['Instant Confirmation', 'Receive your order confirmation.'], ['Entitlement Unlock', 'Access your purchased intelligence and outputs.']].map(([t, d], i) => <li key={t} className="flex gap-2"><span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-ink-900 text-[0.65rem] font-bold">{i + 1}</span><span><strong className="block">{t}</strong>{d}</span></li>)}</ol>
-                    </SectionCard>
-                    {open ? (
-                        <form onSubmit={submit} className="space-y-3 rounded-[8px] border border-parchment-400 bg-white p-4">
-                            <h3 className="text-sm font-semibold">Terms & Conditions</h3>
-                            <Checkbox checked={form.data.accept} onChange={(e) => form.setData('accept', e.target.checked)} label={<>I accept the <Link href="/legal/terms" className="text-gold-700 underline">Terms of Use</Link>, <Link href="/legal/privacy" className="text-gold-700 underline">Privacy Policy</Link> and <Link href="/legal/refunds" className="text-gold-700 underline">Refund Policy</Link>.</>} />
-                            {form.errors.accept && <p role="alert" className="text-xs text-risk-500">{form.errors.accept}</p>}
-                            <Button type="submit" disabled={form.processing} className="w-full" trailingIcon="arrow-right">Proceed to Secure Checkout</Button>
-                        </form>
-                    ) : (
-                        <SectionCard><p className="text-sm">{quote.status === 'paid' ? 'This quote has been paid.' : 'This quote has expired. Request a new manifest from Fee Discovery.'}</p></SectionCard>
-                    )}
+            {quote.lines.length ? (
+                <div className="max-w-full overflow-x-auto rounded-[6px] border border-parchment-400 bg-white">
+                    <table className="w-full border-collapse text-[0.8rem]">
+                        <thead className="bg-parchment-200 text-left text-[0.7rem] font-bold tracking-wide text-ink-500 uppercase">
+                            <tr><th className="px-2.5 py-2">Service</th><th className="px-2.5 py-2">Context</th><th className="px-2.5 py-2">Delivery</th><th className="px-2.5 py-2 text-right">Price</th></tr>
+                        </thead>
+                        <tbody>
+                            {quote.lines.map((l, i) => (
+                                <tr key={l.code + i} className="border-t border-parchment-300 align-top">
+                                    <td className="px-2.5 py-2"><b className="text-ink-900">{l.name ?? l.label}</b><div className="font-mono text-[0.7rem] text-ink-400">{l.code}</div></td>
+                                    <td className="px-2.5 py-2">{l.description}</td>
+                                    <td className="px-2.5 py-2">{l.basis}{l.quantity && l.quantity > 1 ? ` × ${l.quantity}` : ''}</td>
+                                    <td className="px-2.5 py-2 text-right font-mono font-semibold whitespace-nowrap">{money(l.amount)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <ButtonLink href="/aiim/fees/discover" variant="outline" className="mt-4">Back to Fee Discovery</ButtonLink>
-        </AiimPage>
+            ) : (
+                <Empty icon="cart">Your manifest is empty. <Link href="/aiim/store" className="text-gold-700 underline">Browse premium briefs</Link>.</Empty>
+            )}
+            {open && <p className="text-[0.78rem] text-ink-500">This manifest is fixed once issued. To change it, <Link href="/aiim/fees/discover" className="font-semibold text-gold-700 underline">edit your selection</Link> and request a new manifest.</p>}
+        </Flow>
     );
 }

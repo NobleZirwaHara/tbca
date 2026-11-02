@@ -1,55 +1,108 @@
 import { Link } from '@inertiajs/react';
-import { BarChart3, Bell, Download, FileText, Info, Pencil, ShieldCheck, Trophy } from 'lucide-react';
 import ComparisonTable from '@/Components/Aiim/ComparisonTable';
-import AiimPage, { DeeperBox, SectionCard, SelectionBox } from '@/Components/Aiim/Shell';
-import { ButtonLink } from '@/Components/ui/Button';
+import { addToManifest, btnGold, Empty, Flow, PriceFrom, TierPill, type Svc } from '@/Components/Aiim/ProtoAccount';
+import { A, Card } from '@/Components/Industries/Kit';
 import type { AiimPageProps, ComparisonData } from '@/types/aiim';
 
+interface Template { id: string; name: string; sector: string; color: string; url: string; score: number; ra: number; tier: string; fields: Record<string, string> }
+
 interface Props extends AiimPageProps {
-    comparison: ComparisonData & { reference: string; generated: string; saved: boolean };
+    comparison: ComparisonData & { reference: string; generated: string };
+    templates: Template[];
+    fields: string[];
+    report: Svc | null;
 }
 
-const icons = { trophy: Trophy, 'bar-chart-3': BarChart3, 'shield-check': ShieldCheck, info: Info } as const;
-
-export default function CompareResults({ comparison: c }: Props) {
+/** Prototype vbars(): vertical bars with value labels. */
+function VBars({ items, label }: { items: { n: string; v: number; c: string }[]; label: string }) {
+    const h = 180;
+    const P = { l: 34, r: 8, t: 16, b: 48 };
+    const W = Math.max(560, items.length * 120);
+    const max = Math.max(1, ...items.map((i) => i.v));
+    const nice = Math.ceil(max / 5) * 5 || 5;
+    const ih = h - P.t - P.b;
+    const bw = (W - P.l - P.r) / Math.max(1, items.length);
+    const y = (v: number) => P.t + ih * (1 - v / nice);
     return (
-        <AiimPage
+        <figure className="min-w-0">
+            <figcaption className="mb-1 text-[0.75rem] font-semibold text-ink-500">{label}</figcaption>
+            <svg viewBox={`0 0 ${W} ${h}`} className="w-full" role="img" aria-label={label}>
+                {[0, 1, 2, 3, 4].map((k) => { const v = (nice * k) / 4; return <g key={k}><line x1={P.l} x2={W - P.r} y1={y(v)} y2={y(v)} stroke="var(--color-parchment-300)" /><text x={P.l - 6} y={y(v) + 4} textAnchor="end" fontSize="10" fill="var(--color-ink-400)">{v}</text></g>; })}
+                {items.map((it, i) => {
+                    const x = P.l + i * bw + bw * 0.18;
+                    return (
+                        <g key={it.n}>
+                            <rect x={x} y={y(it.v)} width={bw * 0.64} height={Math.max(0, y(0) - y(it.v))} rx="3" fill={it.c}><title>{`${it.n}: ${it.v}`}</title></rect>
+                            <text x={x + bw * 0.32} y={y(it.v) - 4} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-ink-800)">{it.v}</text>
+                            <text x={x + bw * 0.32} y={P.t + ih + 14} textAnchor="end" fontSize="10" fill="var(--color-ink-500)" transform={`rotate(-30 ${x + bw * 0.32} ${P.t + ih + 14})`}>{it.n}</text>
+                        </g>
+                    );
+                })}
+            </svg>
+        </figure>
+    );
+}
+
+/** Mock-up 24: Comparison Results. */
+export default function CompareResults({ comparison: c, templates, fields, report }: Props) {
+    const total = templates.length + c.columns.length;
+    const right = (
+        <div className="flex flex-wrap gap-2">
+            {report && report.price !== null && <button type="button" className={btnGold} onClick={() => addToManifest('service', report.code, 'Comparison report')}>Comparison report · <PriceFrom price={report.price} /></button>}
+            <A sm href={`/aiim/workspace/compare?set=${c.reference}`}>Modify comparison</A>
+            <a href={`/aiim/workspace/compare/${c.reference}/export`} className="inline-flex min-h-[30px] items-center rounded-[4px] border border-parchment-500 bg-white px-2.5 text-[0.75rem] font-semibold text-ink-800 hover:border-gold-500">Export CSV</a>
+        </div>
+    );
+
+    if (!total) {
+        return (
+            <Flow title="Comparison Results" crumbs={[{ label: 'Opportunities', href: '/aiim/opportunities' }, { label: 'Comparison Builder', href: '/aiim/workspace/compare' }]}>
+                <Empty icon="scale"><p>Add templates in the comparison builder first.</p><Link href="/aiim/workspace/compare" className={btnGold}>Open builder</Link></Empty>
+            </Flow>
+        );
+    }
+
+    return (
+        <Flow
             title="Comparison Results"
-            crumbs={[{ label: 'My Workspace', href: '/aiim/workspace' }, { label: 'Comparison Builder', href: '/aiim/workspace/compare' }, { label: 'Results' }]}
-            subtitle={`Side-by-side comparison of ${c.columns.length} items across ${c.rows.length} key investment metrics.`}
-            description={`Generated on ${c.generated} · Set ${c.reference}`}
-            actions={
-                <div className="flex flex-wrap gap-2">
-                    <a href={`/aiim/workspace/compare/${c.reference}/export`} className="inline-flex h-9 items-center gap-1.5 rounded border border-ink-300 px-3 text-sm hover:border-ink-900"><Download className="size-4" />Export Report</a>
-                    <ButtonLink href={`/aiim/workspace/compare?set=${c.reference}`} size="sm" icon="layers">Modify Comparison</ButtonLink>
-                </div>
-            }
-            rail={<><SelectionBox /><DeeperBox /></>}
+            eyebrow={`${total} ${c.columns.length ? 'items' : 'templates'} side by side`}
+            lead={`Set ${c.reference} · ${c.generated}`}
+            crumbs={[{ label: 'Opportunities', href: '/aiim/opportunities' }, { label: 'Comparison Builder', href: '/aiim/workspace/compare' }]}
+            right={right}
         >
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_16rem]">
-                <section className="min-w-0 rounded-[8px] border border-parchment-400 bg-white">
+            {templates.length > 0 && (
+                <>
+                    <Card title="Score and risk-adjusted score">
+                        <div className="grid gap-4 md:grid-cols-2">
+                            <VBars label="Score" items={templates.map((t) => ({ n: t.id, v: t.score, c: t.color }))} />
+                            <VBars label="Risk-adjusted score (RA)" items={templates.map((t) => ({ n: t.id, v: t.ra, c: t.color }))} />
+                        </div>
+                    </Card>
+                    <div className="max-w-full overflow-x-auto rounded-[6px] border border-parchment-400 bg-white">
+                        <table className="w-full border-collapse text-[0.8rem]">
+                            <thead className="bg-parchment-200 text-left">
+                                <tr>
+                                    <th className="border-b border-parchment-400 px-2.5 py-2 text-[0.7rem] font-bold tracking-wide text-ink-500 uppercase">Field</th>
+                                    {templates.map((t) => <th key={t.id} className="border-b border-parchment-400 px-2.5 py-2 align-top"><Link href={t.url} className="font-semibold text-controlled-700 hover:underline">{t.id}</Link><div className="font-normal text-ink-600">{t.name}</div></th>)}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {fields.map((f) => (
+                                    <tr key={f} className="border-b border-parchment-300 last:border-0">
+                                        <td className="px-2.5 py-1.5 font-semibold text-ink-900">{f}</td>
+                                        {templates.map((t) => <td key={t.id} className="px-2.5 py-1.5 align-top">{/Tier/.test(f) ? <TierPill tier={t.fields[f]} /> : t.fields[f] || <span className="text-ink-400">—</span>}</td>)}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            )}
+            {c.columns.length > 0 && (
+                <Card title={templates.length ? 'Other saved objects in this set' : 'Side-by-side metrics'} pad={false}>
                     <ComparisonTable data={c} showOverall />
-                    <p className="flex flex-wrap gap-4 border-t border-parchment-300 px-3 py-2 text-[0.6875rem] text-ink-500"><span>★ Top score in this metric</span><span>Scores are indicative decision support based on selected metrics, not a valuation.</span></p>
-                </section>
-                <div className="space-y-4">
-                    <SectionCard title="Summary Insights">
-                        <ul className="space-y-3 text-xs">
-                            {c.insights.map((i) => {
-                                const I = icons[i.icon as keyof typeof icons] ?? Info;
-                                return <li key={i.name} className="flex gap-2"><I className="size-4 shrink-0 text-verified-500" /><span><strong className="text-verified-700">{i.name}</strong> {i.text}</span></li>;
-                            })}
-                        </ul>
-                    </SectionCard>
-                    <SectionCard title="What Would You Like To Do Next?">
-                        <ul className="space-y-2 text-xs">
-                            <li><Link href="/aiim/fees/discover" className="flex gap-2 hover:text-gold-700"><FileText className="size-4 text-gold-600" /><span><strong className="block">Create a detailed report</strong>Generate a report in PDF or CSV</span></Link></li>
-                            <li><a href={`/aiim/workspace/compare/${c.reference}/export`} className="flex gap-2 hover:text-gold-700"><Download className="size-4 text-gold-600" /><span><strong className="block">Export comparison</strong>Saved to your workspace as {c.reference}</span></a></li>
-                            <li><Link href="/aiim/workspace/watchlist" className="flex gap-2 hover:text-gold-700"><Bell className="size-4 text-gold-600" /><span><strong className="block">Set watchlist alert</strong>Get updates on these items</span></Link></li>
-                            <li><Link href={`/aiim/workspace/compare?set=${c.reference}`} className="flex gap-2 hover:text-gold-700"><Pencil className="size-4 text-gold-600" /><span><strong className="block">Refine comparison</strong>Add, remove or change items</span></Link></li>
-                        </ul>
-                    </SectionCard>
-                </div>
-            </div>
-        </AiimPage>
+                </Card>
+            )}
+        </Flow>
     );
 }
