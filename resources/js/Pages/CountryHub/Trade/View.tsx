@@ -166,7 +166,7 @@ function AfricaBody({ base, view: v, who, groups, rows }: Props & { rows: Row[] 
 }
 
 /* ---------------------------------------------------------- views 2 and 4: one partner, products × measures */
-function PairBody({ base, view: v, who, partner: p, pair }: Props & { partner: TC; pair: PairRow[] }) {
+function PairBody({ base, who, partner: p, pair }: Props & { partner: TC; pair: PairRow[] }) {
     const usdM = useUsdM();
     const { c, countries } = base;
     const imp = who === 'import';
@@ -177,7 +177,6 @@ function PairBody({ base, view: v, who, partner: p, pair }: Props & { partner: T
         ? [`${c.name} imports from ${p.name}`, `${p.name} exports to all Africa`, `${c.name} imports from all Africa`, 'Headroom (min of the two − actual)', `Reverse: ${c.name} → ${p.name}`]
         : [`${c.name} exports to ${p.name}`, `${p.name} imports from all Africa`, `${c.name} exports to all Africa`, 'Headroom (min of the two − actual)', `Reverse: ${p.name} → ${c.name}`];
     const [from, to] = imp ? [p.iso3, c.iso3] : [c.iso3, p.iso3];
-    void v;
 
     return (
         <>

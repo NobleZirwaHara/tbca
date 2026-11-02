@@ -131,7 +131,7 @@ export function Card({ title, icon, sub, act, tone, children, className, id, pad
 }
 
 export function Kpis({ children, className }: { children: ReactNode; className?: string }) {
-    return <div className={cn('grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-3', className)}>{children}</div>;
+    return <div className={cn('grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3', className)}>{children}</div>;
 }
 
 export function Kpi({ l, v, s, icon = 'chart', dark }: { l: ReactNode; v: ReactNode; s?: ReactNode; icon?: string; dark?: boolean }) {

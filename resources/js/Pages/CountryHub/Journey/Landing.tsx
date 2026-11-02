@@ -68,7 +68,7 @@ export default function Landing({ base, pack, sector = 'ALL', persona = 'ALL', s
                 <Card title="Ranked landing places" icon="pin" sub={`${N(count)} ranked leads match`}>
                     <STable compact head={['Place', 'Unit', 'Leads', 'Tier A', 'Best template', 'Gateway (km)']} rows={places.map((p) => [
                         <Link key="p" href={cHref(BW, `geo/town/${p.id}`)} className="text-controlled-700 hover:underline">{p.place}</Link>, p.unit, p.n, <b key="a">{p.a}</b>,
-                        <Link key="o" href={cHref(BW, `opp/${p.bestTemplate}`)} className="text-[0.8rem] text-controlled-700 hover:underline">{p.bestOpp}</Link>, `${p.gw} (${p.km})`,
+                        <Link key="o" href={cHref(BW, `opp/${p.bestTemplate}`)} className="inline-block min-w-[200px] text-[0.8rem] text-controlled-700 hover:underline">{p.bestOpp}</Link>, `${p.gw} (${p.km})`,
                     ])} />
                 </Card>
             </Cols>

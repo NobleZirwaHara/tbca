@@ -40,8 +40,8 @@ class CorridorsTest extends TestCase
         $t = Corridors::ledgerTotals(Corridors::pair('BWA', 'ZAF'));
         $this->assertEquals(1220 + 1850, $t['T']);
         $this->assertEqualsWithDelta((1220 + 1850) / 0.175 * 0.391, $t['X'], 0.01);
-        $kenNga = Corridors::ledgerTotals(Corridors::pair('KEN', 'NGA'));
-        $this->assertEqualsWithDelta((1220 + 1850) / 0.175 * 0.051 * (Corridors::pair('KEN', 'NGA')['st'] === 'No Evidence' ? 1.4 : 1.4), $kenNga['S'], 0.01);
+        $this->assertEqualsWithDelta((1220 + 1850) / 0.175 * 0.051 * 1.15, Corridors::ledgerTotals(Corridors::pair('BWA', 'ZMB'))['S'], 0.01);
+        $this->assertEqualsWithDelta((1220 + 1850) / 0.175 * 0.051 * 1.4, Corridors::ledgerTotals(Corridors::pair('KEN', 'BEN'))['S'], 0.01);
     }
 
     public function test_landing_selector_and_network(): void

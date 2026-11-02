@@ -38,7 +38,7 @@ export default function Ledger({ cr, ledger: L, lg, lines, aSlug }: Props) {
                 <Card title="Evidence-first fee publication"><p className="text-[0.82rem]">Resolver confirms price certainty and records the evidence reference for every line.</p></Card>
             </Cols>
             <div className="flex flex-wrap gap-2">
-                <B onClick={() => toast.show('Ledger exported (prototype)')}>Export Ledger {L} (CSV)</B>
+                <B onClick={() => toast.show('Ledger export is not available yet.')}>Export Ledger {L} (CSV)</B>
                 <A v="pri" href={corUrl('fees', cr.a, cr.b)}>Fee Schedule Comparison →</A>
             </div>
             {toast.node}

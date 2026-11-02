@@ -65,7 +65,7 @@ export default function Letter({ base, j, s, vat, today }: Props) {
                 <div className="mt-2.5 flex flex-wrap gap-2">
                     {j.letterOk ? <A v="pri" href={cHref(c, 'pay')}>Proceed to Payment →</A> : <B v="pri" onClick={approve}>Approve Letter →</B>}
                     <A href={cHref(c, 'quote')}>Request Changes</A>
-                    <B onClick={() => toast.show('Shared with your advisor (prototype)')}>Share with Advisor</B>
+                    <B onClick={() => toast.show('Sharing with an advisor is not available yet. Use Ask a Question to reach one.')}>Share with Advisor</B>
                 </div>
             </Card>
             {toast.node}

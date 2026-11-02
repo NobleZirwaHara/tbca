@@ -32,6 +32,6 @@ class CountryState
         IndustryState::putGlobal('cty.'.$key, $value);
     }
 
-    /** Keys a page may write through the generic state endpoint. */
-    public const WRITABLE = '/^(journey|waitlist|saved|plan\.[a-z0-9_-]+|ticks\.[a-z0-9_-]+|lang|notes\.[a-z0-9_-]+)$/';
+    /** Keys a page may write through the generic state endpoint. The commercial journey and waitlist change only through their own validated routes. */
+    public const WRITABLE = '/^(saved|plan\.[a-z0-9_-]+|ticks\.[a-z0-9_-]+|lang|notes\.[a-z0-9_-]+)$/';
 }

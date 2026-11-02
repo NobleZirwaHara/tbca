@@ -34,7 +34,7 @@ Route::prefix('countries')->name('countries.')->group(function () {
         Route::get('/{view}/{a}/{b}', 'pair')->where(['view' => 'detail|compare|evidence|fees|outlook', 'a' => '[A-Za-z]{3}', 'b' => '[A-Za-z]{3}'])->name('pair');
     });
 
-    Route::prefix('{country}')->where(['country' => '[a-z0-9-]+'])->group(function () {
+    Route::prefix('{country}')->where(['country' => '[A-Za-z0-9-]+'])->group(function () {
         /* Country Profile & Planning (P03 to P16, P56) */
         Route::controller(ProfileController::class)->group(function () {
             Route::get('/', 'profile')->name('profile');

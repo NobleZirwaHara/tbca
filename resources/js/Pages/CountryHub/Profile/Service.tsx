@@ -82,7 +82,7 @@ export default function Service({ base, code, s, live = false, vat = 0.15, relat
                     </>
                 ) : <A href={cHref(c, 'waitlist', `?sprint=${enc}`)}>Join waitlist</A>}
                 <A href={cHref(c, 'resolver')}>Check My Eligibility</A>
-                <B onClick={() => toast.show('Service brief generated (prototype)')}>Download Service Brief</B>
+                <B onClick={() => toast.show('Service briefs are not available for download yet. Ask a question and an advisor will send one.')}>Download Service Brief</B>
             </div>
             {related.length > 0 && <Card title="Related Services" icon="tag"><SprintGrid items={related} c={c} /></Card>}
             {toast.node}

@@ -45,7 +45,7 @@ export default function Workspace({ base, j, s, vat, today, plan, created }: Pro
                     <ul className="list-disc space-y-1 ps-4 text-[0.82rem]">
                         <li>Engagement Letter {j.elRef || '(draft)'}.pdf</li><li>Data request template.xlsx</li>{c.isBW && <li>BW-1.0 evidence annex (129 facts).csv</li>}
                     </ul>
-                    <B sm className="mt-2" onClick={() => toast.show('Upload dialog (prototype)')}>Upload Document</B>
+                    <B sm className="mt-2" onClick={() => toast.show('Document upload opens with your advisor once the engagement starts.')}>Upload Document</B>
                 </Card>
                 <Card title="Billing & Payments" icon="cash">
                     <Dl rows={[['Invoice', `INV-2026-${(j.ref ?? '').slice(-4)}`], ['Amount', money(value)], ['Status', j.paid ? <Chip key="s" t="Paid" tone="ok" /> : <Chip key="s" t="Due" tone="warn" />]]} />

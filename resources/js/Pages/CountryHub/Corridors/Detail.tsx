@@ -51,7 +51,7 @@ export default function Detail({ cr, tot, map, fl, rv, gw, sacu, ledg }: Props) 
                 <STable head={['Stage', 'Days']} rows={[['Resolver mandate & engagement', 'Day 1 – 3'], ['Regulatory & compliance processing', 'Day 4 – 15'], ['Approvals & licences', 'Day 16 – 20'], ['Commercial & service set-up', 'Day 21 – 25'], ['Activation complete', 'Day 25+']]} />
             </Card>
             <div className="flex flex-wrap gap-2">
-                <B v="pri" onClick={() => toast.show('Corridor initiation request logged — Board approval required (prototype)')}>Initiate This Corridor</B>
+                <B v="pri" onClick={() => toast.show('Corridor initiation needs TBCA Board approval. Ask a question to start the request.')}>Initiate This Corridor</B>
                 <A href={corUrl('compare', cr.a, cr.b)}>Endpoint comparison →</A>
                 <A v="yellow" href={cHref(cr.B, 'trade/2', `?partner=${cr.a}`)}>Trade heat map for this pair</A>
             </div>

@@ -27,7 +27,7 @@ export default function Waitlist({ base, mine, notSold, unmet, services, sprint,
         <CountryPage base={base} pageKey="waitlist">
             <CountryHead base={base} pageKey="waitlist" title="Country Waitlist & Unmet Demand Capture" desc={`Capture unmet demand and interest for services not yet available in ${c.name}. We use this to prioritise activation and inform service development.`} />
             <Kpis>
-                <Kpi l="Your waitlist entries" v={mine.length} s="Stored in this browser" icon="users" />
+                <Kpi l="Your waitlist entries" v={mine.length} s="Saved to your account when signed in" icon="users" />
                 <Kpi l="Services not sold standalone" v={N(notSold)} s="Candidates for bundling" icon="lock" />
                 <Kpi l="Countries activated" v={54} s="Demand captured for services not yet sold standalone" icon="globe" />
                 <Kpi l="Demand signal (Botswana leads)" v="2,137" s={<>Ranked place leads as a demand proxy <TagM /></>} icon="chart" />
@@ -65,7 +65,7 @@ export default function Waitlist({ base, mine, notSold, unmet, services, sprint,
                     </Card>
                 )}
             </Cols>
-            <Note><b>Stay Informed.</b> Get notified when requested services become available in {c.name}. Prototype entries stay in this browser only.</Note>
+            <Note><b>Stay Informed.</b> Get notified when requested services become available in {c.name}. Entries are saved to your account when you are signed in, otherwise to this visit.</Note>
         </CountryPage>
     );
 }

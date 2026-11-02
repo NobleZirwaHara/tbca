@@ -189,7 +189,7 @@ export default function Page({ base, k, data }: Props) {
                         <Field label="Official email"><input type="email" className={inputCls} /></Field>
                     </div>
                     <Field label="Objectives" className="mt-2"><textarea rows={3} className={`${inputCls} h-auto py-1.5`} /></Field>
-                    <B v="pri" className="mt-2.5" onClick={() => toast.show('Intake recorded — conflict check runs next (prototype)')}>Submit intake →</B>
+                    <B v="pri" className="mt-2.5" onClick={() => toast.show('Sovereign intake is handled by TBCA staff. Contact us to start one.')}>Submit intake →</B>
                 </Card>
                 {isB && <Card title="Institutions TBCA would engage (BW_Institutions)"><DataTable name="BW_Institutions" size={8} rows={d.inst ?? []} cols={[col('Role'), col('Botswana institution')]} /></Card>}
             </>
@@ -342,7 +342,7 @@ export default function Page({ base, k, data }: Props) {
                         <Field label="Observation"><textarea rows={3} className={`${inputCls} h-auto py-1.5`} /></Field>
                         <Field label="Place"><select className={inputCls}><option>Gaborone</option><option>Francistown</option><option>Kasane</option></select></Field>
                     </div>
-                    <B v="pri" className="mt-2" onClick={() => toast.show('Observation logged as Layer 9 — awaiting review')}>Log observation</B>
+                    <B v="pri" className="mt-2" onClick={() => toast.show('Observations are logged by TBCA staff in the admin console.')}>Log observation</B>
                 </Card>
                 {isB && <Note>Botswana&apos;s 90-day plan pilots scouts on the Ghanzi–Khoemacau copper belt and Kasane–Kazungula (BW_Plan90).</Note>}
             </>
