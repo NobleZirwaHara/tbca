@@ -8,6 +8,7 @@
 import { Minus, Plus, RotateCcw } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState, type MouseEvent as RME, type PointerEvent as RPE, type ReactNode } from 'react';
 import { N, useUsdM } from '@/Components/Industries/Kit';
+import { cn } from '@/lib/cn';
 import { SECTORS } from '@/Components/Aiim/ProtoExplore';
 
 type Pos = [number, number];
@@ -100,13 +101,24 @@ export function filterCov(f: MapF) {
 const tierPass = (want: string, t: string) => !want || (want === 'A+' ? t === 'A+' : want === 'A' ? t === 'A' || t === 'A+' : want === 'B' ? t === 'B' : true);
 
 /* ------------------------------------------------------------------ component */
-export default function BwMap({ data, filters, f = NO_FILTER, metric = 'pop', layers: layersIn, sel = null, onSelect, height = 760, legend = false, heat, townCount, overlay, label = 'Interactive map of Botswana' }: {
+export default function BwMap({ data, filters, f = NO_FILTER, metric = 'pop', layers: layersIn, sel = null, onSelect, height = 760, fill = false, legend = false, heat, townCount, overlay, label = 'Interactive map of Botswana' }: {
     data: BwMapData; filters?: MapFilters; f?: MapF; metric?: string; layers?: Partial<Layers>; sel?: Sel; onSelect?: (s: Sel) => void; height?: number; legend?: boolean;
     /** Coverage glow per town ID when no filter data is loaded (sector pages). */ heat?: Record<string, number>;
     /** Ranked leads per town ID when no filter data is loaded. */ townCount?: Record<string, number>;
     overlay?: ReactNode; label?: string;
+    /** Fill the parent's height (the parent sets it); the drawing keeps the container's aspect ratio. */
+    fill?: boolean;
 }) {
-    const H = height;
+    const boxRef = useRef<HTMLDivElement>(null);
+    const [boxH, setBoxH] = useState<number | null>(null);
+    useEffect(() => {
+        if (!fill || !boxRef.current) return;
+        const el = boxRef.current;
+        const ro = new ResizeObserver(() => { const r = el.getBoundingClientRect(); if (r.width > 0 && r.height > 0) setBoxH(Math.round((W * r.height) / r.width)); });
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, [fill]);
+    const H = fill && boxH ? Math.max(420, boxH) : height;
     const usdM = useUsdM();
     const layers: Layers = { ...DEFAULT_LAYERS, ...layersIn };
     const svgRef = useRef<SVGSVGElement>(null);
@@ -272,6 +284,8 @@ export default function BwMap({ data, filters, f = NO_FILTER, metric = 'pop', la
     const selHot = sel?.type === 'hot' ? data.hotspots[sel.i] : null;
     const selUnit = sel?.type === 'unit' ? sel.code : null;
     const sk = Math.sqrt(k);
+    /** Hotspot markers grow a little with zoom but stay readable at street level. */
+    const hk = k ** 0.8;
     const minPop = k < 1.6 ? 40000 : k < 3 ? 9000 : k < 6 ? 2500 : 0;
     const heatCol = f.sector ? SECTORS.find((s) => s.code === f.sector)?.color ?? '#d6a32e' : '#d6a32e';
     const vne = { vectorEffect: 'non-scaling-stroke' as const };
@@ -285,8 +299,8 @@ export default function BwMap({ data, filters, f = NO_FILTER, metric = 'pop', la
     const chP = unitBy.CH ? proj(unitBy.CH.lon, unitBy.CH.lat) : null;
 
     return (
-        <div className="relative h-full w-full overflow-hidden bg-[#dfeaf2]">
-            <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full touch-none select-none" role="img" aria-label={label}
+        <div ref={boxRef} className={cn('relative w-full overflow-hidden bg-[#dfeaf2]', fill && 'h-full')}>
+            <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className={cn('block w-full touch-none select-none', fill ? 'h-full' : 'h-auto')} role="img" aria-label={label}
                 onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={() => { hide(); onUp(); }} onClick={bgClick}>
                 <defs>
                     <clipPath id="bwclip"><path d={geo.bw} /></clipPath>
@@ -339,7 +353,7 @@ export default function BwMap({ data, filters, f = NO_FILTER, metric = 'pop', la
                             <circle r={7} fill="#fff" stroke="#2f5fa8" /><text y={3.5} textAnchor="middle" fontSize={8} fontWeight={700} fill="#2f5fa8">✈</text>
                         </g>); })}
                     {layers.gw && data.gateways.map((g, i) => { const p = geo.gpts[i]; return (
-                        <g key={g.i} transform={`translate(${p[0]},${p[1]}) scale(${1 / sk})`} style={{ cursor: 'pointer' }} onMouseMove={showTip(<><b>{g.name}</b><br />{g.places} places nearest</>)} onMouseLeave={hide} onClick={guard(pick({ type: 'gw', i }))}>
+                        <g key={g.i} transform={`translate(${p[0]},${p[1]}) scale(${1 / hk})`} style={{ cursor: 'pointer' }} onMouseMove={showTip(<><b>{g.name}</b><br />{g.places} places nearest</>)} onMouseLeave={hide} onClick={guard(pick({ type: 'gw', i }))}>
                             <circle r={11} fill={GWCOL[i]} opacity={0.35} className="animate-pulse" /><rect x={-6} y={-6} width={12} height={12} transform="rotate(45)" fill={GWCOL[i]} stroke="#fff" strokeWidth={1.5} />
                         </g>); })}
                     {layers.towns && geo.towns.map((tw) => {
@@ -349,8 +363,8 @@ export default function BwMap({ data, filters, f = NO_FILTER, metric = 'pop', la
                     })}
                     {layers.hot && data.hotspots.map((h, i) => { const p = hotAt(h, i); if (!p) return null; return (
                         <g key={h.i} style={{ cursor: 'pointer' }} onMouseMove={showTip(<><b>{h.name}</b><br />{h.place} · {h.status}<br />{h.leads} hotspot leads · best lead score {h.best}</>)} onMouseLeave={hide} onClick={guard(pick({ type: 'hot', i: h.i }))}>
-                            {h.aplus && <circle cx={p[0]} cy={p[1]} r={7 / sk} fill="#d6a32e" className="animate-pulse" />}
-                            <circle cx={p[0]} cy={p[1]} r={5.5 / sk} fill={h.aplus ? '#d6a32e' : h.tierA ? '#1f7a4c' : '#4f8fca'} stroke="#16161b" strokeWidth={1.6} style={vne} />
+                            {h.aplus && <circle cx={p[0]} cy={p[1]} r={7 / hk} fill="#d6a32e" className="animate-pulse" />}
+                            <circle cx={p[0]} cy={p[1]} r={5.5 / hk} fill={h.aplus ? '#d6a32e' : h.tierA ? '#1f7a4c' : '#4f8fca'} stroke="#16161b" strokeWidth={1.6} style={vne} />
                         </g>); })}
                     {layers.labels && (
                         <g pointerEvents="none">

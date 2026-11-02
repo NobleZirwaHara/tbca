@@ -107,9 +107,9 @@ function BotswanaCockpit({ country, countries, bw, intel, initialTab, initialUni
             )}
 
             <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-                <Panel flush title={<>Unit opportunity heatmap <small className="font-normal text-ink-500">weighted envelope · click a unit</small></>} right={<span className="pr-4"><MoreBtn href={P.map}>Open full map →</MoreBtn></span>}>
-                    <div className="overflow-hidden rounded-b-[12px]">
-                        <BwMap data={map} metric="envW" height={620} layers={{ corr: false, roads: false, rail: false, air: false, heat: false, water: false }}
+                <Panel flush className="flex flex-col" title={<>Unit opportunity heatmap <small className="font-normal text-ink-500">weighted envelope · click a unit</small></>} right={<span className="pr-4"><MoreBtn href={P.map}>Open full map →</MoreBtn></span>}>
+                    <div className="min-h-[520px] flex-1 overflow-hidden rounded-b-[12px]">
+                        <BwMap data={map} metric="envW" fill layers={{ corr: false, roads: false, rail: false, air: false, heat: false, water: false }}
                             onSelect={(s) => { if (s?.type === 'unit') router.visit(P.unit(s.code)); else if (s?.type === 'town') router.visit(P.town(s.id)); else if (s?.type === 'hot') router.visit(P.project(`H${s.i}`)); else if (s?.type === 'gw') router.visit(`${P.map}?sel=gw:${s.i}`); }} />
                     </div>
                 </Panel>
@@ -241,10 +241,10 @@ function CountryCockpit({ country, countries, peers, content, provinces, intel, 
 
             <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
                 <Panel flush title={<>{sa ? 'Province' : 'Area'} drill-down map <small className="font-normal text-ink-500">click an area</small></>} right={<span className="pr-4"><MoreBtn href={`/aiim/country/${country.slug}/map`}>Open full map →</MoreBtn></span>}>
-                    <div className="rounded-b-[12px] bg-ink-950 p-3 text-parchment-100">
+                    <div className={intel && intel.coverage.units > 0 ? 'rounded-b-[12px] bg-ink-950 p-3 text-parchment-100' : 'px-4 pb-4'}>
                         {intel && intel.coverage.units > 0
                             ? <CountryExplorer intel={intel} countryName={country.name} activation={act} initialTab={initialTab} initialUnit={initialUnit} hideOverview />
-                            : <div className="p-2"><PackLoading country={country.name} what="Areas, towns and the drill-down map"><Btn href={customHref} tone="gold">Request regional intelligence</Btn></PackLoading></div>}
+                            : <div><PackLoading country={country.name} what="Areas, towns and the drill-down map"><Btn href={customHref} tone="gold">Request regional intelligence</Btn></PackLoading></div>}
                     </div>
                 </Panel>
                 <div className="grid content-start gap-4">

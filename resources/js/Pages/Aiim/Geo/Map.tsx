@@ -134,8 +134,8 @@ function BotswanaMapView({ bw, focus, sel: selIn, card }: Props & { bw: BwMapPag
                 </div>
             </div>
 
-            <div className="grid overflow-hidden rounded-[14px] border border-parchment-400 bg-white xl:grid-cols-[250px_minmax(0,1fr)_360px]">
-                <div className="grid content-start gap-4 border-b border-parchment-400 p-4 xl:border-r xl:border-b-0">
+            <div className="grid overflow-hidden rounded-[14px] border border-parchment-400 bg-white xl:h-[860px] xl:grid-cols-[250px_minmax(0,1fr)_360px]">
+                <div className="grid content-start gap-4 border-b border-parchment-400 p-4 xl:overflow-y-auto xl:border-r xl:border-b-0">
                     <div className="grid gap-1.5">
                         <Eyebrow className="text-ink-500">Find a place</Eyebrow>
                         <input type="search" list="bw-places" value={q} placeholder="Town, unit or hotspot" className={ctl} onChange={(e) => { setQ(e.target.value); const v = e.target.value.toLowerCase(); if (data.towns.some((t) => t.name.toLowerCase() === v) || data.units.some((u) => u.name.toLowerCase() === v)) find(v); }} onKeyDown={(e) => { if (e.key === 'Enter') find(); }} aria-label="Find a place" />
@@ -167,8 +167,9 @@ function BotswanaMapView({ bw, focus, sel: selIn, card }: Props & { bw: BwMapPag
                     </div>
                 </div>
 
-                <div className="relative min-w-0 border-b border-parchment-400 xl:border-b-0">
-                    <BwMap data={data} filters={filters} f={f} metric={metric} layers={layers} sel={sel} onSelect={select} height={820} legend
+                <div className="flex min-w-0 flex-col border-b border-parchment-400 xl:border-b-0">
+                    <div className="relative h-[620px] min-h-0 xl:h-auto xl:flex-1">
+                    <BwMap data={data} filters={filters} f={f} metric={metric} layers={layers} sel={sel} onSelect={select} fill legend
                         overlay={(
                             <>
                                 <nav aria-label="Map level" className="absolute top-3 left-3 flex max-w-[70%] flex-wrap items-center gap-1 rounded-full border border-parchment-400 bg-white/95 px-3 py-1 text-[0.78rem] shadow-sm">
@@ -181,6 +182,7 @@ function BotswanaMapView({ bw, focus, sel: selIn, card }: Props & { bw: BwMapPag
                                 </nav>
                             </>
                         )} />
+                    </div>
                     <div className="flex items-center overflow-hidden bg-ink-950 text-[0.75rem] text-parchment-200">
                         <span className="shrink-0 bg-risk-700 px-3 py-1.5 font-bold tracking-wider text-white">ALERTS</span>
                         <div className="min-w-0 flex-1 overflow-hidden"><div className="flex w-max animate-[marquee_80s_linear_infinite] gap-8 px-4 py-1.5 whitespace-nowrap hover:[animation-play-state:paused]">{[...tick, ...tick].map((t, i) => <span key={i}><Rich2 t={t} /></span>)}</div></div>
@@ -188,7 +190,7 @@ function BotswanaMapView({ bw, focus, sel: selIn, card }: Props & { bw: BwMapPag
                     <style>{'@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}'}</style>
                 </div>
 
-                <div className="min-w-0 p-4">
+                <div className="min-w-0 p-4 xl:overflow-y-auto">
                     {!sel ? <CountryCard summary={S} gateways={data.gateways} onGateway={(i) => select({ type: 'gw', i })} brief={bw.brief} />
                         : !cardOk ? <p className="text-[0.85rem] text-ink-500" role="status">Loading…</p>
                             : card.type === 'unit' ? <UnitCard u={card} compact /> : card.type === 'town' ? <TownCard t={card} compact /> : card.type === 'hot' ? <HotCard h={card} /> : <GwCard g={card} />}

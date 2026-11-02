@@ -27,13 +27,13 @@ const mixBars = (mix: MixRow[], max = 18) => mix.slice(0, max).map((m) => ({ n: 
 const Chips = ({ children }: { children: ReactNode }) => <div className="flex flex-wrap gap-1.5">{children}</div>;
 const H2 = ({ children }: { children: ReactNode }) => <h2 className="text-[1.35rem] font-bold text-ink-900">{children}</h2>;
 const HotList = ({ list }: { list: HotRow[] }) => (
-    <div className="grid gap-1">{list.map((h) => <Link key={h.i} href={P.project(`H${h.i}`)} className="flex items-center justify-between gap-2 rounded-[6px] px-1 py-1.5 text-[0.84rem] hover:bg-parchment-200"><span className="min-w-0 truncate">{h.name}{h.place && <span className="text-ink-500"> · {h.place}</span>}</span><StatusPill s={h.status} /></Link>)}</div>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-1">{list.map((h) => <Link key={h.i} href={P.project(`H${h.i}`)} className="flex items-center justify-between gap-2 rounded-[6px] px-1 py-1.5 text-[0.84rem] hover:bg-parchment-200"><span className="min-w-0 truncate">{h.name}{h.place && <span className="text-ink-500"> · {h.place}</span>}</span><span className="shrink-0"><StatusPill s={h.status} /></span></Link>)}</div>
 );
 
 export function UnitCard({ u, compact }: { u: UnitCardData; compact?: boolean }) {
     const usdM = useUsdM();
     return (
-        <div className="grid gap-3.5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-3.5">
             <Chips><Chip>L1 · {u.kind}</Chip><Chip className="font-mono">{u.code} · {u.wikidata}</Chip>{u.code === 'CH' && <Rich t="[VERIFY boundary in NW base polygon]" />}</Chips>
             <H2>{u.name}</H2>
             <div className="grid grid-cols-2 gap-2.5">
@@ -57,7 +57,7 @@ export function UnitCard({ u, compact }: { u: UnitCardData; compact?: boolean })
 export function TownCard({ t, compact }: { t: TownCardData; compact?: boolean }) {
     const short = t.name.replace(' (council point)', '');
     return (
-        <div className="grid gap-3.5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-3.5">
             <Chips>
                 <Chip>L3 · {t.kind}</Chip><Chip href={P.unit(t.unit)}>{t.unitName}</Chip>
                 {t.gwShort && <Chip className="border-2" ><span style={{ color: GWCOL[t.gw] }}><DoorOpen className="inline size-3" /></span> {t.gwShort} region</Chip>}
@@ -95,7 +95,7 @@ export function TownCard({ t, compact }: { t: TownCardData; compact?: boolean })
 
 export function HotCard({ h }: { h: HotCardData }) {
     return (
-        <div className="grid gap-3.5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-3.5">
             <Chips><Chip>L4 · site</Chip><StatusPill s={h.status} /><Chip>match: {h.match}</Chip></Chips>
             <H2>{h.name}</H2>
             <Dl rows={[['Place', <Link key="p" href={P.town(h.placeId)} className="text-controlled-700 underline">{h.place}</Link>], ['Unit', <Link key="u" href={P.unit(h.unit)} className="text-controlled-700 underline">{h.unit}</Link>], ['Evidence', <Rich key="e" t={h.fact} />], ['Leads', String(h.leads)]]} />
@@ -117,7 +117,7 @@ export function HotCard({ h }: { h: HotCardData }) {
 
 export function GwCard({ g }: { g: GwCardData }) {
     return (
-        <div className="grid gap-3.5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-3.5">
             <Chips><Chip>Gateway region</Chip></Chips>
             <H2>{g.name}</H2>
             <Dl rows={[
@@ -132,7 +132,7 @@ export function GwCard({ g }: { g: GwCardData }) {
 
 export function CountryCard({ summary, gateways, onGateway, brief }: { summary: Record<string, string | number>; gateways: MGate[]; onGateway: (i: number) => void; brief: Svc | null }) {
     return (
-        <div className="grid gap-3.5">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-3.5">
             <Chips><Chip>L0 · country</Chip><Chip><BwFlag w={18} h={12} /> Botswana</Chip></Chips>
             <H2>Botswana</H2>
             <Dl rows={[['Population', '2,359,609 (Census 2022)'], ['Units', '16 (10 districts, 6 councils)'], ['Places pinned', '83'], ['Hotspots', '42 named, 42/42 exact matches'], ['Gateways', '6 (no sea port)'], ['Templates', `${Number(summary['Sweep templates']).toLocaleString('en-US')} (${Number(summary['Tier A+']) + Number(summary['Tier A'])} Tier A)`]]} />
