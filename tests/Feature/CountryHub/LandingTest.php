@@ -29,7 +29,7 @@ class LandingTest extends TestCase
     {
         $this->assertSame(63, DB::table('ind_register_rows')->distinct()->count('register'));
         $rows = DB::table('ind_register_rows')->count();
-        $this->assertSame(6, DB::table('cty_meta')->count());
+        $this->assertSame(8, DB::table('cty_meta')->count());
 
         $this->seed(CountryHubSeeder::class);
         $this->assertSame($rows, DB::table('ind_register_rows')->count());

@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Schema;
  *  - sprint-topics.json     the 1,814 country Sprints and the topic each one serves
  *  - sprint-market.json     their catalogue market medians per tier (mb, ms, mp, ZAR ex VAT) and full
  *                           archetype code, used for the "Price vs market" comparison
+ *  - aiim-services.json.gz  the 581-service catalogue embedded in the client's "TBCA AIIM Botswana"
+ *                           prototype (AIIM, toolkits, calculators and the other platform services)
+ *  - aiim-prompts.json      that prototype's prompt pack (Markdown)
  *
  * Idempotent: register rows are replaced per register, documents are upserted by key.
  * Selling prices are never loaded here: pages price Sprints from the app's own Sprint records.
@@ -32,6 +35,7 @@ class CountryHubSeeder extends Seeder
     public const META = [
         'reg_index' => 'reg-index.json', 'geo_bw' => 'geo-bw.json.gz', 'pack_doc' => 'pack-doc.json.gz',
         'coverage' => 'coverage.json', 'sprint_topics' => 'sprint-topics.json', 'sprint_market' => 'sprint-market.json',
+        'aiim_services' => 'aiim-services.json.gz', 'aiim_prompts' => 'aiim-prompts.json',
     ];
 
     public function run(): void
@@ -88,7 +92,7 @@ class CountryHubSeeder extends Seeder
         return array_values($h);
     }
 
-    private function read(string $file): array
+    private function read(string $file): mixed
     {
         $raw = (string) file_get_contents($file);
         if (str_ends_with($file, '.gz')) {
