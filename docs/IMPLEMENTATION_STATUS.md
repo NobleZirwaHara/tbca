@@ -412,6 +412,30 @@ Rebuilt on 29 Oct 2026 to match the client's published "TBCA Industries Prototyp
 - **Earlier URLs:** `/industries/sector-intelligence/{industry}`, `/industries/workspace/{engagement}/...` and `/admin/insights/industries/...` redirect to the new pages.
 - **Production:** the migration `2026_10_29_100000_load_industries_prototype` runs `IndustriesSeeder` on deploy when the database already has Sprints.
 
+### Countries
+
+Rebuilt on 2 Nov 2026 from the Countries part of the same prototype (MP-COUNTRIES-1.0, 21 Oct 2026). All 54 countries are activated and use one country template; Botswana carries the full BW-1.0 pack and runs end to end. Prototype route `#/c/{ISO}/{page}` is `/countries/{country}/{page}` here (`{country}` is the slug; ISO3 and ISO2 also work).
+
+| Pages (prototype page numbers) | URL |
+|---|---|
+| P01 Countries landing (54-country map by availability state) | `/countries` |
+| P02 Country Explorer (map, filters, 54-row table) | `/countries/explorer` |
+| P03 Country Profile | `/countries/{country}` |
+| P04 to P16, P56: evidence, availability, catalogue, resolver, impact, limitations, tax, payments, language, partners, legal, privacy, history | `/countries/{country}/{page}`, service detail `/countries/{country}/service/{code}` |
+| Import & Export hub and heat maps 1 to 4 (all 10 HS groups) | `/countries/{country}/trade`, `/trade/1` to `/trade/4?partner=ISO3` |
+| Intelligence: economy, 18 sectors, opportunities, geography (Botswana map: districts, roads, rail, rivers, 83 towns, 42 hotspots, 6 gateways), ranked leads, investment case, risk, products and HS, investor and trader questions, continental model, one-stop shop, country pack reader, data room (62 sheets) | `/countries/{country}/economy` and so on; `/sector/{code}`, `/opp/{id}`, `/geo/unit/{code}`, `/geo/town/{id}`, `/dataroom/{sheet}` |
+| P17 to P26 Market Entry Journey | `/countries/{country}/readiness`, `/landing`, `/localisation`, `/paylocal`, `/langpack`, `/compliance`, `/launch`, `/audit`, `/diaspora`, `/exit` |
+| P27 to P34 Commercial journey | `/countries/{country}/quote`, `/waitlist`, `/letter`, `/pay`, `/workspace`, `/deliverables`, `/change`, `/closure` |
+| P35 to P48 Corridors & Ledgers (2,862 directional pairs, six ledgers) | `/countries/corridors?from=BWA`, `/select`, `/network`, `/{detail,compare,evidence,fees,outlook}/{A}/{B}`, `/ledger/{T,X,S,P,D,CT-C}/{A}/{B}` |
+| P49 to P84 Governance & Admin (34 pages) | `/countries/{country}/gov`, `/countries/{country}/gov/{page}` |
+
+- **Data:** loaded by `CountryHubSeeder` from `database/seeders/Sections/data/countries/` (prototype data converted to plain rows, values unchanged): the 39 registers Industries did not already load (all 62 workbook sheets are now in `ind_register_rows`, 49,610 rows), the Botswana geometry, the BW-1.0 pack text (636 blocks), the register index and coverage check, and the topic, market medians and archetype of the 1,814 country Sprints (`cty_meta`). Countries, trade model and Sprint classification are shared with Industries.
+- **Prices:** only from the app's Sprint records, matched by code. Market medians are shown for comparison only.
+- **Visitor state:** the commercial journey, waitlist, saved countries and planner answers are kept on the account when signed in, else in the session (`ind_states`, keys `cty.*`). Payment is simulated: no order or charge is created.
+- **Large registers** (ranked leads, coverage, investor and trader questions, data room sheets) are paged, searched and exported as CSV on the server.
+- **Production:** the migration `2026_11_02_090100_load_country_hub` runs `CountryHubSeeder` on deploy when the countries are loaded.
+- The earlier, unfinished Countries build (`app/Http/Controllers/Countries`, `resources/js/Pages/Countries`, `ctry_*` tables) is no longer routed.
+
 ### Resources
 
 - **What it does:** TBCA's library of guides, reports, templates, case studies, KP insights and webinars. Items can be free, gated, paid or subscription.
