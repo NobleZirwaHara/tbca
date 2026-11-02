@@ -47,14 +47,14 @@ function activeNav(path: string): string | null {
 
 export type Crumb = [string, string?];
 
-export function Shell({ title, crumbs, children, dark }: { title: string; crumbs: Crumb[]; children: ReactNode; dark?: boolean }) {
+export function Shell({ title, crumbs, children, dark, home = '/industries' }: { title: string; crumbs: Crumb[]; children: ReactNode; dark?: boolean; home?: string }) {
     const { url } = usePage<SharedProps>().props;
     const on = activeNav(url.path);
     const list: Crumb[] = [['Home', '/'], ...crumbs];
     return (
         <>
             <Head title={title} />
-            <nav aria-label="Industries sections" className="border-b border-parchment-400 bg-parchment-100">
+            {home === '/industries' && <nav aria-label="Industries sections" className="border-b border-parchment-400 bg-parchment-100">
                 <ul className="container-tbca flex gap-0.5 overflow-x-auto">
                     {NAV3.map(([l, h]) => (
                         <li key={h}>
@@ -65,7 +65,7 @@ export function Shell({ title, crumbs, children, dark }: { title: string; crumbs
                         </li>
                     ))}
                 </ul>
-            </nav>
+            </nav>}
             <div className="border-b border-parchment-400 bg-white">
                 <div className="container-tbca flex flex-wrap items-center gap-2 py-2">
                     <nav aria-label="Page map" className="min-w-0 flex-1 basis-full text-[0.78rem] text-ink-400 sm:basis-0">
@@ -76,8 +76,8 @@ export function Shell({ title, crumbs, children, dark }: { title: string; crumbs
                         ))}
                     </nav>
                     <div className="flex gap-1.5">
-                        <B sm onClick={() => (window.history.length > 1 ? window.history.back() : router.visit('/industries'))}><Ic n="back" /> Back</B>
-                        <B sm onClick={() => router.visit('/industries')}><Ic n="home" /> Home</B>
+                        <B sm onClick={() => (window.history.length > 1 ? window.history.back() : router.visit(home))}><Ic n="back" /> Back</B>
+                        <B sm onClick={() => router.visit(home)}><Ic n="home" /> Home</B>
                         <B sm onClick={() => router.reload()}><Ic n="refresh" /> Refresh</B>
                     </div>
                 </div>

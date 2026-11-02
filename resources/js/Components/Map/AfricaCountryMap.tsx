@@ -34,6 +34,7 @@ export default function AfricaCountryMap({
     label = 'Map of Africa: select a country to open its Investor Cockpit',
     className,
     tipFor,
+    overlay,
 }: {
     selected?: string | null;
     highlighted?: string[];
@@ -47,6 +48,8 @@ export default function AfricaCountryMap({
     className?: string;
     /** Optional richer hover text (several lines allowed); defaults to the country name. */
     tipFor?: (country: AfricaCountryShape) => string;
+    /** Extra SVG drawn over the countries (corridor arcs, markers); `pt` gives a country's marker point by ISO3. */
+    overlay?: (pt: (iso3: string) => [number, number] | null) => ReactNode;
 }) {
     const [hover, setHover] = useState<{ slug: string; name: string; x: number; y: number } | null>(null);
     const p = PALETTE[tone];
@@ -141,6 +144,7 @@ export default function AfricaCountryMap({
                     {!decorative && <title>Western Sahara (disputed territory)</title>}
                 </path>
                 {ordered.map(country)}
+                {overlay && <g pointerEvents="none">{overlay((iso3) => AFRICA_COUNTRIES.find((c) => c.iso3 === iso3)?.c ?? null)}</g>}
             </svg>
             {hover && !decorative && (
                 <span

@@ -165,8 +165,12 @@ class Navigation
                 ['label' => 'Diagnostic Sprints', 'href' => '/sprints/category/diagnostics', 'note' => 'Deeper diagnostics with human review'],
             ],
             '/countries' => [
-                ['label' => 'Country Explorer', 'href' => '/find-the-right-service/countries', 'note' => 'Country readiness and available services'],
-                ['label' => 'Corridor Network', 'href' => '/find-the-right-service/corridors', 'note' => 'Cross-border trade and service corridors'],
+                ['label' => 'Countries Home', 'href' => '/countries', 'note' => '54 activated African countries'],
+                ['label' => 'Country Explorer', 'href' => '/countries/explorer', 'note' => 'Compare country objects on the map'],
+                ['label' => 'Botswana Country Profile', 'href' => '/countries/botswana', 'note' => 'Full BW-1.0 pack, end-to-end journey'],
+                ['label' => 'Import & Export Heat Maps', 'href' => '/countries/botswana/trade', 'note' => 'Intra-African trade by partner and product'],
+                ['label' => 'Corridors & Ledgers', 'href' => '/countries/corridors', 'note' => '2,862 directional corridors, six fee ledgers'],
+                ['label' => 'Governance & Admin', 'href' => '/countries/botswana/gov', 'note' => 'Activation ledger and country governance'],
             ],
             '/portal' => [
                 ['label' => 'Portal Overview', 'href' => '/portal', 'note' => 'Secure gateway and how it works'],
