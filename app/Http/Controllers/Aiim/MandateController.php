@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Aiim;
 
 use App\Models\Aiim\Engagement;
+use App\Models\Order;
 use App\Support\Aiim\Pricing;
 use App\Support\Aiim\ProtoEngagement as P;
 use Illuminate\Http\Request;
@@ -154,6 +155,9 @@ class MandateController extends AiimController
                 'balance' => round($e->feeExVat() - ($e->deposit_paid_at ? $e->depositExVat() : 0), 2),
                 'balancePercent' => 100 - (int) ($e->quote['deposit_percent'] ?? 50),
                 'canAccept' => $e->status === 'delivered',
+                // The final balance order opened on acceptance, while it is still unpaid, so the client can return to it.
+                'balanceOrder' => $e->balance_paid_at ? null : Order::query()->where('user_id', $e->user_id)->where('section', 'aiim')->where('status', '!=', 'paid')->latest('id')->get()
+                    ->first(fn (Order $o) => ($o->meta['aiim']['kind'] ?? null) === 'balance' && ($o->meta['aiim']['engagement'] ?? null) === $e->reference)?->getRouteKey(),
             ];
         });
     }

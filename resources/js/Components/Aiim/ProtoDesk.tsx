@@ -23,10 +23,10 @@ export interface SvcRail { title: string; items: ProtoSvc[]; total: number }
 export type Cell = string | number | null;
 export interface Sheet { name: string; h: string[]; rows: Record<string, Cell>[]; filters: string[] }
 
-/** Put an embedded service's app Sprint in the site basket at its entry tier and app price. */
+/** Add an embedded service to the AIIM fee manifest (priced at its app Sprint entry price). */
 export function addService(s: ProtoSvc, context?: string) {
     if (!s.inApp || s.ep === null) return;
-    router.post('/basket', { item_type: 'sprint', item_code: s.code, name: s.name, variant: s.et ?? undefined, unit_zar: s.ep, commercial_act: 'purchase', meta: { section: 'aiim', country: 'BWA', context: context ?? null } }, { preserveScroll: true });
+    router.post('/aiim/fees/items', { type: 'service', key: s.code, ctx: context ?? null }, { preserveScroll: true });
 }
 
 export function SvcPrice({ s, className }: { s: ProtoSvc; className?: string }) {

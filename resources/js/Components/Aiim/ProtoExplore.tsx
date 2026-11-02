@@ -146,7 +146,13 @@ export function Btn({ href, tone = 'ghost', children, sm = true, className }: { 
 /** Save a Botswana object to the visitor's saved items (site-wide saved list); guests sign in first. */
 export function SaveBtn({ type, itemKey, label, url, tone = 'dark' }: { type: string; itemKey: string; label: string; url: string; tone?: BtnTone }) {
     const { auth } = usePage<SharedProps>().props;
-    const go = () => (auth.user ? router.post('/saved', { item_type: type, item_key: itemKey, label, url }, { preserveScroll: true }) : router.visit('/login'));
+    // Units and places are AIIM catalogue objects: save them to the AIIM Saved Items list; anything else uses the site-wide saved list.
+    const aiim: Record<string, string> = { 'aiim-unit': 'unit', 'aiim-town': 'place', 'aiim-place': 'place' };
+    const go = () => {
+        if (!auth.user) return router.visit('/login');
+        if (aiim[type]) return router.post('/aiim/workspace/items', { list: 'saved', type: aiim[type], key: itemKey.replace(/^BW-/, '') }, { preserveScroll: true });
+        return router.post('/saved', { item_type: type, item_key: itemKey, label, url }, { preserveScroll: true });
+    };
     return <button type="button" onClick={go} className={btn(tone)}><L.Bookmark className="size-3.5" /> Save</button>;
 }
 
@@ -476,11 +482,11 @@ export function Gauge({ v, max, label, sub }: { v: number; max: number; label: s
 /* ------------------------------------------------------------------ embedded services */
 export interface Svc { code: string; name: string; tier: string; delivery: string; aai: number | null; inApp: boolean; from: number | null; entry: string | null }
 
-/** Add an embedded service to the basket at the app's Sprint price. */
+/** Add an embedded service to the AIIM fee manifest (priced at its app Sprint entry price). */
 export function useAddService() {
     return (s: Svc, ctx?: string) => {
         if (!s.inApp || s.from === null) return;
-        router.post('/basket', { item_type: 'aiim-service', item_code: s.code, name: ctx ? `${s.name} (${ctx})` : s.name, variant: s.entry, unit_zar: s.from, commercial_act: 'purchase', meta: { section: 'aiim', country: 'botswana', context: ctx ?? null } }, { preserveScroll: true });
+        router.post('/aiim/fees/items', { type: 'service', key: s.code, ctx: ctx ?? null }, { preserveScroll: true });
     };
 }
 

@@ -257,7 +257,7 @@ export default function BwMap({ data, filters, f = NO_FILTER, metric = 'pop', la
             if (p) zoomBox([p[0] - 120, p[1] - 90, p[0] + 120, p[1] + 90], 6);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selKey]);
+    }, [selKey, H]);
 
     const pick = (s: Sel) => (e: RME) => { e.stopPropagation(); onSelect?.(s); };
     const showTip = (html: ReactNode) => (e: RME) => {

@@ -52,10 +52,10 @@ export const oppHref = (id: string) => `/aiim/opportunities/${encodeURIComponent
 export const townHref = (slug: string, id: string) => `/aiim/country/${slug}/towns/${encodeURIComponent(id)}`;
 export const leadHref = (slug: string, id: string) => `/aiim/country/${slug}/leads/${encodeURIComponent(id)}`;
 
-/** Add a priced embedded service to the site basket (the same Sprint line the Countries tab adds). */
+/** Add a priced embedded service to the AIIM fee manifest (priced at its app Sprint entry price). */
 export function addToBasket(s: Svc, context?: string) {
     if (!s.price) return;
-    router.post('/basket', { item_type: 'sprint', item_code: s.code, name: s.name, variant: s.tier, unit_zar: s.price, commercial_act: 'purchase', meta: { section: 'aiim', context: context ?? null } }, { preserveScroll: true });
+    router.post('/aiim/fees/items', { type: 'service', key: s.code, ctx: context ?? null }, { preserveScroll: true });
 }
 
 /* ------------------------------------------------------------------ buttons */
