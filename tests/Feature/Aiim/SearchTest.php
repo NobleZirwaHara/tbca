@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Aiim;
 
+use App\Models\Aiim\Corridor;
+use App\Models\Aiim\Organisation;
 use App\Models\Aiim\SavedItem;
 use App\Models\Sprint;
 use App\Models\User;
@@ -100,9 +102,9 @@ class SearchTest extends TestCase
         $this->get('/aiim/corridors?country=namibia')->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/CorridorSearch')->where('results.total', fn ($n) => $n >= 1));
 
         $this->get('/aiim/opportunities/lilongwe-cement-grinding-bagging-station-600-ktpa')->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/OpportunityShow'));
-        $org = \App\Models\Aiim\Organisation::query()->where('kind', 'investor')->firstOrFail();
+        $org = Organisation::query()->where('kind', 'investor')->firstOrFail();
         $this->get("/aiim/investors/{$org->slug}")->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/OrgShow'));
-        $corr = \App\Models\Aiim\Corridor::query()->firstOrFail();
+        $corr = Corridor::query()->firstOrFail();
         $this->get("/aiim/corridors/{$corr->slug}")->assertOk()->assertInertia(fn (Assert $p) => $p->component('Aiim/CorridorShow'));
     }
 
